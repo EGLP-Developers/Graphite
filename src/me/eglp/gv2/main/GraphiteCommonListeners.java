@@ -27,7 +27,6 @@ import net.dv8tion.jda.api.entities.channel.concrete.VoiceChannel;
 import net.dv8tion.jda.api.events.channel.ChannelCreateEvent;
 import net.dv8tion.jda.api.events.guild.member.update.GuildMemberUpdateNicknameEvent;
 import net.dv8tion.jda.api.events.guild.voice.GuildVoiceUpdateEvent;
-import net.dv8tion.jda.api.events.interaction.ModalInteractionEvent;
 import net.dv8tion.jda.api.exceptions.ErrorHandler;
 import net.dv8tion.jda.api.requests.ErrorResponse;
 
@@ -144,10 +143,6 @@ public class GraphiteCommonListeners {
 					}
 				}
 			}
-		}));
-		
-		Graphite.getJDAListener().registerHandler(SingleEventHandler.of(ModalInteractionEvent.class, event -> {
-			event.reply("You inputteded: " + event.getValue("t").getAsString()).queue();
 		}));
 	}
 

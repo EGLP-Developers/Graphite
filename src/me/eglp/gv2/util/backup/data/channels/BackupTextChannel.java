@@ -39,11 +39,6 @@ public class BackupTextChannel implements JSONConvertible, WebinterfaceObject, B
 	@JSONValue
 	private boolean nsfw;
 
-	// NONBETA: MySQL change!
-//	@JavaScriptValue(getter = "isNews")
-//	@JSONValue
-//	private boolean news;
-	
 	@JavaScriptValue(getter = "getSlowmode")
 	@JSONValue
 	private int slowmode;

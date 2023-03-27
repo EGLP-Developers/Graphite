@@ -34,7 +34,7 @@ import net.dv8tion.jda.api.requests.ErrorResponse;
 		"CommandName varchar(255) NOT NULL",
 		"Permission varchar(255) DEFAULT NULL",
 		"Actions longtext DEFAULT NULL",
-		"SlashCommandId varchar(255) DEFAULT NULL", // NONBETA: MySQL change
+		"SlashCommandId varchar(255) DEFAULT NULL",
 		"PRIMARY KEY (GuildId, CommandName)"
 	},
 	guildReference = "GuildId"

@@ -36,7 +36,7 @@ import me.mrletsplay.mrcore.misc.FriendlyException;
 		"Modules text DEFAULT NULL",
 		"Locale varchar(255) DEFAULT NULL",
 		"Timezone varchar(255) DEFAULT NULL",
-		"TextCommands bool NOT NULL DEFAULT 0", // NONBETA: mysql change
+		"TextCommands bool NOT NULL DEFAULT 0",
 		"PRIMARY KEY (GuildId)"
 	},
 	guildReference = "GuildId"

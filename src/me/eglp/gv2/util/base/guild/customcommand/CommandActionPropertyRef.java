@@ -19,9 +19,7 @@ public class CommandActionPropertyRef implements WebinterfaceObject, JSONConvert
 
 	@JSONValue
 	@JavaScriptValue(getter = "getArgumentName", setter = "setArgumentName")
-	private String argumentName; // NONBETA: MySQL change (was int argumentIndex)
-	
-	// NONBETA: MySQL change (deleted boolean isVarArg)
+	private String argumentName;
 	
 	@JSONValue
 	@JavaScriptValue(getter = "getValue", setter = "setValue")

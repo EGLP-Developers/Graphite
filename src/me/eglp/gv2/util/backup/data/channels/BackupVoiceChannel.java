@@ -46,11 +46,6 @@ public class BackupVoiceChannel implements JSONConvertible, WebinterfaceObject, 
 	@JSONValue
 	private String region;
 	
-	// NONBETA: MySQL change!
-//	@JavaScriptValue(getter = "getIsStage")
-//	@JSONValue
-//	private boolean isStage;
-
 	@JSONValue
 	@JSONComplexListType(BackupPermissionOverride.class)
 	private List<BackupPermissionOverride> permissionOverrides;
@@ -103,13 +98,11 @@ public class BackupVoiceChannel implements JSONConvertible, WebinterfaceObject, 
 	@Override
 	public void restore(GraphiteGuild guild, Category parent, IDMappings mappings) {
 		Guild g = guild.getJDAGuild();
-		// NONBETA: MySQL change
 //		boolean isStageCh = isStage || userLimit > 99; // Extra check for userLimit > 99 to allow stage channels in old backups
 		if(userLimit > 99) return; // NONBETA: Update in MySQL, then remove
 		
 //		if(isStageCh && !g.getFeatures().contains("COMMUNITY")) return;
 		
-		// NONBETA: MySQL change + need BackupStageChannel
 		ChannelAction<VoiceChannel> c = g.createVoiceChannel(name, parent);
 		if(position >= 0) c.setPosition(position);
 		c.setBitrate(bitrate);
