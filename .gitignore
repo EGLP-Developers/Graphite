@@ -1,0 +1,12 @@
+/bin/
+/target/
+/Graphite-Selfcheck/
+/Graphite/
+/TEST/
+/.settings/
+/.classpath/
+/GraphiteGamma/
+/GraphiteBeta/
+/dependency-reduced-pom.xml
+/GraphiteDelta/
+/SELFCHECK/

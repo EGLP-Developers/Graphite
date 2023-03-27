@@ -1,0 +1,1237 @@
+### CustomConfig version: 2.0
+command-category: 
+  admin: 
+    name: "Admin"
+  backups: 
+    name: "Backups"
+  channel-management: 
+    name: "Kanalverwaltung"
+  fun: 
+    name: "Spaß"
+  greeter: 
+    name: "Begrüßer"
+  info: 
+    name: "Info"
+  moderation: 
+    name: "Moderation"
+  music: 
+    name: "Musik"
+  premium: 
+    name: "Premium"
+  record: 
+    name: "Aufnahme"
+  reddit: 
+    name: "Reddit"
+  report: 
+    name: "Meldung"
+  role-management: 
+    name: "Rollenverwaltung"
+  scripting: 
+    name: "Skripten"
+  twitch: 
+    name: "Twitch"
+  twitter: 
+    name: "Twitter"
+command: 
+  8ball: 
+    description: "Frag den Magic 8 Ball etwas"
+    usage: "{prefix}8ball <Frage>"
+  about: 
+    description: "Schau dir meine Visitenkarte an :credit_card:"
+    title: "Meine Visitenkarte"
+    usage: "{prefix}about"
+    contributors: 
+      title: "Mit der Hilfe unserer atemberaubenden Mitwirkenden :gift_heart:"
+    developers: 
+      title: "Entwickler"
+    discord-library: 
+      title: "Discord API Library"
+    libraries: 
+      title: "Verwendete APIs"
+    name: 
+      title: "Name"
+    patreon: 
+      title: "Patreon"
+    server-count: 
+      title: "Serverzahl"
+    shard-count: 
+      title: "Shardanzahl"
+    twitter: 
+      title: "Twitter"
+    website: 
+      title: "Homepage"
+  accessrole: 
+    added-accessible-role: "Die Rolle {role} wurde für {everyone} zugänglich gemacht"
+    already-accessible: "Diese Rolle wurde bereits für alle zugänglich gemacht"
+    already-removed: "Diese Rolle ist momentan nicht öffentlich zugänglich"
+    description: "Mache Rollen für alle Benutzer zugänglich"
+    no-accessroles: "Im Moment gibt es keine zugänglichen Rollen"
+    removed-accessible-role: "Rolle {role} wurde von der Liste an zugänglichen Rollen entfernt"
+    add: 
+      description: "Macht eine Rolle für alle Benutzer zugänglich (bspw. solche wie \"kein-nsfw\")"
+      usage: "{prefix}accessrole add <@Role>"
+    list: 
+      description: "Zeigt eine Liste mit allen zugänglichen Rollen an"
+      field-title: "Zugängliche Rollen"
+      usage: "{prefix}accessrole list"
+    remove: 
+      description: "Entferne eine zugängliche Rolle"
+      usage: "{prefix}accessrole remove <@Rolle>"
+  amongus: 
+    description: "Spiele ein wenig Among Us mit deinen Freunden"
+    not-in-valid-voicechannel: "Du musst in einem Sprachkanal mit einer laufenden Among Us-Runde sein"
+    create: 
+      already-exists: "In deinem Kanal läuft bereits eine Runde Among Us"
+      description: "Erstelle eine Among Us-Runde in deinem Sprachkanal"
+      message: "Überprüfe deinen privaten Chat :blush: :wink:"
+      not-in-voicechannel: "Du musst dich in einem Sprachkanal befinden, um eine Among Us-Runde zu erstellen"
+      usage: "{prefix}amongus create"
+    link: 
+      description: "Verbinde einen Among Us-Spieler mit seinem Discord-Account"
+      invalid-color-or-player: "Ungültige Farbe/Spieler"
+      member-not-in-voicechannel: "Dieses Mitglied ist nicht in dem Sprachkanal für die Among Us-Runde"
+      not-a-member: "Der Benutzer ist kein Mitglied dieses Servers"
+      usage: "{prefix}amongus link <@User> <Farbe | Name>"
+    stop: 
+      description: "Beendet die aktuelle Among Us-Runde ab"
+      not-capture-user: "Du bist nicht der Ersteller von dieser Among Us-Runde"
+      usage: "{prefix}amongus stop"
+  autochannel: 
+    autochannel-error: "Du kannst keinen Autokanal aus einem Autokanal erstellen! :confounded:"
+    description: "Du wirst in Sprachkanälen ertrinken"
+    disabled: "`{channel_name}` ist nun kein Autokanal mehr"
+    enabled: "Graphite wird nun `{channel_name}` automatisch duplizieren, wenn diesem Kanal jemand beitritt"
+    usage: "{prefix}autochannel <#!Sprachkanal>"
+    userchannel-error: "Du kannst keinen Autokanal aus einem Benutzerkanal erstellen!"
+  autorole: 
+    added-autorole: "Rolle {role} als Autorolle hinzugefügt"
+    already-added: "Diese Rolle ist bereits eine Autorolle"
+    already-removed: "Diese Rolle ist nicht auf der Liste"
+    description: "Füge Rollen hinzu, die Benutzer automatisch bekommen, wenn sie dem Server beitreten"
+    list-title: "Eine Liste mit allen Rollen, die ein Benutzer automatisch bekommt, wenn er deinem Server beitritt :person_walking:"
+    no-autoroles: "Im Moment gibt es keine Autorollen"
+    removed-autorole: "Rolle {role} wurde von der Liste der Autorollen entfernt"
+    add: 
+      description: "Füge eine Autorolle hinzu"
+      usage: "{prefix}autorole add <@Rolle>"
+    list: 
+      description: "Zeigt eine Liste aller Autorollen an"
+      usage: "{prefix}autorole list"
+    remove: 
+      description: "Entferne eine Autorolle"
+      usage: "{prefix}autorole remove <@Rolle>"
+  backup: 
+    deleted: "Backup gelöscht"
+    description: "Erstelle ein paar nice backups"
+    invalid-backup: "Es konnte kein Backup mit dem angegebenen Namen gefunden werden"
+    invalid-interval: "Ungültiges Intervall"
+    restored: "Das Backup wurde erfolgreich wiederhergestellt. Dies hat `{time_taken}` gedauert."
+    disclaimer: ":warning: Bei dem Wiederherstellen eines Backups riskierst du, dass der aktuelle Zustand deines Discord-Servers zerstört wird.\n\nGraphite wird Kanäle und Rollen löschen, sowie Server-Einstellungen abändern.\nBackups könnten kaputt sein.\nThreads werden nicht wiederhergestellt!\n\nWenn du dir unsicher bist, was du tust, dann probiere es zuerst auf einem Test-Server aus! Falls dir Probleme auffallen sollten, dann darfst du uns gerne auf unserem Discord-Server kontaktieren. Wir werden dir natürlich versuchen so gut es geht zu helfen, aber wir übernehmen keine Verantwortung für kaputte oder unvollständige Backups!"
+    cancel-failure: 
+      title: "Fehlgeschlagen"
+      value: "Der Bot ist gerade nicht dabei, ein Backup zu klonen/wiederherzustellen"
+    cancel: 
+      description: "Breche die aktuelle Wiederherstellung oder das Klonen eines Backups ab"
+      usage: "{prefix}backup cancel"
+    cancelled: 
+      title: "Abgebrochen"
+      value: "Klonen/Wiederherstellen eines Backups erfolgreich beendet"
+    cant-find: 
+      backup: 
+        title: "Ich kann das Backup nicht finden :cry:"
+        value: "Ein Backup mit der angegebenen ID existiert nicht. Stelle sicher, dass du die richtige ID eingegeben hast."
+    copy: 
+      description: "Kopiere ein Backup von einem anderen Server."
+      usage: "{prefix}backup copy <Quell-Server-ID> <Name des Backups>"
+      cant-find: 
+        server: 
+          title: "Kann den Server nicht finden."
+          value: "Einen Server mit der angegebenen ID gibt es nicht. Stelle sicher, dass die angegebene ID korrekt ist."
+      missing-permission: 
+        title: "Fehlende Berechtigung"
+        value: "Du benötigst eine der folgenden Berechtigungen auf dem Quell-Server, um ein Backup zu kopieren: `backup.copy-to-other`, `backup.*` oder `*`"
+    create: 
+      description: "Erstelle ein Backup"
+      key-description: "Da dein Backup Nachrichten beinhaltet, welche verschlüsselt werden, benötigst du einen Schlüssel, damit du die Nachrichten wiederherstellen kannst.\nDie gespeicherten Nachrichten werden automatisch nach 30 Tagen wieder entfernt.\n[weitere Informationen]({info_link})"
+      usage: "{prefix}backup create [Anzahl der zu speichernden Nachrichten]"
+    created: 
+      title: "Backup erstellt"
+      value: "Backup-Name: `{backup_name}`"
+      field-1: 
+        title: "Befehle"
+        value: "Verwende `{prefix}help backup [Unterbefehl]` um zu sehen, wie du mit deinem neuen Backup interagieren kannst. Ein anderer einfacher Weg, deine Backups zu verwalten, ist unser [Webinterface]({webinterface})."
+    creating: 
+      title: "Backup wird erstellt..."
+      value: "Server-Backup wird erstellt. Dies könnte etwas dauern."
+    delete: 
+      description: "Lösche das Backup mit dem angegebenen Namen"
+      usage: "{prefix}backup delete <Backup-Name>"
+    info: 
+      description: "Zeige Informationen über das Backup an"
+      usage: "{prefix}backup info <Backup-Name>"
+      channel-field: 
+        name: "Kanäle"
+      message: 
+        author: "Kanäle/Rollen des Backups {backup_name}"
+      role-field: 
+        name: "Rollen"
+        value: "{roles}"
+    interval: 
+      description: "Setze das Intervall für automatische Backups (in Tagen)"
+      title: "Intervall gesetzt"
+      usage: "{prefix}backup interval <Intervall in Tagen>"
+      value: "Graphite wird nun alle `{interval}` Tage ein Backup für dich erstellen"
+    invalid-key: 
+      title: "Ungültiger Schlüssel"
+      value: "Der angehängte Backup-Schlüssel ist inkorrekt. Bitte überprüfe, ob du den richtigen Schlüssel angehängt hast."
+    limit-reached: 
+      title: "Backup-Limit erreicht"
+      value: "Du hast das Maximum an möglichen Backups erreicht. Durch eine kleine Spende bekommst du die Möglichkeit weitere Backups anzulegen. Schau dir unsere [Patreon]({patreon})-Seite für weitere Informationen an."
+    list: 
+      description: "Zeigt eine Liste an erstellten Backups an"
+      list: "```Erstellte Backups: \n\n{backups}```"
+      usage: "{prefix}backup list"
+    no-backups: 
+      title: "Im Moment gibt es hier keine Backups"
+    not-highest-role: 
+      title: "Fehler"
+      value: "Um Rollen korrekt zu klonen/wiederherzustellen, muss die Graphite-Rolle über allen Benutzerrollen sein"
+    ratelimit: 
+      title: "Erstellungs-Limit"
+      value: "Bitte komm mal runter und warte {time}"
+    rename: 
+      already-exists: "Ein Backup mit dem angegebenen Namen existiert bereits"
+      description: "Benenne ein Backup um"
+      invalid-name: "Der Name des Backups kann nur alphanumerische Symbole und `-`, `_` oder ` ` beinhalten"
+      message: "Backup `{name}` wurde in `{new_name}` umbenannt"
+      usage: "{prefix}backup rename <Backup-Name> <neuer Backup-Name>"
+    restore: 
+      description: "Stelle das Backup mit der gegebenen ID wieder her"
+      usage: "{prefix}backup restore <Backup-Name> [(+ angehängte Schlüssel-Datei)]"
+    restoring-failed: 
+      title: "Wiederherstellung fehlgeschlagen"
+    template: 
+      deleted: "Template gelöscht"
+      description: "Teile deine Backups mit der gesamten Welt"
+      description-too-long: "Beschreibung zu lang. Maximal: `{max_chars}` Zeichen"
+      name-too-long: "Name ist zu lang. Maximal: `{max_chars}` Zeichen"
+      cant-delete: 
+        title: "Ojemine!"
+        value: "Dies ist nicht deine Template! Deshalb kannst du sie nicht löschen. Wenn du denkst, dass diese Template nutzlos ist oder Inhalt enthält, der gegen Discords ToS verstößt, dann melde das bitte auf unserem [Discord-Server]({discord})"
+      create: 
+        description: "Erstelle ein öffentliches Template-Backup"
+        usage: "{prefix}backup template create <Backup-Name> <Name> [Beschreibung]"
+      created: 
+        title: "Template wurde erstellt"
+        value: "Template-ID: {template_id}"
+      delete: 
+        description: "Lösche dein öffentliches Template-Backup"
+        usage: "{prefix}backup template delete <Template-ID>"
+      load-failed: 
+        title: "Das Laden der Template ist fehlgeschlagen"
+      load: 
+        description: "Lade ein öffentliches Template-Backup"
+        usage: "{prefix}backup template load <Template-ID>"
+      search: 
+        description: "Suche nach einer Template"
+        results-field-title: "{name}"
+        results-field-value: "ID: `{id}`\nBeschreibung: `{description}`"
+        results-title: "Suchergebnis(se) für `{query}`"
+        usage: "{prefix}backup template search <Name>"
+    too-many-messages: 
+      title: "Ungültige Anzahl an Nachrichten"
+      value: "Ungültige Anzahl an Nachrichten. Du kannst maximal `100` Nachrichten pro Kanal abspeichern."
+    copied: 
+      title: "Backup wurde kopiert"
+  botrole: 
+    added-botrole: "Rolle {role} als Botrolle hinzugefügt"
+    already-added: "Die Rolle ist bereits auf der Liste der Botrollen"
+    already-removed: "Diese Rolle ist nicht auf der Liste :thinking:"
+    description: "Füge Rollen hinzu, die Bots automatisch bekommen, wenn sie dem Server beitreten"
+    list-title: "Eine Liste an Rollen, die automatisch an Bots gegeben werden, wenn sie diesem Server beitreten"
+    no-botroles: "Im Moment gibt es keine Botrollen"
+    removed-botrole: "Rolle {role} von der Liste der Botrollen entfernt"
+    add: 
+      description: "Füge eine Botrolle hinzu"
+      usage: "{prefix}botrole add <@Rolle>"
+    list: 
+      description: "Zeigt alle Botrollen an"
+      usage: "{prefix}botrole list"
+    remove: 
+      description: "Entferne eine Botrolle"
+      usage: "{prefix}botrole remove <@Rolle>"
+  categorycopy: 
+    description: "Kopiere die Einstellungen von einer Kategorie in eine andere"
+    success: "Alle Berechtigungen von `{from_category}` zu `{to_category}` kopiert"
+    usage: "{prefix}categorycopy :<Kategorie> :<Kategorie>"
+  channelinfo: 
+    description: "Zeigt Informationen über den angegebenen Kanal an"
+    title: "Alle wichtigen Informationen über {channel}"
+    usage: "{prefix}channelinfo <#!Kanal>"
+    bitrate: 
+      title: "Bitrate"
+    id: 
+      title: "ID"
+    name: 
+      title: "Name"
+    parent: 
+      no-parent: "(keine Kategorie)"
+      title: "Kategorie"
+    region: 
+      title: "Region"
+    slowmode: 
+      off: "Inaktiv"
+      title: "Langsamer Modus :sloth:"
+    topic: 
+      no-topic: "*Kein Thema*"
+      title: "Thema"
+    user-limit: 
+      title: "Benutzerlimit"
+      unlimited: "∞"
+  chatmute: 
+    description: ":mute:"
+    success: "Benutzer {user} stummgeschaltet: `{reason}`"
+    usage: "{prefix}chatmute <@Member>"
+  chatreport: 
+    description: "Melde einen Chatauszug von 100 Nachrichten"
+    not-enabled: "Du musst Chatreports erst auf unserem [Webinterface]({webinterface}) aktivieren. Du erhältst dann einen Schlüssel, welchen du brauchst, um alle künftigen Chatmeldungen einzusehen"
+    success: "Der Chatverlauf dieses Kanals wurde gemeldet. Der Chatverlauf kann auf unserem [Webinterface]({webinterface}) eingesehen werden."
+    usage: "{prefix}chatreport"
+  chatreports-remove: 
+    description: "Entfernt die Chatmeldung mit dem angegebenen Index"
+    usage: "{prefix}chatreports remove <Index>"
+  chatreports: 
+    description: "Liste aller momentan existierenden Chatreports"
+    list: 
+      description: "Zeigt alle zurzeit bestehenden Chatmeldungen an"
+      no-reports: "Im Moment gibt es keine Chatmeldungen. Alles ist in Ordnung! :slight_smile:"
+      usage: "{prefix}chatreports list"
+      field: 
+        footer: "Im Moment gibt es {chatreports} Chatmeldung(en)"
+        head: "**[#{index}]** Chatmeldung von `{reporter}`"
+    remove: 
+      success: "Chatmeldung Nummer `{index}` erfolgreich entfernt"
+  chatunmute: 
+    description: "Erlaube einem Mitglied, im Textkanal wieder zu schreiben"
+    usage: "{prefix}chatunmute <@Member> [Grund]"
+  chucknorris: 
+    description: "Chuck Norris kennt seine Grenzen: Er hat keine"
+    usage: "{prefix}chucknorris"
+  clear: 
+    description: "Reinige deinen Chatverlauf :put_litter_in_its_place:"
+    invalid-amount: "Es ist leider nicht möglich weniger als eine oder mehr als 99 Nachrichten zu löschen"
+    success: ":boom: BOOOM! Die letzten `{amount}` Nachrichten wurden weggesprengt! :radioactive:"
+    usage: "{prefix}clear <Anzahl>"
+  clearall: 
+    description: "Löscht alle Nachrichten (bis zu 1000 Nachrichten auf einmal) :radioactive:"
+    success: ":boom: BOOOM! Alle Nachrichten wurden entfernt! :put_litter_in_its_place:"
+    usage: "{prefix}clearall"
+  coinflip: 
+    description: "Lasst uns eine Münze werfen"
+    side: "Die Münze ist auf ihrer Seite gelandet (Es gibt nur eine Chance von 1 in 6000, dass eine amerikanische 5-Cent-Münze auf ihrer Seite landet!)"
+    usage: "{prefix}coinflip"
+  dice: 
+    description: "Rolle einen Laplace-Würfel"
+    usage: "{prefix}dice"
+  donators: 
+    description: "Zeigt eine Liste aller Spender an"
+    empty: "Im Moment gibt es keine Sponsoren. Willst du unsere Arbeit unterstützen? (Patreon)[{patreon}]"
+    title: "Danke für die Unterstützung :heart:"
+    usage: "{prefix}donators"
+  eastereggs: 
+    description: "Zeigt deine gefundenen Easter Eggs an"
+    usage: "{prefix}eastereggs"
+    mystery: 
+      footer: "Du hast {amount} der {total_amount} Easter Eggs gefunden\nAnmerkung: Einige Easter Eggs können nur gefunden werden, wenn du [Graphite](https://graphite-official.com/faq.php) verwendest"
+      title: "???"
+      value: "Wenn ich es dir verrate ist es doch kein Easter Egg mehr..."
+  emoteinfo: 
+    description: "Zeigt Informationen über einen spezifischen Emote an"
+    emote: "Discord Emote ID: `{id}`\nRoher Discord emote: `{raw}`"
+    unicode: "EMOTE INFORMATIONEN\n\nEingebettetes Java: `{escaped_java}`\nEingebettetes HTML: `{escaped_html}`"
+    usage: "{prefix}emoteinfo <emote>"
+  faq: 
+    description: "Zeigt einen Link zu unserer FAQ-Seite an"
+    usage: "{prefix}faq"
+  farewell: 
+    already-disabled: "Der Abschiedsgruß ist bereits deaktiviert"
+    already-enabled: "Der Abschiedsgruß ist bereits aktiviert"
+    channel-set: "Verabschiedungskanal ist: {channel}"
+    current-message: "Aktueller Abschiedsgruß: `{message}`"
+    default-message: "Lebe wohl {user}, es war schön mit dir. Wir werden die gemeinsame Zeit nie vergessen :cry:"
+    description: "Verabschiede Benutzer, die den Server verlassen"
+    disabled: "Abschiedsgruß deaktiviert"
+    enabled: "Abschiedsgruß aktiviert"
+    message-set: "Neuer Abschiedsgruß: `{message}`"
+    channel: 
+      description: "Gib einen Kanal an, in welchem die Abschiedsgrüße geschickt werden sollen"
+      usage: "{prefix}farewell channel <#Textkanal>"
+    disable: 
+      description: "Deaktiviere den Abschiedsgruß für deinen Server"
+      usage: "{prefix}farewell disable"
+    enable: 
+      description: "Aktiviere den Abschiedsgruß für deinen Server"
+      usage: "{prefix}farewell enable"
+    message: 
+      description: "Schicke einen Abschiedsgruß"
+      usage: "{prefix}farewell message <Abschiedsgruß (erlaubte Platzhalter: {user}, {server})>"
+  getrole: 
+    description: "Bekomme eine zugängliche Rolle"
+    role-not-accessible: "Diese Rolle ist nicht zugänglich!"
+    success: "Du hast nun die Rolle {role}"
+    usage: "{prefix}getrole <@Rolle>"
+  greeting: 
+    already-disabled: "Begrüßungsnachricht bereits deaktiviert"
+    already-enabled: "Begrüßungsnachricht wurde bereits aktiviert"
+    channel-set: "Begrüßungskanal ist jetzt: {channel}"
+    current-message: "Aktuelle Begrüßungsnachricht: `{message}`"
+    default-message: "Willkommen {mention} auf unserem Server {server}"
+    description: "Heiße neue Servermitglieder Willkommen"
+    disabled: "Begrüßungsnachricht deaktiviert"
+    enabled: "Begrüßungsnachricht aktiviert"
+    message-set: "Neue Begrüßungsnachricht: `{message}`"
+    channel: 
+      description: "Gib einen Kanal an, in dem die Begrüßungsnachrichten gesendet werden"
+      usage: "{prefix}greeting channel <#Textkanal | user>"
+    disable: 
+      description: "Deaktiviere die Begrüßungsnachrichten für deinen Server"
+      usage: "{prefix}greeting disable"
+    enable: 
+      description: "Aktiviere die Begrüßungsnachrichten für deinen Server"
+      usage: "{prefix}greeting enable"
+    message: 
+      description: "Heiße neue Freunde Willkommen"
+      usage: "{prefix}greeting message <Nachricht (erlaubte Platzhalter: {mention}, {user}, {server})>"
+  help: 
+    description: "Wenn du für den Hilfebefehl Hilfe brauchst, bist du richtig lost :exploding_head:"
+    invalid-command: "Warum suchst du nach nicht existenten Befehlen? Magst du Kekse? [:cookie:](http://orteil.dashnet.org/cookieclicker/)"
+    sent: "Pssst. Bitte schau mal in unseren privaten Chatverlauf. :smirk:"
+    usage: "{prefix}help"
+    message: 
+      command: "Befehl"
+      customcommand-actions: "Eigener Befehl (Aktionen: {actions})"
+      description: "Beschreibung"
+      footer: "Benutze {prefix}help um eine Liste aller Befehle zu sehen / <> - erforderlich, [] - optional"
+      general-info: "**Brauchst du Unterstützung? Komm doch auf unseren [Discord-Server]({discord})**\n**[Lade]({invite}) den Bot auf deinen Server [ein]({invite})**\n\nDu kannst uns auch mit einer Spende auf [Patreon]({patreon}) unterstützen\n\n**Anmerkung:** Für genauere Informationen verwende den `{prefix}help <Befehl>` Befehl. Eine Liste mit allen Befehlen, Beschreibungen und deren Berechtigungen können auf unserer Website gefunden werden: [graphite-official.com]({website})"
+      missing-usage: ":interrobang: Owe, das sollte nicht hier sein. Bitte melde diesen Fehler."
+      permission: "Berechtigung"
+      subcommands: "{prefix}{command_name} {subcommands} [...]"
+      usage: "Verwendung"
+  invite: 
+    description: "Lade mich auf jeden Server ein, den du besitzt (und auch die Server deiner Freunde)"
+    message: "[**Lade**]({invite_url}) mich auf deinen Server [**ein**]({invite_url}) :hearts:"
+    usage: "{prefix}invite"
+  jail: 
+    description: "Sperre jemandem in seinem Sprachkanal ein :lock:"
+    jailed: "Du wurdest weggesperrt und kannst dich nicht mehr zwischen den Sprachkanälen bewegen. (Du wirst gekickt, wenn du es dennoch versuchst. Versuche: {attempts}/{max_attempts})"
+    kicked: "Du wurdest aus dem Sprachkanal gekickt und kannst nur noch dem Sprachkanal beitreten, in dem du eingesperrt wurdest"
+    success: "Der Benutzer ist nun im Sprachkanal `{channel}` eingesperrt und wartet auf seine Freilassung"
+    usage: "{prefix}jail <@Member> [#!Sprachkanal]"
+    error: 
+      already-jailed: "Dieser Benutzer ist bereits eingesperrt"
+      autochannel: "Du kannst hier niemanden einsperren, weil das ein Autokanal ist, welcher gelöscht wird, wenn niemand mehr darin ist"
+      userchannel: "Du kannst hier niemanden einsperren, weil das ein Userkanal ist, welcher gelöscht wird, wenn niemand mehr darin ist"
+  keys: 
+    description: "Schau dir deine Schlüsselsammlung an :key:"
+    no-keys: "Im Moment hast du keine Schlüssel"
+    usage: "{prefix}keys"
+    field: 
+      head: "Schlüssel: `{key}`"
+      values: "Typ: `{type}`\nPremium Level: `{level}`\nBeschreibung: `{description}`\nLäuft ab in: `{time}`\nBenutzt von: `{user}`"
+  locale: 
+    description: "Ändere die Sprache für deinen Server"
+    invalid-locale: "Ungültiges Sprachkürzel"
+    delete: 
+      description: "Lösche eine eigene Lokalisierungsdatei"
+      invalid-locale: "Die Sprache, die du versuchst zu löschen existiert nicht oder ist eine Standardsprache"
+      success: "Sprache `{locale}` erfolgreich gelöscht"
+      usage: "{prefix}locale delete <Sprachkürzel>"
+    download: 
+      description: "Lade eine Sprache herunter um sie abzuändern"
+      footer: "{amount} Nachrichten können abgeändert werden"
+      title: "Wie kann man seine eigene Sprache erstellen?"
+      usage: "{prefix}locale download [Sprache]"
+      values: "Schritt 1: Verwende {prefix}locale download [Sprache]\nSchritt 2: Ändere die Nachrichten ab\nSchritt 3: Lade die Datei per Drag&Drop im Chat hoch und nutze {prefix}locale upload <Sprachkürzel> als Beschreibung\nSchritt 4: Verwende {prefix}locale <Sprachkürzel> um die Sprache auszuwählen"
+    list: 
+      description: "Zeigt alle verfügbaren Sprachen an"
+      usage: "{prefix}locale list"
+    set: 
+      description: "Ändere die Sprache des Bots für deinen Server"
+      message: "Sprache zu `{locale}` geändert"
+      usage: "{prefix}locale set <Sprache>"
+    upload: 
+      already-exists: "Eine Sprache mit dieser Abkürzung existiert bereits, möchtest du diese überschreiben?"
+      description: "Lade deine eigene Sprache hoch"
+      invalid-file: "Die Datei, die du versucht hast hochzuladen... :thinking: ... Die ist kaputt :broken_heart:"
+      invalid-short: "Die Abkürzung für deine Sprache entspricht nicht unseren Anforderungen (bis zu 16 alphanumerische Zeichen und Unterstriche sind erlaubt)"
+      success: "Deine Sprache wurde erfolgreich hochgeladen. Wähle sie mit `{prefix}locale set {locale}` aus"
+      usage: "{prefix}locale upload <Sprachkürzel> (+ angehängte Sprach-Datei)"
+  meme: 
+    available: "Verfügbare Meme-Kategorien: `{meme_categories}`"
+    description: "Sucht im Internet nach ein paar lustigen Memes"
+    usage: "{prefix}meme"
+  minigame: 
+    cant-join: "Du kannst dem Spiel nicht beitreten, da es entweder voll ist, bereits läuft oder beendet wurde"
+    description: "Spiele unsere netten Minispiele alleine oder mit deinen Freunden"
+    not-playing: "Im Moment spielst du kein Minispiel"
+    rematch-invited: "`{user}` wurde erfolgreich zu einer weiteren Runde `{minigame}` eingeladen. (Verwende `minigame leave` um es zu verlassen)"
+    stopped: "Du wurdest aus dem Minigame geworfen, da du zu lange nicht mit ihm interagiert hast."
+    invite: 
+      bots: "Du kannst keine Bots einladen"
+      description: "Lade deine Freunde zu einem Minispiel ein"
+      failed: "Benutzer {user} konnte nicht eingeladen werden, da er seinen privaten Chat deaktiviert hat"
+      message: "`{inviter}` hat dich eingeladen mit ihm `{minigame}` zu spielen.\nWillst du mit ihm spielen?"
+      not-multiplayer: "Das Spiel, das du im Moment spielst, ist kein Mehrspieler-Spiel"
+      self: "Du kannst dich nicht selbst einladen"
+      success: "{user} wurde erfolgreich zu `{minigame}` eingeladen"
+      usage: "{prefix}minigame invite <@Member>"
+    join: 
+      description: "Tritt einem Minispiel bei, das öffentlich geteilt wurde"
+      no-games: "Es gibt keine Minispiele denen du beitreten kannst"
+      not-multiplayer: "Das Spiel, dem du beitreten möchtest, ist kein Mehrspieler-Spiel"
+      shared-game-started: "Du bist dem Spiel `{minigame}` beigetreten."
+      usage: "{prefix}minigame join <Minispiel>"
+    leave: 
+      description: "Verlasse das aktuell laufende Spiel"
+      multiplayer-autoleave: "{user} hat das Spiel verlassen. Alle Spieler wurden automatisch entfernt."
+      success: "Spiel erfolgreich verlassen"
+      usage: "{prefix}minigame leave"
+    list: 
+      description: "Zeigt dir eine Liste aller Minispiele an"
+      message: "Spielbare Minispiele: `{minigames}`"
+      usage: "{prefix}minigame list"
+    play: 
+      already-playing: "Du spielst bereits ein anderes Spiel. Benutze `{prefix}minigame leave` um das andere Spiel zu verlassen."
+      description: "Spiele unsere netten Minispiele alleine oder mit deinen Freunden"
+      game-started: "Du hast folgendes Spiel gestartet: `{minigame}`. {multiplayer}"
+      invalid-game: "Dieses Minispiel gibt es leider (noch) nicht. Versuche es doch mit einem der Folgenden: `{minigames}`"
+      multiplayer: "Vergiss nicht deine Freunde einzuladen: Es ist ein Mehrspieler-Spiel"
+      usage: "{prefix}minigame play <Minispiel>"
+    share: 
+      cant-share: "Du kannst dieses Spiel nicht teilen, da das Spiel voll ist oder bereits läuft"
+      description: "Spiele ein Minispiel mit einer zufällig ausgewählten Person"
+      global-game: "Du kannst kein globales Minispiel teilen"
+      shared: "Das Minispiel wurde öffentlich geschalten. Warte auf Mitspieler..."
+      usage: "{prefix}minigame share"
+    shared: 
+      description: "Zeigt alle aktuell geteilten Spiele eines Minispiels an"
+      usage: "{prefix}minigame shared <Minispiel>"
+    stats: 
+      description: "Du hast sehr interessante Spiel-Statistiken. Wenn du diesen Befehl verwendest, kannst du sie auch sehen :upside_down:"
+      line: "`{wins}` mal gewonnen\n`{losses}` mal verloren"
+      title: "**Deine Minispiel-Statistiken**"
+      usage: "{prefix}minigame stats"
+  modrole: 
+    added: "Rolle {role} erfolgreich als Moderatorrolle hinzugefügt"
+    already-added: "Rolle {role} wurde bereits als Moderratorrolle hinzugefügt"
+    description: "Entfernt oder fügt Rollen hinzu, welche vom Auto-Moderator unantastbar sind. Moderatorrollen werden benachrichtigt, wenn jemand dem Supportkanal beitritt (falls einer ausgewählt wurde)"
+    no-roles: "Es gibt keine Rollen mehr, die entfernt werden könnten"
+    not-listed: "Diese Rolle ist momentan nicht auf der Liste der Moderatorrollen"
+    removed: "Rolle {role} von den Moderatorrollen entfernt"
+    add: 
+      description: "Fügt eine Moderatorrolle hinzu"
+      usage: "{prefix}modrole add <@Rolle>"
+    list: 
+      description: "Zeigt alle Modrollen an"
+      no-roles: "Im Moment gibt es keine Moderatorrollen"
+      usage: "{prefix}modrole list"
+    remove: 
+      description: "Entferne eine Moderatorrolle"
+      usage: "{prefix}modrole remove <@Rolle>"
+  module: 
+    description: "Verwalte deine Module"
+    invalid-module: "Ungültiger Modulname. Gültige Namen sind `{modules}`"
+    disable: 
+      description: "Deaktiviere ein Modul. Aber du wirst vermutlich nie ein Modul deaktivieren wollen..."
+      not-enabled: "Dieses Modul ist nicht aktiviert"
+      success: "Modul `{module}` erfolgreich deaktiviert"
+      usage: "{prefix}module disable <Modulname>"
+    enable: 
+      already-enabled: "Dieses Modul ist bereits aktiviert"
+      description: "Nutze weitere Fähigkeiten von Graphite"
+      success: "Modul `{module}` erfolgreich aktiviert"
+      usage: "{prefix}module enable <Modulname>"
+    list: 
+      description: "Zeigt eine Liste mit allen verfügbaren Modulen"
+      message: "Verfügbare Module: ```\n{modules}\n```"
+      usage: "{prefix}module list"
+  money: 
+    description: "Überprüfe das Gewicht deiner Geldbörse"
+    money: "Du hast `{amount}`{emote_dollaronen}"
+    no-money: "Die Fliege :fly: in deiner Geldbörse hat sehr viel Platz: Du scheinst von Luft und Liebe zu leben. Wo ist all dein Geld hin?"
+    usage: "{prefix}money"
+  music: 
+    description: "Lass' dich von der Melodie tragen"
+    empty-queue: "Im Moment sind keine Lieder in der Warteschlange"
+    not-playing: "Im Moment wird nichts abgespielt"
+    set-endless-false: "Deaktiviere den Wiederholungsmodus"
+    set-endless-true: "Aktiviere den Wiederholungsmodus"
+    bassboost: 
+      description: "Zerstöre dein Trommelfell mit äußerst viel Bass"
+      disabled: "Bassverstärkung deaktiviert"
+      enabled: "Ohr-aua-faktor x{level}"
+      invalid-level: "Der Pegel muss eine Zahl zwischen 0 und {max_level} sein"
+      usage: "{prefix}music bassboost <Level (0 - 3)>"
+    endless: 
+      description: "Spiele die gesamte Warteschlange in einer Endlosschleife"
+      usage: "{prefix}music endless"
+    fastforward: 
+      cannot-fast-forward: "Es kann nicht zu der angegebenen Position vorgespult werden"
+      description: "Spult das aktuell spielende Lied vor"
+      message: "Das Lied wurde vorgespult"
+      usage: "{prefix}music fastforward <Zeit>"
+    jump: 
+      description: "Springe zu einem bestimmten Lied in der Warteschlange"
+      invalid-value: "Bitte gib einen gültigen Wert ein"
+      message: "Wir springen in den Hyperraum und zum Track Nummer {index}"
+      usage: "{prefix}music jump <Index>"
+    loop: 
+      description: "Wiederhole das Lied, Wiederhole das Lied, Wiederhole das Lied..."
+      usage: "{prefix}music loop"
+    lyrics: 
+      author-searching: "Es wird nach einem Liedtext gesucht..."
+      author-searching-description: "Suche nach dem Liedtext für {song}. Die Liedtexte kommen von Genius und sind nicht immer perfekt."
+      description: "Zeigt den (bestmöglichen) Liedtext zu dem momentan spielenden Lied an"
+      no-results: "Es konnte kein Liedtext zum aktuellen Lied gefunden werden"
+      usage: "{prefix}music lyrics"
+    nightcore: 
+      description: "Gib deinen Liedern mehr かわいい-Faktor ヽ(>∀<☆)ノ"
+      message: "Nightcore-Modus aktiviert! ＼(≧▽≦)／"
+      usage: "{prefix}music nightcore"
+    nowplaying: 
+      description: "Zeigt Informationen über das Lied an, das gerade spielt"
+      usage: "{prefix}music nowplaying"
+    pause: 
+      description: "Pausiere das aktuell spielende Lied"
+      message: "Lied pausiert, verwende `{prefix}music resume` um das pausierte Lied weiter abzuspielen."
+      usage: "{prefix}music pause"
+    pitch: 
+      description: "Mache die Tonhöhe des Liedes extra ʰᵒᶜʰ oder ₜᵢₑ𝒻"
+      invalid-pitch: "Die Tonhöhe muss ein Wert zwischen {min_pitch} und {max_pitch} sein"
+      message: "Tonhöhe wurde zu {pitch}x geändert"
+      usage: "{prefix}music pitch <Tonhöhe (0.25 - 5)>"
+    play: 
+      cannot-play: "Lied kann nicht abgespielt werden: `{error_message}`"
+      description: "Spiele Musik ab"
+      more-than-one-result: "Es gab mehr als ein Ergebnis für deine Suchanfrage :thinking:"
+      track-not-found: "Lied nicht gefunden"
+      usage: "{prefix}music play <Link oder Titel>"
+      author: 
+        field-title: "Autor"
+      bass-boost: 
+        field-title: "Bassverstärkung"
+      current-playing: 
+        field-title: "Aktuell spielendes Lied"
+      duration: 
+        field-title: "Position/Dauer"
+      pitch: 
+        field-title: "Tonhöhe"
+      position-duration: 
+        field-title: "Position/Dauer"
+      queued-track: 
+        field-title: "Lied in die Warteschlange aufgenommen"
+        field-title-multiple: "{number} Lieder in die Warteschlange hinzugefügt"
+      speed: 
+        field-title: "Geschwindigkeit"
+      track-index-tracks: 
+        field-title: "Lied/Lieder insgesamt"
+      tracks: 
+        field-title: "Lieder insgesamt"
+    playlist: 
+      description: "Erstelle deine eigene Wiedergabeliste"
+      duplicate-name: "Eine Wiedergabeliste mit diesem Namen existiert bereits"
+      invalid-playlist: "Die Wiedergabeliste mit dem angegebenen Namen konnte nicht gefunden werden"
+      delete: 
+        description: "Lösche eine Wiedergabeliste"
+        message: "Wiedergabeliste mit dem Namen `{name}` entfernt"
+        usage: "{prefix}music playlist delete <Wiedergabelisten-Name>"
+      list: 
+        description: "Zeigt all deine Wiedergabelisten an"
+        usage: "{prefix}music playlist list"
+      play: 
+        description: "Spiele eine Wiedergabeliste ab"
+        usage: "{prefix}music playlist play <Wiedergabelisten-Name>"
+      rename: 
+        description: "Benenne eine Wiedergabeliste um"
+        invalid-name: "Der Name der Wiedergabeliste kann nur alphanumerische Symbole und die Zeichen `-`, `_` oder ` ` beinhalten"
+        message: "Wiedergabeliste `{name}` zu `{new_name}` umbenannt"
+        usage: "{prefix}music playlist rename <Wiedergabelisten-Name> <Neuer Name>"
+      save: 
+        description: "Speichere die aktuelle Warteschlange in eine Wiedergabeliste ab"
+        message: "Wiedergabeliste mit dem Namen `{name}` abgespeichert"
+        no-saveable-tracks: "Die Wiedergabeliste kann nicht gespeichert werden, da kein Lied aus der Warteschlange gespeichert werden kann"
+        unsaveable-tracks: "Einige Lieder der aktuellen Wiedergabeliste fehlen, da sie nicht gespeichert werden können ({saved} / {total} gespeichert)"
+        usage: "{prefix}music playlist save [Name]"
+      info: 
+        description: "Listet die Lieder einer Playlist auf"
+        message: "Lieder in Playlist `{playlist}`:```\n{tracks}\n```"
+        usage: "{prefix}music playlist info <Playlist>"
+    playlists: 
+      containing-tracks: "{playlist} > [Beinhaltet {tracks} Lied(er)]"
+      field-title: "Wiedergabelisten"
+      no-playlists: "Es existieren aktuell keine Wiedergabelisten :cry:"
+    queue: 
+      description: "Zeigt alle Lieder in der Warteschlange in einer Liste an"
+      format: "[**#{index}**] `{duration}`\n{highlight}{author} | {title}{highlight}"
+      invalid-page: "Ungültige Seite. Die letzte Seite ist `{max_page}`"
+      message: "**[+]---[Aktuelle Warteschlange: {tracks} Lied(er) | Seite {page} / {max_page}]---[+]**\n\n{queue}\n"
+      usage: "{prefix}music queue [Seite]"
+    remove: 
+      description: "Entfernt ein Lied aus der Warteschlange"
+      invalid-index: "Ungültiger Index. Der Index muss eine Zahl zwischen `{min_index}` und `{max_index}` sein"
+      removed: "Folgendes Lied wurde von der Warteschlange entfernt: `{track}`"
+      usage: "{prefix}music remove <Index>"
+    reset: 
+      description: "Setze alle Wiedergabeeinstellungen zurück"
+      message: "Alle Wiedergabeeinstellungen zu ihren Standardwerten zurückgesetzt"
+      usage: "{prefix}music reset"
+    resume: 
+      description: "Spiele das pausierte Lied weiter"
+      message: "Das pausierte Lied wird nun weiter abgespielt"
+      usage: "{prefix}music resume"
+    rewind: 
+      cannot-rewind: "Es kann nicht zu der angegebenen Position zurückgespult werden"
+      description: "Spult das aktuelle Lied zurück"
+      message: "Das Lied wurde zurückgespult"
+      usage: "{prefix}music rewind <Zeit>"
+    seek: 
+      cannot-seek: "Es konnte nicht zu der angegebenen Position vorgespult werden"
+      description: "Springe zu einer Position in dem Lied, das im Moment spielt"
+      message: "Das Lied wurde zur angegebenen Stelle vor-/zurückgespult"
+      usage: "{prefix}music seek <Zeit>"
+    shuffle: 
+      description: "Mische die aktuelle Warteschlange"
+      message: "Die Warteschlange wurde durchgemischt"
+      usage: "{prefix}music shuffle"
+    skip: 
+      description: "Überspringe das Lied das im Moment spielt oder eine angegebene Anzahl von Liedern"
+      invalid-amount: "Ungültige Anzahl"
+      message: "`{amount}` Lied(er) wurde(n) übersprungen"
+      usage: "{prefix}music skip [Anzahl]"
+    speed: 
+      description: "MachdasLiedbesondersschnell oder g a n z l a n g s a m"
+      invalid-speed: "Die Geschwindigkeit muss ein Wert zwischen {min_speed} und {max_speed} sein"
+      message: "Geschwindigkeit wurde zu {speed}x geändert"
+      usage: "{prefix}music speed <Geschwindigkeit (0.25 - 5)>"
+    stop: 
+      description: "Stoppt den Musikspieler"
+      usage: "{prefix}music stop"
+    unloop: 
+      message: "Das aktuelle Lied wird nun nicht mehr wiederholt :cry: :arrow_forward:"
+    volume: 
+      description: "Dreh' die Lautstärke auf"
+      invalid-volume: "Ungültige Lautstärke. Die Lautstärke muss eine ganze Zahl zwischen 0 und 100 sein"
+      message: "Lautstärke auf {volume} gesetzt"
+      usage: "{prefix}music volume <Lautstärke>"
+  permission: 
+    allowed-mention-types: "Erlaubte Erwähnungen: @User, @Rolle, @everyone"
+    description: "Verwalte die Berechtigungen für eine Rolle oder einen Benutzer"
+    add: 
+      already-has-permission: "{entity} hat bereits die von dir angegebene Berechtigung"
+      description: "Damit die Admins all das machen können, was sie müssen"
+      permission-added: "{entity} hat nun die Berechtigung `{permission}`"
+      usage: "{prefix}permission add <@Role | @User | @everyone> <Berechtigung>"
+    check: 
+      description: "Prüfe auf eine angegebene Berechtigung"
+      has-permission: "{entity} hat die Berechtigung `{permission}`"
+      no-permission: "{entity} hat die Berechtigung `{permission}` nicht"
+      usage: "{prefix}permission check <@Rolle | @User | @everyone> <Berechtigung>"
+    list: 
+      description: "Schau' dir die Berechtigungen von jemandem an"
+      no-permissions: "{entity} hat keine Berechtigungen :scream_cat:"
+      usage: "{prefix}permission list <@Rolle | @User | @everyone>"
+      inherited: 
+        title: "Berechtigung geerbt von {entity}"
+      self: 
+        title: "Eigene Berechtigungen von {entity}"
+    remove: 
+      description: "Damit die Admins nicht das machen können, was sie müssen"
+      doesnt-have-permission: "{entity} hat die angegebene Berechtigung nicht :scream_cat:"
+      permission-removed: "{entity} hat nun nicht mehr die Berechtigung `{permission}` :scream_cat:"
+      usage: "{prefix}permission remove <@Rolle | @User | @everyone> <Berechtigung>"
+  poll: 
+    description: "Erstelle Abstimmungen"
+    create: 
+      description: "Erstelle eine neue Umfrage"
+      duration-too-short: "Die Dauer der Abstimmung muss mindestens 5 Minuten sein :alarm_clock:"
+      invalid-emoji: "Ungültiger Emoji: {emoji}"
+      usage: "{prefix}poll create <Frage> <Dauer (1d2h)> <akzeptiere mehrfache Abstimmung> <Option 1> <Option 2> [Option 3] [Option 4] [Option 5] ... [Option 15]"
+      message: 
+        total: "Insgesamt: {votes} Stimme(n) von {users} Mitglied(ern) abgegeben | Poll ID: {poll_id}"
+        multiple-votes: 
+          no: "Nein"
+          title: "Mehrfache Abstimmung möglich?"
+          yes: "Ja"
+        options: 
+          title: "Optionen"
+        poll-end: 
+          title: "Abstimmmung endet am"
+        question: 
+          title: "Frage"
+    list: 
+      description: "Zeigt alle zurzeit laufenden Abstimmungen an"
+      list: "```Zurzeit laufende Abstimmungen:\n\n{polls}```"
+      no-polls: "Zurzeit laufen keine Abstimmungen"
+      usage: "{prefix}poll list"
+    stop: 
+      description: "Beendet eine Abstimmung"
+      invalid-poll: "Eine Abstimmung mit dieser :id: gibt es nicht"
+      success: "Die Abstimmung wurde beendet :octagonal_sign:"
+      usage: "{prefix}poll stop"
+  prefix: 
+    description: "Ändere den Präfix (es muss ein Wort ohne Leerzeichen sein)"
+    invalid: "Der angegebene Präfix ist ungültig: Es sind nur bis zu 16 alphanumerische Zeichen und `_-~.!` erlaubt"
+    success: "Der Serverpräfix wurde zu `{prefix}` geändert"
+    usage: "{prefix}prefix <Präfix>"
+  premium: 
+    description: "All das ganze Premium-Zeugs"
+    addkey: 
+      added: "Schlüssel `{key}` wurde erfolgreich zu deinem Benutzerkonto hinzugefügt"
+      description: "Löse einen Premium-Schlüssel ein"
+      invalid-key: "Dieser Schlüssel ist nicht für mein Schloss :thinking: ... Hast du noch einen anderen?"
+      key-already-redeemed: "Schlüssel wurde bereits eingelöst"
+      usage: "{prefix}premium addkey <Schlüssel>"
+    level: 
+      description: "Zeigt den Premium-Status von deinem Server an"
+      message: "Premium-Level: `{level}`"
+      usage: "{prefix}premium level"
+    redeem: 
+      description: "Löse deinen Schlüssel ein :key: :star2:"
+      invalid-key: "Dieser Schlüssel ist nicht für mein Schloss :thinking: ... Hast du noch einen anderen?"
+      key-in-use: "Dieser Schlüssel wird bereits verwendet"
+      key-match: "Du hast bereits einen Schlüssel für dieses Premium-Level eingelöst"
+      key-redeemed: "Schlüssel erfolgreich eingelöst für : `{level}`"
+      usage: "{prefix}redeem <Schlüssel>"
+  purge: 
+    description: "Entferne alle Kanäle/Kategorien oder Rollen"
+    success: ":boom: BOOOM! Dein Discord wurde gesäubert! :radioactive:"
+    usage: "{prefix}purge <channels | roles>"
+    warning: "Alle {what} (welche gelöscht werden können) werden gelöscht. Bist du dir sicher, dass du fortfahren möchtest?"
+  record: 
+    already-recording: "Du nimmst bereits auf"
+    deleted-recording: "Aufnahme `{id}` gelöscht"
+    description: "Nimm deine wohlklingende Stimme auf"
+    invalid-recording: "Eine Aufnahme mit dem angegebenen Namen konnte nicht gefunden werden"
+    not-in-audiochannel: "Im Moment bist du nicht in einem Sprachkanal."
+    not-recording: "Huch, soll ich aufnehmen? Tut mir wirklich leid, aber du hast die Aufnahme nicht gestartet :persevere:"
+    recording: "Aufnahme in `{voice_channel}` von {user} gestartet"
+    recording-too-large: "Die Aufnahme ist zu groß für Discord, aber du kannst sie über unser [Webinterface]({webinterface}) herunterladen"
+    stopped-recording: "Aufnahme wurde gestoppt. Der Name der Aufnahme ist: `{name}`. Du kannst sie über unser [Webinterface]({webinterface}) herunterladen"
+    saving-recording: "Aufnahme wird abgespeichert... :inbox_tray:"
+    delete: 
+      description: "Lösche eine Aufnahme"
+      usage: "{prefix}record delete <Name>"
+    download: 
+      description: "Lade eine Aufnahme herunter"
+      usage: "{prefix}record download <Name>"
+    list: 
+      description: "Zeige alle existierenden Aufnahmen an"
+      title: "Aufnahmen können mit `{prefix}record download <Name>` heruntergeladen werden"
+      usage: "{prefix}record list"
+    rename: 
+      already-exists: "Eine Aufnahme mit diesem Namen existiert bereits"
+      description: "Benenne eine Aufnahme um"
+      invalid-name: "Der Name der Aufnahme kann nur alphanumerische Zeichen und `-`, `_` oder ` ` beinhalten"
+      message: "Aufnahme `{name}` wurde erfolgreich zu `{new_name}` umbenannt"
+      usage: "{prefix}record rename <Name der Aufnahme> <Neuer Name>"
+    start: 
+      description: "Ich komme mit in den Sprachkanal und nehme deine wohlklingende Stimme auf"
+      usage: "{prefix}record start"
+    stop: 
+      description: "Aufnahme beenden"
+      usage: "{prefix}record stop"
+  reddit: 
+    description: "Wird nicht von Reddit gesponsort :crying_cat_face:"
+    invalid-subreddit: "Ich kann dieses Subreddit auf Reddit nicht finden"
+    set-channel: "Benachrichtigungskanal zu `{channel}` geändert"
+    add: 
+      description: "Füge ein Subreddit hinzu"
+      usage: "{prefix}reddit add <Subreddit> <#Textkanal>"
+    channel: 
+      description: "Wähle den Kanal aus, in dem der Bot die Subreddits reinschickt"
+      usage: "{prefix}reddit channel <Subreddit> <#Textkanal>"
+    remove: 
+      description: "Entferne ein Subreddit {emote_error}"
+      usage: "{prefix}reddit remove <Subreddit>"
+    subreddit: 
+      added: "Subreddit hinzugefügt"
+      already-added: "Dieses Subreddit wurde bereits hinzugefügt"
+      removed: "Subreddit wurde entfernt"
+  report: 
+    already-reported: "Du hast den Benutzer bereits gemeldet"
+    cant-report-self: "Bist du sicher, dass du dich selbst melden willst? Es soll doch niemand von deinen Untaten erfahren... :thinking:"
+    description: "Melde schlimme Leute für schlimme Dinge"
+    success: "Benutzer {user} wurde erfolgreich mit dem Grund `{reason}` gemeldet"
+    usage: "{prefix}report <@Member> <Grund>"
+  reports-remove: 
+    description: "Entfernt die Meldung mit dem angegebenen Index"
+    success: "Meldung mit dem Index `{index}` entfernt"
+    usage: "{prefix}reports remove <Index>"
+  reports: 
+    description: "Zeigt alle momentan existierende Meldungen an"
+    no-reports: "Im Moment gibt es keine Meldungen. Alles ist im grünen Bereich."
+    field: 
+      footer: "Im Moment gibt es {reports} Meldung(en)"
+      head: "**[#{index}]** `{reporter}` hat `{reported}` gemeldet"
+      values: "Grund: `{reason}`"
+    list: 
+      description: "Zeigt alle bestehenden Meldungen an"
+      usage: "{prefix}reports list"
+  script: 
+    description: "Bändige Graphites Fähigkeiten nach deinem Willen"
+    delete: 
+      description: "Lösche ein Skript"
+      invalid-script: "Das Skript existiert nicht"
+      success: "Skript erfolgreich gelöscht"
+      usage: "{prefix}script delete <Name des Skripts>"
+    list: 
+      description: "Zeige alle Skripts an"
+      message: "Deine Skripts: `{scripts}`"
+      usage: "{prefix}script list"
+    upload: 
+      already-exists: "Ein Skript mit diesem Namen existiert bereits. Benutze `{prefix}script upload <Name> true`, um es zu überschreiben."
+      description: "Lade ein Skript hoch"
+      invalid-file: "Skript konnte nicht geladen werden:\n```\n{error}```"
+      invalid-short: "Der Name deines Skripts entspricht nicht unseren Anforderungen (bis zu 16 alphanumerische Zeichen, Unter- und Bindestriche)"
+      success: "Das Skript wurde erfolgreich hochgeladen"
+      too-large: "Das Skript kann nicht größer als 8 KiB sein. Tut mir leid"
+      usage: "{prefix}script upload <Skriptname> [Überschreiben] (+ angehängte Datei)"
+    download: 
+      description: "Lade ein Skript herunter, um es zu editieren"
+      usage: "{prefix}script download [Skript]"
+  support: 
+    description: "Hilf deinen Nutzern mit Doodles von [Google Doodles](https://www.google.com/doodles)"
+    queue: 
+      description: "Wähle eine Support-Warteschlange"
+      message: "Supportwarteschlange zu `{channel}` geändert"
+      usage: "{prefix}support queue #!Sprachkanal"
+    unsetqueue: 
+      description: "Setze die Supportwarteschlange zurück"
+      message: "Supportwarteschlange entfernt"
+      usage: "{prefix}support unsetqueue"
+  tcrandom: 
+    description: "Wählt ein Mitglied (ausgeschlossen Bots) per Zufallsprinzip aus diesem Textkanal aus"
+    picked: "Das zufällig ausgewählte Mitglied ist:\n> `{member_nick}` (`{member_full}`)"
+    usage: "{prefix}tcrandom"
+  tempban: 
+    already-banned: "Du hast diesen Benutzer bereits gebannt"
+    description: "Bannt den angegebenen Benutzer für die angegebene Zeit"
+    success: "Benutzer {user} für {duration} gebannt: `{reason}`"
+    usage: "{prefix}tempban <@Member> <Dauer (1d2h)> [Grund]"
+  tempchatmute: 
+    description: ":mute: + :clock2: = :speaker:"
+    success: "Benutzer {user} für {duration} mit dem Grund `{reason}` stummgeschaltet"
+    usage: "{prefix}tempchatmute <@Member> <Dauer (1d2h)> [Grund]"
+  tempjail: 
+    already-jailed: "Du hast den Benutzer bereits eingesperrt"
+    description: "Du kannst sie ja nicht immer lebenslänglich wegsperren"
+    success: ":cloud_lightning: Du hast den Benutzer {user} für `{duration}` eingesperrt"
+    usage: "{prefix}tempjail <@Member> <Dauer (1d2h)> [Grund]"
+  template: 
+    create: 
+      cooldown: "Bitte warte weitere {time} bevor du ein weiteres Tempalte erstellst"
+  tempvoicemute: 
+    description: "Schalte eine Person temporär stumm"
+    success: "Benutzer {user} temporär für {duration} stummgeschalten: `{reason}`"
+    usage: "{prefix}tempvoicemute <@Member> <Dauer (1d2h)> [Grund]"
+  twitch: 
+    already-added: "Dieser Streamer wurde bereits hinzugefügt."
+    description: "Nicht von Twitch gesponsort"
+    invalid-streamer: "Ich kann den Streamer nicht auf Twitch finden"
+    set-channel: "Der Benachrichtungskanal wurde auf `{channel}` geändert"
+    set-message: "Nachricht wurde zu `{message}` geändert"
+    streamer-not-found: "Ich kann diesen Streamer nicht in deiner Streamer-Liste finden"
+    add: 
+      description: "Füge einen Streamer hinzu"
+      usage: "{prefix}twitch add <Streamer> <#Textkanal>"
+    channel: 
+      description: "Wähle den Kanal, in dem der Bot die Live-Nachricht schickt"
+      usage: "{prefix}twitch channel <Streamer> <#Textkanal>"
+    message: 
+      description: "Wähle deine eigene Nachricht die angezeigt wird, wenn der angegebener Streamer live geht"
+      usage: "{prefix}twitch message <Streamer> <Nachricht>"
+    remove: 
+      description: "Entferne einen Streamer"
+      usage: "{prefix}twitch remove <Streamer>"
+    user: 
+      added: "Streamer hinzugefügt"
+      removed: "Streamer entfernt"
+  twitter: 
+    already-added: "Dieser Benutzer wurde bereits hinzugefügt"
+    description: "Nicht gesponsort von Twitter :crying_cat_face:"
+    invalid-user: "Ich konnte diesen Twitter-Nutzer nicht finden :mag:"
+    set-channel: "Benachrichtigungskanal zu `{channel}` geändert"
+    user-not-found: "Ich kann diesen Nutzer nicht auf der Twitter-Liste finden :mag:"
+    add: 
+      description: "Füge Benachrichtigungen für einen Twitter-Nutzer hinzu"
+      usage: "{prefix}twitter add <Benutzer> <#Textkanal>"
+    channel: 
+      description: "Ändere den Kanal, in welchen der Bot Nachrichten reinschickt"
+      usage: "{prefix}twitter channel <Benutzer> <#Textkanal>"
+    remove: 
+      description: "Entferne einen Twitter-Nutzer"
+      usage: "{prefix}twitter remove <Nutzer>"
+    user: 
+      added: "Twitter-Nutzer hinzugefügt"
+      removed: "Twitter-Nutzer entfernt"
+  unban: 
+    description: "Entbanne den angegebenen Nutzer"
+    not-banned: "Benutzer ist nicht gebannt"
+    usage: "{prefix}unban <@Member> [Grund]"
+  unjail: 
+    description: "Befreie das angegebene Mitglied"
+    not-jailed: "Benutzer ist nicht im Sprachkanal eingesperrt"
+    usage: "{prefix}unjail <@Member> [Grund]"
+  unmute: 
+    not-muted: "Benutzer ist nicht stummgeschalten"
+  upvote: 
+    description: "Sei ein netter Nutzer und upvote den Bot"
+    title: "Upvote den Bot"
+    usage: "{prefix}upvote"
+    field: 
+      description: "Stimme für den Bot auf [{site_name}]({upvote_url})"
+      title: "**{site_name}**"
+  userchannel: 
+    created: "Du hast deinen eigenen Kanal erstellt. Du hast standardmäßig alle Berechtigungen für diesen Kanal :thinking:"
+    deleted: "Du hast deinen Benutzerkanal entfernt"
+    description: "Erstelle einen wahrhaftig einzigartigen Kanal in dem du der Chef bist"
+    doesnt-exist: "Du hast noch keinen Benutzerkanal"
+    one-per-member: "Du kannst nur einen Benutzerkanal haben"
+    create: 
+      description: "Erstelle einen wahrhaftig einzigartigen Kanal in dem du der Chef bist"
+      usage: "{prefix}userchannel create <Name>"
+    delete: 
+      description: "Lösche deinen eigenen Kanal und sei wieder ein Ottonormalverbraucher :thumbsup:"
+      usage: "{prefix}userchannel delete"
+  userinfo: 
+    description: "Zeigt Informationen über interessante Leute an"
+    title: "Die Visitenkarte von {user}"
+    usage: "{prefix}userinfo <@Member>"
+    currently-in-audiochannel: 
+      none: "Befindet sich momentan nicht in einem Sprachkanal."
+      title: "Momentan in einem Sprachkanal?"
+    discriminator: 
+      title: "Diskriminator"
+    id: 
+      title: "ID"
+    joined: 
+      title: "Beigetreten"
+    name: 
+      title: "Name"
+    nickname: 
+      no-nickname: "Kein Spitzname ausgewählt"
+      title: "Spitzname"
+    self-deafened: 
+      title: "Ein- und Ausgabe deaktiviert?"
+    self-muted: 
+      title: "Stummgeschalten?"
+    server-deafened: 
+      title: "Kopfhörer durch Server deaktiviert?"
+    server-muted: 
+      title: "Durch Server stummgeschalten"
+    temp-banned: 
+      title: "Temporär gebannt?"
+    temp-jailed: 
+      title: "Temporär im Gefängnis?"
+    temp-muted: 
+      title: "Temporär stummgeschalten?"
+  vcrandom: 
+    description: "Wählt ein Mitglied (ausgeschlossen Bots) per Zufallsprinzip aus dem Sprachkanal aus"
+    picked: "Das zufällig ausgewählte Mitglied ist:\n> `{member_nick}` (`{member_full}`)"
+    usage: "{prefix}vcrandom"
+  voiceunmute: 
+    description: "Erlaube einem Mitglied im Sprachkanal wieder zu sprechen"
+    usage: "{prefix}voiceunmute <@Member> [Grund]"
+  whatareyoudoing: 
+    description: "Zeigt Informationen über aktuelle Prozesse und andere nützliche Dinge an"
+    usage: "{prefix}whatareyoudoing"
+  textcommands: 
+    description: "Schalte Text-basierte Befehle ein oder aus"
+    disable: 
+      description: "Deaktiviere Text-basierte Befehle"
+      message: "Text-basierte Befehle wurden deaktiviert"
+      usage: "{prefix}textcommands disable"
+    enable: 
+      description: "Aktiviere Text-Basierte Befehle"
+      message: "Text-basierte Befehle wurden aktiviert (Präfix: `{prefix}`)"
+      usage: "{prefix}textcommands enable"
+customcommand: 
+  invalid-arg-type: "Der Argumenttyp für das Argument `{arg}` ist ungültig und sollte vom Typ `{type}` sein"
+  arg-type: 
+    boolean: "Wahrheitswert"
+    color: "Farbe"
+    integer: "Ganze Zahl"
+    role: "Rolle"
+    string: "Zeichenfolge"
+    text-channel: "Textkanal"
+    user: "Benutzer"
+    voice-channel: "Sprachkanal"
+error: 
+  already-muted: "Du hast diesen Benutzer bereits stummgeschalten"
+  ambiguous-mention: "{emote_error} Diese Erwähnung ist mehrdeutig und spricht mehrere Personen an. Gib einen eindeutigen Benutzer an.\nSieh dir die [Dokumentation]({documentation_url}) an, um herauszufinden, wie man Erwähnungen formatiert."
+  bot-cannot-write: "Ich scheine keine Berechtigung zu haben, in den angegebenen Kanal zu schreiben :thinking:. Der einfachste Weg das volle Potenzial des Bots freizuschalten ist, ihm die `Administrator`-Berechtigung zu geben. Ohne diese Berechtigung sind einige Fähigkeiten des Bots eventuell nicht verwendbar."
+  cant-interact-member: "{emote_error} Mit diesem Mitglied darf Ich leider nicht interagieren... :cry:"
+  cant-interact-role: "{emote_error} Mit dieser Rolle darf Ich leider nicht interagieren... :cry:"
+  cant-write: "{emote_error} Tut mir sehr leid, aber Ich kann nicht in diesen Kanal schreiben. Bitte gib mir die Berechtigung `Send Messages` um Befehle zu verwenden"
+  command-private-only: "{emote_error} Dies ist ein Befehl, den du nur im privaten Chat mit mir verwenden kannst :wink:"
+  command-server-only: "{emote_error} Du kannst diesen Befehl nur auf Servern verwenden"
+  exception: ":warning: Ein unerwarteter Fehler ist aufgetreten. Hier ist ein Nerd-Text, der beschreibt was schief gelaufen ist: `{error_message}`"
+  graphite-added: ":warning:\nGraphite ist bereits auf deinem Server, weshalb einige Features von anderen Multiplex-Bots deaktiviert werden.\nDu kannst die Multiplex-Bots immer noch für bestimmte Features verwenden, welche dies unterstützen (bspw. Musik)"
+  invalid-duration: "{emote_error} Ungültige Dauer. Format: `2h30m` oder `1w2d1h10m`"
+  invalid-mention: "{emote_error} Ungültige Erwähnung.\nLies dir die [Dokumentation]({documentation_url}) durch, um herauszufinden, wie man Erwähnungen formatiert."
+  invalid-timestamp: "{emote_error} Ungültiges Format beim Zeitstempel"
+  is-bot: "{emote_error} Du kannst nicht mit Bots interagieren"
+  lacking-permission: "{emote_error} Ich benötige die Berechtigung `{permission}` um diesen Wunsch zu erfüllen"
+  minimum-temp-duration: "{emote_error} Du musst mindestens eine Dauer von `1 Minute` für eine temporäre Aktion auswählen."
+  no-permission: "{emote_error} Du hast nicht die benötigte Berechtigung `{permission}`"
+  no-slash-command-reply: "Für diesen Slash-Befehl wurde keine Standardantwort eingestellt. Dies sollte natürlich nicht der Fall sein. Bitte melde diesen Fehler [auf unserem Discord-Server]({discord_url})"
+  not-a-member: "{emote_error} Diesen Benutzer sehe Ich hier nicht. Soll Ich ihn als vermisst melden?"
+  not-in-audiochannel: "{emote_error} Für diese Aktion muss der angegebene Benutzer in einem Sprachkanal sein. :ear_with_hearing_aid: :loud_sound:"
+  not-in-voicechannel: "{emote_error} Um dies zu machen muss der angegebene Benutzer in einem Sprachkanal sein"
+  out-of-bounds: "Index ist außerhalb der Grenzen"
+  script-invalid-arg-type: "Parameter #{index} muss vom Typ {type} sein"
+  server-busy: ":hot_face: Hilfe, du bist zu schnell. Bitte warte bis dein vorheriger Wunsch erfüllt wurde, bevor du weitere Wünsche äußerst :sweat:"
+  try-again: "Bitte versuche es erneut oder teile uns dieses Problem auf unserem [Discord-Server]({discord}) mit"
+  choice-invalid: "Der Wert für den Parameter `{parameter}` muss einer der folgenden Möglichkeiten sein: `{choices}`"
+  allowed-mention-type: 
+    audiochannel: "{emote_error} Erlaubter Erwähnungstyp:: `#!channel`"
+    category: "{emote_error} Erlaubter Erwähnungstyp: `:<Kategorie>`"
+    emote: "{emote_error} Erlaubter Erwähungstyp: `:emote:`"
+    textchannel: "{emote_error} Erlaubter Erwähnungstyp: `#Textkanal`"
+    voicechannel: "{emote_error} Erlaubter Erwähnungstyp: `#!Sprachkanal`"
+    message: "{emote_error} Erlaubte(r) Ping-Typ(en): {mention_types}"
+  hit-role-ratelimit: 
+    content: "Tut uns leid, aber du hast `250 Rollen in 24 Stunden` erstellt. Alle anderen Einstellungen werden wiederhergestellt. Wenn du deine Rollen auch wiederherstellen möchtest, stelle das Backup in circa 24 Stunden wieder her."
+    footer: "Dieses Limit wurde von Discord gesetzt und wir können nichts dagegen tun"
+    title: "Du hast das Limit zum Erstellen von Rollen erreicht"
+  argument-type: 
+    boolean: "Der Wert für den Parameter `{parameter}` muss ein gültiger boolescher Wert sein (`true`/`false`, oder ein vor-eingestelltes `Ja`/`Nein`-Wort)"
+    integer: "Der Wert für den Parameter `{parameter}` muss eine gültige Ganzzahl sein"
+    number: "Der Wert für den Parameter `{parameter}` muss eine gültige Zahl sein."
+event: 
+  server-join: 
+    description: "Solltest du irgendwelche Fragen über unseren Bot haben, darfst du gerne auf unseren [Discord]({discord}) Server kommen oder das [FAQ]({faq} auf unserer [Website]({website}) ansehen. **Falls du irgendwelche Bugs findest, bitten wir dich diese auf unseren [Discord Server]({discord}) zu melden. Mit deiner Hilfe können wir es schaffen den Bot Bug-frei zu machen :smile_cat:**"
+    title: "Willkommen in der Graphite-Community, {user}"
+    field: 
+      1: 
+        content: "Standardmäßig sind einige der Module unseres Modulsystems deaktiviert. Keine Sorge, du kannst sie über das [Webinterface]({webinterface}) oder mit dem folgenden Befehl aktivieren: `{prefix}module enable <Module>`. Um alle verfügbaren Module anzusehen, verwende den `{prefix}module list`."
+        title: ":warning: Wichtig"
+      2: 
+        content: "Wenn du mir `help` Befehl in unserem privaten Chat schickst, kannst du alle verwendbaren Befehle einsehen :smirk:. Wenn du `{prefix}help` oder `@Graphite help` auf einem Server schickst, kannst du alle Befehle einsehen, die auf dem Server verwendet werden können. **Wenn ein Modul deaktiviert ist, siehst du logischerweise auch keine Befehle von diesem Modul!**"
+        title: ":question: Hilfe/Befehle"
+      3: 
+        content: "Standardmäßig ist der Präfix `g-`, wobei du den Bot auch mit `@Graphite` anregen kannst, dir einen Wunsch zu erfüllen, aber mit `{prefix}prefix <Neuer Präfix>` kannt du diesen auch ändern."
+        title: ":bulb: Prefix"
+      4: 
+        content: "Graphites Fähigkeiten können mit Befehlen gebändigt werden, aber es ist einfacher, den Bot über unser [Webinterface]({webinterface}) zu verwenden."
+        title: ":newspaper: Webinterface"
+      5: 
+        content: "Wir sind immer offen, Graphite neue Fähigkeiten zu geben. Du kannst neue Ideen vorschlagen, wenn du auf unseren [Discord-Server]({discord}) kommst und uns deinen Vorschlag in den #suggestions-Kanal schickst."
+        title: ":crying_cat_face: Kann der Bot dir deinen Wunsch nicht erfüllen? Findest du eine Fähigkeit nicht, welche der Bot haben sollte?"
+minigame: 
+  lost: "Du hast leider verloren :cry:"
+  rematch-invite-declined: "{user} hat deine Einladung zu einem weiterem Spiel abgelehnt"
+  replay: "Willst du nocheinmal spielen? :repeat:"
+  tied: "Unentschieden :unamused:"
+  won: "Du hast gewonnen und dir `{money}`{emote_dollaronen} verdient! :tada:"
+  battleships: 
+    help: "Vor dem Spielstart musst du deine Schiffe auf dem Spielfeld verteilen. Wähle dazu eine X-Koordinate (von links nach rechts) und dann eine Y-Koordinate (von oben nach unten) und daraufhin die Richtung, in die das Boot zeigen soll (Pfeil nach rechts/unten).\nSobald beide Spieler mit dem Verteilen fertig sind, darf der erste Spieler mit dem Schießen anfangen, indem er eine X- und eine Y-Koordinate auswählt. Danach ist Spieler 2 mit dem Schießen dran, dann wieder Spieler 1 usw..\nDas obere Spielfeld zeigt Informationen über das Feld deines Gegners und das Untere ist dein Spielfeld. Sobald ein Schiff untergegangen ist, wird es mit :boom: emojis ersetzt."
+    name: "Schiffe versenken"
+  blackjack: 
+    bet: "Bitte gib einen Geldbetrag ein, den du verwetten willst :money_mouth:"
+    bet-limit: "Deine Wette kann nur zwischen `{min_bet}`{emote_dollaronen} und `{max_bet}`{emote_dollaronen} liegen"
+    invalid-bet: "Bitte gib einen gültigen Betrag ein, mit dem du Wetten willst"
+    name: "Blackjack"
+    not-enough-money: "Du hast nicht genügend Geld :money_with_wings:"
+    split: "Du kannst dein Paar auf 2 Hände aufteilen.\nDu wirst zuerst die eine Hand spielen und wenn du fertig bist, kannst du die zweite Hand spielen, bevor der Dealer spielt."
+    first-hand: 
+      lost: "Du hast `{money}`{emote_dollaronen} mit deiner ersten Hand verloren"
+      tied: "Es gab ein Unentschieden mit deiner ersten Hand und hast dein Geld zurück bekommen: `{money}`{emote_dollaronen}"
+      won: "Du hast `{money}`{emote_dollaronen} mit deiner ersten Hand gewonnen"
+    second-hand: 
+      lost: "Du hast `{money}`{emote_dollaronen} mit deiner zweiten Hand verloren"
+      tied: "Es gab ein Unentschieden mit deiner zweiten Hand und hast dein Geld zurück bekommen: `{money}`{emote_dollaronen}"
+      won: "Du hast `{money}`{emote_dollaronen} mit deiner zweiten Hand gewonnen"
+  connect-four: 
+    name: "Vier gewinnt"
+  minesweeper: 
+    help: "Du hast 2 Koordinaten: x und y. Der erste Emoji, den du anklickst ist die x-Koordinate und der zweite die y-Koordinate. Wenn du eine Mine triffst ist das Spiel vorbei."
+    name: "Minesweeper"
+  poker: 
+    name: "Poker"
+  rock-paper-scissors: 
+    name: "Schere Stein Papier"
+    select: "Wähle deine Waffe mit viel Bedenken | Im Moment steht es: Du: `{score_self}` - Dein Gegner: `{score_other}`"
+  rpg: 
+    help: "RPG ist ein textbasiertes Spiel, das du spielen kannst, indem du deine Handlungen in den Chat schreibst. Verwende `help`, um dir mögliche Handlungsvorschläge anzusehen"
+  tictactoe: 
+    name: "Tic Tac Toe"
+other: 
+  found-an-easteregg: "Hey, du hast ein Easter Egg gefunden. Dir wurden {money}{emote_dollaronen} auf deinen Graphite-Konto hinzugefügt"
+  heavy-busy: "Dein Wunsch wurde in die Warteschlange eingereiht. Je nachdem was gerade abgeht kann es einige Minuten :clock2: dauern, bis er erfüllt wird :magic_wand:. Wenn du eine schnellere Warteschlange willst, kannst du auf [Patreon]({patreon}) spenden"
+  joined-support-queue: "Hey, der Benutzer `{users}` benötigt Support."
+  multiplex-disabled: "{emote_info}\nDa du dich entschieden hast, Graphite auf deinen Server hinzuzufügen, wurden alle anderen Multiplex-Bots deaktiviert.\nKeine Sorge, denn all deine Einstellungen wurden automatisch zu Graphite übertragen"
+  no: "Nein,False"
+  yes: "Ja,True"
+  poll: 
+    already-voted: "Du hast bei dieser Umfrage bereits teilgenommen :writing_hand:"
+    already-voted-option: "Du hast für diese Option bei dieser Umfrage bereits gestimmt :writing_hand:"
+    success: "Du hast erfolgreich für `{option}` gestimmt :writing_hand:"
+patreon: 
+  pledge-added: "Danke für deine Unterstützung auf Patreon. Du hast den Rang `{rank}` für `{price} {currency}` bekommen. Du bekommst `{keys}` weitere Schlüssel für deine Freunde. Verteile die Macht von Graphite. :hearts:"
+  pledge-changed: "Du hast deinen Patreon-Beitrag von `{old_pledge}` zu `{new_pledge}` geändert. Der neue Preis ist `{price} {currency}`. Deine zusätzlichen Schlüssel: `{keys}`. Verwende `{prefix}premium keys` um all deine Schlüssel einzusehen."
+  pledge-removed: "Sehr schade, dass du deinen Patreon-Beitrag entfernst. Wenn du irgendeine Rückmeldung für den Bot hast, darfst du sie gerne mit uns auf unserem [Discord-Server]({discord_url}) teilen"
+premium-key: 
+  type: 
+    patreon: 
+      description: "Bekommen, da du so ein netter Patreon-Sponsor bist :heart:"
+      expires: "Niemals (außer du entscheidest dich nicht mehr zu spenden. :cry:)"
+      friendly-name: "Patreon-Schlüssel"
+    permanent: 
+      description: "Von den Besitzern des Bots bei besonderen Ereignissen vergeben"
+      expires: "Nie"
+      friendly-name: "Permanenter Schlüssel"
+    temporary: 
+      description: "Möglich gemacht durch Voten oder durch das finden von Easter Eggs"
+      friendly-name: "Temporärer Schlüssel"
+premium-level: 
+  donator: "Spender"
+  none: "Keines"
+statistic: 
+  bots: 
+    name: "Bots"
+  humans: 
+    name: "Menschen"
+  message-emoji: 
+    name: "Nachrichten-Emoji"
+  new-members: 
+    name: "Neuankömmlinge"
+  new-messages-by-channel: 
+    name: "Neue Nachrichten nach Kanal"
+  new-messages: 
+    name: "Neue Nachrichten"
+  reaction-emoji: 
+    name: "Reaktionen-Emoji"
+  roles: 
+    name: "Rollen"
+  text-channels: 
+    name: "Textkanäle"
+  total-channels: 
+    name: "Anzahl aller Kanäle"
+  total-members: 
+    name: "Anzahl der Mitglieder"
+  voice-channels: 
+    name: "Sprachkanäle"
+time-unit: 
+  days: "Tag(e)"
+  hours: "Stunde(n)"
+  minutes: "Minute(n)"
+  months: "Monat(e)"
+  seconds: "Sekunde(n)"
+  weeks: "Woche(n)"
+twitch-notification: 
+  default-message: "Hey-Jo @everyone, {streamer} ist gerade live {link} :star_struck:"
+  game: "Spiel"
+  game-none: "Unbekannt"
+  streamer: "Streamer"
+  title: "Titel"
