@@ -5,6 +5,8 @@ import java.io.File;
 import java.io.IOException;
 import java.io.PrintStream;
 import java.lang.reflect.InvocationTargetException;
+import java.time.Instant;
+import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -190,6 +192,13 @@ public class Graphite {
 		if(args.length == 0) throw new FriendlyException("Need path to settings.json");
 		settings = new GraphiteSettings(args[0]);
 		
+		List<String> errors = settings.validate();
+		if(!errors.isEmpty()) {
+			System.out.println("The configuration contains errors:");
+			errors.forEach(e -> System.out.println("- " + e));
+			return;
+		}
+		
 		options = new ArrayList<>();
 		for(int i = 1; i < args.length; i++) {
 			final int fI = i;
@@ -212,7 +221,13 @@ public class Graphite {
 		
 		defaultSysOut = System.out;
 		defaultSysErr = System.err;
-		createShardsAndStart();
+		try {
+			createShardsAndStart();
+		}catch(Exception e) {
+			e.printStackTrace();
+			System.out.println("Failed to start bot");
+			return;
+		}
 		
 		Runtime.getRuntime().addShutdownHook(new Thread(() -> Graphite.shutdown(true)));
 	}
@@ -339,17 +354,22 @@ public class Graphite {
 				a.queue();
 			});
 		}
-
+		
 		mysql = new GraphiteMySQL();
 		dataManager = new GraphiteDataManager();
 		mysql.createTables();
-		twitch = new GraphiteTwitch();
-		twitter = new GraphiteTwitter();
-		reddit = new GraphiteReddit();
+		
+		GraphiteSetup.run();
+		
+		// TODO: check features
+		
+		if(needsFeature(GraphiteFeature.TWITCH)) twitch = new GraphiteTwitch();
+		if(needsFeature(GraphiteFeature.TWITTER)) twitter = new GraphiteTwitter();
+		if(needsFeature(GraphiteFeature.REDDIT)) reddit = new GraphiteReddit();
 		minigames = new GraphiteMinigames();
 		commandListener = new CommandListener();
 		voting = new GraphiteVoting();
-		spotify = new GraphiteSpotify();
+		if(needsFeature(GraphiteFeature.MUSIC)) spotify = new GraphiteSpotify();
 		economy = new GraphiteEconomy();
 		genius = new GraphiteGenius();
 		amongUs = new GraphiteAmongUs();
@@ -428,13 +448,6 @@ public class Graphite {
 				getGuild(event.getGuild()).discardChannel((GuildChannel) event.getChannel());
 			}
 		}));
-
-//		NONBETA GuildPresence ahhhhhhhhhh
-//		jdaListener.registerHandler(UserActivityStartEvent.class, event -> {
-//			if(event.getNewActivity().getType().equals(ActivityType.STREAMING)){
-//				
-//			}
-//		});
 		
 		jdaListener.registerHandler(SingleEventHandler.of(GuildJoinEvent.class, event -> {
 			dataManager.addGuild(event.getGuild().getId());
@@ -706,6 +719,10 @@ public class Graphite {
 	
 	public static boolean hasOption(GraphiteOption option) {
 		return options.contains(option);
+	}
+	
+	public static boolean needsFeature(GraphiteFeature feature) {
+		return botInfo.hasFeaturesAvailable(feature);
 	}
 	
 	public static void withBot(MultiplexBot bot, Runnable run) {

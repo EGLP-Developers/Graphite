@@ -6,6 +6,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
+import java.util.List;
 
 import me.mrletsplay.mrcore.io.IOUtils;
 import me.mrletsplay.mrcore.json.JSONObject;
@@ -14,6 +15,8 @@ import me.mrletsplay.mrcore.json.converter.SerializationOption;
 import me.mrletsplay.mrcore.misc.FriendlyException;
 
 public class GraphiteSettings {
+	
+	// TODO: validation for most settings
 
 	private boolean defaultCreated;
 	
@@ -47,6 +50,10 @@ public class GraphiteSettings {
 	
 	public boolean isDefaultCreated() {
 		return defaultCreated;
+	}
+	
+	public List<String> validate() {
+		return mainBotInfo.validate();
 	}
 
 }

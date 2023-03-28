@@ -20,6 +20,7 @@ import me.eglp.gv2.main.DebugCategory;
 import me.eglp.gv2.main.Graphite;
 import me.eglp.gv2.main.GraphiteDebug;
 import me.eglp.gv2.main.GraphiteOption;
+import me.eglp.gv2.main.GraphiteSetupException;
 import me.eglp.gv2.util.settings.MySQLSettings;
 import me.mrletsplay.mrcore.misc.ErroringNullableOptional;
 import me.mrletsplay.mrcore.misc.FriendlyException;
@@ -49,6 +50,12 @@ public class GraphiteMySQL {
 		dataSource.setMaxWaitMillis(30000);
 		dataSource.setDefaultSchema(s.getDatabase());
 		dataSource.setDefaultCatalog(s.getDatabase());
+		
+		try(Connection c = dataSource.getConnection()) {
+			
+		}catch(SQLException e) {
+			throw new GraphiteSetupException("MySQL connection error", e);
+		}
 	}
 	
 	private Connection getConnection() throws SQLException {

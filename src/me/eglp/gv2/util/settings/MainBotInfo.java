@@ -1,5 +1,7 @@
 package me.eglp.gv2.util.settings;
 
+import java.util.List;
+
 import me.eglp.gv2.multiplex.GraphiteFeature;
 import me.mrletsplay.mrcore.json.converter.JSONConstructor;
 import me.mrletsplay.mrcore.json.converter.JSONValue;
@@ -51,7 +53,7 @@ public class MainBotInfo extends MultiplexBotInfo {
 	@JSONConstructor
 	private MainBotInfo() {}
 	
-	public MainBotInfo(String identifier, String name, String fileLocation, String defaultPrefix, String token, String clientSecret, boolean isBeta, int numShards, StatisticsSettings statisticsSettings, VoteSettings voteSettings, MySQLSettings mySQL, PatreonSettings patreon, TwitchSettings twitch, GeniusSettings genius, RedditSettings reddit, WebsiteSettings website, LinksSettings links, AmongUsSettings amongUs, SpotifySettings spotify, MiscellaneousSettings miscellaneous, MultiplexBotInfo... multiplexBots) {
+	public MainBotInfo(String identifier, String name, String fileLocation, String defaultPrefix, String token, String clientSecret, boolean isBeta, int numShards, StatisticsSettings statisticsSettings, VoteSettings voteSettings, MySQLSettings mySQL, PatreonSettings patreon, TwitchSettings twitch, GeniusSettings genius, RedditSettings reddit, TwitterSettings twitter, WebsiteSettings website, LinksSettings links, AmongUsSettings amongUs, SpotifySettings spotify, MiscellaneousSettings miscellaneous, MultiplexBotInfo... multiplexBots) {
 		super(0, identifier, name, defaultPrefix, token, clientSecret, numShards, statisticsSettings, voteSettings, GraphiteFeature.values());
 		this.fileLocation = fileLocation;
 		this.isBeta = isBeta;
@@ -61,6 +63,7 @@ public class MainBotInfo extends MultiplexBotInfo {
 		this.twitch = twitch;
 		this.genius = genius;
 		this.reddit = reddit;
+		this.twitter = twitter;
 		this.website = website;
 		this.links = links;
 		this.amongUs = amongUs;
@@ -124,6 +127,23 @@ public class MainBotInfo extends MultiplexBotInfo {
 		return miscellaneous;
 	}
 	
+	@Override
+	public List<String> validate() {
+		List<String> errors = super.validate();
+		if(fileLocation == null) errors.add("File location is null");
+		if(mySQL == null) errors.add("MySQL config is missing");
+		if(isFeatureEnabled(GraphiteFeature.TWITCH) && twitch == null) errors.add("Twitch feature is enabled, but not configured");
+		if(isFeatureEnabled(GraphiteFeature.MUSIC) && genius == null) errors.add("Music feature is enabled, but Genius config is missing");
+		if(isFeatureEnabled(GraphiteFeature.REDDIT) && reddit == null) errors.add("Twitch feature is enabled, but not configured");
+		if(isFeatureEnabled(GraphiteFeature.TWITTER) && twitter == null) errors.add("Twitch feature is enabled, but not configured");
+		if(website == null) errors.add("Website config is missing");
+		if(links == null) errors.add("Links config is missing");
+		if(isFeatureEnabled(GraphiteFeature.FUN) && amongUs == null) errors.add("Fun feature is enabled, but AmongUs config is missing");
+		if(isFeatureEnabled(GraphiteFeature.MUSIC) && spotify == null) errors.add("Music feature is enabled, but Spotify config is missing");
+		if(miscellaneous == null) errors.add("Miscellaneous config is missing");
+		return errors;
+	}
+	
 	public static MainBotInfo createDefault() {
 		return new MainBotInfo(
 				"mybot",
@@ -141,6 +161,7 @@ public class MainBotInfo extends MultiplexBotInfo {
 				TwitchSettings.createDefault(),
 				GeniusSettings.createDefault(),
 				RedditSettings.createDefault(),
+				TwitterSettings.createDefault(),
 				WebsiteSettings.createDefault(),
 				LinksSettings.createDefault(),
 				AmongUsSettings.createDefault(),
