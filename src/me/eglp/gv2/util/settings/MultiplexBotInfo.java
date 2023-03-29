@@ -1,6 +1,5 @@
 package me.eglp.gv2.util.settings;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -115,14 +114,12 @@ public class MultiplexBotInfo implements JSONConvertible {
 		return this instanceof MainBotInfo;
 	}
 	
-	public List<String> validate() {
-		List<String> errors = new ArrayList<>();
+	public void validate(List<String> errors) {
 		if(identifier == null) errors.add("Bot identifier is null");
 		if(name == null) errors.add("Name for bot is null");
 		if(token == null) errors.add("Token for bot is nul");
 		if(clientSecret == null) errors.add("Client secret for bot is null");
 		if(shardCount <= 0) errors.add("Shard count must be greater than zero");
-		return errors;
 	}
 	
 	public static MultiplexBotInfo createDefault() {

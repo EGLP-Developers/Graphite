@@ -10,6 +10,7 @@ import java.util.stream.Collectors;
 import org.apache.hc.core5.http.ParseException;
 
 import me.eglp.gv2.main.Graphite;
+import me.eglp.gv2.main.GraphiteSetupException;
 import me.mrletsplay.mrcore.misc.FriendlyException;
 import se.michaelthelin.spotify.SpotifyApi;
 import se.michaelthelin.spotify.exceptions.SpotifyWebApiException;
@@ -26,12 +27,16 @@ public class GraphiteSpotify {
 	private SpotifyApi spotify;
 	
 	public GraphiteSpotify() {
-		spotify = SpotifyApi.builder()
-				.setClientId(Graphite.getMainBotInfo().getSpotify().getClientID())
-				.setClientSecret(Graphite.getMainBotInfo().getSpotify().getClientSecret())
-				.build();
 		
-		refreshCredentials();
+		try {
+			spotify = SpotifyApi.builder()
+					.setClientId(Graphite.getMainBotInfo().getSpotify().getClientID())
+					.setClientSecret(Graphite.getMainBotInfo().getSpotify().getClientSecret())
+					.build();
+			refreshCredentials();
+		}catch(Exception e) {
+			throw new GraphiteSetupException("Failed to create Spotify API, check credentials", e);
+		}
 		
 		Graphite.getScheduler().scheduleAtFixedRate("spotify-refresh", () -> {
 			refreshCredentials();

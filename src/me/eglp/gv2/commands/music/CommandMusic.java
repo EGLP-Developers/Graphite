@@ -596,6 +596,12 @@ public class CommandMusic extends ParentCommand {
 			
 			@Override
 			public void action(CommandInvokedEvent event) {
+				if(Graphite.getGenius() == null) {
+					// TODO: remove command if Genius is not configured
+					event.reply("Genius is currently not configured for the bot");
+					return;
+				}
+				
 				List<String> translationAccounts = Arrays.asList( // To filter translations
 						"https://genius.com/artists/Genius-arabic-translations",
 						"https://genius.com/artists/Genius-azrbaycan-trcum",

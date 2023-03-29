@@ -5,8 +5,6 @@ import java.io.File;
 import java.io.IOException;
 import java.io.PrintStream;
 import java.lang.reflect.InvocationTargetException;
-import java.time.Instant;
-import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -94,6 +92,7 @@ import me.eglp.gv2.util.scripting.GraphiteContextFactory;
 import me.eglp.gv2.util.selfcheck.Selfcheck;
 import me.eglp.gv2.util.settings.GraphiteSettings;
 import me.eglp.gv2.util.settings.MainBotInfo;
+import me.eglp.gv2.util.settings.MiscellaneousSettings;
 import me.eglp.gv2.util.settings.MultiplexBotInfo;
 import me.eglp.gv2.util.stats.GraphiteStatistic;
 import me.eglp.gv2.util.stats.GraphiteStatistics;
@@ -361,21 +360,27 @@ public class Graphite {
 		
 		GraphiteSetup.run();
 		
-		// TODO: check features
+		minigames = new GraphiteMinigames();
+		commandListener = new CommandListener();
+		
+		MiscellaneousSettings misc = botInfo.getMiscellaneous();
+		if(misc != null
+				&& misc.getMessageServerID() != null
+				&& misc.getUpvotesChannelID() != null) {
+			voting = new GraphiteVoting();
+		}
 		
 		if(needsFeature(GraphiteFeature.TWITCH)) twitch = new GraphiteTwitch();
 		if(needsFeature(GraphiteFeature.TWITTER)) twitter = new GraphiteTwitter();
 		if(needsFeature(GraphiteFeature.REDDIT)) reddit = new GraphiteReddit();
-		minigames = new GraphiteMinigames();
-		commandListener = new CommandListener();
-		voting = new GraphiteVoting();
-		if(needsFeature(GraphiteFeature.MUSIC)) spotify = new GraphiteSpotify();
+		
+		if(needsFeature(GraphiteFeature.MUSIC) && botInfo.getSpotify() != null) spotify = new GraphiteSpotify();
 		economy = new GraphiteEconomy();
-		genius = new GraphiteGenius();
+		if(needsFeature(GraphiteFeature.MUSIC) && botInfo.getGenius() != null) genius = new GraphiteGenius();
 		amongUs = new GraphiteAmongUs();
 		statistics = new GraphiteStatistics();
 		
-		if(!botInfo.isBeta()) {
+		if(!botInfo.isBeta() && botInfo.getPatreon() != null) {
 			patreon = new GraphitePatreon();
 		}
 		

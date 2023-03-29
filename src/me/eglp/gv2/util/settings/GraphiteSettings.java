@@ -6,6 +6,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
+import java.util.ArrayList;
 import java.util.List;
 
 import me.mrletsplay.mrcore.io.IOUtils;
@@ -53,7 +54,9 @@ public class GraphiteSettings {
 	}
 	
 	public List<String> validate() {
-		return mainBotInfo.validate();
+		List<String> errors = new ArrayList<>();
+		mainBotInfo.validate(errors);
+		return errors;
 	}
 
 }

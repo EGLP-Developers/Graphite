@@ -3,7 +3,6 @@ package me.eglp.gv2.util.settings;
 import java.util.Arrays;
 import java.util.List;
 
-import me.mrletsplay.mrcore.json.JSONObject;
 import me.mrletsplay.mrcore.json.JSONType;
 import me.mrletsplay.mrcore.json.converter.JSONConstructor;
 import me.mrletsplay.mrcore.json.converter.JSONConvertible;
@@ -59,6 +58,13 @@ public class MiscellaneousSettings implements JSONConvertible {
 	
 	public List<String> getEmojiServerIDs() {
 		return emojiServerIDs;
+	}
+	
+	public void validate(List<String> errors) {
+		if(messageServerID == null) errors.add("Message server id missing");
+		if(upvotesChannelID == null) errors.add("Upvotes channel id missing");
+		if(reportedTemplatesChannelID == null) errors.add("Reported templates channel id missing");
+		if(emojiServerIDs == null) errors.add("Emoji server ids missing");
 	}
 	
 }

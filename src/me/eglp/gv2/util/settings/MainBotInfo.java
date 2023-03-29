@@ -128,20 +128,28 @@ public class MainBotInfo extends MultiplexBotInfo {
 	}
 	
 	@Override
-	public List<String> validate() {
-		List<String> errors = super.validate();
+	public void validate(List<String> errors) {
+		super.validate(errors);
 		if(fileLocation == null) errors.add("File location is null");
 		if(mySQL == null) errors.add("MySQL config is missing");
+		
 		if(isFeatureEnabled(GraphiteFeature.TWITCH) && twitch == null) errors.add("Twitch feature is enabled, but not configured");
+		if(twitch != null) twitch.validate(errors);
+		
 		if(isFeatureEnabled(GraphiteFeature.MUSIC) && genius == null) errors.add("Music feature is enabled, but Genius config is missing");
+		if(genius != null) genius.validate(errors);
+		
 		if(isFeatureEnabled(GraphiteFeature.REDDIT) && reddit == null) errors.add("Twitch feature is enabled, but not configured");
+		if(reddit != null) reddit.validate(errors);
+		
 		if(isFeatureEnabled(GraphiteFeature.TWITTER) && twitter == null) errors.add("Twitch feature is enabled, but not configured");
+		if(twitter != null) twitter.validate(errors);
+		
 		if(website == null) errors.add("Website config is missing");
 		if(links == null) errors.add("Links config is missing");
 		if(isFeatureEnabled(GraphiteFeature.FUN) && amongUs == null) errors.add("Fun feature is enabled, but AmongUs config is missing");
 		if(isFeatureEnabled(GraphiteFeature.MUSIC) && spotify == null) errors.add("Music feature is enabled, but Spotify config is missing");
 		if(miscellaneous == null) errors.add("Miscellaneous config is missing");
-		return errors;
 	}
 	
 	public static MainBotInfo createDefault() {
