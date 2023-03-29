@@ -5,6 +5,7 @@ import java.util.Arrays;
 import java.util.stream.Collectors;
 
 import me.eglp.gv2.util.base.GraphiteLocalizable;
+import me.eglp.gv2.util.command.Command;
 import me.eglp.gv2.util.mention.MentionType;
 
 public enum DefaultMessage implements MessageIdentifier {
@@ -28,6 +29,14 @@ public enum DefaultMessage implements MessageIdentifier {
 	COMMAND_POLL_LIST_NO_POLLS("command.poll.list.no-polls", Color.RED, "Currently there are no polls running"),
 	COMMAND_POLL_STOP_INVALID_POLL("command.poll.stop.invalid-poll", Color.RED, "A poll with that ID doesn't exist"),
 	COMMAND_POLL_STOP_SUCCESS("command.poll.stop.success", Color.GREEN, "The poll has been stopped"),
+	
+	COMMAND_REMINDER_CREATE_DURATION_TOO_SHORT("command.reminder.create.duration-too-short", Color.RED, "The reminder can only repeat at a minimum of every 5 minutes"),
+	COMMAND_REMINDER_CREATE_SUCCESS("command.reminder.create.success", Color.GREEN, "Your reminder got successfully enqueued!"),
+	COMMAND_REMINDER_CREATE_EVENT_IS_IN_THE_PAST("command.reminder.create.event-is-in-the-past", Color.RED, "The reminder you tried to enqueue is in the past!"),
+	//COMMAND_REMINDER_CREATE_INVALID_EMOJI("command.reminder.create.invalid-emoji", Color.RED, "Invalid emoji: {emoji}"),
+	COMMAND_REMINDER_LIST_NO_REMINDERS("command.reminder.list.no-reminder", Color.RED, "Currently there are no reminders active"),
+	COMMAND_REMINDER_REMOVE_INVALID_REMINDER("command.reminder.remove.invalid-poll", Color.RED, "A reminder with that ID doesn't exist"),
+	COMMAND_REMINDER_REMOVE_SUCCESS("command.reminder.remove.success", Color.GREEN, "The reminder has been removed"),
 	
 	COMMAND_TEMPBAN_SUCCESS("command.tempban.success", Color.GREEN, "Banned {user} for {duration}: `{reason}`"),
 	COMMAND_TEMPBAN_ALREADY_BANNED("command.tempban.already-banned", Color.GREEN, "You have already banned this user"),

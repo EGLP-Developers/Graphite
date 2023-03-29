@@ -153,6 +153,20 @@ public enum DefaultLocaleString implements LocalizedString {
 	COMMAND_POLL_LIST_LIST("command.poll.list.list", "```Currently running polls:\n\n{polls}```"),
 	COMMAND_POLL_STOP_DESCRIPTION("command.poll.stop.description", "Stops a poll"),
 	COMMAND_POLL_STOP_USAGE("command.poll.stop.usage", "{prefix}poll stop"),
+	
+	
+	COMMAND_REMINDER_DESCRIPTION("command.reminder.description", "Create reminder"),
+	COMMAND_REMINDER_CREATE_DESCRIPTION("command.reminder.create.description", "Create a new reminder"),
+	COMMAND_REMINDER_CREATE_USAGE("command.reminder.create.usage", "{prefix}reminder create <date_and_time> <reminder message> [repeat (1y2d)] [channel]"), //TODO
+	COMMAND_REMINDER_LIST_DESCRIPTION("command.reminder.list.description", "Lists all currently running reminders"),
+	COMMAND_REMINDER_LIST_USAGE("command.reminder.list.usage", "{prefix}reminder list"),
+	//COMMAND_REMINDER_LIST_LIST("command.reminder.list.list", "```Currently active reminders:\n\n{reminders}```"),
+	COMMAND_REMINDER_LIST_EMBED_TITLE("command.reminder.list.embed.title", "Reminder List"),
+	COMMAND_REMINDER_LIST_EMBED_DESCRIPTION("command.reminder.list.embed.description", "A list of all reminders in this guild."),
+	COMMAND_REMINDER_LIST_EMBED_CHANNEL("command.reminder.list.embed.channel", "Channel:"),
+	COMMAND_REMINDER_LIST_EMBED_MESSAGE("command.reminder.list.embed.message", "Message:"),
+	COMMAND_REMINDER_REMOVE_DESCRIPTION("command.reminder.remove.description", "Removes a reminder"),
+	COMMAND_REMINDER_REMOVE_USAGE("command.reminder.remove.usage", "{prefix}reminder remove"),
 	/*FUN MESSAGES*/
 	
 	/*INFO MESSAGES*/
