@@ -15,7 +15,6 @@ import me.eglp.gv2.main.Graphite;
 import me.eglp.gv2.util.base.guild.GraphiteGuild;
 import me.eglp.gv2.util.base.guild.reminder.GuildReminder;
 import me.eglp.gv2.util.base.guild.reminder.ReminderRepetitionEnum;
-//import me.eglp.gv2.util.base.guild.reminder.ReminderOption;
 import me.eglp.gv2.util.mysql.SQLTable;
 import me.mrletsplay.mrcore.json.JSONArray;
 import me.mrletsplay.mrcore.json.JSONObject;

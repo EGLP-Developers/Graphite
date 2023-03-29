@@ -33,7 +33,6 @@ public enum DefaultMessage implements MessageIdentifier {
 	COMMAND_REMINDER_CREATE_DURATION_TOO_SHORT("command.reminder.create.duration-too-short", Color.RED, "The reminder can only repeat at a minimum of every 5 minutes"),
 	COMMAND_REMINDER_CREATE_SUCCESS("command.reminder.create.success", Color.GREEN, "Your reminder got successfully enqueued!"),
 	COMMAND_REMINDER_CREATE_EVENT_IS_IN_THE_PAST("command.reminder.create.event-is-in-the-past", Color.RED, "The reminder you tried to enqueue is in the past!"),
-	//COMMAND_REMINDER_CREATE_INVALID_EMOJI("command.reminder.create.invalid-emoji", Color.RED, "Invalid emoji: {emoji}"),
 	COMMAND_REMINDER_LIST_NO_REMINDERS("command.reminder.list.no-reminder", Color.RED, "Currently there are no reminders active"),
 	COMMAND_REMINDER_REMOVE_INVALID_REMINDER("command.reminder.remove.invalid-poll", Color.RED, "A reminder with that ID doesn't exist"),
 	COMMAND_REMINDER_REMOVE_SUCCESS("command.reminder.remove.success", Color.GREEN, "The reminder has been removed"),

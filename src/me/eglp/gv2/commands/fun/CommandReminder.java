@@ -88,17 +88,6 @@ public class CommandReminder extends ParentCommand {
 					return;
 				}
 				
-				
-				//if(repeat != null) {
-				//	try {
-				//		LocalDateTime repeatMs = LocalDateTime.parse(repeat, DateTimeFormatter.ISO_OFFSET_DATE);
-				//		//repeatMs.toInstant( event.getGuild().getConfig().getTimezone().))
-				//		repeatMs.toInstant(ZoneOffset.UTC);
-				//	}catch(DateTimeParseException e) {
-				//		DefaultMessage.ERROR_INVALID_TIMESTAMP.reply(event);
-				//	}
-				//}
-				
 				GuildReminder reminder = new GuildReminder(event.getGuild(), dateMs, reminderMessage, repeatE, channel);
 				
 				reminder.enqueue();
