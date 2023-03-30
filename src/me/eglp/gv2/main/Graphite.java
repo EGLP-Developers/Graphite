@@ -374,13 +374,16 @@ public class Graphite {
 		if(needsFeature(GraphiteFeature.TWITTER)) twitter = new GraphiteTwitter();
 		if(needsFeature(GraphiteFeature.REDDIT)) reddit = new GraphiteReddit();
 		
-		if(needsFeature(GraphiteFeature.MUSIC) && botInfo.getSpotify() != null) spotify = new GraphiteSpotify();
+		if(needsFeature(GraphiteFeature.MUSIC)) {
+			if(botInfo.getSpotify().isEnabled()) spotify = new GraphiteSpotify();
+			if(botInfo.getGenius().isEnabled()) genius = new GraphiteGenius();
+		}
+		
 		economy = new GraphiteEconomy();
-		if(needsFeature(GraphiteFeature.MUSIC) && botInfo.getGenius() != null) genius = new GraphiteGenius();
 		amongUs = new GraphiteAmongUs();
 		statistics = new GraphiteStatistics();
 		
-		if(!botInfo.isBeta() && botInfo.getPatreon() != null) {
+		if(!botInfo.isBeta() && botInfo.getPatreon().isEnabled()) {
 			patreon = new GraphitePatreon();
 		}
 		
