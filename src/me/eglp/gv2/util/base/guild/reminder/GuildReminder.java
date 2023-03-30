@@ -115,7 +115,7 @@ public class GuildReminder implements WebinterfaceObject{
 			if(messageChannel == null) {
 				this.remove();
 				return;
-			}else {}
+			}
 			try {
 				if(repeatMs != null) {
 					messageChannel.sendMessageComplete(repeatMs.getFriendlyName() + " Reminder: " + message);
