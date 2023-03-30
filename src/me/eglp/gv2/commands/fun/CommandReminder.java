@@ -132,12 +132,6 @@ public class CommandReminder extends ParentCommand {
 							true);
 				}
 				event.reply(theEmbed.build());
-				/*
-				 * event.reply(DefaultLocaleString.COMMAND_REMINDER_LIST_LIST.getFor(event.
-				 * getGuild(), "reminders", reminders.stream() .map(p -> { return (p.getId() +
-				 * " in " + p.getGuild().getGuildMessageChannelByID(p.getChannelID()).getName()
-				 * + ": " + p.getMessage()); }) .collect(Collectors.joining("\n"))));
-				 */
 			}
 
 			@Override
