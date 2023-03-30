@@ -71,8 +71,6 @@ public class CommandReminder extends ParentCommand {
 				}
 				
 				if(dateMs.toEpochSecond(event.getGuild().getConfig().getTimezone().getRules().getOffset(Instant.now())) <= System.currentTimeMillis() / 1000) {
-					//TODO reminder is in the past
-					//event.reply("youz stink");
 					DefaultMessage.COMMAND_REMINDER_CREATE_EVENT_IS_IN_THE_PAST.reply(event);
 					return;
 				}
@@ -83,8 +81,6 @@ public class CommandReminder extends ParentCommand {
 				event.getGuild().getRemindersConfig().saveReminder(reminder);
 				
 				DefaultMessage.COMMAND_REMINDER_CREATE_SUCCESS.reply(event);//"Your reminder got succesefully enqueued!");
-				
-				//event.deleteMessage(JDAEmote.OK_HAND);
 			}
 			
 			@Override
@@ -119,7 +115,7 @@ public class CommandReminder extends ParentCommand {
 				for(GuildReminder currentReminder : reminders) {
 					theEmbed.addField(currentReminder.getId(),
 							DefaultLocaleString.COMMAND_REMINDER_LIST_EMBED_CHANNEL.getFor(event.getGuild()) + " " +
-					        currentReminder.getGuild().getGuildMessageChannelByID(currentReminder.getChannelID()).getName() + "\n" +
+					currentReminder.getGuild().getGuildMessageChannelByID(currentReminder.getChannelID()).getName() + "\n" +
 									DefaultLocaleString.COMMAND_REMINDER_LIST_EMBED_MESSAGE.getFor(event.getGuild()) + " " + currentReminder.getMessage(), true);
 				}
 				event.reply(theEmbed.build());
@@ -152,7 +148,7 @@ public class CommandReminder extends ParentCommand {
 				
 				reminder.remove();
 				DefaultMessage.COMMAND_REMINDER_REMOVE_SUCCESS.reply(event);
- 		}
+		}
 			
 			@Override
 			public List<OptionData> getOptions() {
