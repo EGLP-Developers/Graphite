@@ -136,8 +136,6 @@ public class GuildReminder implements WebinterfaceObject{
 			latestPossibleDate = latestPossibleDate.plusMonths(repeatMs.getMonthsDisplacement());
 			latestPossibleDate = latestPossibleDate.plusWeeks(repeatMs.getWeeksDisplacement());
 			latestPossibleDate = latestPossibleDate.plusDays(repeatMs.getDaysDisplacement());
-			
-			latestPossibleDate = latestPossibleDate.plusMinutes(repeatMs.getMinutesDisplacement());
 		}
 	}
 	

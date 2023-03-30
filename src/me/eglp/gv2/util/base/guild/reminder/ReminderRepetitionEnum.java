@@ -12,7 +12,6 @@ public enum ReminderRepetitionEnum {
 	MONTHLY("Monthly", 0, 1, 0, 0),
 	WEEKLY("Weekly", 0, 0, 1, 0),
 	DAILY("Daily", 0, 0, 0, 1),
-	MINUTELY("Minutely", 0, 0, 0, 0);
 	
 	private String friendlyName;
 	private long years;
@@ -43,9 +42,6 @@ public enum ReminderRepetitionEnum {
 	}
 	public long getDaysDisplacement() {
 		return days;
-	}
-	public long getMinutesDisplacement() {
-		return 1;
 	}
 	
 }
