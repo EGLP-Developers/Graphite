@@ -2,45 +2,24 @@ package me.eglp.gv2.util.base.guild.reminder;
 
 import java.time.Instant;
 import java.time.LocalDateTime;
-import java.time.ZonedDateTime;
-import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
 import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeUnit;
-import java.util.stream.Collectors;
 
 import me.eglp.gv2.main.Graphite;
 import me.eglp.gv2.util.GraphiteUtil;
-import me.eglp.gv2.util.base.GraphiteMessageChannel;
 import me.eglp.gv2.util.base.guild.GraphiteGuild;
 import me.eglp.gv2.util.base.guild.GraphiteGuildMessageChannel;
-import me.eglp.gv2.util.base.guild.GraphiteTextChannel;
-import me.eglp.gv2.util.input.ButtonInput;
-import me.eglp.gv2.util.lang.DefaultLocaleString;
 import me.eglp.gv2.util.webinterface.js.JavaScriptClass;
 import me.eglp.gv2.util.webinterface.js.JavaScriptFunction;
 import me.eglp.gv2.util.webinterface.js.JavaScriptParameter;
 import me.eglp.gv2.util.webinterface.js.WebinterfaceObject;
-import me.mrletsplay.mrcore.json.JSONArray;
 import me.mrletsplay.mrcore.json.JSONObject;
-import net.dv8tion.jda.api.EmbedBuilder;
-import net.dv8tion.jda.api.entities.Message;
-import net.dv8tion.jda.api.entities.channel.middleman.MessageChannel;
-import net.dv8tion.jda.api.entities.emoji.Emoji;
-import net.dv8tion.jda.api.exceptions.ErrorHandler;
-import net.dv8tion.jda.api.interactions.components.buttons.Button;
-import net.dv8tion.jda.api.interactions.components.buttons.ButtonStyle;
-import net.dv8tion.jda.api.requests.ErrorResponse;
-import net.dv8tion.jda.api.utils.messages.MessageCreateBuilder;
-import net.dv8tion.jda.api.utils.messages.MessageEditBuilder;
 
 /**
  * This is the reminders executive class. It creates a Timer {@link ScheduledFuture} to execute, when the timer is due and send the appropriate message
  * 
  * @author The Arrayser
- * @date 2023.03
+ * @date Mon Mar 27 20:11:34 2023
  */
 
 @JavaScriptClass(name = "GuildReminder")

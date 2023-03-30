@@ -1,12 +1,10 @@
 package me.eglp.gv2.util.base.guild.reminder;
 
-import java.time.LocalDateTime;
-
 /**
  * This is a reminders helper Enum, to signal, how long to wait, between repetitions of the reminder.
  * 
  * @author The Arrayser
- * @date 2023.03
+ * @date Mon Mar 27 19:49:22 2023
  */
 
 public enum ReminderRepetitionEnum {

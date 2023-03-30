@@ -5,28 +5,20 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-import java.util.concurrent.ScheduledFuture;
-import java.util.stream.Collectors;
 
 import me.eglp.gv2.main.Graphite;
 import me.eglp.gv2.util.base.guild.GraphiteGuild;
 import me.eglp.gv2.util.base.guild.reminder.GuildReminder;
 import me.eglp.gv2.util.base.guild.reminder.ReminderRepetitionEnum;
 import me.eglp.gv2.util.mysql.SQLTable;
-import me.mrletsplay.mrcore.json.JSONArray;
-import me.mrletsplay.mrcore.json.JSONObject;
-import me.mrletsplay.mrcore.json.converter.JSONConverter;
-import me.mrletsplay.mrcore.json.converter.SerializationOption;
 import me.mrletsplay.mrcore.misc.FriendlyException;
 
 /**
  * This is the reminders Storage class, which also contains an interface to the DataBase for persistent reminder storage
  * 
  * @author The Arrayser
- * @date 2023.03
+ * @date Tue Mar 28 17:26:31 2023
  */
 
 //private ReminderRepetitionEnum repeatMs;
