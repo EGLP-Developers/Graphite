@@ -16,29 +16,33 @@ import me.eglp.gv2.util.webinterface.js.WebinterfaceObject;
 import me.mrletsplay.mrcore.json.JSONObject;
 
 /**
- * This is the reminders executive class. It creates a Timer {@link ScheduledFuture} to execute, when the timer is due and send the appropriate message
+ * This is the reminders executive class. It creates a Timer
+ * {@link ScheduledFuture} to execute, when the timer is due and send the
+ * appropriate message
  * 
  * @author The Arrayser
  * @date Mon Mar 27 20:11:34 2023
  */
 
 @JavaScriptClass(name = "GuildReminder")
-public class GuildReminder implements WebinterfaceObject{
-	
-	//private static final DateTimeFormatter TIMESTAMP_FORMAT = DateTimeFormatter.ofPattern("EEE, dd LLL yyyy HH:mm z");
-	
+public class GuildReminder implements WebinterfaceObject {
+
+	// private static final DateTimeFormatter TIMESTAMP_FORMAT =
+	// DateTimeFormatter.ofPattern("EEE, dd LLL yyyy HH:mm z");
+
 	private GraphiteGuild guild;
 	private String id;
-	
+
 	private String channelID;
 	private String message;
 	private ReminderRepetitionEnum repeatMs;
 	private LocalDateTime date;
-	
+
 	private LocalDateTime latestPossibleDate;
 	private ScheduledFuture<?> finishFuture;
-	
-	public GuildReminder(GraphiteGuild guild, LocalDateTime date, String message, ReminderRepetitionEnum repeatMs, GraphiteGuildMessageChannel channel) {
+
+	public GuildReminder(GraphiteGuild guild, LocalDateTime date, String message, ReminderRepetitionEnum repeatMs,
+			GraphiteGuildMessageChannel channel) {
 		this.guild = guild;
 		this.date = date;
 		this.latestPossibleDate = date;
@@ -47,8 +51,9 @@ public class GuildReminder implements WebinterfaceObject{
 		this.channelID = channel.getID();
 		this.id = GraphiteUtil.randomShortID();
 	}
-	
-	public GuildReminder(GraphiteGuild guild, String id, LocalDateTime date, LocalDateTime latestPossibleDate, String message, ReminderRepetitionEnum repeatMs, GraphiteGuildMessageChannel channel) {
+
+	public GuildReminder(GraphiteGuild guild, String id, LocalDateTime date, LocalDateTime latestPossibleDate,
+			String message, ReminderRepetitionEnum repeatMs, GraphiteGuildMessageChannel channel) {
 		this.guild = guild;
 		this.date = date;
 		this.latestPossibleDate = latestPossibleDate;
@@ -57,8 +62,9 @@ public class GuildReminder implements WebinterfaceObject{
 		this.channelID = channel.getID();
 		this.id = id;
 	}
-	
-	public GuildReminder(GraphiteGuild guild, String id, String channelID, String message, ReminderRepetitionEnum repeatMs, LocalDateTime date, LocalDateTime latestPossibleDate) {
+
+	public GuildReminder(GraphiteGuild guild, String id, String channelID, String message,
+			ReminderRepetitionEnum repeatMs, LocalDateTime date, LocalDateTime latestPossibleDate) {
 		this.guild = guild;
 		this.id = id;
 		this.channelID = channelID;
@@ -71,15 +77,15 @@ public class GuildReminder implements WebinterfaceObject{
 	public String getMessage() {
 		return message;
 	}
-	
+
 	public GraphiteGuild getGuild() {
 		return guild;
 	}
-	
+
 	public String getChannelID() {
 		return channelID;
 	}
-	
+
 	public String getId() {
 		return id;
 	}
@@ -99,86 +105,92 @@ public class GuildReminder implements WebinterfaceObject{
 	public ScheduledFuture<?> getFinishFuture() {
 		return finishFuture;
 	}
-	
-	public void remove() { 
+
+	public void remove() {
 		try {
 			guild.getRemindersConfig().removeReminder(id);
-			if(finishFuture != null) finishFuture.cancel(false);
-		}catch(Exception e) {
+			if (finishFuture != null)
+				finishFuture.cancel(false);
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
-	
+
 	private void sendMessage() {
 		Graphite.withBot(Graphite.getGraphiteBot(), () -> {
 			GraphiteGuildMessageChannel messageChannel = guild.getGuildMessageChannelByID(channelID);
-			if(messageChannel == null) {
+			if (messageChannel == null) {
 				this.remove();
 				return;
 			}
 			try {
-				if(repeatMs != null) {
+				if (repeatMs != null) {
 					messageChannel.sendMessageComplete(repeatMs.getFriendlyName() + " Reminder: " + message);
-				}else {
+				} else {
 					messageChannel.sendMessageComplete("Simple Reminder: " + message);
 				}
-			}catch(Exception e) {
+			} catch (Exception e) {
 				throw e;
 			}
 		});
 	}
-	
+
 	private void calculateNextPossibleReminderDate() {
-		LocalDateTime now = LocalDateTime.now(guild.getConfig().getTimezone());// Current time with correct UTC for guild
-		while(!latestPossibleDate.isAfter(now)) {
-			//maybe
+		LocalDateTime now = LocalDateTime.now(guild.getConfig().getTimezone());// Current time with correct UTC for
+																				// guild
+		while (!latestPossibleDate.isAfter(now)) {
+			// maybe
 			latestPossibleDate = latestPossibleDate.plusYears(repeatMs.getYearsDisplacement());
 			latestPossibleDate = latestPossibleDate.plusMonths(repeatMs.getMonthsDisplacement());
 			latestPossibleDate = latestPossibleDate.plusWeeks(repeatMs.getWeeksDisplacement());
 			latestPossibleDate = latestPossibleDate.plusDays(repeatMs.getDaysDisplacement());
 		}
 	}
-	
+
 	public void enqueue() {
 		finishFuture = Graphite.getScheduler().getExecutorService().schedule(() -> {
 			sendMessage();
-			
-			if(repeatMs != null) {
-				//Todo reenqueue
+
+			if (repeatMs != null) {
+				// Todo reenqueue
 				calculateNextPossibleReminderDate();
 				enqueue();
-			}else {
-				//Todo remove from db
+			} else {
+				// Todo remove from db
 				this.remove();
 			}
-		}, latestPossibleDate.atZone(guild.getConfig().getTimezone()).toEpochSecond() - Instant.now().getEpochSecond(), TimeUnit.SECONDS);
+		}, latestPossibleDate.atZone(guild.getConfig().getTimezone()).toEpochSecond() - Instant.now().getEpochSecond(),
+				TimeUnit.SECONDS);
 	}
-	
+
 	public boolean load() {
-		if(this.repeatMs == null) return false;
+		if (this.repeatMs == null)
+			return false;
 		calculateNextPossibleReminderDate();
 		enqueue();
 		return true;
 	}
-	
+
 	@Override
-	public void preSerializeWI(JSONObject object) {		
+	public void preSerializeWI(JSONObject object) {
 		object.put("guild", getGuild());
 		object.put("id", getId());
-		
+
 		object.put("channelID", getChannelID());
 		object.put("message", getMessage());
 		object.put("repeatMs", getRepeatMs());
 		object.put("date", getDate());
-		
+
 		object.put("latestPossibleDate", getLatestPossibleDate());
 		object.put("finishFuture", getFinishFuture());
 	}
-	
+
 	@JavaScriptFunction(calling = "getReminders", returning = "reminders", withGuild = true)
-	public static void getReminders() {};
-	
+	public static void getReminders() {
+	};
+
 	@JavaScriptFunction(calling = "finishReminder", withGuild = true)
-	public static void finishReminder(@JavaScriptParameter(name = "id") String id) {}
-	
+	public static void finishReminder(@JavaScriptParameter(name = "id") String id) {
+	}
+
 }
