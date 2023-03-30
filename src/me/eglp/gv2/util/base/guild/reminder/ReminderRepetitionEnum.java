@@ -11,7 +11,7 @@ public enum ReminderRepetitionEnum {
 	YEARLY("Yearly", 1, 0, 0, 0),
 	MONTHLY("Monthly", 0, 1, 0, 0),
 	WEEKLY("Weekly", 0, 0, 1, 0),
-	DAILY("Daily", 0, 0, 0, 1),
+	DAILY("Daily", 0, 0, 0, 1);
 	
 	private String friendlyName;
 	private long years;
