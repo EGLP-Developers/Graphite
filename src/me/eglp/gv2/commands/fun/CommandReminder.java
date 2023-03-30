@@ -68,12 +68,10 @@ public class CommandReminder extends ParentCommand {
 					dateMs = LocalDateTime.parse(date, DateTimeFormatter.ISO_LOCAL_DATE_TIME);
 				} catch (DateTimeParseException e) {
 					DefaultMessage.ERROR_INVALID_TIMESTAMP.reply(event);
-					e.printStackTrace();
 					return;
 				}
 
-				if (dateMs.toEpochSecond(event.getGuild().getConfig().getTimezone().getRules()
-						.getOffset(Instant.now())) <= System.currentTimeMillis() / 1000) {
+				if (dateMs.atZone(event.getGuild().getConfig().getTimezone()).toEpochSecond() <= System.currentTimeMillis() / 1000) {
 					DefaultMessage.COMMAND_REMINDER_CREATE_EVENT_IS_IN_THE_PAST.reply(event);
 					return;
 				}
