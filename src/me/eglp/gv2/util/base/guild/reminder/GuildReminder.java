@@ -39,7 +39,6 @@ public class GuildReminder implements WebinterfaceObject{
 	private ScheduledFuture<?> finishFuture;
 	
 	public GuildReminder(GraphiteGuild guild, LocalDateTime date, String message, ReminderRepetitionEnum repeatMs, GraphiteGuildMessageChannel channel) {
-		//GuildReminder reminder = new GuildReminder(event.getGuild(), dateMs, message, repeatMs, channel);
 		this.guild = guild;
 		this.date = date;
 		this.latestPossibleDate = date;
@@ -50,7 +49,6 @@ public class GuildReminder implements WebinterfaceObject{
 	}
 	
 	public GuildReminder(GraphiteGuild guild, String id, LocalDateTime date, LocalDateTime latestPossibleDate, String message, ReminderRepetitionEnum repeatMs, GraphiteGuildMessageChannel channel) {
-		//GuildReminder reminder = new GuildReminder(event.getGuild(), dateMs, message, repeatMs, channel);
 		this.guild = guild;
 		this.date = date;
 		this.latestPossibleDate = latestPossibleDate;
@@ -59,14 +57,6 @@ public class GuildReminder implements WebinterfaceObject{
 		this.channelID = channel.getID();
 		this.id = id;
 	}
-	
-	/*"GuildId varchar(255) NOT NULL",
-	"`Id` varchar(255) NOT NULL",
-	"ChannelId varchar(255) NOT NULL",
-	"Message text NOT NULL",
-	"Repetition integer DEFAULT NULL",
-	"Date text NOT NULL",
-	"LatestPossibleDate text NOT NULL",*/
 	
 	public GuildReminder(GraphiteGuild guild, String id, String channelID, String message, ReminderRepetitionEnum repeatMs, LocalDateTime date, LocalDateTime latestPossibleDate) {
 		this.guild = guild;
@@ -110,14 +100,10 @@ public class GuildReminder implements WebinterfaceObject{
 		return finishFuture;
 	}
 	
-	public void remove() {
-		//System.out.println("removing reminder from db");
+	public void remove() { 
 		try {
 			guild.getRemindersConfig().removeReminder(id);
 			if(finishFuture != null) finishFuture.cancel(false);
-			//if(!finishFuture.isCancelled()) {
-			//	System.out.println("Did not get canceled!");
-			//}
 		}catch(Exception e) {
 			e.printStackTrace();
 		}
@@ -127,12 +113,9 @@ public class GuildReminder implements WebinterfaceObject{
 		Graphite.withBot(Graphite.getGraphiteBot(), () -> {
 			GraphiteGuildMessageChannel messageChannel = guild.getGuildMessageChannelByID(channelID);
 			if(messageChannel == null) {
-				//System.out.println("Channel was null\n");
+				this.remove();
 				return;
-			}else {
-				//System.out.println("amogus");
-			}
-			//System.out.println(messageChannel.getJDAChannel() + "");
+			}else {}
 			try {
 				if(repeatMs != null) {
 					messageChannel.sendMessageComplete(repeatMs.getFriendlyName() + " Reminder: " + message);
@@ -140,8 +123,6 @@ public class GuildReminder implements WebinterfaceObject{
 					messageChannel.sendMessageComplete("Simple Reminder: " + message);
 				}
 			}catch(Exception e) {
-				//System.out.println(e.toString());
-				//e.printStackTrace();
 				throw e;
 			}
 		});
@@ -161,24 +142,18 @@ public class GuildReminder implements WebinterfaceObject{
 	}
 	
 	public void enqueue() {
-		//System.out.println("Delta Time: " + (latestPossibleDate.atZone(guild.getConfig().getTimezone()).toEpochSecond() - Instant.now().getEpochSecond()));
-		//System.out.println(repeatMs.toString());
-		
 		finishFuture = Graphite.getScheduler().getExecutorService().schedule(() -> {
-			//System.out.println("in schedule!");
 			sendMessage();
 			
 			if(repeatMs != null) {
 				//Todo reenqueue
 				calculateNextPossibleReminderDate();
-				//System.out.println("Next possible date: " + getLatestPossibleDate().toString());
 				enqueue();
 			}else {
 				//Todo remove from db
 				this.remove();
 			}
 		}, latestPossibleDate.atZone(guild.getConfig().getTimezone()).toEpochSecond() - Instant.now().getEpochSecond(), TimeUnit.SECONDS);
-		//System.out.println("finishFuture is: " + finishFuture);
 	}
 	
 	public boolean load() {

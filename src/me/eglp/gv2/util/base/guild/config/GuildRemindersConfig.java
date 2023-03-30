@@ -21,10 +21,6 @@ import me.mrletsplay.mrcore.misc.FriendlyException;
  * @date Tue Mar 28 17:26:31 2023
  */
 
-//private ReminderRepetitionEnum repeatMs;
-//private LocalDateTime date;
-//private LocalDateTime latestPossibleDate;
-
 @SQLTable(
 	name = "guilds_reminders",
 	columns = {
@@ -79,7 +75,6 @@ public class GuildRemindersConfig {
 	}
 	
 	private List<GuildReminder> getRemindersDB() {
-		//return new ArrayList<GuildReminder>();
 		return Graphite.getMySQL().run(con -> {
 			try(PreparedStatement s = con.prepareStatement("SELECT * FROM guilds_reminders WHERE GuildId = ?")) {
 				s.setString(1, guild.getID());
@@ -119,15 +114,6 @@ public class GuildRemindersConfig {
 		}
 		throw new FriendlyException("No such item in the Reminders Buffer", new Exception("List did not contain that item"));
 	}
-	
-
-	/*"GuildId varchar(255) NOT NULL",
-	"`Id` varchar(255) NOT NULL",
-	"ChannelId varchar(255) NOT NULL",
-	"Message text NOT NULL",
-	"Repetition integer DEFAULT NULL",
-	"Date text NOT NULL",
-	"LatestPossibleDate text NOT NULL",*/
 	
 	private GuildReminder getReminder(ResultSet r) throws SQLException {
 		ReminderRepetitionEnum nRepeat = null;
