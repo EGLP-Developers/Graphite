@@ -102,7 +102,7 @@ import me.eglp.gv2.util.webinterface.GraphiteWebinterface;
 import me.eglp.gv2.util.webinterface.base.GraphiteWebinterfaceUser;
 import me.eglp.gv2.util.website.GraphiteWebsiteEndpoint;
 import me.mrletsplay.mrcore.config.CustomConfig;
-import me.mrletsplay.mrcore.config.impl.DefaultFileCustomConfig;
+import me.mrletsplay.mrcore.config.impl.yaml.YAMLFileCustomConfig;
 import me.mrletsplay.mrcore.misc.FriendlyException;
 import me.mrletsplay.mrcore.misc.LookupList;
 import me.mrletsplay.mrcore.misc.SingleLookupList;
@@ -1125,7 +1125,7 @@ public class Graphite {
 	}
 
 	public static CustomConfig generateDefaultLocale() {
-		CustomConfig cc = new DefaultFileCustomConfig((File) null);
+		CustomConfig cc = new YAMLFileCustomConfig((File) null);
 		for(Class<? extends Enum<? extends LocalizedString>> c : defaultMessages) {
 			try {
 				Object[] o = (Object[]) c.getMethod("values").invoke(null); // NONBETA: use getEnumConstants
