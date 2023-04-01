@@ -32,6 +32,8 @@ public class GraphiteSetup {
 						.filter(Objects::nonNull)
 						.findFirst().orElse(null);
 					
+					emote.load(foundEmoji);
+					
 					if(foundEmoji != null) continue;
 					
 					GraphiteGuild guild = guilds.stream()
