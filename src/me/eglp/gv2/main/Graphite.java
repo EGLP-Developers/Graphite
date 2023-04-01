@@ -102,7 +102,7 @@ import me.eglp.gv2.util.webinterface.GraphiteWebinterface;
 import me.eglp.gv2.util.webinterface.base.GraphiteWebinterfaceUser;
 import me.eglp.gv2.util.website.GraphiteWebsiteEndpoint;
 import me.mrletsplay.mrcore.config.CustomConfig;
-import me.mrletsplay.mrcore.config.impl.DefaultFileCustomConfig;
+import me.mrletsplay.mrcore.config.impl.yaml.YAMLFileCustomConfig;
 import me.mrletsplay.mrcore.misc.FriendlyException;
 import me.mrletsplay.mrcore.misc.LookupList;
 import me.mrletsplay.mrcore.misc.SingleLookupList;
@@ -374,13 +374,16 @@ public class Graphite {
 		if(needsFeature(GraphiteFeature.TWITTER)) twitter = new GraphiteTwitter();
 		if(needsFeature(GraphiteFeature.REDDIT)) reddit = new GraphiteReddit();
 		
-		if(needsFeature(GraphiteFeature.MUSIC) && botInfo.getSpotify() != null) spotify = new GraphiteSpotify();
+		if(needsFeature(GraphiteFeature.MUSIC)) {
+			if(botInfo.getSpotify().isEnabled()) spotify = new GraphiteSpotify();
+			if(botInfo.getGenius().isEnabled()) genius = new GraphiteGenius();
+		}
+		
 		economy = new GraphiteEconomy();
-		if(needsFeature(GraphiteFeature.MUSIC) && botInfo.getGenius() != null) genius = new GraphiteGenius();
 		amongUs = new GraphiteAmongUs();
 		statistics = new GraphiteStatistics();
 		
-		if(!botInfo.isBeta() && botInfo.getPatreon() != null) {
+		if(!botInfo.isBeta() && botInfo.getPatreon().isEnabled()) {
 			patreon = new GraphitePatreon();
 		}
 		
@@ -1122,7 +1125,7 @@ public class Graphite {
 	}
 
 	public static CustomConfig generateDefaultLocale() {
-		CustomConfig cc = new DefaultFileCustomConfig((File) null);
+		CustomConfig cc = new YAMLFileCustomConfig((File) null);
 		for(Class<? extends Enum<? extends LocalizedString>> c : defaultMessages) {
 			try {
 				Object[] o = (Object[]) c.getMethod("values").invoke(null); // NONBETA: use getEnumConstants

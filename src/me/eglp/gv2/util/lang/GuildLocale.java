@@ -15,7 +15,7 @@ import me.eglp.gv2.util.lang.defaults.DefaultLocale;
 import me.eglp.gv2.util.lang.defaults.DefaultLocales;
 import me.eglp.gv2.util.mysql.SQLTable;
 import me.mrletsplay.mrcore.config.CustomConfig;
-import me.mrletsplay.mrcore.config.impl.DefaultFileCustomConfig;
+import me.mrletsplay.mrcore.config.impl.yaml.YAMLFileCustomConfig;
 import me.mrletsplay.mrcore.misc.FriendlyException;
 
 @SQLTable(
@@ -83,7 +83,7 @@ public class GuildLocale implements GraphiteLocale {
 	}
 	
 	public CustomConfig generateLocaleFile(String localeIdentifier) {
-		CustomConfig cc = new DefaultFileCustomConfig((File) null);
+		CustomConfig cc = new YAMLFileCustomConfig((File) null);
 		for(Class<? extends Enum<? extends LocalizedString>> c : Graphite.getDefaultMessages()) {
 			try {
 				Object[] o = (Object[]) c.getMethod("values").invoke(null); // NONBETA: use getEnumConstants

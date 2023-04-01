@@ -7,12 +7,19 @@ import me.mrletsplay.mrcore.json.converter.JSONValue;
 public class SpotifySettings implements JSONConvertible {
 	
 	@JSONValue
+	private boolean enable;
+	
+	@JSONValue
 	private String
 		clientID,
 		clientSecret;
 	
 	@JSONConstructor
 	private SpotifySettings() {}
+	
+	public boolean isEnabled() {
+		return enable;
+	}
 	
 	public String getClientID() {
 		return clientID;
@@ -24,6 +31,7 @@ public class SpotifySettings implements JSONConvertible {
 	
 	public static SpotifySettings createDefault() {
 		SpotifySettings s = new SpotifySettings();
+		s.enable = true;
 		s.clientID = "Spotify client ID";
 		s.clientSecret = "Spotify client secret";
 		return s;

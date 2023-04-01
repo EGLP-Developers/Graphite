@@ -7,6 +7,9 @@ import me.mrletsplay.mrcore.json.converter.JSONValue;
 public class PatreonSettings implements JSONConvertible {
 	
 	@JSONValue
+	private boolean enable;
+	
+	@JSONValue
 	private String
 		clientID,
 		clientSecret,
@@ -14,6 +17,10 @@ public class PatreonSettings implements JSONConvertible {
 	
 	@JSONConstructor
 	private PatreonSettings() {}
+	
+	public boolean isEnabled() {
+		return enable;
+	}
 	
 	public String getClientID() {
 		return clientID;
@@ -29,6 +36,7 @@ public class PatreonSettings implements JSONConvertible {
 	
 	public static PatreonSettings createDefault() {
 		PatreonSettings s = new PatreonSettings();
+		s.enable = true;
 		s.clientID = "Patreon client ID";
 		s.clientSecret = "Patreon client secret";
 		s.campaignID = "Patreon campaign ID";

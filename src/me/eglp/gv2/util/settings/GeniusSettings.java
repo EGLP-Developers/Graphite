@@ -9,10 +9,17 @@ import me.mrletsplay.mrcore.json.converter.JSONValue;
 public class GeniusSettings implements JSONConvertible {
 	
 	@JSONValue
+	private boolean enable;
+	
+	@JSONValue
 	private String accessToken;
 	
 	@JSONConstructor
 	private GeniusSettings() {}
+	
+	public boolean isEnabled() {
+		return enable;
+	}
 	
 	public String getAccessToken() {
 		return accessToken;
@@ -24,6 +31,7 @@ public class GeniusSettings implements JSONConvertible {
 	
 	public static GeniusSettings createDefault() {
 		GeniusSettings s = new GeniusSettings();
+		s.enable = true;
 		s.accessToken = "Genius access token";
 		return s;
 	}
