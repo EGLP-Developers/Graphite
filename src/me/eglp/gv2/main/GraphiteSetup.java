@@ -32,9 +32,10 @@ public class GraphiteSetup {
 						.filter(Objects::nonNull)
 						.findFirst().orElse(null);
 					
-					emote.load(foundEmoji);
-					
-					if(foundEmoji != null) continue;
+					if(foundEmoji != null) {
+						emote.load(foundEmoji);
+						continue;
+					}
 					
 					GraphiteGuild guild = guilds.stream()
 						.filter(g -> g.getJDAGuild().getEmojis().size() < g.getJDAGuild().getMaxEmojis())
