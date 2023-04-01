@@ -191,13 +191,6 @@ public class Graphite {
 		if(args.length == 0) throw new FriendlyException("Need path to settings.json");
 		settings = new GraphiteSettings(args[0]);
 		
-		List<String> errors = settings.validate();
-		if(!errors.isEmpty()) {
-			System.out.println("The configuration contains errors:");
-			errors.forEach(e -> System.out.println("- " + e));
-			return;
-		}
-		
 		options = new ArrayList<>();
 		for(int i = 1; i < args.length; i++) {
 			final int fI = i;
@@ -209,6 +202,13 @@ public class Graphite {
 		
 		if(settings.isDefaultCreated()) {
 			System.out.println("Created a default configuration, please edit it accordingly");
+			return;
+		}
+		
+		List<String> errors = settings.validate();
+		if(!errors.isEmpty()) {
+			System.out.println("The configuration contains errors:");
+			errors.forEach(e -> System.out.println("- " + e));
 			return;
 		}
 		
