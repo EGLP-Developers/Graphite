@@ -157,7 +157,7 @@ public enum DefaultLocaleString implements LocalizedString {
 	
 	COMMAND_REMINDER_DESCRIPTION("command.reminder.description", "Create reminder"),
 	COMMAND_REMINDER_CREATE_DESCRIPTION("command.reminder.create.description", "Create a new reminder"),
-	COMMAND_REMINDER_CREATE_USAGE("command.reminder.create.usage", "{prefix}reminder create <date_and_time> <reminder message> [repeat (1y2d)] [channel]"), //TODO
+	COMMAND_REMINDER_CREATE_USAGE("command.reminder.create.usage", "{prefix}reminder create <date_and_time (year-month-day hour:minute e.g.: 2001-01-02 15:01)> <reminder message> [repeat (1y2d)] [channel]"), //TODO
 	COMMAND_REMINDER_LIST_DESCRIPTION("command.reminder.list.description", "Lists all currently running reminders"),
 	COMMAND_REMINDER_LIST_USAGE("command.reminder.list.usage", "{prefix}reminder list"),
 	//COMMAND_REMINDER_LIST_LIST("command.reminder.list.list", "```Currently active reminders:\n\n{reminders}```"),

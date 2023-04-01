@@ -51,11 +51,13 @@ public class CommandReminder extends ParentCommand {
 				// optional
 				String repeat = (String) event.getOption("repeat");
 				ReminderRepetitionEnum repeatE;
+				
 				if (repeat == null) {
 					repeatE = null;
 				} else {
 					repeatE = ReminderRepetitionEnum.valueOf(repeat);
 				}
+				
 				GraphiteGuildMessageChannel channel = (GraphiteGuildMessageChannel) event.getOption("channel");
 				if (channel == null) {
 					// Use the current channel instead
@@ -65,7 +67,7 @@ public class CommandReminder extends ParentCommand {
 				LocalDateTime dateMs = null;
 
 				try {
-					dateMs = LocalDateTime.parse(date, DateTimeFormatter.ISO_LOCAL_DATE_TIME);
+					dateMs = LocalDateTime.parse(date, GuildReminder.HUMAN_TIMESTAMP_FORMAT);
 				} catch (DateTimeParseException e) {
 					DefaultMessage.ERROR_INVALID_TIMESTAMP.reply(event);
 					return;
@@ -75,14 +77,16 @@ public class CommandReminder extends ParentCommand {
 					DefaultMessage.COMMAND_REMINDER_CREATE_EVENT_IS_IN_THE_PAST.reply(event);
 					return;
 				}
-
+				
+				
+				
 				GuildReminder reminder = new GuildReminder(event.getGuild(), dateMs, reminderMessage, repeatE, channel);
+				
 
 				reminder.enqueue();
 				event.getGuild().getRemindersConfig().saveReminder(reminder);
 
-				DefaultMessage.COMMAND_REMINDER_CREATE_SUCCESS.reply(event);// "Your reminder got succesefully
-																			// enqueued!");
+				DefaultMessage.COMMAND_REMINDER_CREATE_SUCCESS.reply(event);// "Your reminder got succesefully enqueued!");
 			}
 
 			@Override

@@ -1,0 +1,135 @@
+{
+  "spotify": {
+    "clientSecret": "Spotify client secret",
+    "clientID": "Spotify client ID",
+    "enable": true
+  },
+  "statisticsSettings": {
+    "top.gg": "top.gg token",
+    "discords.com": "discords.com token",
+    "discordbotlist.com": "discordbotlist.com token",
+    "discord.bots.gg": "discord.bots.gg token"
+  },
+  "twitch": {
+    "clientSecret": "Twitch client secret",
+    "clientID": "Twitch client ID"
+  },
+  "miscellaneous": {
+    "reportedTemplatesChannelID": "Channel ID for reported templates",
+    "upvotesChannelID": "Channel ID for upvotes",
+    "messageServerID": "Server ID for messages",
+    "emojiServerIDs": [
+      "Emoji Server ID",
+      "Another Emoji Server ID"
+    ],
+    "testingServerID": "Server ID for slash command testing (beta only)"
+  },
+  "website": {
+    "websiteEndpointPort": 8846,
+    "baseURL": "https:\/\/my-bot.example.com",
+    "webinterfaceURL": "{baseURL}\/webinterface",
+    "faqURL": "{baseURL}\/faq",
+    "websiteEndpointKey": "Website Endpoint Key",
+    "websocketPort": 8746,
+    "multiplexURL": "{baseURL}\/multiplex"
+  },
+  "features": [
+    "DEFAULT",
+    "BACKUPS",
+    "FUN",
+    "MUSIC",
+    "MODERATION",
+    "GREETER",
+    "ROLE_MANAGEMENT",
+    "CHANNEL_MANAGEMENT",
+    "UTILITIES",
+    "RECORD",
+    "TWITCH",
+    "TWITTER",
+    "REDDIT",
+    "SCRIPTING",
+    "MODULES",
+    "CUSTOM_COMMANDS",
+    "STATISTICS"
+  ],
+  "hierarchyIndex": 0,
+  "shardCount": 1,
+  "patreon": {
+    "clientSecret": "Patreon client secret",
+    "clientID": "Patreon client ID",
+    "enable": true,
+    "campaignID": "Patreon campaign ID"
+  },
+  "fileLocation": "MyBot",
+  "name": "My Bot",
+  "defaultPrefix": "bot-",
+  "clientSecret": "SECRET",
+  "amongUs": {
+    "port": 6585,
+    "captureURL": "aucapture:\/\/au.example.com:443\/{code}",
+    "captureAlternativeURL": "https:\/\/au.example.com:443\/"
+  },
+  "multiplexBots": [
+    {
+      "statisticsSettings": {
+        "top.gg": "top.gg token",
+        "discords.com": "discords.com token",
+        "discordbotlist.com": "discordbotlist.com token",
+        "discord.bots.gg": "discord.bots.gg token"
+      },
+      "identifier": "mymultiplexbot",
+      "features": [
+        "DEFAULT",
+        "BACKUPS"
+      ],
+      "voteSettings": {
+        "discordbotlist.com": "discordbotlist.com secret",
+        "discords.com": "discords.com secret",
+        "enableBetaVoteSource": false,
+        "top.gg": "top.gg secret"
+      },
+      "hierarchyIndex": 1,
+      "shardCount": 1,
+      "token": "TOKEN",
+      "name": "My Multiplex Bot",
+      "defaultPrefix": "mmp-",
+      "clientSecret": "SECRET"
+    }
+  ],
+  "twitter": {
+    "token": "Twitter OAuth token"
+  },
+  "identifier": "mybot",
+  "genius": {
+    "enable": true,
+    "accessToken": "Genius access token"
+  },
+  "voteSettings": {
+    "discordbotlist.com": "discordbotlist.com secret",
+    "discords.com": "discords.com secret",
+    "enableBetaVoteSource": false,
+    "top.gg": "top.gg secret"
+  },
+  "token": "TOKEN",
+  "isBeta": false,
+  "mySQL": {
+    "password": "password",
+    "database": "mybot",
+    "url": "jdbc:mariadb:\/\/localhost\/",
+    "username": "mybotuser"
+  },
+  "links": {
+    "patreon": "https:\/\/patreon.com\/graphite_official",
+    "discord": "https:\/\/discord.gg\/myFancyInviteLink"
+  },
+  "reddit": {
+    "userAgent": {
+      "version": "1.0",
+      "platform": "discord",
+      "appID": "com.example.mybot",
+      "author": "Your Reddit username"
+    },
+    "clientSecret": "Reddit client secret",
+    "clientID": "Reddit client ID"
+  }
+}
