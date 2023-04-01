@@ -2196,16 +2196,6 @@ public class GuildReminder implements WebinterfaceObject {
 
 	@Override
 	public void preSerializeWI(JSONObject object) {
-		object.put("guild", getGuild());
-		object.put("id", getId());
-
-		object.put("channelID", getChannelID());
-		object.put("message", getMessage());
-		object.put("repeatMs", getRepeatMs());
-		object.put("date", getDate());
-
-		object.put("latestPossibleDate", getLatestPossibleDate());
-		object.put("finishFuture", getFinishFuture());
 	}
 
 	@JavaScriptFunction(calling = "getReminders", returning = "reminders", withGuild = true)
