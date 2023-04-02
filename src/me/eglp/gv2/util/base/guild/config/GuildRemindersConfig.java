@@ -87,7 +87,7 @@ public class GuildRemindersConfig {
 		return tempGuildReminders;
 	}
 	
-	private final Function<String, GuildReminder> DBQueryProc = (reminderId) ->  {
+	private final Function<String, GuildReminder> DBQueryProc = (reminderID) ->  {
 		return Graphite.getMySQL().run(con -> {
 			try (PreparedStatement s = con
 					.prepareStatement("SELECT * FROM guilds_reminders WHERE GuildId = ? AND `Id` = ?")) {
@@ -100,7 +100,7 @@ public class GuildRemindersConfig {
 				}
 			}
 		}).orElseThrowOther(e -> new FriendlyException("Failed to retrieve reminder from MySQL", e));
-	}
+	};
 
 	public GuildReminder getReminder(String reminderID) {
 		for (GuildReminder a : tempGuildReminders) {
