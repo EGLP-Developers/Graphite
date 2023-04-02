@@ -37,7 +37,7 @@ public class GuildRemindersConfig {
 
 	private GraphiteGuild guild;
 
-	List<GuildReminder> tempGuildReminders = new ArrayList<>();
+	List<GuildReminder> privateVariable = new ArrayList<>();
 
 	public GuildRemindersConfig(GraphiteGuild guild) {
 		this.guild = guild;
@@ -49,12 +49,12 @@ public class GuildRemindersConfig {
 				removeReminder(p.getId());
 				return;
 			}
-			tempGuildReminders.add(p);
+			privateVariable.add(p);
 		});
 	}
 
 	public void saveReminder(GuildReminder reminder) {
-		tempGuildReminders.add(reminder);
+		privateVariable.add(reminder);
 		Graphite.getMySQL().query(
 				"INSERT INTO guilds_reminders(GuildId, `Id`, ChannelId, Message, Repetition, Date, LatestPossibleDate) VALUES(?, ?, ?, ?, ?, ?, ?)",
 				guild.getID(), reminder.getId(), reminder.getChannelID(), reminder.getMessage(),
@@ -65,7 +65,7 @@ public class GuildRemindersConfig {
 	public void removeReminder(String reminderID) {
 		Graphite.getMySQL().query("DELETE FROM guilds_reminders WHERE GuildId = ? AND `Id` = ?", guild.getID(),
 				reminderID);
-		tempGuildReminders.removeIf(r -> r.getId().equals(reminderID));
+		privateVariable.removeIf(r -> r.getId().equals(reminderID));
 	}
 
 	private List<GuildReminder> getRemindersDB() {
@@ -84,7 +84,7 @@ public class GuildRemindersConfig {
 	}
 
 	public List<GuildReminder> getReminders() {
-		return tempGuildReminders;
+		return privateVariable;
 	}
 	
 	private final Function<String, GuildReminder> DBQueryProc = (reminderID) ->  {
@@ -103,7 +103,7 @@ public class GuildRemindersConfig {
 	};
 
 	public GuildReminder getReminder(String reminderID) {
-		for (GuildReminder a : tempGuildReminders) {
+		for (GuildReminder a : privateVariable) {
 			if (a.getId().equals(reminderID)) {
 				return a;
 			}
