@@ -283,11 +283,11 @@ public class GuildReminder implements WebinterfaceObject {
 			sendMessage();
 
 			if (repeatMs != null) {
-				// Todo reenqueue
+				// This code will reenqueue the reminder
 				calculateNextPossibleReminderDate();
 				enqueue();
 			} else {
-				// Todo remove from db
+				// This code will remove the reminder and not reenqueue it
 				this.remove();
 			}
 		}, latestPossibleDate.atZone(guild.getConfig().getTimezone()).toEpochSecond() - Instant.now().getEpochSecond(),
