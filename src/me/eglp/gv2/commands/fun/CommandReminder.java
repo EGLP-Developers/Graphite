@@ -8,7 +8,9 @@ import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
 import me.eglp.gv2.util.base.guild.GraphiteGuildMessageChannel;
 import me.eglp.gv2.util.base.guild.GraphiteModule;
@@ -113,19 +115,34 @@ public class CommandReminder extends ParentCommand {
 				}
 
 				EmbedBuilder theEmbed = new EmbedBuilder().setColor(Color.PINK)
-						.setDescription(
-								DefaultLocaleString.COMMAND_REMINDER_LIST_EMBED_DESCRIPTION.getFor(event.getGuild()))
+						.setDescription(DefaultLocaleString.COMMAND_REMINDER_LIST_EMBED_DESCRIPTION.getFor(event.getGuild()))
 						.setTitle(DefaultLocaleString.COMMAND_REMINDER_LIST_EMBED_TITLE.getFor(event.getGuild()));
+				
+				Map<String, List<GuildReminder>> remindersPerChannel = new LinkedHashMap<>();
+				
 				for (GuildReminder currentReminder : reminders) {
-					theEmbed.addField(currentReminder.getId(),
-							DefaultLocaleString.COMMAND_REMINDER_LIST_EMBED_CHANNEL.getFor(event.getGuild()) + " "
-									+ currentReminder.getGuild()
-											.getGuildMessageChannelByID(currentReminder.getChannelID()).getName()
-									+ "\n"
-									+ DefaultLocaleString.COMMAND_REMINDER_LIST_EMBED_MESSAGE.getFor(event.getGuild())
-									+ " " + currentReminder.getMessage(),
-							true);
+					List<GuildReminder> a = remindersPerChannel.get(currentReminder.getChannelID());
+					if(a == null) {
+						a = new ArrayList<>();
+					}
+					a.add(currentReminder);
+					remindersPerChannel.put(currentReminder.getChannelID(), a);
+					
+					// what is the following line for?
+					//currentReminder.getChannelID() 
 				}
+				
+				for(Map.Entry<String, List<GuildReminder>> e : remindersPerChannel.entrySet()) {
+					String messageList = new String();
+					for(GuildReminder q : e.getValue()) {
+						messageList.concat(q.getId() + ": " + q.getMessage() +"\n");
+					}
+					
+					String messageChannelName = event.getGuild().getGuildMessageChannelByID(e.getKey()).getName();
+					
+					theEmbed.addField(messageChannelName, messageList, true);
+				}
+				
 				event.reply(theEmbed.build());
 			}
 
