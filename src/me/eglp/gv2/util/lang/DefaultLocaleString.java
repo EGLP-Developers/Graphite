@@ -164,7 +164,7 @@ public enum DefaultLocaleString implements LocalizedString {
 	COMMAND_REMINDER_LIST_USAGE("command.reminder.list.usage", "{prefix}reminder list"),
 	//COMMAND_REMINDER_LIST_LIST("command.reminder.list.list", "```Currently active reminders:\n\n{reminders}```"),
 	COMMAND_REMINDER_LIST_EMBED_TITLE("command.reminder.list.embed.title", "Reminder List"),
-	COMMAND_REMINDER_LIST_EMBED_DESCRIPTION("command.reminder.list.embed.description", "A list of all reminders in this guild."),
+	COMMAND_REMINDER_LIST_EMBED_DESCRIPTION("command.reminder.list.embed.description", "A list of all reminders in this guild sorted by channel."),
 	COMMAND_REMINDER_LIST_EMBED_CHANNEL("command.reminder.list.embed.channel", "Channel:"),
 	COMMAND_REMINDER_LIST_EMBED_MESSAGE("command.reminder.list.embed.message", "Message:"),
 	COMMAND_REMINDER_REMOVE_DESCRIPTION("command.reminder.remove.description", "Removes a reminder"),

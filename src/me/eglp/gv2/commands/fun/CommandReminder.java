@@ -135,7 +135,7 @@ public class CommandReminder extends ParentCommand {
 				for(Map.Entry<String, List<GuildReminder>> e : remindersPerChannel.entrySet()) {
 					String messageList = new String();
 					for(GuildReminder q : e.getValue()) {
-						messageList.concat(q.getId() + ": " + q.getMessage() +"\n");
+						messageList = messageList.concat(q.getId() + ": " + q.getMessage() +"\n");
 					}
 					
 					String messageChannelName = event.getGuild().getGuildMessageChannelByID(e.getKey()).getName();
