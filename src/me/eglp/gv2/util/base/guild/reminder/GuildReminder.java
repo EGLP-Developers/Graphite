@@ -86,6 +86,7 @@ import me.eglp.gv2.main.Graphite;
 import me.eglp.gv2.util.GraphiteUtil;
 import me.eglp.gv2.util.base.guild.GraphiteGuild;
 import me.eglp.gv2.util.base.guild.GraphiteGuildMessageChannel;
+import me.eglp.gv2.util.lang.DefaultLocaleString;
 import me.eglp.gv2.util.webinterface.js.JavaScriptClass;
 import me.eglp.gv2.util.webinterface.js.JavaScriptFunction;
 import me.eglp.gv2.util.webinterface.js.JavaScriptParameter;
@@ -257,9 +258,9 @@ public class GuildReminder implements WebinterfaceObject {
 			}
 			try {
 				if (repeatMs != null) {
-					messageChannel.sendMessageComplete(repeatMs.getFriendlyName() + " Reminder: " + message);
+					messageChannel.sendMessageComplete(DefaultLocaleString.COMMAND_REMINDER_MESSAGE_ENUM.getFor(guild, repeatMs.getFriendlyName())+ " " + message);
 				} else {
-					messageChannel.sendMessageComplete("Simple Reminder: " + message);
+					messageChannel.sendMessageComplete(DefaultLocaleString.COMMAND_REMINDER_MESSAGE_SIMPLE.getFor(guild, new String[]{}) + " " + message);
 				}
 			} catch (Exception e) {
 				throw e;
