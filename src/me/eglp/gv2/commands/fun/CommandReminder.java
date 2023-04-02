@@ -100,8 +100,7 @@ public class CommandReminder extends ParentCommand {
 				List<OptionData> ops = new ArrayList<>(Arrays.asList(new OptionData(OptionType.STRING, "date_and_time", "When the reminder is triggered", true), new OptionData(OptionType.STRING, "reminder_message", "The message of the reminder", true), optionRepeat, new OptionData(OptionType.CHANNEL, "channel", "The channel in which to send the reminder", false).setChannelTypes(ChannelType.TEXT, ChannelType.NEWS, ChannelType.GUILD_NEWS_THREAD, ChannelType.GUILD_PRIVATE_THREAD, ChannelType.GUILD_PUBLIC_THREAD)));
 				return ops;
 			}
-		}).setDescription(DefaultLocaleString.COMMAND_REMINDER_CREATE_DESCRIPTION)
-				.setUsage(DefaultLocaleString.COMMAND_REMINDER_CREATE_USAGE).setPermission("fun.reminder.create");
+		}).setDescription(DefaultLocaleString.COMMAND_REMINDER_CREATE_DESCRIPTION) .setUsage(DefaultLocaleString.COMMAND_REMINDER_CREATE_USAGE).setPermission("fun.reminder.create");
 
 		addSubCommand(new Command(this, "list") {
 
