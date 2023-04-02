@@ -97,14 +97,7 @@ public class CommandReminder extends ParentCommand {
 				for (ReminderRepetitionEnum a : ReminderRepetitionEnum.values()) {
 					optionRepeat.addChoice(a.toString(), a.name());
 				}
-				List<OptionData> ops = new ArrayList<>(Arrays.asList(
-						new OptionData(OptionType.STRING, "date_and_time", "When the reminder is triggered", true),
-						new OptionData(OptionType.STRING, "reminder_message", "The message of the reminder", true),
-						optionRepeat,
-						new OptionData(OptionType.CHANNEL, "channel", "The channel in which to send the reminder",
-								false).setChannelTypes(ChannelType.TEXT, ChannelType.NEWS,
-										ChannelType.GUILD_NEWS_THREAD, ChannelType.GUILD_PRIVATE_THREAD,
-										ChannelType.GUILD_PUBLIC_THREAD)));
+				List<OptionData> ops = new ArrayList<>(Arrays.asList(new OptionData(OptionType.STRING, "date_and_time", "When the reminder is triggered", true), new OptionData(OptionType.STRING, "reminder_message", "The message of the reminder", true), optionRepeat, new OptionData(OptionType.CHANNEL, "channel", "The channel in which to send the reminder", false).setChannelTypes(ChannelType.TEXT, ChannelType.NEWS, ChannelType.GUILD_NEWS_THREAD, ChannelType.GUILD_PRIVATE_THREAD, ChannelType.GUILD_PUBLIC_THREAD)));
 				return ops;
 			}
 		}).setDescription(DefaultLocaleString.COMMAND_REMINDER_CREATE_DESCRIPTION)
