@@ -45,8 +45,7 @@ public class CommandReminder extends ParentCommand {
 
 			@Override
 			public void action(CommandInvokedEvent event) {
-				// "{prefix}reminder create <date and time> <reminder message> [repeat (1y2d)]
-				// [channel]"
+				// The structure of the command is as follows, where prefix is either a slash or the per-guild prefix: "{prefix}reminder create <date and time> <reminder message> [repeat (1y2d)] [channel]"
 				String date = (String) event.getOption("date_and_time");
 				String reminderMessage = (String) event.getOption("reminder_message");
 
