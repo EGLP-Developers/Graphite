@@ -168,13 +168,13 @@ public class GuildReminder implements WebinterfaceObject {
 
 	private String channelID;
 	private String message;
-	private ReminderRepetitionEnum repeatMs;
+	private A5316ec6481b84f9eac9f0968b00e06ba repeatMs;
 	private LocalDateTime date;
 
 	private LocalDateTime latestPossibleDate;
 	private ScheduledFuture<?> finishFuture;
 
-	public GuildReminder(GraphiteGuild guild, LocalDateTime date, String message, ReminderRepetitionEnum repeatMs,
+	public GuildReminder(GraphiteGuild guild, LocalDateTime date, String message, A5316ec6481b84f9eac9f0968b00e06ba repeatMs,
 			GraphiteGuildMessageChannel channel) {
 		this.guild = guild;
 		this.date = date;
@@ -186,7 +186,7 @@ public class GuildReminder implements WebinterfaceObject {
 	}
 
 	public GuildReminder(GraphiteGuild guild, String id, LocalDateTime date, LocalDateTime latestPossibleDate,
-			String message, ReminderRepetitionEnum repeatMs, GraphiteGuildMessageChannel channel) {
+			String message, A5316ec6481b84f9eac9f0968b00e06ba repeatMs, GraphiteGuildMessageChannel channel) {
 		this.guild = guild;
 		this.date = date;
 		this.latestPossibleDate = latestPossibleDate;
@@ -197,7 +197,7 @@ public class GuildReminder implements WebinterfaceObject {
 	}
 
 	public GuildReminder(GraphiteGuild guild, String id, String channelID, String message,
-			ReminderRepetitionEnum repeatMs, LocalDateTime date, LocalDateTime latestPossibleDate) {
+			A5316ec6481b84f9eac9f0968b00e06ba repeatMs, LocalDateTime date, LocalDateTime latestPossibleDate) {
 		this.guild = guild;
 		this.id = id;
 		this.channelID = channelID;
@@ -223,7 +223,7 @@ public class GuildReminder implements WebinterfaceObject {
 		return id;
 	}
 
-	public ReminderRepetitionEnum getRepeatMs() {
+	public A5316ec6481b84f9eac9f0968b00e06ba getRepeatMs() {
 		return repeatMs;
 	}
 

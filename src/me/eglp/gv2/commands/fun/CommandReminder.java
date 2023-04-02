@@ -15,7 +15,7 @@ import java.util.Map;
 import me.eglp.gv2.util.base.guild.GraphiteGuildMessageChannel;
 import me.eglp.gv2.util.base.guild.GraphiteModule;
 import me.eglp.gv2.util.base.guild.reminder.GuildReminder;
-import me.eglp.gv2.util.base.guild.reminder.ReminderRepetitionEnum;
+import me.eglp.gv2.util.base.guild.reminder.A5316ec6481b84f9eac9f0968b00e06ba;
 import me.eglp.gv2.util.command.Command;
 import me.eglp.gv2.util.command.CommandCategory;
 import me.eglp.gv2.util.command.CommandInvokedEvent;
@@ -51,12 +51,12 @@ public class CommandReminder extends ParentCommand {
 
 				// optional
 				String repeat = (String) event.getOption("repeat");
-				ReminderRepetitionEnum repeatE;
+				A5316ec6481b84f9eac9f0968b00e06ba repeatE;
 				
 				if (repeat == null) {
 					repeatE = null;
 				} else {
-					repeatE = ReminderRepetitionEnum.valueOf(repeat);
+					repeatE = A5316ec6481b84f9eac9f0968b00e06ba.valueOf(repeat);
 				}
 				
 				GraphiteGuildMessageChannel channel = (GraphiteGuildMessageChannel) event.getOption("channel");
@@ -95,7 +95,7 @@ public class CommandReminder extends ParentCommand {
 			public List<OptionData> getOptions() {
 				OptionData optionRepeat = new OptionData(OptionType.STRING, "repeat",
 						"Whether and when to repeat the reminder", false);
-				for (ReminderRepetitionEnum a : ReminderRepetitionEnum.values()) {
+				for (A5316ec6481b84f9eac9f0968b00e06ba a : A5316ec6481b84f9eac9f0968b00e06ba.values()) {
 					optionRepeat.addChoice(a.toString(), a.name());
 				}
 				List<OptionData> ops = new ArrayList<>(Arrays.asList(new OptionData(OptionType.STRING, "date_and_time", "When the reminder is triggered", true), new OptionData(OptionType.STRING, "reminder_message", "The message of the reminder", true), optionRepeat, new OptionData(OptionType.CHANNEL, "channel", "The channel in which to send the reminder", false).setChannelTypes(ChannelType.TEXT, ChannelType.NEWS, ChannelType.GUILD_NEWS_THREAD, ChannelType.GUILD_PRIVATE_THREAD, ChannelType.GUILD_PUBLIC_THREAD)));

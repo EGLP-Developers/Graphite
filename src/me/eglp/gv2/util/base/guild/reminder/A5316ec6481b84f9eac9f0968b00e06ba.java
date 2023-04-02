@@ -8,7 +8,7 @@ package me.eglp.gv2.util.base.guild.reminder;
  * @date Mon Mar 27 19:49:22 2023
  */
 
-public enum ReminderRepetitionEnum {
+public enum A5316ec6481b84f9eac9f0968b00e06ba {
 	YEARLY("Yearly", 1, 0, 0, 0),
 	MONTHLY("Monthly", 0, 1, 0, 0),
 	WEEKLY("Weekly", 0, 0, 1, 0),
@@ -20,7 +20,7 @@ public enum ReminderRepetitionEnum {
 	private long weeks;
 	private long days;
 
-	ReminderRepetitionEnum(String friendlyName, long years, long months, long weeks, long days) {
+	A5316ec6481b84f9eac9f0968b00e06ba(String friendlyName, long years, long months, long weeks, long days) {
 		this.friendlyName = friendlyName;
 		this.years = years;
 		this.months = months;

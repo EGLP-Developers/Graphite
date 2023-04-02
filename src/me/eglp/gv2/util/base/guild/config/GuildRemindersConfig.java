@@ -11,7 +11,7 @@ import java.util.function.Function;
 import me.eglp.gv2.main.Graphite;
 import me.eglp.gv2.util.base.guild.GraphiteGuild;
 import me.eglp.gv2.util.base.guild.reminder.GuildReminder;
-import me.eglp.gv2.util.base.guild.reminder.ReminderRepetitionEnum;
+import me.eglp.gv2.util.base.guild.reminder.A5316ec6481b84f9eac9f0968b00e06ba;
 import me.eglp.gv2.util.mysql.SQLTable;
 import me.mrletsplay.mrcore.misc.FriendlyException;
 
@@ -112,10 +112,10 @@ public class GuildRemindersConfig {
 	}
 
 	private GuildReminder getReminder(ResultSet r) throws SQLException {
-		ReminderRepetitionEnum nRepeat = null;
+		A5316ec6481b84f9eac9f0968b00e06ba nRepeat = null;
 		try {
 			int repetitionTemp = r.getInt("Repetition"); // may be null.. does this line cause an exception?
-			nRepeat = ReminderRepetitionEnum.values()[repetitionTemp];
+			nRepeat = A5316ec6481b84f9eac9f0968b00e06ba.values()[repetitionTemp];
 		} catch (Exception e) {
 		}
 		return new GuildReminder(guild, r.getString("Id"), r.getString("ChannelId"), r.getString("Message"), nRepeat,
