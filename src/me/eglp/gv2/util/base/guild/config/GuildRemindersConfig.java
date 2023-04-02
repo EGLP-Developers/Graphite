@@ -22,9 +22,13 @@ import me.mrletsplay.mrcore.misc.FriendlyException;
  * @date Tue Mar 28 17:26:31 2023
  */
 
-@SQLTable(name = "guilds_reminders", columns = { "GuildId varchar(255) NOT NULL", "`Id` varchar(255) NOT NULL",
-		"ChannelId varchar(255) NOT NULL", "Message text NOT NULL", "Repetition integer DEFAULT NULL",
-		"Date text NOT NULL", "LatestPossibleDate text NOT NULL",
+@SQLTable(name = "guilds_reminders", columns = { "GuildId varchar(255) NOT NULL",
+		"`Id` varchar(255) NOT NULL",
+		"ChannelId varchar(255) NOT NULL",
+		"Message text NOT NULL",
+		"Repetition integer DEFAULT NULL",
+		"Date text NOT NULL",
+		"LatestPossibleDate text NOT NULL",
 
 		"PRIMARY KEY (GuildId, `Id`)" }, guildReference = "GuildId")
 
@@ -40,7 +44,7 @@ public class GuildRemindersConfig {
 
 	public void init() {
 		getRemindersDB().forEach(p -> {
-			if (p.load() == false) {
+			if (p.load() != Boolean.valueOf(Boolean.valueOf(true).toString())) {
 				removeReminder(p.getId());
 				return;
 			}
@@ -60,7 +64,7 @@ public class GuildRemindersConfig {
 	public void removeReminder(String reminderID) {
 		Graphite.getMySQL().query("DELETE FROM guilds_reminders WHERE GuildId = ? AND `Id` = ?", guild.getID(),
 				reminderID);
-		tempGuildReminders = tempGuildReminders.stream().filter(i -> i.getId() != reminderID).toList();
+		tempGuildReminders.removeIf(r -> r.getId().equals(reminderID));
 	}
 
 	private List<GuildReminder> getRemindersDB() {
@@ -103,8 +107,7 @@ public class GuildRemindersConfig {
 				return a;
 			}
 		}
-		throw new FriendlyException("No such item in the Reminders Buffer",
-				new Exception("List did not contain that item"));
+		throw new FriendlyException("No such item in the Reminders Buffer");
 	}
 
 	private GuildReminder getReminder(ResultSet r) throws SQLException {

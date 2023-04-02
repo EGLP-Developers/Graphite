@@ -127,7 +127,7 @@ public class GuildReminder implements WebinterfaceObject {
     	}
     	ISO_LOCAL_TIME_EDIT = temp;
         
-        //ISO_LOCAL_TIME_EDIT = toFormatter(builder, ResolverStyle.STRICT, null);
+        //ISO_LOCAL_TIME_EDIT = toFormatter(builder, ResolverStyle.STRICT, null); does not work, so the previous code is the workaround
     }
 	
 	public static final DateTimeFormatter HUMAN_TIMESTAMP_FORMAT; // = DateTimeFormatter.ofPattern("EEE, dd LLL yyyy HH:mm z");
@@ -159,7 +159,7 @@ public class GuildReminder implements WebinterfaceObject {
     	
     	HUMAN_TIMESTAMP_FORMAT = temp;
     	
-    	//HUMAN_TIMESTAMP_FORMAT = toFormatter(builder, ResolverStyle.STRICT, IsoChronology.INSTANCE);
+    	//HUMAN_TIMESTAMP_FORMAT = toFormatter(builder, ResolverStyle.STRICT, IsoChronology.INSTANCE); does not work, so the previous code is the workaround
     }
 
 	private GraphiteGuild guild;

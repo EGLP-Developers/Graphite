@@ -85,8 +85,9 @@ public class CommandReminder extends ParentCommand {
 
 				reminder.enqueue();
 				event.getGuild().getRemindersConfig().saveReminder(reminder);
-
-				DefaultMessage.COMMAND_REMINDER_CREATE_SUCCESS.reply(event);// "Your reminder got succesefully enqueued!");
+				
+				// In the case that everything worked according to plan, the following line will print the message "Your reminder got succesefully enqueued!"
+				DefaultMessage.COMMAND_REMINDER_CREATE_SUCCESS.reply(event);
 			}
 
 			@Override
