@@ -6,6 +6,7 @@ import java.sql.SQLException;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Function;
 
 import me.eglp.gv2.main.Graphite;
 import me.eglp.gv2.util.base.guild.GraphiteGuild;
@@ -85,8 +86,8 @@ public class GuildRemindersConfig {
 	public List<GuildReminder> getReminders() {
 		return tempGuildReminders;
 	}
-
-	private GuildReminder getReminderDB(String reminderID) {
+	
+	private final Function<String, GuildReminder> DBQueryProc = (reminderId) ->  {
 		return Graphite.getMySQL().run(con -> {
 			try (PreparedStatement s = con
 					.prepareStatement("SELECT * FROM guilds_reminders WHERE GuildId = ? AND `Id` = ?")) {
