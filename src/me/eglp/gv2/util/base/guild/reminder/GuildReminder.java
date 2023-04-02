@@ -258,7 +258,7 @@ public class GuildReminder implements WebinterfaceObject {
 			}
 			try {
 				if (repeatMs != null) {
-					messageChannel.sendMessageComplete(DefaultLocaleString.COMMAND_REMINDER_MESSAGE_ENUM.getFor(guild, repeatMs.getFriendlyName())+ " " + message);
+					messageChannel.sendMessageComplete(DefaultLocaleString.COMMAND_REMINDER_MESSAGE_ENUM.getFor(guild, "enum", repeatMs.getFriendlyName())+ " " + message);
 				} else {
 					messageChannel.sendMessageComplete(DefaultLocaleString.COMMAND_REMINDER_MESSAGE_SIMPLE.getFor(guild, new String[]{}) + " " + message);
 				}
