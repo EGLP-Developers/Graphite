@@ -15,14 +15,16 @@ public class GraphiteVoting {
 	
 	public GraphiteVoting() {
 		MiscellaneousSettings misc = Graphite.getMainBotInfo().getMiscellaneous();
-		voteChannel = Graphite.withBot(GlobalBot.INSTANCE, () -> Graphite.getGuild(misc.getMessageServerID()).getTextChannelByID(misc.getUpvotesChannelID()));
+		if(misc.getUpvotesChannelID() != null) {
+			voteChannel = Graphite.withBot(GlobalBot.INSTANCE, () -> Graphite.getGuild(misc.getMessageServerID()).getTextChannelByID(misc.getUpvotesChannelID()));
+		}
 	}
 	
 	public void addVotes(GraphiteVoteSource source, GraphiteUser user, int votes) {
 		int money = votes * 5;
 		Graphite.getEconomy().addMoney(user, money);
 		
-		if(user.isAvailable()) {
+		if(voteChannel != null && user.isAvailable()) {
 			voteChannel.sendMessage(new EmbedBuilder()
 					.setDescription(String.format("%s has upvoted the bot on [%s](%s) and got `%s`" + JDAEmote.DOLLARONEN.getUnicode(),
 							user.getName(),

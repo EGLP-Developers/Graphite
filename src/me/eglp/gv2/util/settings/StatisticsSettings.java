@@ -1,6 +1,7 @@
 package me.eglp.gv2.util.settings;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.function.Function;
 
@@ -15,6 +16,9 @@ import me.mrletsplay.mrcore.json.converter.JSONConvertible;
 import me.mrletsplay.mrcore.json.converter.JSONValue;
 
 public class StatisticsSettings implements JSONConvertible {
+	
+	@JSONValue
+	private boolean enable;
 	
 	@JSONValue("top.gg")
 	private String topggToken;
@@ -31,11 +35,8 @@ public class StatisticsSettings implements JSONConvertible {
 	@JSONConstructor
 	private StatisticsSettings() {}
 	
-	public StatisticsSettings(String topggToken, String discordbotsggToken, String discordscomToken, String discordbotlistcomToken) {
-		this.topggToken = topggToken;
-		this.discordbotsggToken = discordbotsggToken;
-		this.discordscomToken = discordscomToken;
-		this.discordbotlistcomToken = discordbotlistcomToken;
+	public boolean isEnabled() {
+		return enable;
 	}
 
 	public String getTopggToken() {
@@ -55,6 +56,8 @@ public class StatisticsSettings implements JSONConvertible {
 	}
 	
 	public List<Function<MultiplexBot, GraphiteStatisticsCollector>> getStatisticsCollectors() {
+		if(!enable) return Collections.emptyList();
+		
 		List<Function<MultiplexBot, GraphiteStatisticsCollector>> c = new ArrayList<>();
 		
 		if(topggToken != null) {
@@ -77,7 +80,13 @@ public class StatisticsSettings implements JSONConvertible {
 	}
 	
 	public static StatisticsSettings createDefault() {
-		return new StatisticsSettings("top.gg token", "discord.bots.gg token", "discords.com token", "discordbotlist.com token");
+		StatisticsSettings s = new StatisticsSettings();
+		s.enable = false;
+		s.topggToken = "top.gg token";
+		s.discordbotsggToken = "discord.bots.gg token";
+		s.discordscomToken = "discords.com token";
+		s.discordbotlistcomToken = "discordbotlist.com token";
+		return s;
 	}
 
 }

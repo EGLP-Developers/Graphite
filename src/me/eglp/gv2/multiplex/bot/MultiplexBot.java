@@ -76,7 +76,7 @@ public class MultiplexBot implements WebinterfaceObject{
 		
 		JDABuilder builder = JDABuilder.createDefault(botInfo.getToken())
 				.setStatus(OnlineStatus.ONLINE)
-				.setActivity(Activity.listening("/help | " + (botInfo.isMainBot() ? "Graphite" : "GraphiteMultiplex")))
+				.setActivity(Activity.listening("/help | " + botInfo.getName()))
 				.addEventListeners(Graphite.getJDAListener())
 				.setCallbackPool(executor, true)
 				.setGatewayPool(executor, true)
