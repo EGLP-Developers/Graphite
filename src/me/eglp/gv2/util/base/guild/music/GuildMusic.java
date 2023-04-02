@@ -231,60 +231,63 @@ public class GuildMusic extends GraphiteMusic {
 		CompletableFuture<MusicSearchResult> f = new CompletableFuture<>();
 		ContextHandle h = GraphiteMultiplex.handle();
 		
-		Matcher mAlbum = GraphiteSpotify.ALBUM_LINK_PATTERN.matcher(linkOrQuery);
-		
-		if(mAlbum.matches()) {
-			List<String> isrc = Graphite.getSpotify().getAlbumISRC(mAlbum.group("id"));
+		GraphiteSpotify spotify = Graphite.getSpotify();
+		if(spotify != null) {
+			Matcher mAlbum = GraphiteSpotify.ALBUM_LINK_PATTERN.matcher(linkOrQuery);
 			
-			if(isrc == null) {
-				return CompletableFuture.failedFuture(new FriendlyException("Couldn't load album from Spotify", Severity.COMMON, null));
+			if(mAlbum.matches()) {
+				List<String> isrc = spotify.getAlbumISRC(mAlbum.group("id"));
+				
+				if(isrc == null) {
+					return CompletableFuture.failedFuture(new FriendlyException("Couldn't load album from Spotify", Severity.COMMON, null));
+				}
+				
+				var futures = isrc.stream()
+						.filter(Objects::nonNull)
+						.map(i -> loadTrack("ytsearch: " + i))
+						.collect(Collectors.toList());
+				
+				return CompletableFuture.allOf(futures.toArray(CompletableFuture[]::new)).thenApply(v -> {
+					return new MusicSearchResult(futures.stream()
+						.map(ft -> ft.join().getResults())
+						.flatMap((List<GraphiteTrack> t) -> t.stream())
+						.collect(Collectors.toList()), true);
+				});
 			}
 			
-			var futures = isrc.stream()
-					.filter(Objects::nonNull)
-					.map(i -> loadTrack("ytsearch: " + i))
-					.collect(Collectors.toList());
+			Matcher mPlaylist = GraphiteSpotify.PLAYLIST_LINK_PATTERN.matcher(linkOrQuery);
 			
-			return CompletableFuture.allOf(futures.toArray(CompletableFuture[]::new)).thenApply(v -> {
-				return new MusicSearchResult(futures.stream()
-					.map(ft -> ft.join().getResults())
-					.flatMap((List<GraphiteTrack> t) -> t.stream())
-					.collect(Collectors.toList()), true);
-			});
-		}
-		
-		Matcher mPlaylist = GraphiteSpotify.PLAYLIST_LINK_PATTERN.matcher(linkOrQuery);
-		
-		if(mPlaylist.matches()) {
-			List<String> isrc = Graphite.getSpotify().getPlaylistISRC(mPlaylist.group("id"));
-			
-			if(isrc == null) {
-				return CompletableFuture.failedFuture(new FriendlyException("Couldn't load playlist from Spotify", Severity.COMMON, null));
+			if(mPlaylist.matches()) {
+				List<String> isrc = spotify.getPlaylistISRC(mPlaylist.group("id"));
+				
+				if(isrc == null) {
+					return CompletableFuture.failedFuture(new FriendlyException("Couldn't load playlist from Spotify", Severity.COMMON, null));
+				}
+				
+				var futures = isrc.stream()
+						.filter(Objects::nonNull)
+						.map(i -> loadTrack("ytsearch: " + i))
+						.collect(Collectors.toList());
+				
+				return CompletableFuture.allOf(futures.toArray(CompletableFuture[]::new)).thenApply(v -> {
+					return new MusicSearchResult(futures.stream()
+						.map(ft -> ft.join().getResults())
+						.flatMap((List<GraphiteTrack> t) -> t.stream())
+						.collect(Collectors.toList()), true);
+				});
 			}
 			
-			var futures = isrc.stream()
-					.filter(Objects::nonNull)
-					.map(i -> loadTrack("ytsearch: " + i))
-					.collect(Collectors.toList());
+			Matcher mTrack = GraphiteSpotify.TRACK_LINK_PATTERN.matcher(linkOrQuery);
 			
-			return CompletableFuture.allOf(futures.toArray(CompletableFuture[]::new)).thenApply(v -> {
-				return new MusicSearchResult(futures.stream()
-					.map(ft -> ft.join().getResults())
-					.flatMap((List<GraphiteTrack> t) -> t.stream())
-					.collect(Collectors.toList()), true);
-			});
-		}
-		
-		Matcher mTrack = GraphiteSpotify.TRACK_LINK_PATTERN.matcher(linkOrQuery);
-		
-		if(mTrack.matches()) {
-			String isrc = Graphite.getSpotify().getTrackISRC(mTrack.group("id"));
-			
-			if(isrc == null) {
-				return CompletableFuture.failedFuture(new FriendlyException("Couldn't load track from Spotify", Severity.COMMON, null));
+			if(mTrack.matches()) {
+				String isrc = spotify.getTrackISRC(mTrack.group("id"));
+				
+				if(isrc == null) {
+					return CompletableFuture.failedFuture(new FriendlyException("Couldn't load track from Spotify", Severity.COMMON, null));
+				}
+				
+				linkOrQuery = "ytsearch: " + isrc;
 			}
-			
-			linkOrQuery = "ytsearch: " + isrc;
 		}
 		
 		final String fIdentifier = linkOrQuery;

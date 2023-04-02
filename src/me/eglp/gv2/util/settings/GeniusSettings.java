@@ -26,12 +26,13 @@ public class GeniusSettings implements JSONConvertible {
 	}
 	
 	public void validate(List<String> errors) {
+		if(!enable) return;
 		if(accessToken == null) errors.add("Genius access token missing");
 	}
 	
 	public static GeniusSettings createDefault() {
 		GeniusSettings s = new GeniusSettings();
-		s.enable = true;
+		s.enable = false;
 		s.accessToken = "Genius access token";
 		return s;
 	}

@@ -36,7 +36,7 @@ public class PatreonSettings implements JSONConvertible {
 	
 	public static PatreonSettings createDefault() {
 		PatreonSettings s = new PatreonSettings();
-		s.enable = true;
+		s.enable = false;
 		s.clientID = "Patreon client ID";
 		s.clientSecret = "Patreon client secret";
 		s.campaignID = "Patreon campaign ID";

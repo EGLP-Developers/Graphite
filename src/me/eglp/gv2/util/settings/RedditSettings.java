@@ -9,6 +9,9 @@ import me.mrletsplay.mrcore.json.converter.JSONValue;
 public class RedditSettings implements JSONConvertible {
 	
 	@JSONValue
+	private boolean enable;
+	
+	@JSONValue
 	private RedditUserAgent userAgent;
 	
 	@JSONValue
@@ -18,6 +21,10 @@ public class RedditSettings implements JSONConvertible {
 	
 	@JSONConstructor
 	private RedditSettings() {}
+	
+	public boolean isEnabled() {
+		return enable;
+	}
 	
 	public RedditUserAgent getUserAgent() {
 		return userAgent;
@@ -32,6 +39,7 @@ public class RedditSettings implements JSONConvertible {
 	}
 	
 	public void validate(List<String> errors) {
+		if(!enable) return;
 		if(userAgent == null) errors.add("Reddit user agent missing");
 		if(userAgent != null) userAgent.validate(errors);
 		if(clientID == null) errors.add("Reddit client id missing");
@@ -40,6 +48,7 @@ public class RedditSettings implements JSONConvertible {
 	
 	public static RedditSettings createDefault() {
 		RedditSettings s = new RedditSettings();
+		s.enable = false;
 		s.userAgent = RedditUserAgent.createDefault();
 		s.clientID = "Reddit client ID";
 		s.clientSecret = "Reddit client secret";

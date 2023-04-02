@@ -92,7 +92,6 @@ import me.eglp.gv2.util.scripting.GraphiteContextFactory;
 import me.eglp.gv2.util.selfcheck.Selfcheck;
 import me.eglp.gv2.util.settings.GraphiteSettings;
 import me.eglp.gv2.util.settings.MainBotInfo;
-import me.eglp.gv2.util.settings.MiscellaneousSettings;
 import me.eglp.gv2.util.settings.MultiplexBotInfo;
 import me.eglp.gv2.util.stats.GraphiteStatistic;
 import me.eglp.gv2.util.stats.GraphiteStatistics;
@@ -144,6 +143,8 @@ import net.dv8tion.jda.api.requests.RestAction;
 import net.dv8tion.jda.api.requests.restaction.CommandListUpdateAction;
 
 public class Graphite {
+	
+	// TODO: disable commands if it is not configured (e.g. CommandAmongUs)
 	
 	private static PrintStream defaultSysOut, defaultSysErr;
 	
@@ -318,7 +319,7 @@ public class Graphite {
 						Graphite.log(bot.getName() + ": Unknown testing server");
 						return;
 					}
-					System.out.println(bot.getName() + ": Testing server: " + g.getName());
+					Graphite.log(bot.getName() + ": Testing server is " + g.getName());
 					a = g.updateCommands();
 				}
 				for(GraphiteFeature ft : bot.getBotInfo().getFeatures()) {
@@ -360,27 +361,36 @@ public class Graphite {
 		
 		GraphiteSetup.run();
 		
-		minigames = new GraphiteMinigames();
 		commandListener = new CommandListener();
 		
-		MiscellaneousSettings misc = botInfo.getMiscellaneous();
-		if(misc != null
-				&& misc.getMessageServerID() != null
-				&& misc.getUpvotesChannelID() != null) {
-			voting = new GraphiteVoting();
+		voting = new GraphiteVoting();
+		
+		if(needsFeature(GraphiteFeature.FUN)) {
+			minigames = new GraphiteMinigames();
 		}
 		
-		if(needsFeature(GraphiteFeature.TWITCH)) twitch = new GraphiteTwitch();
-		if(needsFeature(GraphiteFeature.TWITTER)) twitter = new GraphiteTwitter();
-		if(needsFeature(GraphiteFeature.REDDIT)) reddit = new GraphiteReddit();
+		if(needsFeature(GraphiteFeature.TWITCH) && botInfo.getTwitch().isEnabled()) {
+			twitch = new GraphiteTwitch();
+		}
+		
+		if(needsFeature(GraphiteFeature.TWITTER) && botInfo.getTwitter().isEnabled()) {
+			twitter = new GraphiteTwitter();
+		}
+		
+		if(needsFeature(GraphiteFeature.REDDIT) && botInfo.getReddit().isEnabled()) {
+			reddit = new GraphiteReddit();
+		}
 		
 		if(needsFeature(GraphiteFeature.MUSIC)) {
 			if(botInfo.getSpotify().isEnabled()) spotify = new GraphiteSpotify();
 			if(botInfo.getGenius().isEnabled()) genius = new GraphiteGenius();
 		}
 		
+		if(needsFeature(GraphiteFeature.FUN) && botInfo.getAmongUs().isEnabled()) {
+			amongUs = new GraphiteAmongUs();
+		}
+		
 		economy = new GraphiteEconomy();
-		amongUs = new GraphiteAmongUs();
 		statistics = new GraphiteStatistics();
 		
 		if(!botInfo.isBeta() && botInfo.getPatreon().isEnabled()) {

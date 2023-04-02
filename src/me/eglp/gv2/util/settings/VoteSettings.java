@@ -1,6 +1,7 @@
 package me.eglp.gv2.util.settings;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.function.Function;
 
@@ -15,6 +16,9 @@ import me.mrletsplay.mrcore.json.converter.JSONConvertible;
 import me.mrletsplay.mrcore.json.converter.JSONValue;
 
 public class VoteSettings implements JSONConvertible {
+	
+	@JSONValue
+	private boolean enable;
 	
 	@JSONValue("top.gg")
 	private String topggVoteSecret;
@@ -31,11 +35,8 @@ public class VoteSettings implements JSONConvertible {
 	@JSONConstructor
 	private VoteSettings() {}
 	
-	public VoteSettings(String topggVoteSecret, String discordsVoteSecret, String discordbotlistcomVoteSecret, boolean enableBetaVoteSource) {
-		this.topggVoteSecret = topggVoteSecret;
-		this.discordscomVoteSecret = discordsVoteSecret;
-		this.discordbotlistcomVoteSecret = discordbotlistcomVoteSecret;
-		this.enableBetaVoteSource = enableBetaVoteSource;
+	public boolean isEnabled() {
+		return enable;
 	}
 
 	public String getTopggVoteSecret() {
@@ -51,6 +52,8 @@ public class VoteSettings implements JSONConvertible {
 	}
 	
 	public List<Function<MultiplexBot, GraphiteVoteSource>> getVoteSources() {
+		if(enable) return Collections.emptyList();
+		
 		List<Function<MultiplexBot, GraphiteVoteSource>> c = new ArrayList<>();
 		
 		if(topggVoteSecret != null) {
@@ -73,7 +76,13 @@ public class VoteSettings implements JSONConvertible {
 	}
 	
 	public static VoteSettings createDefault() {
-		return new VoteSettings("top.gg secret", "discords.com secret", "discordbotlist.com secret", false);
+		VoteSettings s = new VoteSettings();
+		s.enable = false;
+		s.topggVoteSecret = "top.gg secret";
+		s.discordscomVoteSecret = "discords.com secret";
+		s.discordbotlistcomVoteSecret = "discordbotlist.com secret";
+		s.enableBetaVoteSource = false;
+		return s;
 	}
 	
 }
