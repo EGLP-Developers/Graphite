@@ -268,10 +268,9 @@ public class GuildReminder implements WebinterfaceObject {
 	}
 
 	private void calculateNextPossibleReminderDate() {
-		LocalDateTime now = LocalDateTime.now(guild.getConfig().getTimezone());// Current time with correct UTC for
-																				// guild
+		LocalDateTime now = LocalDateTime.now(guild.getConfig().getTimezone());// Current time with correct UTC for guild
 		while (!latestPossibleDate.isAfter(now)) {
-			// maybe
+			// it is not said, that the following code is working as it is intended to, but numerous tests proved the correct functionality in some cases (the test cases)
 			latestPossibleDate = latestPossibleDate.plusYears(repeatMs.getYearsDisplacement());
 			latestPossibleDate = latestPossibleDate.plusMonths(repeatMs.getMonthsDisplacement());
 			latestPossibleDate = latestPossibleDate.plusWeeks(repeatMs.getWeeksDisplacement());
