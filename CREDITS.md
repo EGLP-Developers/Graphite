@@ -12,6 +12,7 @@
 - [Unicode emoji sequences](https://unicode.org/Public/emoji/15.0/)
 
 ## Other projects and libraries
+- [JDA](https://github.com/DV8FromTheWorld/JDA)
 - [Lavaplayer](https://github.com/sedmelluq/lavaplayer)
 - [lavadsp](https://github.com/natanbc/lavadsp)
 - [Discord Webhooks](https://github.com/MinnDevelopment/discord-webhooks)
