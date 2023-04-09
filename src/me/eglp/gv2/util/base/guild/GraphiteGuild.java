@@ -27,6 +27,7 @@ import me.eglp.gv2.util.base.guild.config.GuildModerationConfig;
 import me.eglp.gv2.util.base.guild.config.GuildPollsConfig;
 import me.eglp.gv2.util.base.guild.config.GuildRecordingsConfig;
 import me.eglp.gv2.util.base.guild.config.GuildRedditConfig;
+import me.eglp.gv2.util.base.guild.config.GuildRemindersConfig;
 import me.eglp.gv2.util.base.guild.config.GuildReportsConfig;
 import me.eglp.gv2.util.base.guild.config.GuildRolesConfig;
 import me.eglp.gv2.util.base.guild.config.GuildStatisticsConfig;
@@ -79,6 +80,7 @@ public class GraphiteGuild implements GraphiteLocalizable, CommandSender, Graphi
 	private GuildRedditConfig redditConfig;
 	private GuildTwitterConfig twitterConfig;
 	private GuildPollsConfig pollsConfig;
+	private GuildRemindersConfig remindersConfig;
 	
 	private String guildID;
 	private JDAObject<Guild> jdaGuild;
@@ -127,6 +129,8 @@ public class GraphiteGuild implements GraphiteLocalizable, CommandSender, Graphi
 		this.twitterConfig = new GuildTwitterConfig(this);
 		this.pollsConfig = new GuildPollsConfig(this);
 		this.pollsConfig.init();
+		this.remindersConfig = new GuildRemindersConfig(this);
+		this.remindersConfig.init();
 		
 		this.permissionManager = new GuildPermissionManager(this);
 		this.autoModSettings = new GuildAutoModSettings(this);
@@ -376,6 +380,10 @@ public class GraphiteGuild implements GraphiteLocalizable, CommandSender, Graphi
 	
 	public GuildPollsConfig getPollsConfig() {
 		return pollsConfig;
+	}
+	
+	public GuildRemindersConfig getRemindersConfig() {
+		return remindersConfig;
 	}
 	
 	public GuildPermissionManager getPermissionManager() {
