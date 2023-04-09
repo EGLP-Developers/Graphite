@@ -651,6 +651,9 @@ public enum DefaultLocaleString implements LocalizedString {
 	COMMAND_TEXTCOMMANDS_DISABLE_DESCRIPTION("command.textcommands.disable.description", "Disable text-based commands"),
 	COMMAND_TEXTCOMMANDS_DISABLE_USAGE("command.textcommands.disable.usage", "{prefix}textcommands disable"),
 	
+	COMMAND_UPDATESLASHCOMMANDS_DESCRIPTION("command.updateslashcommands.description", "Update slash commands on your server. Useful if e.g. a CustomCommand doesn't automatically appear"),
+	COMMAND_UPDATESLASHCOMMANDS_USAGE("command.updateslashcommands.usage", "{prefix}updateslashcommands"),
+	
 	MINIGAME_MINESWEEPER_NAME("minigame.minesweeper.name", "Minesweeper"),
 	MINIGAME_CONNECT_FOUR_NAME("minigame.connect-four.name", "Connect Four"),
 	MINIGAME_TICTACTOE_NAME("minigame.tictactoe.name", "TicTacToe"),
