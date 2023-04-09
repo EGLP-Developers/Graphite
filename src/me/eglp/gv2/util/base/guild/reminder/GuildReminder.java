@@ -99,13 +99,9 @@ public class GuildReminder {
 	}
 
 	public void remove() {
-		try {
-			guild.getRemindersConfig().removeReminder(id);
-			if (finishFuture != null)
-				finishFuture.cancel(false);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
+		guild.getRemindersConfig().removeReminder(id);
+		if (finishFuture != null)
+			finishFuture.cancel(false);
 	}
 
 	private void sendMessage() {
@@ -116,24 +112,20 @@ public class GuildReminder {
 				return;
 			}
 			
-			try {
-				EmbedBuilder b = new EmbedBuilder();
-				b.setTitle(DefaultLocaleString.COMMAND_REMINDER_MESSAGE_TITLE.getFor(guild));
-				
-				if (repeat != null) {
-					b.setDescription(DefaultLocaleString.COMMAND_REMINDER_MESSAGE_REPEATING.getFor(guild,
-						"repeat", repeat.getFriendlyName(),
-						"message", message));
-					b.setFooter(DefaultLocaleString.COMMAND_REMINDER_MESSAGE_REPEATING_FOOTER.getFor(guild, "reminder_id", getID()));
-				} else {
-					b.setDescription(DefaultLocaleString.COMMAND_REMINDER_MESSAGE_SIMPLE.getFor(guild,
-						"message", message));
-				}
-				
-				messageChannel.sendMessage(b.build());
-			} catch (Exception e) {
-				throw e;
+			EmbedBuilder b = new EmbedBuilder();
+			b.setTitle(DefaultLocaleString.COMMAND_REMINDER_MESSAGE_TITLE.getFor(guild));
+			
+			if (repeat != null) {
+				b.setDescription(DefaultLocaleString.COMMAND_REMINDER_MESSAGE_REPEATING.getFor(guild,
+					"repeat", repeat.getFriendlyName(),
+					"message", message));
+				b.setFooter(DefaultLocaleString.COMMAND_REMINDER_MESSAGE_REPEATING_FOOTER.getFor(guild, "reminder_id", getID()));
+			} else {
+				b.setDescription(DefaultLocaleString.COMMAND_REMINDER_MESSAGE_SIMPLE.getFor(guild,
+					"message", message));
 			}
+			
+			messageChannel.sendMessage(b.build());
 		});
 	}
 
@@ -144,11 +136,7 @@ public class GuildReminder {
 		
 		// Calculate the next repeat date in the future
 		while (!nextReminderDate.isAfter(now)) {
-			nextReminderDate = nextReminderDate
-				.plusYears(repeat.getYears())
-				.plusMonths(repeat.getMonths())
-				.plusWeeks(repeat.getWeeks())
-				.plusDays(repeat.getDays());
+			nextReminderDate = nextReminderDate.plus(repeat.getPeriod());
 		}
 	}
 

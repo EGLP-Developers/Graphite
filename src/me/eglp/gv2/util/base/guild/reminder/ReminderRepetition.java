@@ -1,5 +1,7 @@
 package me.eglp.gv2.util.base.guild.reminder;
 
+import java.time.Period;
+
 /**
  * Describes a repetition interval for Reminders
  * 
@@ -7,43 +9,26 @@ package me.eglp.gv2.util.base.guild.reminder;
  * @date Mon Mar 27 19:49:22 2023
  */
 public enum ReminderRepetition {
-	YEARLY("Yearly", 1, 0, 0, 0),
-	MONTHLY("Monthly", 0, 1, 0, 0),
-	WEEKLY("Weekly", 0, 0, 1, 0),
-	DAILY("Daily", 0, 0, 0, 1);
+	
+	YEARLY("Yearly", Period.ofYears(1)),
+	MONTHLY("Monthly", Period.ofMonths(1)),
+	WEEKLY("Weekly", Period.ofWeeks(1)),
+	DAILY("Daily", Period.ofDays(1));
 
 	private String friendlyName;
-	private long years;
-	private long months;
-	private long weeks;
-	private long days;
+	private Period period;
 
-	ReminderRepetition(String friendlyName, long years, long months, long weeks, long days) {
+	private ReminderRepetition(String friendlyName, Period period) {
 		this.friendlyName = friendlyName;
-		this.years = years;
-		this.months = months;
-		this.weeks = weeks;
-		this.days = days;
+		this.period = period;
 	}
 
 	public String getFriendlyName() {
 		return friendlyName;
 	}
 
-	public long getYears() {
-		return years;
-	}
-
-	public long getMonths() {
-		return months;
-	}
-
-	public long getWeeks() {
-		return weeks;
-	}
-
-	public long getDays() {
-		return days;
+	public Period getPeriod() {
+		return period;
 	}
 
 }

@@ -38,10 +38,11 @@ public class GuildRemindersConfig {
 
 	private GraphiteGuild guild;
 
-	List<GuildReminder> cachedReminders = new ArrayList<>();
+	private List<GuildReminder> cachedReminders;
 
 	public GuildRemindersConfig(GraphiteGuild guild) {
 		this.guild = guild;
+		this.cachedReminders = new ArrayList<>();
 	}
 
 	public void init() {

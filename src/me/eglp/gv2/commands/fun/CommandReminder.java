@@ -44,17 +44,13 @@ public class CommandReminder extends ParentCommand {
 
 			@Override
 			public void action(CommandInvokedEvent event) {
-				// The structure of the command is as follows, where prefix is either a slash or the per-guild prefix: "{prefix}reminder create <date and time> <reminder message> [repeat (1y2d)] [channel]"
 				String rawDate = (String) event.getOption("date_and_time");
 				String reminderMessage = (String) event.getOption("reminder_message");
 
 				// optional
 				String rawRepeat = (String) event.getOption("repeat");
-				ReminderRepetition repeat;
-				
-				if (rawRepeat == null) {
-					repeat = null;
-				} else {
+				ReminderRepetition repeat = null;
+				if (rawRepeat != null) {
 					repeat = ReminderRepetition.valueOf(rawRepeat);
 				}
 				
@@ -114,7 +110,6 @@ public class CommandReminder extends ParentCommand {
 				}
 
 				EmbedBuilder b = new EmbedBuilder()
-//					.setColor(Color.GRAY)
 					.setTitle(DefaultLocaleString.COMMAND_REMINDER_LIST_EMBED_TITLE.getFor(event.getGuild()))
 					.setDescription(DefaultLocaleString.COMMAND_REMINDER_LIST_EMBED_DESCRIPTION.getFor(event.getGuild()));
 				
