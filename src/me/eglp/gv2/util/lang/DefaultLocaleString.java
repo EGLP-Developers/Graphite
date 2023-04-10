@@ -127,7 +127,6 @@ public enum DefaultLocaleString implements LocalizedString {
 	COMMAND_COINFLIP_USAGE("command.coinflip.usage", "{prefix}coinflip"),
 	COMMAND_DICE_DESCRIPTION("command.dice.description", "Roll a dice and see what happens"),
 	COMMAND_DICE_USAGE("command.dice.usage", "{prefix}dice"),
-	COMMAND_LOCALE_DESCRIPTION("command.locale.description", "Manage your server locales"),
 	COMMAND_CHUCKNORRIS_DESCRIPTION("command.chucknorris.description", "Chuck Norris knows he is the best"),
 	COMMAND_CHUCKNORRIS_USAGE("command.chucknorris.usage", "{prefix}chucknorris"),
 	COMMAND_8BALL_DESCRIPTION("command.8ball.description", "Ask the magic 8-ball"),
@@ -527,6 +526,8 @@ public enum DefaultLocaleString implements LocalizedString {
 	COMMAND_EASTEREGGS_MYSTERY_TITLE("command.eastereggs.mystery.title", "???"),
 	COMMAND_EASTEREGGS_MYSTERY_VALUE("command.eastereggs.mystery.value", "Who knows? It's a mystery"),
 	COMMAND_EASTEREGGS_MYSTERY_FOOTER("command.eastereggs.mystery.footer", "You have found {amount} of {total_amount} easter eggs\nNote: Some easter eggs may only be available when using [Graphite]({multiplex_url})"),
+
+	COMMAND_LOCALE_DESCRIPTION("command.locale.description", "Manage your server locales"),
 	
 	COMMAND_LOCALE_LIST_DESCRIPTION("command.locale.list.description", "Lists all available locales"),
 	COMMAND_LOCALE_LIST_USAGE("command.locale.list.usage", "{prefix}locale list"),
@@ -653,6 +654,9 @@ public enum DefaultLocaleString implements LocalizedString {
 	
 	COMMAND_UPDATESLASHCOMMANDS_DESCRIPTION("command.updateslashcommands.description", "Update slash commands on your server. Useful if e.g. a CustomCommand doesn't automatically appear"),
 	COMMAND_UPDATESLASHCOMMANDS_USAGE("command.updateslashcommands.usage", "{prefix}updateslashcommands"),
+	
+	COMMAND_TIMEZONE_DESCRIPTION("command.timezone.description", "Change your server's timezone"),
+	COMMAND_TIMEZONE_USAGE("command.timezone.usage", "{prefix}timezone <timezone>"),
 	
 	MINIGAME_MINESWEEPER_NAME("minigame.minesweeper.name", "Minesweeper"),
 	MINIGAME_CONNECT_FOUR_NAME("minigame.connect-four.name", "Connect Four"),
