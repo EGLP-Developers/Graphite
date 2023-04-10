@@ -321,6 +321,9 @@ public enum DefaultMessage implements MessageIdentifier {
 	COMMAND_TEXTCOMMANDS_ENABLE_MESSAGE("command.textcommands.enable.message", Color.GREEN, "Enabled text-based commands (Prefix: `{prefix}`)"),
 	COMMAND_TEXTCOMMANDS_DISABLE_MESSAGE("command.textcommands.disable.message", Color.RED, "Disabled text-based commands"),
 	
+	COMMAND_TIMEZONE_INVALID_TIMEZONE("command.timezone.invalid-timezone", Color.RED, "Invalid timezone"),
+	COMMAND_TIMEZONE_MESSAGE("command.timezone.message", Color.GREEN, "Successfully set the timezone of your server to `{timezone}`"),
+	
 	MINIGAME_WON("minigame.won", Color.GREEN, "You won and earned `{money}`{emote_dollaronen} :tada:"),
 	MINIGAME_LOST("minigame.lost", Color.RED, "You lost :cry:"),
 	MINIGAME_TIED("minigame.tied", Color.ORANGE, "It's a tie :cry:"),

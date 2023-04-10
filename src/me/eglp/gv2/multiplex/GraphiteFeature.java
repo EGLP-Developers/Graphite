@@ -9,6 +9,7 @@ import me.eglp.gv2.commands.admin.CommandPermission;
 import me.eglp.gv2.commands.admin.CommandPrefix;
 import me.eglp.gv2.commands.admin.CommandPurge;
 import me.eglp.gv2.commands.admin.CommandTextCommands;
+import me.eglp.gv2.commands.admin.CommandTimezone;
 import me.eglp.gv2.commands.admin.CommandUpdateSlashCommands;
 import me.eglp.gv2.commands.backups.CommandBackup;
 import me.eglp.gv2.commands.channel_management.CommandAutoChannel;
@@ -99,7 +100,8 @@ public enum GraphiteFeature implements WebinterfaceObject, JSONPrimitiveStringCo
 		new CommandPurge(),
 		new CommandTest(),
 		new CommandTextCommands(),
-		new CommandUpdateSlashCommands()
+		new CommandUpdateSlashCommands(),
+		new CommandTimezone()
 	),
 	BACKUPS(
 		DefaultPermissions.WEBINTERFACE_BACKUPS,

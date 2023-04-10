@@ -15,7 +15,8 @@ public class CommandUpdateSlashCommands extends Command {
 	
 	public CommandUpdateSlashCommands() {
 		super(null, CommandCategory.ADMIN, "updateslashcommands");
-		setDescription(DefaultLocaleString.COMMAND_TEXTCOMMANDS_DESCRIPTION);
+		setDescription(DefaultLocaleString.COMMAND_UPDATESLASHCOMMANDS_DESCRIPTION);
+		setUsage(DefaultLocaleString.COMMAND_UPDATESLASHCOMMANDS_USAGE);
 		setPermission(DefaultPermissions.ADMIN_UPDATESLASHCOMMANDS);
 	}
 	

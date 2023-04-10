@@ -26,6 +26,7 @@ public class DefaultPermissions {
 		ADMIN_PURGE = "admin.purge",
 		ADMIN_TEXTCOMMANDS = "admin.textcommands",
 		ADMIN_UPDATESLASHCOMMANDS = "admin.updateslashcommands",
+		ADMIN_TIMEZONE = "admin.timezone",
 		
 		PREMIUM_REDEEM = "premium.redeem",
 		PREMIUM_LEVEL = "premium.level",
