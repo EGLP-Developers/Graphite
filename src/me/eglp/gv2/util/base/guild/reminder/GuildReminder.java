@@ -135,7 +135,7 @@ public class GuildReminder {
 		LocalDateTime now = LocalDateTime.now(guild.getConfig().getTimezone());
 		if(nextReminderDate == null) nextReminderDate = date;
 		
-		// Send one-time reminders that have passed while the bot
+		// Send one-time reminders that have passed while the bot was offline
 		if(repeat == null && now.isAfter(nextReminderDate)) {
 			sendMessage();
 			return false;
