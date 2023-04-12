@@ -114,6 +114,7 @@ public class GuildReminder {
 			
 			EmbedBuilder b = new EmbedBuilder();
 			b.setTitle(DefaultLocaleString.COMMAND_REMINDER_MESSAGE_TITLE.getFor(guild));
+			b.setTimestamp(nextReminderDate.atZone(guild.getConfig().getTimezone()).toInstant());
 			
 			if (repeat != null) {
 				b.setDescription(DefaultLocaleString.COMMAND_REMINDER_MESSAGE_REPEATING.getFor(guild,
@@ -121,7 +122,7 @@ public class GuildReminder {
 					"message", message));
 				b.setFooter(DefaultLocaleString.COMMAND_REMINDER_MESSAGE_REPEATING_FOOTER.getFor(guild, "reminder_id", getID()));
 			} else {
-				b.setDescription(DefaultLocaleString.COMMAND_REMINDER_MESSAGE_SIMPLE.getFor(guild,
+				b.setDescription(DefaultLocaleString.COMMAND_REMINDER_MESSAGE_ONE_TIME.getFor(guild,
 					"message", message));
 			}
 			
@@ -129,15 +130,23 @@ public class GuildReminder {
 		});
 	}
 
-	private void calculateNextReminderDate() {
+	private boolean calculateNextReminderDate() {
 		// Get time at guild's timezone
 		LocalDateTime now = LocalDateTime.now(guild.getConfig().getTimezone());
 		if(nextReminderDate == null) nextReminderDate = date;
+		
+		// Send one-time reminders that have passed while the bot
+		if(repeat == null && now.isAfter(nextReminderDate)) {
+			sendMessage();
+			return false;
+		}
 		
 		// Calculate the next repeat date in the future
 		while (!nextReminderDate.isAfter(now)) {
 			nextReminderDate = nextReminderDate.plus(repeat.getPeriod());
 		}
+		
+		return true;
 	}
 
 	public void schedule() {
@@ -156,9 +165,7 @@ public class GuildReminder {
 	}
 
 	public boolean load() {
-		if (repeat == null) return false;
-		
-		calculateNextReminderDate();
+		if(!calculateNextReminderDate()) return false;
 		schedule();
 		return true;
 	}

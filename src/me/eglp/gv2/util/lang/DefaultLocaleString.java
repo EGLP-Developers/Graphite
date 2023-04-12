@@ -159,7 +159,7 @@ public enum DefaultLocaleString implements LocalizedString {
 	COMMAND_REMINDER_MESSAGE_TITLE("command.reminder.message.title", "Reminder"),
 	COMMAND_REMINDER_MESSAGE_REPEATING("command.reminder.message.repeating", "{repeat} reminder: {message}"),
 	COMMAND_REMINDER_MESSAGE_REPEATING_FOOTER("command.reminder.message.repeating-footer", "To remove this reminder, use /reminder remove reminder:{reminder_id}"),
-	COMMAND_REMINDER_MESSAGE_SIMPLE("command.reminder.message.simple", "Unique Reminder: {message}"),
+	COMMAND_REMINDER_MESSAGE_ONE_TIME("command.reminder.message.one-time", "One-time reminder: {message}"),
 	COMMAND_REMINDER_LIST_DESCRIPTION("command.reminder.list.description", "Lists all currently active reminders"),
 	COMMAND_REMINDER_LIST_USAGE("command.reminder.list.usage", "{prefix}reminder list"),
 	COMMAND_REMINDER_LIST_EMBED_TITLE("command.reminder.list.embed.title", "Active reminders"),

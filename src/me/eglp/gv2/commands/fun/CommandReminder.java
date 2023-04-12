@@ -28,8 +28,7 @@ import net.dv8tion.jda.api.interactions.commands.OptionType;
 import net.dv8tion.jda.api.interactions.commands.build.OptionData;
 
 /**
- * This is the reminder Command class. It handles the different sub-commands and
- * deligates the functionality to {@link GuildReminder}.
+ * A command that allows users to create {@link GuildReminder}s on a server.
  * 
  * @author The Arrayser
  * @date Mon Mar 27 18:28:48 2023
