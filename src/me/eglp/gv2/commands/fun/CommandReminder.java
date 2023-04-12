@@ -197,6 +197,7 @@ public class CommandReminder extends ParentCommand {
 				EmbedBuilder b = new EmbedBuilder();
 				b.setTitle(DefaultLocaleString.COMMAND_REMINDER_INFO_TITLE.getFor(event.getGuild(), "reminder_id", reminderID));
 				b.addField(DefaultLocaleString.COMMAND_REMINDER_INFO_MESSAGE_TITLE.getFor(event.getGuild()), reminder.getMessage(), false);
+				b.addField(DefaultLocaleString.COMMAND_REMINDER_INFO_DATE_TITLE.getFor(event.getGuild()), GuildReminder.HUMAN_TIMESTAMP_FORMAT.format(reminder.getDate()), true);
 				b.addField(DefaultLocaleString.COMMAND_REMINDER_INFO_REPEAT_TITLE.getFor(event.getGuild()), reminder.getRepeat() == null ?
 					DefaultLocaleString.COMMAND_REMINDER_INFO_REPEAT_NEVER.getFor(event.getGuild()) :
 					reminder.getRepeat().getFriendlyName(), true);
