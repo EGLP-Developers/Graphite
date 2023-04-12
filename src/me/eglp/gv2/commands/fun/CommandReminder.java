@@ -11,6 +11,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+import me.eglp.gv2.main.Graphite;
+import me.eglp.gv2.util.GraphiteUtil;
 import me.eglp.gv2.util.base.guild.GraphiteGuildMessageChannel;
 import me.eglp.gv2.util.base.guild.GraphiteModule;
 import me.eglp.gv2.util.base.guild.reminder.GuildReminder;
@@ -19,11 +21,13 @@ import me.eglp.gv2.util.command.Command;
 import me.eglp.gv2.util.command.CommandCategory;
 import me.eglp.gv2.util.command.CommandInvokedEvent;
 import me.eglp.gv2.util.command.ParentCommand;
+import me.eglp.gv2.util.command.slash.CommandCompleter;
 import me.eglp.gv2.util.lang.DefaultLocaleString;
 import me.eglp.gv2.util.lang.DefaultMessage;
 import me.eglp.gv2.util.permission.DefaultPermissions;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.channel.ChannelType;
+import net.dv8tion.jda.api.interactions.commands.Command.Choice;
 import net.dv8tion.jda.api.interactions.commands.OptionType;
 import net.dv8tion.jda.api.interactions.commands.build.OptionData;
 
@@ -38,6 +42,12 @@ public class CommandReminder extends ParentCommand {
 	public CommandReminder() {
 		super(GraphiteModule.FUN, CommandCategory.FUN, "reminder");
 		setDescription(DefaultLocaleString.COMMAND_REMINDER_DESCRIPTION);
+		
+		CommandCompleter reminderCompleter = event -> {
+			return Graphite.getGuild(event.getGuild()).getRemindersConfig().getReminders().stream()
+				.map(r -> new Choice(GraphiteUtil.truncateToLength(r.getMessage(), 64, true) + " (" + r.getID() + ")", r.getID()))
+				.toList();
+		};
 
 		addSubCommand(new Command(this, "create") {
 
@@ -122,7 +132,7 @@ public class CommandReminder extends ParentCommand {
 				
 				for(Map.Entry<String, List<GuildReminder>> e : remindersByChannel.entrySet()) {
 					String remindersStr = e.getValue().stream()
-						.map(r -> r.getID() + ": " + r.getMessage())
+						.map(r -> "`" + r.getID() + "`: " + r.getMessage())
 						.collect(Collectors.joining("\n"));
 					
 					String channelName = event.getGuild().getGuildMessageChannelByID(e.getKey()).getName();
@@ -148,7 +158,7 @@ public class CommandReminder extends ParentCommand {
 				String reminderID = (String) event.getOption("reminder");
 				GuildReminder reminder = event.getGuild().getRemindersConfig().getReminder(reminderID);
 				if (reminder == null) {
-					DefaultMessage.COMMAND_REMINDER_REMOVE_INVALID_REMINDER.reply(event);
+					DefaultMessage.COMMAND_REMINDER_INVALID_REMINDER.reply(event);
 					return;
 				}
 
@@ -158,12 +168,51 @@ public class CommandReminder extends ParentCommand {
 
 			@Override
 			public List<OptionData> getOptions() {
-				return Arrays.asList(new OptionData(OptionType.STRING, "reminder", "The ID of the reminder", true));
+				return Arrays.asList(new OptionData(OptionType.STRING, "reminder", "The ID of the reminder", true).setAutoComplete(true));
 			}
 		})
 		.setDescription(DefaultLocaleString.COMMAND_REMINDER_REMOVE_DESCRIPTION)
 		.setUsage(DefaultLocaleString.COMMAND_REMINDER_REMOVE_USAGE)
-		.setPermission(DefaultPermissions.FUN_REMINDER_REMOVE);
+		.setPermission(DefaultPermissions.FUN_REMINDER_REMOVE)
+		.registerCompleter("reminder", reminderCompleter);
+
+		addSubCommand(new Command(this, "info") {
+
+			@Override
+			public void action(CommandInvokedEvent event) {
+				String reminderID = (String) event.getOption("reminder");
+				GuildReminder reminder = event.getGuild().getRemindersConfig().getReminder(reminderID);
+				if (reminder == null) {
+					DefaultMessage.COMMAND_REMINDER_INVALID_REMINDER.reply(event);
+					return;
+				}
+				
+				GraphiteGuildMessageChannel channel = event.getGuild().getGuildMessageChannelByID(reminder.getChannelID());
+				if(channel == null) {
+					reminder.remove();
+					DefaultMessage.COMMAND_REMINDER_INVALID_REMINDER.reply(event);
+					return;
+				}
+				
+				EmbedBuilder b = new EmbedBuilder();
+				b.setTitle(DefaultLocaleString.COMMAND_REMINDER_INFO_TITLE.getFor(event.getGuild(), "reminder_id", reminderID));
+				b.addField(DefaultLocaleString.COMMAND_REMINDER_INFO_MESSAGE_TITLE.getFor(event.getGuild()), reminder.getMessage(), false);
+				b.addField(DefaultLocaleString.COMMAND_REMINDER_INFO_REPEAT_TITLE.getFor(event.getGuild()), reminder.getRepeat() == null ?
+					DefaultLocaleString.COMMAND_REMINDER_INFO_REPEAT_NEVER.getFor(event.getGuild()) :
+					reminder.getRepeat().getFriendlyName(), true);
+				b.addField(DefaultLocaleString.COMMAND_REMINDER_INFO_CHANNEL_TITLE.getFor(event.getGuild()), channel.getAsMention(), true);
+				event.reply(b.build());
+			}
+
+			@Override
+			public List<OptionData> getOptions() {
+				return Arrays.asList(new OptionData(OptionType.STRING, "reminder", "The ID of the reminder", true).setAutoComplete(true));
+			}
+		})
+		.setDescription(DefaultLocaleString.COMMAND_REMINDER_INFO_DESCRIPTION)
+		.setUsage(DefaultLocaleString.COMMAND_REMINDER_INFO_USAGE)
+		.setPermission(DefaultPermissions.FUN_REMINDER_INFO)
+		.registerCompleter("reminder", reminderCompleter);
 	}
 
 }

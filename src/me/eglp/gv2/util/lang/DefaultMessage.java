@@ -31,8 +31,8 @@ public enum DefaultMessage implements MessageIdentifier {
 	
 	COMMAND_REMINDER_CREATE_SUCCESS("command.reminder.create.success", Color.GREEN, "Your reminder was scheduled successfully"),
 	COMMAND_REMINDER_CREATE_EVENT_IS_IN_THE_PAST("command.reminder.create.event-is-in-the-past", Color.RED, "The reminder date is in the past"),
-	COMMAND_REMINDER_LIST_NO_REMINDERS("command.reminder.list.no-reminder", Color.RED, "Currently there are no reminders active"),
-	COMMAND_REMINDER_REMOVE_INVALID_REMINDER("command.reminder.remove.invalid-poll", Color.RED, "A reminder with that ID doesn't exist"),
+	COMMAND_REMINDER_LIST_NO_REMINDERS("command.reminder.list.no-reminders", Color.RED, "Currently there are no reminders active"),
+	COMMAND_REMINDER_INVALID_REMINDER("command.reminder.invalid-reminder", Color.RED, "A reminder with that ID doesn't exist"),
 	COMMAND_REMINDER_REMOVE_SUCCESS("command.reminder.remove.success", Color.GREEN, "The reminder has been removed"),
 	
 	COMMAND_TEMPBAN_SUCCESS("command.tempban.success", Color.GREEN, "Banned {user} for {duration}: `{reason}`"),

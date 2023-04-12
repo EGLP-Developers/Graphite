@@ -166,6 +166,13 @@ public enum DefaultLocaleString implements LocalizedString {
 	COMMAND_REMINDER_LIST_EMBED_DESCRIPTION("command.reminder.list.embed.description", "Currently active reminders by channel:"),
 	COMMAND_REMINDER_REMOVE_DESCRIPTION("command.reminder.remove.description", "Removes a reminder"),
 	COMMAND_REMINDER_REMOVE_USAGE("command.reminder.remove.usage", "{prefix}reminder remove <id>"),
+	COMMAND_REMINDER_INFO_DESCRIPTION("command.reminder.info.description", "Shows information about a reminder"),
+	COMMAND_REMINDER_INFO_USAGE("command.reminder.info.usage", "{prefix}reminder info <id>"),
+	COMMAND_REMINDER_INFO_TITLE("command.reminder.info.title", "Reminder {reminder_id}"),
+	COMMAND_REMINDER_INFO_MESSAGE_TITLE("command.reminder.info.repeat.title", "Message"),
+	COMMAND_REMINDER_INFO_REPEAT_TITLE("command.reminder.info.repeat.title", "Repeat"),
+	COMMAND_REMINDER_INFO_REPEAT_NEVER("command.reminder.info.repeat.never", "Never"),
+	COMMAND_REMINDER_INFO_CHANNEL_TITLE("command.reminder.info.channel.title", "Channel"),
 	/*FUN MESSAGES*/
 	
 	/*INFO MESSAGES*/

@@ -159,6 +159,7 @@ public class DefaultPermissions {
 		FUN_REMINDER_CREATE = "fun.reminder.create",
 		FUN_REMINDER_REMOVE = "fun.reminder.remove",
 		FUN_REMINDER_LIST = "fun.reminder.list",
+		FUN_REMINDER_INFO = "fun.reminder.info",
 		
 		WEBINTERFACE_BACKUPS = "webinterface.backups",
 		WEBINTERFACE_MUSIC = "webinterface.music",
