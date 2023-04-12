@@ -4,6 +4,7 @@ import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeFormatterBuilder;
+import java.time.format.ResolverStyle;
 import java.time.temporal.ChronoField;
 import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeUnit;
@@ -33,7 +34,8 @@ public class GuildReminder {
 			.appendValue(ChronoField.HOUR_OF_DAY, 2)
 			.appendLiteral(':')
 			.appendValue(ChronoField.MINUTE_OF_HOUR, 2)
-			.toFormatter();
+			.toFormatter()
+			.withResolverStyle(ResolverStyle.STRICT);
 	}
 
 	private GraphiteGuild guild;

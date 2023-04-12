@@ -136,7 +136,7 @@ public class CommandReminder extends ParentCommand {
 						.collect(Collectors.joining("\n"));
 					
 					String channelName = event.getGuild().getGuildMessageChannelByID(e.getKey()).getName();
-					b.addField(channelName, remindersStr, true);
+					b.addField(channelName, remindersStr, false);
 				}
 				
 				event.reply(b.build());
