@@ -225,7 +225,7 @@ public class GraphiteMySQL {
 		}
 		
 		public void create() {
-			query(createQuery());
+			query(createQuery()).orElseThrowOther(e -> new FriendlyException("Failed to create table", e));
 		}
 		
 	}

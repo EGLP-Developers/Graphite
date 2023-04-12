@@ -153,6 +153,13 @@ public class DefaultPermissions {
 		FUN_AMONGUS_LINK = "fun.amongus.link",
 		FUN_TCRANDOM = "fun.tcrandom",
 		FUN_VCRANDOM = "fun.vcrandom",
+		FUN_POLL_CREATE = "fun.poll.create",
+		FUN_POLL_STOP = "fun.poll.stop",
+		FUN_POLL_LIST = "fun.poll.list",
+		FUN_REMINDER_CREATE = "fun.reminder.create",
+		FUN_REMINDER_REMOVE = "fun.reminder.remove",
+		FUN_REMINDER_LIST = "fun.reminder.list",
+		FUN_REMINDER_INFO = "fun.reminder.info",
 		
 		WEBINTERFACE_BACKUPS = "webinterface.backups",
 		WEBINTERFACE_MUSIC = "webinterface.music",
@@ -175,7 +182,7 @@ public class DefaultPermissions {
 				try {
 					p.add((String) f.get(null));
 				} catch (IllegalArgumentException | IllegalAccessException e) {
-					throw new FriendlyException("yay broken");
+					throw new FriendlyException("yay broken", e);
 				}
 		}
 		return p;

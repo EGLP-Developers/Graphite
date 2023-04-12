@@ -23,6 +23,7 @@ import me.eglp.gv2.commands.fun.CommandEightBall;
 import me.eglp.gv2.commands.fun.CommandMeme;
 import me.eglp.gv2.commands.fun.CommandMinigame;
 import me.eglp.gv2.commands.fun.CommandPoll;
+import me.eglp.gv2.commands.fun.CommandReminder;
 import me.eglp.gv2.commands.fun.CommandTCRandom;
 import me.eglp.gv2.commands.fun.CommandTTS;
 import me.eglp.gv2.commands.fun.CommandVCRandom;
@@ -118,7 +119,8 @@ public enum GraphiteFeature implements WebinterfaceObject, JSONPrimitiveStringCo
 		new CommandVCRandom(),
 		new CommandTCRandom(),
 		new CommandPoll(),
-		new CommandTTS()
+		new CommandTTS(),
+		new CommandReminder()
 	),
 	MUSIC(
 		DefaultPermissions.WEBINTERFACE_MUSIC,

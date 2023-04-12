@@ -152,6 +152,28 @@ public enum DefaultLocaleString implements LocalizedString {
 	COMMAND_POLL_LIST_LIST("command.poll.list.list", "```Currently running polls:\n\n{polls}```"),
 	COMMAND_POLL_STOP_DESCRIPTION("command.poll.stop.description", "Stops a poll"),
 	COMMAND_POLL_STOP_USAGE("command.poll.stop.usage", "{prefix}poll stop"),
+	
+	COMMAND_REMINDER_DESCRIPTION("command.reminder.description", "Create reminders so you don't miss important events"),
+	COMMAND_REMINDER_CREATE_DESCRIPTION("command.reminder.create.description", "Create a new reminder"),
+	COMMAND_REMINDER_CREATE_USAGE("command.reminder.create.usage", "{prefix}reminder create <date_and_time (year-month-day hour:minute e.g.: 2001-01-02 15:01)> <reminder message> [repeat] [channel]"),
+	COMMAND_REMINDER_MESSAGE_TITLE("command.reminder.message.title", "Reminder"),
+	COMMAND_REMINDER_MESSAGE_REPEATING("command.reminder.message.repeating", "{repeat} reminder: {message}"),
+	COMMAND_REMINDER_MESSAGE_REPEATING_FOOTER("command.reminder.message.repeating-footer", "To remove this reminder, use /reminder remove reminder:{reminder_id}"),
+	COMMAND_REMINDER_MESSAGE_ONE_TIME("command.reminder.message.one-time", "One-time reminder: {message}"),
+	COMMAND_REMINDER_LIST_DESCRIPTION("command.reminder.list.description", "Lists all currently active reminders"),
+	COMMAND_REMINDER_LIST_USAGE("command.reminder.list.usage", "{prefix}reminder list"),
+	COMMAND_REMINDER_LIST_EMBED_TITLE("command.reminder.list.embed.title", "Active reminders"),
+	COMMAND_REMINDER_LIST_EMBED_DESCRIPTION("command.reminder.list.embed.description", "Currently active reminders by channel:"),
+	COMMAND_REMINDER_REMOVE_DESCRIPTION("command.reminder.remove.description", "Removes a reminder"),
+	COMMAND_REMINDER_REMOVE_USAGE("command.reminder.remove.usage", "{prefix}reminder remove <id>"),
+	COMMAND_REMINDER_INFO_DESCRIPTION("command.reminder.info.description", "Shows information about a reminder"),
+	COMMAND_REMINDER_INFO_USAGE("command.reminder.info.usage", "{prefix}reminder info <id>"),
+	COMMAND_REMINDER_INFO_TITLE("command.reminder.info.title", "Reminder {reminder_id}"),
+	COMMAND_REMINDER_INFO_MESSAGE_TITLE("command.reminder.info.repeat.title", "Message"),
+	COMMAND_REMINDER_INFO_DATE_TITLE("command.reminder.info.date.title", "Date"),
+	COMMAND_REMINDER_INFO_REPEAT_TITLE("command.reminder.info.repeat.title", "Repeat"),
+	COMMAND_REMINDER_INFO_REPEAT_NEVER("command.reminder.info.repeat.never", "Never"),
+	COMMAND_REMINDER_INFO_CHANNEL_TITLE("command.reminder.info.channel.title", "Channel"),
 	/*FUN MESSAGES*/
 	
 	/*INFO MESSAGES*/

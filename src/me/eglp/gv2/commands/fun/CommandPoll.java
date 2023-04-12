@@ -18,6 +18,7 @@ import me.eglp.gv2.util.emote.unicode.GraphiteUnicode;
 import me.eglp.gv2.util.lang.DefaultLocaleString;
 import me.eglp.gv2.util.lang.DefaultMessage;
 import me.eglp.gv2.util.lang.GraphiteTimeParser;
+import me.eglp.gv2.util.permission.DefaultPermissions;
 import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.emoji.Emoji;
 import net.dv8tion.jda.api.interactions.commands.OptionType;
@@ -93,7 +94,7 @@ public class CommandPoll extends ParentCommand {
 		})
 		.setDescription(DefaultLocaleString.COMMAND_POLL_CREATE_DESCRIPTION)
 		.setUsage(DefaultLocaleString.COMMAND_POLL_CREATE_USAGE)
-		.setPermission("fun.poll.create");
+		.setPermission(DefaultPermissions.FUN_POLL_CREATE);
 		
 		addSubCommand(new Command(this, "list") {
 			
@@ -117,7 +118,7 @@ public class CommandPoll extends ParentCommand {
 		})
 		.setDescription(DefaultLocaleString.COMMAND_POLL_LIST_DESCRIPTION)
 		.setUsage(DefaultLocaleString.COMMAND_POLL_LIST_USAGE)
-		.setPermission("fun.poll.list");
+		.setPermission(DefaultPermissions.FUN_POLL_LIST);
 		
 		addSubCommand(new Command(this, "stop") {
 			
@@ -143,7 +144,7 @@ public class CommandPoll extends ParentCommand {
 		})
 		.setDescription(DefaultLocaleString.COMMAND_POLL_STOP_DESCRIPTION)
 		.setUsage(DefaultLocaleString.COMMAND_POLL_STOP_USAGE)
-		.setPermission("fun.poll.stop");
+		.setPermission(DefaultPermissions.FUN_POLL_STOP);
 	}
 	
 }
