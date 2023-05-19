@@ -18,9 +18,9 @@ import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.interactions.commands.build.OptionData;
 
 public class CommandClearAll extends Command {
-	
+
 	private static final String CLEARALL_TASK_ID = "clearall";
-	
+
 	public CommandClearAll() {
 		super(GraphiteModule.MODERATION, CommandCategory.MODERATION, "clearall");
 		setDescription(DefaultLocaleString.COMMAND_CLEARALL_DESCRIPTION);
@@ -28,17 +28,17 @@ public class CommandClearAll extends Command {
 		setPermission(DefaultPermissions.MODERATION_CLEARALL);
 		requirePermissions(Permission.MESSAGE_MANAGE);
 	}
-	
+
 	@Override
 	public void action(CommandInvokedEvent event) {
 		DeferredReply r = event.deferReply();
 		String messageID = r.getMessage().getId();
-		GraphiteQueue q = Graphite.getQueue(event.getGuild());
+		GraphiteQueue q = Graphite.getQueue();
 		if(q.isHeavyBusy()) r.editOriginal(DefaultMessage.OTHER_HEAVY_BUSY.createEmbed(event.getSender(), "patreon", Graphite.getMainBotInfo().getLinks().getPatreon()));
 		q.queueHeavy(event.getGuild(), new GraphiteTaskInfo(CLEARALL_TASK_ID, "Deleting messages (clearall)"), () -> event.getTextChannel().clearAll(true, messageID))
 			.thenRun(() -> r.editOriginal(DefaultMessage.COMMAND_CLEARALL_SUCCESS.createEmbed(event.getSender())));
 	}
-	
+
 	@Override
 	public List<OptionData> getOptions() {
 		return Collections.emptyList();

@@ -25,7 +25,7 @@ import net.dv8tion.jda.api.interactions.commands.OptionType;
 import net.dv8tion.jda.api.interactions.commands.build.OptionData;
 
 public class CommandBackupTemplate extends ParentCommand {
-	
+
 	public static final List<RestoreSelector> FORBIDDEN_PARAMETERS = Arrays.asList(
 			RestoreSelector.DISCORD_CHAT_HISTORY,
 			RestoreSelector.DISCORD_BANS
@@ -34,9 +34,9 @@ public class CommandBackupTemplate extends ParentCommand {
 	public CommandBackupTemplate(Command parent) {
 		super(parent, "template");
 		setDescription(DefaultLocaleString.COMMAND_BACKUP_TEMPLATE_DESCRIPTION);
-		
+
 		addSubCommand(new Command(this, "create") {
-			
+
 			@Override
 			public void action(CommandInvokedEvent event) {
 				long cd = TemplateBackup.getTemplateCreateCooldown(event.getAuthor());
@@ -44,7 +44,7 @@ public class CommandBackupTemplate extends ParentCommand {
 					DefaultMessage.COMMAND_TEMPLATE_CREATE_COOLDOWN.reply(event, "time", LocalizedTimeUnit.formatTime(event.getGuild(), cd));
 					return;
 				}
-				
+
 				EmbedBuilder eb = new EmbedBuilder();
 				GuildBackup b = event.getGuild().getBackupByName((String) event.getOption("backup"));
 				if(b == null) {
@@ -53,29 +53,29 @@ public class CommandBackupTemplate extends ParentCommand {
 					event.reply(eb.build());
 					return;
 				}
-				
+
 				String name = (String) event.getOption("name");
 				String description = (String) event.getOption("description");
-				
+
 				if(name.length() > TemplateBackup.MAX_TEMPLATE_NAME_LENGTH) {
 					eb.setAuthor(DefaultLocaleString.COMMAND_BACKUP_TEMPLATE_NAME_TOO_LONG.getFor(event.getSender(), "max_chars", String.valueOf(TemplateBackup.MAX_TEMPLATE_NAME_LENGTH)), null, GraphiteIcon.ERROR.getPath());
 					event.reply(eb.build());
 					return;
 				}
-				
+
 				if(description != null && description.length() > TemplateBackup.MAX_TEMPLATE_DESCRIPTION_LENGTH) {
 					eb.setAuthor(DefaultLocaleString.COMMAND_BACKUP_TEMPLATE_DESCRIPTION_TOO_LONG.getFor(event.getSender(), "max_chars", String.valueOf(TemplateBackup.MAX_TEMPLATE_DESCRIPTION_LENGTH)), null, GraphiteIcon.ERROR.getPath());
 					event.reply(eb.build());
 					return;
 				}
-				
+
 				TemplateBackup template = TemplateBackup.createNew(b, event.getAuthor(), name, description);
-				
+
 				eb.setAuthor(DefaultLocaleString.COMMAND_BACKUP_TEMPLATE_CREATED_TITLE.getFor(event.getSender()), null, GraphiteIcon.CHECKMARK.getPath());
 				eb.setDescription(DefaultLocaleString.COMMAND_BACKUP_TEMPLATE_CREATED_VALUE.getFor(event.getSender(), "template_id", String.valueOf(template.getID())));
 				event.reply(eb.build());
 			}
-			
+
 			@Override
 			public List<OptionData> getOptions() {
 				return Arrays.asList(
@@ -84,14 +84,14 @@ public class CommandBackupTemplate extends ParentCommand {
 						new OptionData(OptionType.STRING, "description", "A short but informative description", true)
 					);
 			}
-			
+
 		})
 		.setDescription(DefaultLocaleString.COMMAND_BACKUP_TEMPLATE_CREATE_DESCRIPTION)
 		.setUsage(DefaultLocaleString.COMMAND_BACKUP_TEMPLATE_CREATE_USAGE)
 		.setPermission(DefaultPermissions.BACKUP_TEMPLATE_CREATE);
-		
+
 		addSubCommand(new Command(this, "delete") {
-			
+
 			@Override
 			public void action(CommandInvokedEvent event) {
 				EmbedBuilder eb = new EmbedBuilder();
@@ -102,38 +102,38 @@ public class CommandBackupTemplate extends ParentCommand {
 					event.reply(eb.build());
 					return;
 				}
-				
+
 				if(!b.getAuthor().equals(event.getMember())) {
 					eb.setAuthor(DefaultLocaleString.COMMAND_BACKUP_TEMPLATE_CANT_DELETE_TITLE.getFor(event.getSender()), null, GraphiteIcon.ERROR.getPath());
 					eb.setDescription(DefaultLocaleString.COMMAND_BACKUP_TEMPLATE_CANT_DELETE_VALUE.getFor(event.getSender(), "discord", Graphite.getMainBotInfo().getLinks().getDiscord()));
 					event.reply(eb.build());
 					return;
 				}
-				
+
 				b.delete();
-				
+
 				eb.setAuthor(DefaultLocaleString.COMMAND_BACKUP_TEMPLATE_DELETED.getFor(event.getSender()), null, GraphiteIcon.CHECKMARK.getPath());
 				event.reply(eb.build());
 			}
-			
+
 			@Override
 			public List<OptionData> getOptions() {
 				return Arrays.asList(
 						new OptionData(OptionType.STRING, "template", "The template you want to delete", true)
 					);
 			}
-			
+
 		})
 		.setDescription(DefaultLocaleString.COMMAND_BACKUP_TEMPLATE_DELETE_DESCRIPTION)
 		.setUsage(DefaultLocaleString.COMMAND_BACKUP_TEMPLATE_DELETE_USAGE)
 		.setPermission(DefaultPermissions.BACKUP_TEMPLATE_DELETE);
-		
+
 		addSubCommand(new Command(this, "load") {
-			
+
 			@Override
 			public void action(CommandInvokedEvent event) {
 				EmbedBuilder eb = new EmbedBuilder();
-				
+
 				TemplateBackup b = TemplateBackup.getTemplateByID((String) event.getOption("template"));
 				if(b == null) {
 					eb.setAuthor(DefaultLocaleString.COMMAND_BACKUP_CANT_FIND_BACKUP_TITLE.getFor(event.getSender()), null, GraphiteIcon.ERROR.getPath());
@@ -141,7 +141,7 @@ public class CommandBackupTemplate extends ParentCommand {
 					event.reply(eb.build());
 					return;
 				}
-				
+
 				DeferredReply r = event.deferReply();
 				CommandBackup.selectParameters(event.getAuthor(), event, false, true, params -> {
 					if(params.contains(RestoreSelector.DISCORD_ROLES) && !event.getGuild().isAboveUserRoles()) {
@@ -150,8 +150,8 @@ public class CommandBackupTemplate extends ParentCommand {
 						r.editOriginal(eb.build());
 						return;
 					}
-					
-					GraphiteQueue q = Graphite.getQueue(event.getGuild());
+
+					GraphiteQueue q = Graphite.getQueue();
 					if(q.isHeavyBusy()) DefaultMessage.OTHER_HEAVY_BUSY.reply(event, "patreon", Graphite.getMainBotInfo().getLinks().getPatreon());
 					QueueTask<Long> tm = q.queueHeavy(event.getGuild(), new GraphiteTaskInfo(GuildBackup.TASK_ID,  "Load template backup (backup template)"), () -> b.restore(event.getGuild(), params));
 					tm.thenAccept(t -> {
@@ -168,7 +168,7 @@ public class CommandBackupTemplate extends ParentCommand {
 					});
 				});
 			}
-			
+
 			@Override
 			public List<OptionData> getOptions() {
 				return Arrays.asList(
@@ -179,9 +179,9 @@ public class CommandBackupTemplate extends ParentCommand {
 		.setDescription(DefaultLocaleString.COMMAND_BACKUP_TEMPLATE_LOAD_DESCRIPTION)
 		.setUsage(DefaultLocaleString.COMMAND_BACKUP_TEMPLATE_LOAD_USAGE)
 		.setPermission(DefaultPermissions.BACKUP_TEMPLATE_LOAD);
-		
+
 		addSubCommand(new Command(this, "search") {
-			
+
 			@Override
 			public void action(CommandInvokedEvent event) {
 				String query = (String) event.getOption("query");
@@ -198,18 +198,18 @@ public class CommandBackupTemplate extends ParentCommand {
 				});
 				event.reply(eb.build());
 			}
-			
+
 			@Override
 			public List<OptionData> getOptions() {
 				return Arrays.asList(
 						new OptionData(OptionType.STRING, "query", "A search query which template you search for")
 					);
 			}
-			
+
 		})
 		.setDescription(DefaultLocaleString.COMMAND_BACKUP_TEMPLATE_SEARCH_DESCRIPTION)
 		.setUsage(DefaultLocaleString.COMMAND_BACKUP_TEMPLATE_SEARCH_USAGE)
 		.setPermission(DefaultPermissions.BACKUP_TEMPLATE_SEARCH);
 	}
-	
+
 }

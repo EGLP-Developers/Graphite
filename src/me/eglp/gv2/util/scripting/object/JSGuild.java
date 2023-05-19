@@ -20,11 +20,11 @@ import me.eglp.gv2.util.scripting.ScriptExecutionException;
 public class JSGuild {
 
 	protected GraphiteGuild guild;
-	
+
 	public JSGuild(GraphiteGuild guild) {
 		this.guild = guild;
 	}
-	
+
 	/**
 	 * Returns the name of this guild
 	 * @return The name of this guild
@@ -32,7 +32,7 @@ public class JSGuild {
 	public String getName() {
 		return guild.getName();
 	}
-	
+
 	/**
 	 * Returns the Discord id of this guild
 	 * @return The Discord id of this guild
@@ -40,15 +40,7 @@ public class JSGuild {
 	public String getID() {
 		return guild.getID();
 	}
-	
-	/**
-	 * Returns the premium level of this guild
-	 * @return The premium level of this guild
-	 */
-	public JSPremiumLevel getPremiumLevel() {
-		return new JSPremiumLevel(guild.getPremiumLevel());
-	}
-	
+
 	/**
 	 * Creates a backup on the specified guild
 	 * @return The created backup or {@code null} if the backup failed (e.g. the maximum amount of backups has been reached)
@@ -60,7 +52,7 @@ public class JSGuild {
 		GuildBackup b = GuildBackup.createNew(guild, null, 0, false); // JS Backups don't have messages
 		return b == null ? null : new JSBackup(b);
 	}
-	
+
 	/**
 	 * Restores a backup on the specified guild
 	 * @param backup The backup to restore
@@ -79,7 +71,7 @@ public class JSGuild {
 				.collect(Collectors.toList())))
 		).exceptionally(ex -> -1L);
 	}
-	
+
 	/**
 	 * Returns the amount of time (in milliseconds) until another backup can be restored
 	 * @return The amount of time until another backup can be restored
@@ -87,7 +79,7 @@ public class JSGuild {
 	public long getBackupCooldown() {
 		return guild.getBackupCooldown();
 	}
-	
+
 	/**
 	 * Returns all of the backups this guild currently has
 	 * @return All of the backups this guild currently has
@@ -96,7 +88,7 @@ public class JSGuild {
 	public Scriptable getBackups() {
 		return GraphiteScript.createJSArray(guild.getBackups().stream().map(JSBackup::new).toArray(JSBackup[]::new));
 	}
-	
+
 	/**
 	 * Returns the backup identified by the given name or {@code null} if the backup doesn't exist
 	 * @param name The name of the backup
@@ -106,7 +98,7 @@ public class JSGuild {
 		GuildBackup b = guild.getBackupByName(name);
 		return b == null ? null : new JSBackup(b);
 	}
-	
+
 	/**
 	 * Returns the permission manager for this guild
 	 * @return The permission manager for this guild
@@ -114,7 +106,7 @@ public class JSGuild {
 	public JSGuildPermissionManager getPermissionManager() {
 		return new JSGuildPermissionManager(guild.getPermissionManager());
 	}
-	
+
 	/**
 	 * Returns an array of all members on this guild
 	 * @return An array of all members on this guild
@@ -123,7 +115,7 @@ public class JSGuild {
 	public Scriptable getMembers() {
 		return GraphiteScript.createJSArray(guild.getMembers().stream().map(JSMember::new).toArray(JSMember[]::new));
 	}
-	
+
 	/**
 	 * Returns the member instance for a user or {@code null} if the user isn't part of this guild
 	 * @param user The user to get the member instance for
@@ -142,7 +134,7 @@ public class JSGuild {
 	public Scriptable getRoles() {
 		return GraphiteScript.createJSArray(guild.getRoles().stream().map(JSRole::new).toArray(JSRole[]::new));
 	}
-	
+
 	/**
 	 * Returns an array of all roles on this guild which have the provided name
 	 * @param name The name to search for
@@ -156,7 +148,7 @@ public class JSGuild {
 				.map(JSRole::new)
 				.toArray(JSRole[]::new));
 	}
-	
+
 	/**
 	 * Returns a role by its id
 	 * @param id The id of the role to get
@@ -176,7 +168,7 @@ public class JSGuild {
 	public Scriptable getVoiceChannels() {
 		return GraphiteScript.createJSArray(guild.getVoiceChannels().stream().map(JSVoiceChannel::new).toArray(JSVoiceChannel[]::new));
 	}
-	
+
 	/**
 	 * Returns an array of all voice channels on this guild which have the provided name
 	 * @param name The name to search for
@@ -208,7 +200,7 @@ public class JSGuild {
 	public Scriptable getTextChannels() {
 		return GraphiteScript.createJSArray(guild.getTextChannels().stream().map(JSTextChannel::new).toArray(JSTextChannel[]::new));
 	}
-	
+
 	/**
 	 * Returns an array of all text channels on this guild which have the provided name
 	 * @param name The name to search for
@@ -232,7 +224,7 @@ public class JSGuild {
 		GraphiteTextChannel r = guild.getTextChannelByID(id);
 		return r == null ? null : new JSTextChannel(r);
 	}
-	
+
 	/**
 	 * Returns an array of all (normal) reports that were created on this guild
 	 * @return An array of all (normal) reports that were created on this guild
@@ -241,10 +233,10 @@ public class JSGuild {
 	public Scriptable getReports() {
 		return GraphiteScript.createJSArray(guild.getReportsConfig().getReports().stream().map(JSReport::new).toArray(JSReport[]::new));
 	}
-	
+
 	@Override
 	public String toString() {
 		return "[JS Guild: " + guild.getID() + "]";
 	}
-	
+
 }

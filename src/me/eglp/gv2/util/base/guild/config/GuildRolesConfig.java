@@ -28,30 +28,30 @@ import net.dv8tion.jda.api.entities.channel.middleman.GuildMessageChannel;
 	guildReference = "GuildId"
 )
 public class GuildRolesConfig {
-	
+
 	public static final String
 		ROLE_TYPE_ACCESSIBLE = "accessible",
 		ROLE_TYPE_AUTO = "auto",
 		ROLE_TYPE_BOT = "bot",
 		ROLE_TYPE_MODERATOR = "moderator",
 		ROLE_TYPE_MUTED = "muted";
-	
+
 	public static final EnumSet<Permission> MUTED_ROLE_DENIED_PERMISSIONS = EnumSet.of(
 		Permission.MESSAGE_SEND,
 		Permission.CREATE_PUBLIC_THREADS,
 		Permission.CREATE_PRIVATE_THREADS,
 		Permission.MESSAGE_SEND_IN_THREADS);
-	
+
 	private GraphiteGuild guild;
-	
+
 	public GuildRolesConfig(GraphiteGuild guild) {
 		this.guild = guild;
 	}
-	
+
 	public void removeRole(String roleID) {
 		Graphite.getMySQL().query("DELETE FROM guilds_roles WHERE GuildId = ? AND RoleId = ?", guild.getID(), roleID);
 	}
-	
+
 	private void setRoles(String type, List<GraphiteRole> roles) {
 		removeAllRoles(type);
 		Graphite.getMySQL().run(con -> {
@@ -62,12 +62,12 @@ public class GuildRolesConfig {
 					s.setString(3, type);
 					s.addBatch();
 				}
-				
+
 				s.executeBatch();
 			}
 		});
 	}
-	
+
 	private void removeAllRoles(String type) {
 		Graphite.getMySQL().query("DELETE FROM guilds_roles WHERE GuildId = ? AND `Type` = ?", guild.getID(), type);
 	}
@@ -78,76 +78,76 @@ public class GuildRolesConfig {
 				.filter(Objects::nonNull)
 				.collect(Collectors.toList());
 	}
-	
+
 	public void setAccessibleRoles(List<GraphiteRole> roles) {
 		setRoles(ROLE_TYPE_ACCESSIBLE, roles);
 	}
-	
-	public void addAccessibleRole(GraphiteRole role) { 
+
+	public void addAccessibleRole(GraphiteRole role) {
 		Graphite.getMySQL().query("INSERT IGNORE INTO guilds_roles(GuildId, RoleId, Type) VALUES(?, ?, ?)", guild.getID(), role.getID(), ROLE_TYPE_ACCESSIBLE);
 	}
-	
-	public void removeAccessibleRole(GraphiteRole role) { 
+
+	public void removeAccessibleRole(GraphiteRole role) {
 		Graphite.getMySQL().query("DELETE FROM guilds_roles WHERE GuildId = ? AND RoleId = ? AND Type = ?", guild.getID(), role.getID(), ROLE_TYPE_ACCESSIBLE);
 	}
-	
+
 	public List<GraphiteRole> getAutoRoles(){
 		return Graphite.getMySQL().queryArray(String.class, "SELECT RoleId FROM guilds_roles WHERE GuildId = ? AND Type = ?", guild.getID(), ROLE_TYPE_AUTO).orElse(Collections.emptyList()).stream()
 				.map(guild::getRoleByID)
 				.filter(Objects::nonNull)
 				.collect(Collectors.toList());
 	}
-	
+
 	public void setAutoRoles(List<GraphiteRole> roles) {
 		setRoles(ROLE_TYPE_AUTO, roles);
 	}
 
-	public void addAutoRole(GraphiteRole role) { 
+	public void addAutoRole(GraphiteRole role) {
 		Graphite.getMySQL().query("INSERT IGNORE INTO guilds_roles(GuildId, RoleId, Type) VALUES(?, ?, ?)", guild.getID(), role.getID(), ROLE_TYPE_AUTO);
 	}
 
-	public void removeAutoRole(GraphiteRole role) { 
+	public void removeAutoRole(GraphiteRole role) {
 		Graphite.getMySQL().query("DELETE FROM guilds_roles WHERE GuildId = ? AND RoleId = ? AND Type = ?", guild.getID(), role.getID(), ROLE_TYPE_AUTO);
 	}
-	
+
 	public List<GraphiteRole> getBotRoles(){
 		return Graphite.getMySQL().queryArray(String.class, "SELECT RoleId FROM guilds_roles WHERE GuildId = ? AND Type = ?", guild.getID(), ROLE_TYPE_BOT).orElse(Collections.emptyList()).stream()
 				.map(guild::getRoleByID)
 				.filter(Objects::nonNull)
 				.collect(Collectors.toList());
 	}
-	
+
 	public void setBotRoles(List<GraphiteRole> roles) {
 		setRoles(ROLE_TYPE_BOT, roles);
 	}
 
-	public void addBotRole(GraphiteRole role) { 
+	public void addBotRole(GraphiteRole role) {
 		Graphite.getMySQL().query("INSERT IGNORE INTO guilds_roles(GuildId, RoleId, Type) VALUES(?, ?, ?)", guild.getID(), role.getID(), ROLE_TYPE_BOT);
 	}
 
 	public void removeBotRole(GraphiteRole role) {
 		Graphite.getMySQL().query("DELETE FROM guilds_roles WHERE GuildId = ? AND RoleId = ? AND Type = ?", guild.getID(), role.getID(), ROLE_TYPE_BOT);
 	}
-	
+
 	public List<GraphiteRole> getModeratorRoles(){
 		return Graphite.getMySQL().queryArray(String.class, "SELECT RoleId FROM guilds_roles WHERE GuildId = ? AND Type = ?", guild.getID(), ROLE_TYPE_MODERATOR).orElse(Collections.emptyList()).stream()
 				.map(guild::getRoleByID)
 				.filter(Objects::nonNull)
 				.collect(Collectors.toList());
 	}
-	
+
 	public void setModeratorRoles(List<GraphiteRole> roles) {
 		setRoles(ROLE_TYPE_MODERATOR, roles);
 	}
-	
-	public void addModeratorRole(GraphiteRole role) { 
+
+	public void addModeratorRole(GraphiteRole role) {
 		Graphite.getMySQL().query("INSERT IGNORE INTO guilds_roles(GuildId, RoleId, Type) VALUES(?, ?, ?)", guild.getID(), role.getID(), ROLE_TYPE_MODERATOR);
 	}
-	
-	public void removeModeratorRole(GraphiteRole role) { 
+
+	public void removeModeratorRole(GraphiteRole role) {
 		Graphite.getMySQL().query("DELETE FROM guilds_roles WHERE GuildId = ? AND RoleId = ? AND Type = ?", guild.getID(), role.getID(), ROLE_TYPE_MODERATOR);
 	}
-	
+
 	public boolean isRoleAccessible(GraphiteRole role) {
 		return getAccessibleRoles().contains(role);
 	}
@@ -159,44 +159,44 @@ public class GuildRolesConfig {
 	public boolean isBotRole(GraphiteRole role) {
 		return getBotRoles().contains(role);
 	}
-	
+
 	public boolean isModeratorRole(GraphiteRole role) {
 		return getModeratorRoles().contains(role);
 	}
-	
+
 	public GraphiteRole getOrSetupMutedRole() {
 		GraphiteRole mRole = getMutedRoleRaw();
 		if(mRole != null) return mRole;
-		
+
 		Role r = guild.getJDAGuild().createRole()
 				.setName("Muted")
 				.setColor(8487814)
 				.complete();
-		
+
 		for(GuildChannel tCh : guild.getJDAGuild().getChannels()) {
 			if(!(tCh instanceof GuildMessageChannel)) continue;
 			GuildMessageChannel mCh = (GuildMessageChannel) tCh;
 			mCh.getPermissionContainer().upsertPermissionOverride(r).deny(MUTED_ROLE_DENIED_PERMISSIONS).complete();
 		}
-		
+
 		mRole = guild.getRole(r);
 		setMutedRole(mRole);
 		return mRole;
 	}
-	
+
 	public void setMutedRole(GraphiteRole role) {
 		setRoles(ROLE_TYPE_MUTED, Collections.singletonList(role));
 	}
-	
+
 	public GraphiteRole getMutedRoleRaw() {
 		String id = Graphite.getMySQL().query(String.class, null, "SELECT RoleId FROM guilds_roles WHERE GuildId = ? AND Type = ?", guild.getID(), ROLE_TYPE_MUTED)
 				.orElseThrowOther(e -> new FriendlyException("Failed to load muted role from MySQL", e));
 		if(id == null) return null;
 		return guild.getRoleByID(id);
 	}
-	
+
 	public void unsetMutedRole() {
 		removeAllRoles(ROLE_TYPE_MUTED);
 	}
-	
+
 }

@@ -10,7 +10,7 @@ import me.eglp.gv2.util.mention.MentionType;
 public enum DefaultMessage implements MessageIdentifier {
 
 	COMMAND_INVITE_MESSAGE("command.invite.message", Color.WHITE, "[**Invite**]({invite_url}) me to your server :hearts:"),
-	
+
 	COMMAND_PERMISSION_ADD_ALREADY_HAS_PERMISSION("command.permission.add.already-has-permission", Color.RED, "{entity} already has the specified permission"),
 	COMMAND_PERMISSION_ADD_PERMISSION_ADDED("command.permission.add.permission-added", Color.GREEN, "Added permission `{permission}` to {entity}"),
 	COMMAND_PERMISSION_REMOVE_PERMISSION_REMOVED("command.permission.remove.permission-removed", Color.GREEN, "Removed permission `{permission}` from {entity}"),
@@ -22,22 +22,22 @@ public enum DefaultMessage implements MessageIdentifier {
 
 	COMMAND_VCRANDOM_PICKED("command.vcrandom.picked", Color.GREEN, "The random member who I picked is:\n> `{member_nick}` (`{member_full}`)"),
 	COMMAND_TCRANDOM_PICKED("command.tcrandom.picked", Color.GREEN, "The random member who I picked is:\n> `{member_nick}` (`{member_full}`)"),
-	
+
 	COMMAND_POLL_CREATE_DURATION_TOO_SHORT("command.poll.create.duration-too-short", Color.RED, "The duration of the poll needs to be at least 5 minutes"),
 	COMMAND_POLL_CREATE_INVALID_EMOJI("command.poll.create.invalid-emoji", Color.RED, "Invalid emoji: {emoji}"),
 	COMMAND_POLL_LIST_NO_POLLS("command.poll.list.no-polls", Color.RED, "Currently there are no polls running"),
 	COMMAND_POLL_STOP_INVALID_POLL("command.poll.stop.invalid-poll", Color.RED, "A poll with that ID doesn't exist"),
 	COMMAND_POLL_STOP_SUCCESS("command.poll.stop.success", Color.GREEN, "The poll has been stopped"),
-	
+
 	COMMAND_REMINDER_CREATE_SUCCESS("command.reminder.create.success", Color.GREEN, "Your reminder was scheduled successfully"),
 	COMMAND_REMINDER_CREATE_EVENT_IS_IN_THE_PAST("command.reminder.create.event-is-in-the-past", Color.RED, "The reminder date is in the past"),
 	COMMAND_REMINDER_LIST_NO_REMINDERS("command.reminder.list.no-reminders", Color.RED, "Currently there are no reminders active"),
 	COMMAND_REMINDER_INVALID_REMINDER("command.reminder.invalid-reminder", Color.RED, "A reminder with that ID doesn't exist"),
 	COMMAND_REMINDER_REMOVE_SUCCESS("command.reminder.remove.success", Color.GREEN, "The reminder has been removed"),
-	
+
 	COMMAND_TEMPBAN_SUCCESS("command.tempban.success", Color.GREEN, "Banned {user} for {duration}: `{reason}`"),
 	COMMAND_TEMPBAN_ALREADY_BANNED("command.tempban.already-banned", Color.GREEN, "You have already banned this user"),
-	
+
 	COMMAND_TEMPJAIL_SUCCESS("command.tempjail.success", Color.GREEN, ":cloud_lightning: You, the god of this server, have jailed the lowly user {user} for `{duration}` in `{channel}`"),
 	COMMAND_TEMPJAIL_ALREADY_JAILED("command.tempjail.already-jailed", Color.RED, "You have already jailed this user"),
 
@@ -47,26 +47,26 @@ public enum DefaultMessage implements MessageIdentifier {
 	COMMAND_JAIL_ERROR_USERCHANNEL("command.jail.error.userchannel", Color.RED, "You cannot jail a member here because it's an userchannel which will be deleted if nobody is inside"),
 	COMMAND_JAIL_ERROR_ALREADY_JAILED("command.jail.error.already-jailed", Color.RED, "User is already jailed"),
 	COMMAND_JAIL_SUCCESS("command.jail.success", Color.GREEN, "The user is now jailed in `{channel}` and waiting for their release"),
-	
+
 	COMMAND_TEMPVOICEMUTE_SUCCESS("command.tempvoicemute.success", Color.GREEN, "Temporary muted {user} for {duration}: `{reason}`"),
 
 	COMMAND_CHATMUTE_SUCCESS("command.chatmute.success", Color.GREEN, "Muted {user}: `{reason}`"),
 
 	COMMAND_TEMPCHATMUTE_SUCCESS("command.tempchatmute.success", Color.GREEN, "Muted {user} for {duration}: `{reason}`"),
-	
+
 	COMMAND_CLEAR_INVALID_AMOUNT("command.clear.invalid-amount", Color.RED, "Can't delete less than one or more than 99 messages"),
 	COMMAND_CLEAR_SUCCESS("command.clear.success", Color.GREEN, "Wooosh! Deleted the last `{amount}` messages"),
 
 	COMMAND_PURGE_SUCCESS("command.purge.success", Color.GREEN, "Wooosh! Purged your discord"),
-	
+
 	COMMAND_BACKUP_INVALID_BACKUP("command.backup.invalid-backup", Color.RED, "Can't find a backup with the given name"),
 	COMMAND_BACKUP_RENAME_ALREADY_EXISTS("command.backup.rename.already-exists", Color.RED, "A backup with the given name already exists"),
 	COMMAND_BACKUP_RENAME_MESSAGE("command.backup.rename.message", Color.GRAY, "Renamed backup `{name}` to `{new_name}`"),
 	COMMAND_BACKUP_RENAME_INVALID_NAME("command.backup.rename.invalid-name", Color.RED, "The backup name may only contain alphanumerical symbols as well as `-`, `_` or ` `"),
 	COMMAND_BACKUP_RESTORED("command.backup.restored", Color.GREEN, "The backup has been successfully restored. Time taken: `{time_taken}`"),
-	
+
 	COMMAND_TEMPLATE_CREATE_COOLDOWN("command.template.create.cooldown", Color.RED, "Please wait another {time} before creating another template"),
-	
+
 	COMMAND_CLEARALL_SUCCESS("command.clearall.success", Color.GREEN, "Wooosh! Cleared all messages"),
 
 	COMMAND_UNJAIL_NOT_JAILED("command.unjail.not-jailed", Color.RED, "User is not jailed"),
@@ -84,10 +84,10 @@ public enum DefaultMessage implements MessageIdentifier {
 
 	COMMAND_CHATREPORT_NOT_ENABLED("command.chatreport.not-enabled", Color.RED, "You need to enable chatreports on our [webinterface]({webinterface}) first. You'll receive a decryption key which you need to view all future chat reports"),
 	COMMAND_CHATREPORT_SUCCESS("command.chatreport.success", Color.GREEN, "Successfully reported the chat history of this channel. Chat history can be found on our [webinterface]({webinterface})"),
-	
+
 	COMMAND_HELP_INVALID_COMMAND("command.help.invalid-command", Color.RED, "I see you're searching for an invalid command? Do you like cookies? [:cookie:](http://orteil.dashnet.org/cookieclicker/)"),
 	COMMAND_HELP_SENT("command.help.sent", Color.WHITE, ":see_no_evil: Pssst. Take a look at your DMs."),
-	
+
 	COMMAND_TWITCH_USER_ADDED("command.twitch.user.added", Color.GREEN, "Streamer added"),
 	COMMAND_TWITCH_USER_REMOVED("command.twitch.user.removed", Color.GREEN, "Streamer removed"),
 	COMMAND_TWITCH_ALREADY_ADDED("command.twitch.already-added", Color.RED, "Already added this streamer"),
@@ -95,28 +95,28 @@ public enum DefaultMessage implements MessageIdentifier {
 	COMMAND_TWITCH_SET_CHANNEL("command.twitch.set-channel", Color.GREEN, "Changed the notification channel to `{channel}`"),
 	COMMAND_TWITCH_STREAMER_NOT_FOUND("command.twitch.streamer-not-found", Color.RED, "I can't find this streamer on your streamer list"),
 	COMMAND_TWITCH_INVALID_STREAMER("command.twitch.invalid-streamer", Color.RED, "I can't find this streamer on Twitch"),
-	
+
 	COMMAND_TWITTER_USER_ADDED("command.twitter.user.added", Color.GREEN, "Twitter user added"),
 	COMMAND_TWITTER_USER_REMOVED("command.twitter.user.removed", Color.GREEN, "Twitter user removed"),
 	COMMAND_TWITTER_ALREADY_ADDED("command.twitter.already-added", Color.RED, "Already added this user"),
 	COMMAND_TWITTER_SET_CHANNEL("command.twitter.set-channel", Color.GREEN, "Changed the notification channel to `{channel}`"),
 	COMMAND_TWITTER_USER_NOT_FOUND("command.twitter.user-not-found", Color.RED, "I can't find this user on your Twitter list"),
 	COMMAND_TWITTER_INVALID_USER("command.twitter.invalid-user", Color.RED, "I can't find this user on Twitter"),
-	
+
 	COMMAND_REDDIT_SUBREDDIT_ADDED("command.reddit.subreddit.added", Color.GREEN, "Subreddit added"),
 	COMMAND_REDDIT_SUBREDDIT_REMOVED("command.reddit.subreddit.removed", Color.GREEN, "Subreddit removed"),
 	COMMAND_REDDIT_SUBREDDIT_ALREADY_ADDED("command.reddit.subreddit.already-added", Color.RED, "Already added this subreddit"),
 	COMMAND_REDDIT_SET_CHANNEL("command.reddit.set-channel", Color.GREEN, "Changed the notification channel to `{channel}`"),
 	COMMAND_REDDIT_INVALID_SUBREDDIT("command.reddit.invalid-subreddit", Color.RED, "I can't find this subreddit on Reddit"),
-	
+
 	COMMAND_CHATREPORTS_LIST_NO_REPORTS("command.chatreports.list.no-reports", Color.RED, "Currenty there are no chatreports. Everything is fine"),
-	
+
 	COMMAND_CHATREPORTS_REMOVE_SUCCESS("command.chatreports.remove.success", Color.GREEN, "Removed chatreport with index `{index}`"),
-	
+
 	COMMAND_REPORTS_NO_REPORTS("command.reports.no-reports", Color.RED, "Currenty there are no reports. Everything is fine"),
-	
+
 	COMMAND_REPORTS_REMOVE_SUCCESS("command.reports-remove.success", Color.GREEN, "Removed report with index `{index}`"),
-	
+
 	COMMAND_PREMIUM_ADDKEY_ADDED("command.premium.addkey.added", Color.GREEN, "Successfully added key `{key}` to your account"),
 	COMMAND_PREMIUM_ADDKEY_KEY_ALREADY_REDEEMED("command.premium.addkey.key-already-redeemed", Color.RED, "Key already redeemed"),
 	COMMAND_PREMIUM_ADDKEY_INVALID_KEY("command.premium.addkey.invalid-key", Color.RED, "That's a very nice key but it's too bad that I don't seem to know about it"),
@@ -125,45 +125,45 @@ public enum DefaultMessage implements MessageIdentifier {
 	COMMAND_PREMIUM_REDEEM_KEY_MATCH("command.premium.redeem.key-match", Color.RED, "You already redeemed a key with this premium level"),
 	COMMAND_PREMIUM_REDEEM_KEY_IN_USE("command.premium.redeem.key-in-use", Color.RED, "That key is already in use"),
 	COMMAND_PREMIUM_REDEEM_KEY_REDEEMED("command.premium.redeem.key-redeemed", Color.GREEN, "Successfully redeemed key for: `{level}`"),
-	
+
 	COMMAND_KEYS_NO_KEYS("command.keys.no-keys", Color.RED, "Currently you don't have any keys"),
-	
+
 	COMMAND_ACCESSROLE_ADDED_ACCESSIBLE_ROLE("command.accessrole.added-accessible-role", Color.GREEN, "Made the role {role} accessible to {everyone}"),
 	COMMAND_ACCESSROLE_ALREADY_ACCESSIBLE("command.accessrole.already-accessible", Color.RED, "Role already accessible to other weird people"),
 	COMMAND_ACCESSROLE_REMOVED_ACCESSIBLE_ROLE("command.accessrole.removed-accessible-role", Color.GREEN, "Removed the role {role} from the list of accessible roles"),
 	COMMAND_ACCESSROLE_ALREADY_REMOVED("command.accessrole.already-removed", Color.RED, "There is no accessrole like this on my list"),
 	COMMAND_ACCESSROLE_NO_ACCESSROLES("command.accessrole.no-accessroles", Color.RED, "Currently there are no accessible roles"),
-	
+
 	COMMAND_MODROLE_ADDED("command.modrole.added", Color.GREEN, "Successfully added {role} as a moderator role"),
 	COMMAND_MODROLE_REMOVED("command.modrole.removed", Color.GREEN, "Removed {role} from the moderator roles"),
 	COMMAND_MODROLE_NO_ROLES("command.modrole.no-roles", Color.RED, "There are no more roles to remove"),
 	COMMAND_MODROLE_ALREADY_ADDED("command.modrole.already-added", Color.RED, "Already added {role} as moderator role"),
 	COMMAND_MODROLE_NOT_LISTED("command.modrole.not-listed", Color.RED, "That role is currently not listed as a moderator role"),
 	COMMAND_MODROLE_LIST_NO_ROLES("command.modrole.list.no-roles", Color.GREEN, "There currently aren't any moderator roles"),
-	
+
 	COMMAND_SUPPORT_QUEUE_MESSAGE("command.support.queue.message", Color.GREEN, "Set the support queue to `{channel}`"),
 	COMMAND_SUPPORT_UNSETQUEUE_MESSAGE("command.support.unsetqueue.message", Color.GREEN, "Removed the support queue"),
-	
+
 	COMMAND_GETROLE_ROLE_NOT_ACCESSIBLE("command.getrole.role-not-accessible", Color.RED, "Role is not accessible!"),
 	COMMAND_GETROLE_SUCCESS("command.getrole.success", Color.GREEN, "I've given you the {role} role"),
-	
+
 	COMMAND_AUTOROLE_ADDED_AUTOROLE("command.autorole.added-autorole", Color.GREEN, "Added the role {role} as autorole"),
 	COMMAND_AUTOROLE_ALREADY_ADDED("command.autorole.already-added", Color.RED, "Role is already on the list of autoroles"),
 	COMMAND_AUTOROLE_REMOVED_AUTOROLE("command.autorole.removed-autorole", Color.GREEN, "Removed the role {role} from the list of autoroles"),
 	COMMAND_AUTOROLE_ALREADY_REMOVED("command.autorole.already-removed", Color.RED, "It seems that this role is not on the list"),
 	COMMAND_AUTOROLE_NO_AUTOROLES("command.autorole.no-autoroles", Color.RED, "Currently there are no autoroles"),
-	
+
 	COMMAND_BOTROLE_ADDED_BOTROLE("command.botrole.added-botrole", Color.GREEN, "Added the role {role} as botrole"),
 	COMMAND_BOTROLE_ALREADY_ADDED("command.botrole.already-added", Color.RED, "Role is already on the list of botroles"),
 	COMMAND_BOTROLE_REMOVED_BOTROLE("command.botrole.removed-botrole", Color.GREEN, "Removed the role {role} from the list of botroles"),
 	COMMAND_BOTROLE_ALREADY_REMOVED("command.botrole.already-removed", Color.RED, "It seems that this role is not on the list"),
 	COMMAND_BOTROLE_NO_BOTROLES("command.botrole.no-botroles", Color.RED, "Currently there are no botroles"),
-	
+
 	COMMAND_USERCHANNEL_CREATED("command.userchannel.created", Color.GREEN, "You have created your own user channel. By default your have all permissions of this channel :thinking:"),
 	COMMAND_USERCHANNEL_DELETED("command.userchannel.deleted", Color.GREEN, "You have deleted your user channel"),
 	COMMAND_USERCHANNEL_ONE_PER_MEMBER("command.userchannel.one-per-member", Color.RED, "You can only have one userchannel"),
 	COMMAND_USERCHANNEL_DOESNT_EXIST("command.userchannel.doesnt-exist", Color.RED, "You don't have a user channel yet"),
-	
+
 	COMMAND_MUSIC_PLAY_CANNOT_PLAY("command.music.play.cannot-play", Color.RED, "Cannot play song: `{error_message}`"),
 	COMMAND_MUSIC_NOT_PLAYING("command.music.not-playing", Color.RED, "Nothing is currently playing"),
 	COMMAND_MUSIC_SET_ENDLESS_TRUE("command.music.set-endless-true", Color.GREEN, "Enabled endless mode"),
@@ -210,14 +210,14 @@ public enum DefaultMessage implements MessageIdentifier {
 	COMMAND_MUSIC_PITCH_MESSAGE("command.music.pitch.message", Color.GREEN, "Pitch set to {pitch}x"),
 	COMMAND_MUSIC_NIGHTCORE_MESSAGE("command.music.nightcore.message", Color.GREEN, "Enabled nightcore mode \uFF3C(\u2267\u25BD\u2266)\uFF0F"),
 	COMMAND_MUSIC_RESET_MESSAGE("command.music.reset.message", Color.GREEN, "Reset all playback settings to their default values"),
-	
+
 	COMMAND_MEME_AVAILABLE("command.meme.available", Color.GREEN, "Available meme categories: `{meme_categories}`"),
-	
+
 	COMMAND_LOCALE_INVALID_LOCALE("command.locale.invalid-locale", Color.RED, "Invalid locale!"),
 	COMMAND_LOCALE_SET_MESSAGE("command.locale.set.message", Color.GREEN, "Set locale to `{locale}`"),
-	
+
 	COMMAND_DONATORS_EMPTY("command.donators.empty", Color.RED, "Currently there are no donators. You wan't to support our work? (Patreon)[{patreon}]"),
-	
+
 	COMMAND_PREMIUM_LEVEL_MESSAGE("command.premium.level.message", Color.GRAY, "Premium Level: `{level}`"),
 
 	COMMAND_LOCALE_DELETE_SUCCESS("command.locale.delete.success", Color.GREEN, "Successfully deleted locale `{locale}`"),
@@ -225,16 +225,16 @@ public enum DefaultMessage implements MessageIdentifier {
 	COMMAND_LOCALE_UPLOAD_SUCCESS("command.locale.upload.success", Color.GREEN, "The locale has been uploaded to your server's locales. You can select it using `{prefix}locale set {locale}`"),
 	COMMAND_LOCALE_UPLOAD_INVALID_FILE("command.locale.upload.invalid-file", Color.RED, "Something went wrong... You tried to upload a file that is broken"),
 	COMMAND_LOCALE_UPLOAD_INVALID_SHORT("command.locale.upload.invalid-short", Color.RED, "Your locale short doesn't match our requirements (up to 16 alphanumeric characters, underscores allowed)"),
-	
+
 	COMMAND_MODULE_INVALID_MODULE("command.module.invalid-module", Color.RED, "Invalid module name. Valid names are `{modules}`"),
 	COMMAND_MODULE_ENABLE_ALREADY_ENABLED("command.module.enable.already-enabled", Color.RED, "That module is already enabled"),
 	COMMAND_MODULE_ENABLE_SUCCESS("command.module.enable.success", Color.GREEN, "Successfully enabled the module `{module}`"),
-	
+
 	COMMAND_MODULE_DISABLE_NOT_ENABLED("command.module.disable.not-enabled", Color.RED, "That module is not enabled"),
 	COMMAND_MODULE_DISABLE_SUCCESS("command.module.disable.success", Color.GREEN, "Successfully disabled the module `{module}`"),
 
 	COMMAND_MODULE_LIST_MESSAGE("command.module.list.message", Color.GRAY, "Available modules: ```\n{modules}\n```"),
-	
+
 	COMMAND_MINIGAME_PLAY_GAME_STARTED("command.minigame.play.game-started", Color.GREEN, "You started the game `{minigame}`. {multiplayer}"),
 	COMMAND_MINIGAME_JOIN_SHARED_GAME_STARTED("command.minigame.join.shared-game-started", Color.GREEN, "You joined the game `{minigame}`"),
 	COMMAND_MINIGAME_REMATCH_INVITED("command.minigame.rematch-invited", Color.GREEN, "Successfully invited `{user}` to a rematch in `{minigame}`. (Use `minigame leave` to leave)"),
@@ -270,12 +270,12 @@ public enum DefaultMessage implements MessageIdentifier {
 	COMMAND_AUTOCHANNEL_USERCHANNEL_ERROR("command.autochannel.userchannel-error", Color.RED, "You can't create an autochannel of an userchannel!"),
 	COMMAND_AUTOCHANNEL_ENABLED("command.autochannel.enabled", Color.GREEN, "Graphite will now automatically duplicate `{channel_name}` when someone joins"),
 	COMMAND_AUTOCHANNEL_DISABLED("command.autochannel.disabled", Color.GREEN, "`{channel_name}` is now no longer an AutoChannel"),
-	
+
 	COMMAND_EMOTEINFO_UNICODE("command.emoteinfo.unicode", Color.GRAY, "EMOTE INFORMATION\n\nEscaped Java: `{escaped_java}`\nEscaped HTML: `{escaped_html}`"),
 	COMMAND_EMOTEINFO_EMOTE("command.emoteinfo.emote", Color.GRAY, "Discord emote id: `{id}`\nRaw Discord emote: `{raw}`"),
-	
+
 	COMMAND_CATEGORYCOPY_SUCCESS("command.categorycopy.success", Color.GREEN, "Copied all permissions from `{from_category}` to `{to_category}`"),
-	
+
 	COMMAND_RECORD_NOT_IN_AUDIOCHANNEL("command.record.not-in-audiochannel", Color.RED, "You are currently not in an audio channel"),
 	COMMAND_RECORD_ALREADY_RECORDING("command.record.already-recording", Color.RED, "You already recording"),
 	COMMAND_RECORD_NOT_RECORDING("command.record.not-recording", Color.RED, "Oops should I record? Sorry but you don't start the recording"),
@@ -287,10 +287,10 @@ public enum DefaultMessage implements MessageIdentifier {
 	COMMAND_RECORD_RENAME_ALREADY_EXISTS("command.record.rename.already-exists", Color.RED, "A recording with the name already exists"),
 	COMMAND_RECORD_RENAME_MESSAGE("command.record.rename.message", Color.GRAY, "Renamed recording `{name}` to `{new_name}`"),
 	COMMAND_RECORD_RENAME_INVALID_NAME("command.record.rename.invalid-name", Color.RED, "The recording name may only contain alphanumerical symbols as well as `-`, `_` or ` `"),
-	
+
 	COMMAND_MONEY_NO_MONEY("command.money.no-money", Color.RED, "I don't think it's a good idea to talk about the amount of money you have (you're broke)"),
 	COMMAND_MONEY_MONEY("command.money.money", Color.GREEN, "You currently have `{amount}`{emote_dollaronen}"),
-	
+
 	COMMAND_GREETING_MESSAGE_SET("command.greeting.message-set", Color.GREEN, "New greeting message: `{message}`"),
 	COMMAND_GREETING_CURRENT_MESSAGE("command.greeting.current-message", Color.GREEN, "Current greeting message: `{message}`"),
 	COMMAND_GREETING_ALREADY_ENABLED("command.greeting.already-enabled", Color.RED, "Greeting message already enabled"),
@@ -298,7 +298,7 @@ public enum DefaultMessage implements MessageIdentifier {
 	COMMAND_GREETING_ALREADY_DISABLED("command.greeting.already-disabled", Color.RED, "Greeting message already disabled"),
 	COMMAND_GREETING_DISABLED("command.greeting.disabled", Color.RED, "Greeting message disabled"),
 	COMMAND_GREETING_CHANNEL_SET("command.greeting.channel-set", Color.GREEN, "Greeting channel set to: {channel}"),
-	
+
 	COMMAND_FAREWELL_MESSAGE_SET("command.farewell.message-set", Color.GREEN, "New farewell message: `{message}`"),
 	COMMAND_FAREWELL_CURRENT_MESSAGE("command.farewell.current-message", Color.GREEN, "Current farewell message: `{message}`"),
 	COMMAND_FAREWELL_ALREADY_ENABLED("command.farewell.already-enabled", Color.RED, "Farewell message already enabled"),
@@ -306,9 +306,9 @@ public enum DefaultMessage implements MessageIdentifier {
 	COMMAND_FAREWELL_ALREADY_DISABLED("command.farewell.already-disabled", Color.RED, "Farewell message already disabled"),
 	COMMAND_FAREWELL_DISABLED("command.farewell.disabled", Color.RED, "Farewell message disabled"),
 	COMMAND_FAREWELL_CHANNEL_SET("command.farewell.channel-set", Color.GREEN, "Farewell channel set to: {channel}"),
-	
+
 	COMMAND_COINFLIP_SIDE("command.coinflip.side", Color.GREEN, "The coin landed on its side (That's a 1 in 6000 chance for an American nickel!)"),
-	
+
 	COMMAND_AMONGUS_CREATE_MESSAGE("command.amongus.create.message", Color.GREEN, "Check your DMs"),
 	COMMAND_AMONGUS_CREATE_ALREADY_EXISTS("command.amongus.create.already-exists", Color.RED, "There's already an Among Us round running in your channel"),
 	COMMAND_AMONGUS_CREATE_NOT_IN_VOICECHANNEL("command.amongus.create.not-in-voicechannel", Color.RED, "You need to be in a voice channel to create an Among Us game"),
@@ -317,23 +317,23 @@ public enum DefaultMessage implements MessageIdentifier {
 	COMMAND_AMONGUS_LINK_INVALID_COLOR_OR_PLAYER("command.amongus.link.invalid-color-or-player", Color.RED, "Invalid color/player"),
 	COMMAND_AMONGUS_LINK_NOT_A_MEMBER("command.amongus.link.not-a-member", Color.RED, "Not a member of this server"),
 	COMMAND_AMONGUS_LINK_MEMBER_NOT_IN_VOICECHANNEL("command.amongus.link.member-not-in-voicechannel", Color.RED, "That member is not in the voice channel of the Among Us game"),
-	
+
 	COMMAND_TEXTCOMMANDS_ENABLE_MESSAGE("command.textcommands.enable.message", Color.GREEN, "Enabled text-based commands (Prefix: `{prefix}`)"),
 	COMMAND_TEXTCOMMANDS_DISABLE_MESSAGE("command.textcommands.disable.message", Color.RED, "Disabled text-based commands"),
-	
+
 	COMMAND_TIMEZONE_INVALID_TIMEZONE("command.timezone.invalid-timezone", Color.RED, "Invalid timezone"),
 	COMMAND_TIMEZONE_MESSAGE("command.timezone.message", Color.GREEN, "Successfully set the timezone of your server to `{timezone}`"),
-	
+
 	MINIGAME_WON("minigame.won", Color.GREEN, "You won and earned `{money}`{emote_dollaronen} :tada:"),
 	MINIGAME_LOST("minigame.lost", Color.RED, "You lost :cry:"),
 	MINIGAME_TIED("minigame.tied", Color.ORANGE, "It's a tie :cry:"),
 	MINIGAME_REMATCH_INVITE_DECLINED("minigame.rematch-invite-declined", Color.RED, "{user} has declined your rematch invitation"),
 	MINIGAME_REPLAY("minigame.replay", Color.YELLOW, "Do you want to play again?"),
-	
+
 	MINIGAME_MINESWEEPER_HELP("minigame.minesweeper.help", Color.WHITE, "You have two coordinates: x and y. The first emote that you click is the x coordinate and the second emote is the y coordinate. If you hit a bomb the game is over."),
 	MINIGAME_BATTLESHIPS_HELP("minigame.battleships.help", Color.WHITE, "Initially, you need to place your ships by first selecting the x (left-right)-coordinate, then the y (up-down)-coordinate, followed by the direction (right/down arrow).\nOnce both players have finished placing their ships, player one will start shooting, also by selecting the x and y coordinates, then it's player 2's turn, then player 1 again etc.\nThe top field provides information about the other player's field, the bottom one is your field. Once a ship is sunk, it will be displayed as :boom: emotes"),
 	MINIGAME_RPG_HELP("minigame.rpg.help", Color.WHITE, "RPG is a text-based game that you can play by typing actions into the chat. Try using `help` to see what you can do"),
-	
+
 	MINIGAME_BLACKJACK_FIRST_HAND_WON("minigame.blackjack.first-hand.won", Color.GREEN, "You won `{money}`{emote_dollaronen} with your first hand"),
 	MINIGAME_BLACKJACK_FIRST_HAND_LOST("minigame.blackjack.first-hand.lost", Color.RED, "You lost `{money}`{emote_dollaronen} with your first hand"),
 	MINIGAME_BLACKJACK_FIRST_HAND_TIED("minigame.blackjack.first-hand.tied", Color.YELLOW, "Your first hand tied and you got your `{money}`{emote_dollaronen} back"),
@@ -342,11 +342,11 @@ public enum DefaultMessage implements MessageIdentifier {
 	MINIGAME_BLACKJACK_SECOND_HAND_TIED("minigame.blackjack.second-hand.tied", Color.YELLOW, "Your second hand tied and you got your `{money}`{emote_dollaronen} back"),
 	MINIGAME_BLACKJACK_BET_LIMIT("minigame.blackjack.bet-limit", Color.RED, "Your bet has to be between `{min_bet}` and `{max_bet}`{emote_dollaronen}"),
 	MINIGAME_BLACKJACK_NOT_ENOUGH_MONEY("minigame.blackjack.not-enough-money", Color.RED, "You don't have enough money"),
-	
+
 	PATREON_PLEDGE_ADDED("patreon.pledge-added", Color.GREEN, "Thanks for your patreon pledge. You have bought the `{rank}` rank for `{price} {currency}`. You get `{keys}` extra keys for your friends. Share the power of Graphite 2.0. :hearts:"),
 	PATREON_PLEDGE_REMOVED("patreon.pledge-removed", Color.RED, "We're sad to see you removing your pledge from patreon. If you have any feedback for the bot, feel free to submit it on [our Discord]({discord_url})"),
 	PATREON_PLEDGE_CHANGED("patreon.pledge-changed", Color.ORANGE, "You have changed your patreon pledge from `{old_pledge}` to `{new_pledge}`. New price: `{price} {currency}`. Your extra keys: `{keys}` type `{prefix}premium keys` to show a list of all your keys."),
-	
+
 	CUSTOMCOMMAND_INVALID_ARG_TYPE("customcommand.invalid-arg-type", Color.RED, "Invalid argument type for argument `{arg}`, should be of type `{type}`"),
 
 	ERROR_NO_PERMISSION("error.no-permission", Color.RED, "{emote_error} You lack the required permission `{permission}`"),
@@ -384,16 +384,16 @@ public enum DefaultMessage implements MessageIdentifier {
 	ERROR_ARGUMENT_TYPE_INTEGER("error.argument-type.integer", Color.RED, "The value for parameter `{parameter}` must be a valid integer"),
 	ERROR_ARGUMENT_TYPE_NUMBER("error.argument-type.number", Color.RED, "The value for parameter `{parameter}` must be a valid number"),
 	ERROR_CHOICE_INVALID("error.choice-invalid", Color.RED, "The value for parameter `{parameter}` must be one of the following: `{choices}`"),
-	
-	OTHER_FOUND_AN_EASTEREGG("other.found-an-easteregg", Color.GREEN, "You have found an easter egg. Added {money}{emote_dollaronen} to your account balance"),
+
+	OTHER_FOUND_AN_EASTEREGG("other.found-an-easteregg", Color.GREEN, "You have found an easter egg"),
 	OTHER_JOINED_SUPPORT_QUEUE("other.joined-support-queue", Color.GRAY, "Hey, `{users}` needs support."),
 	OTHER_HEAVY_BUSY("other.heavy-busy", Color.YELLOW, "Your action has been queued for execution. Depending on the current load, this might take up to a few minutes :clock2:. If you want a faster queue try donating on [Patreon]({patreon})"),
 	OTHER_MULTIPLEX_DISABLED("other.multiplex-disabled", Color.YELLOW, "{emote_info}\nSince you've decided to add Graphite to your server, all other Multiplex bots have been disabled.\nDon't worry, all your settings have automatically been transferred to Graphite")
 	;
-	
+
 	private final Color color;
 	private final LocalizedString messageText;
-	
+
 	private DefaultMessage(String path, Color color, String fallback) {
 		this.color = color;
 		this.messageText = new LocalizedStringImpl(path, fallback);
@@ -408,13 +408,13 @@ public enum DefaultMessage implements MessageIdentifier {
 	public LocalizedString getMessageText() {
 		return messageText;
 	}
-	
+
 	public static DefaultMessage getByPath(String path) {
 		return Arrays.stream(values())
 				.filter(v -> v.getMessagePath().equals(path))
 				.findFirst().orElse(null);
 	}
-	
+
 	public static String getMentionTypesString(GraphiteLocalizable localizable, MentionType... types) {
 		return Arrays.stream(types)
 			.map(t -> {
@@ -439,5 +439,5 @@ public enum DefaultMessage implements MessageIdentifier {
 			})
 			.collect(Collectors.joining(", "));
 	}
-	
+
 }

@@ -11,8 +11,6 @@ import me.eglp.gv2.util.base.GraphiteOwning;
 import me.eglp.gv2.util.command.CommandSender;
 import me.eglp.gv2.util.jdaobject.JDAObject;
 import me.eglp.gv2.util.lang.GraphiteLocale;
-import me.eglp.gv2.util.premium.PremiumKey;
-import me.eglp.gv2.util.premium.PremiumKeyType;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.entities.User;
 import net.dv8tion.jda.api.exceptions.ErrorResponseException;
@@ -23,13 +21,13 @@ public class GraphiteUser implements CommandSender, GraphiteOwning, GraphiteLoca
 	private String userID;
 	private JDAObject<User> jdaUser;
 	private UserConfig config;
-	
+
 	public GraphiteUser(User user) {
 		userID = user.getId();
 		this.jdaUser = new JDAObject<>(jda -> jda.getUserById(userID), jda -> retrieveUser(jda, userID), o -> o.getId().equals(userID));
 		this.config = new UserConfig(this);
 	}
-	
+
 	private User retrieveUser(JDA jda, String userID) {
 		try {
 			return jda.retrieveUserById(userID).complete();
@@ -38,44 +36,44 @@ public class GraphiteUser implements CommandSender, GraphiteOwning, GraphiteLoca
 			throw e;
 		}
 	}
-	
+
 	public boolean isAvailable() {
 		return jdaUser.isAvailable();
 	}
-	
+
 	public JDAObject<User> getJDAUserObject() {
 		return jdaUser;
 	}
-	
+
 	public User getJDAUser() {
 		return jdaUser.get();
 	}
-	
+
 	public UserConfig getConfig() {
 		return config;
 	}
-	
+
 	public String getName() {
 		return getJDAUser().getName();
 	}
-	
+
 	public String getDiscriminator() {
 		return getJDAUser().getDiscriminator();
 	}
-	
+
 	public String getAsMention() {
 		return getJDAUser().getAsMention();
 	}
-	
+
 	@Override
 	public String getID() {
 		return userID;
 	}
-	
+
 	public boolean isBot() {
 		return getJDAUser().isBot();
 	}
-	
+
 	public GraphitePrivateChannel openPrivateChannel() {
 		try {
 			return new GraphitePrivateChannel(getJDAUser().openPrivateChannel().complete());
@@ -84,26 +82,12 @@ public class GraphiteUser implements CommandSender, GraphiteOwning, GraphiteLoca
 				ErrorResponse r = ((ErrorResponseException) e).getErrorResponse();
 				if(r == ErrorResponse.CANNOT_SEND_TO_USER) return null;
 			}
-			
+
 			GraphiteDebug.log(DebugCategory.JDA, e);
 			return null;
 		}
 	}
-	
-	public List<PremiumKey> getPremiumKeys() {
-		return Graphite.getPremium().getKeys(this);
-	}
-	
-	public List<PremiumKey> getPremiumKeys(PremiumKeyType type) {
-		return getPremiumKeys().stream().filter(k -> k.getKeyType().equals(type)).collect(Collectors.toList());
-	}
-	
-	public boolean redeemKey(PremiumKey key) {
-		if(key.getOwner() != null) return false;
-		key.setOwner(this);
-		return true;
-	}
-	
+
 	@Override
 	public boolean equals(Object o) {
 		if(!(o instanceof GraphiteUser)) return false;

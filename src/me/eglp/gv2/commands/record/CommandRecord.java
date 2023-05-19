@@ -33,7 +33,7 @@ import net.dv8tion.jda.api.utils.FileUpload;
 import net.dv8tion.jda.api.utils.messages.MessageCreateBuilder;
 
 public class CommandRecord extends ParentCommand {
-	
+
 	public static final String RECORD_STOP_TASK_ID = "record_stop";
 	public static final Pattern RECORDING_NAME_PATTERN = Pattern.compile("(?:\\w| |-){1,64}");
 
@@ -41,37 +41,37 @@ public class CommandRecord extends ParentCommand {
 		super(GraphiteModule.RECORD, CommandCategory.RECORD, "record");
 		addAlias("rec");
 		setDescription(DefaultLocaleString.COMMAND_RECORD_DESCRIPTION);
-		
+
 		addSubCommand(new Command(this, "start") {
-			
+
 			@Override
 			public void action(CommandInvokedEvent event) {
 				if(event.getMember().getCurrentAudioChannel() == null) {
 					DefaultMessage.COMMAND_RECORD_NOT_IN_AUDIOCHANNEL.reply(event);
 					return;
 				}
-				
+
 				GraphiteGuild g = event.getGuild();
-				
+
 				GuildRecorder rec = g.getRecorder();
 				if(rec.isRecording()) {
 					DefaultMessage.COMMAND_RECORD_ALREADY_RECORDING.reply(event);
 					return;
 				}
-				
+
 				Member selfMember = event.getGuild().getSelfMember().getJDAMember();
-				if(selfMember.getVoiceState() != null 
-						&& selfMember.getVoiceState().getChannel() != null 
+				if(selfMember.getVoiceState() != null
+						&& selfMember.getVoiceState().getChannel() != null
 						&& selfMember.getVoiceState().isDeafened()) {
 					event.getGuild().getJDAGuild().getAudioManager().setSelfDeafened(false);
 				}
-				
+
 				GraphiteAudioChannel vc = event.getMember().getCurrentAudioChannel();
 				rec.record(vc);
-				
+
 				DefaultMessage.COMMAND_RECORD_RECORDING.reply(event, "voice_channel", vc.getName(), "user", event.getAuthor().getAsMention());
 			}
-			
+
 			@Override
 			public List<OptionData> getOptions() {
 				return Collections.emptyList();
@@ -80,9 +80,9 @@ public class CommandRecord extends ParentCommand {
 		.setDescription(DefaultLocaleString.COMMAND_RECORD_START_DESCRIPTION)
 		.setUsage(DefaultLocaleString.COMMAND_RECORD_START_USAGE)
 		.setPermission(DefaultPermissions.RECORD_START);
-		
+
 		addSubCommand(new Command(this, "stop") {
-			
+
 			@Override
 			public void action(CommandInvokedEvent event) {
 				GuildRecorder rec = event.getGuild().getRecorder();
@@ -90,14 +90,14 @@ public class CommandRecord extends ParentCommand {
 					DefaultMessage.COMMAND_RECORD_NOT_RECORDING.reply(event);
 					return;
 				}
-				
-				GraphiteQueue q = Graphite.getQueue(event.getGuild());
+
+				GraphiteQueue q = Graphite.getQueue();
 				if(q.isHeavyBusy()) {
 					DefaultMessage.OTHER_HEAVY_BUSY.reply(event, "patreon", Graphite.getMainBotInfo().getLinks().getPatreon());
 				}
-				
+
 				DeferredReply reply = event.deferReply(DefaultLocaleString.COMMAND_RECORD_SAVING_RECORDING.getFor(event.getSender()));
-				
+
 				QueueTask<GuildAudioRecording> tm = q.queueHeavy(event.getGuild(), new GraphiteTaskInfo(RECORD_STOP_TASK_ID, "Processing recording (record stop)"), () -> rec.stop());
 				tm.thenAccept(r -> {
 					reply.editOriginal(DefaultMessage.COMMAND_RECORD_STOPPED_RECORDING.createEmbed(event.getSender(), "name", r.getName(), "webinterface", Graphite.getMainBotInfo().getWebsite().getWebinterfaceURL()));
@@ -107,7 +107,7 @@ public class CommandRecord extends ParentCommand {
 					return null;
 				});
 			}
-			
+
 			@Override
 			public List<OptionData> getOptions() {
 				return Collections.emptyList();
@@ -116,31 +116,31 @@ public class CommandRecord extends ParentCommand {
 		.setDescription(DefaultLocaleString.COMMAND_RECORD_STOP_DESCRIPTION)
 		.setUsage(DefaultLocaleString.COMMAND_RECORD_STOP_USAGE)
 		.setPermission(DefaultPermissions.RECORD_STOP);
-		
+
 		addSubCommand(new Command(this, "download") {
-			
+
 			@Override
 			public void action(CommandInvokedEvent event) {
 				if(event.isFromGuild() && !event.getTextChannel().canAttachFiles()) {
 					DefaultMessage.ERROR_LACKING_PERMISSION.reply(event, "permission", Permission.MESSAGE_ATTACH_FILES.getName());
 					return;
 				}
-				
+
 				String rName = (String) event.getOption("recording");
 				GuildAudioRecording r = event.getGuild().getRecordingsConfig().getRecording(rName);
 				if(r == null) {
 					DefaultMessage.COMMAND_RECORD_INVALID_RECORDING.reply(event);
 					return;
 				}
-				
+
 				if(r.getSize() > 8388608) {
 					DefaultMessage.COMMAND_RECORD_RECORDING_TOO_LARGE.reply(event, "webinterface", Graphite.getMainBotInfo().getWebsite().getWebinterfaceURL());
 					return;
 				}
-				
+
 				event.getChannel().sendFiles(FileUpload.fromData(r.loadAudioData(),  rName + ".mp3"));
 			}
-			
+
 			@Override
 			public List<OptionData> getOptions() {
 				return Arrays.asList(
@@ -151,9 +151,9 @@ public class CommandRecord extends ParentCommand {
 		.setDescription(DefaultLocaleString.COMMAND_RECORD_DOWNLOAD_DESCRIPTION)
 		.setUsage(DefaultLocaleString.COMMAND_RECORD_DOWNLOAD_USAGE)
 		.setPermission(DefaultPermissions.RECORD_DOWNLOAD);
-		
+
 		addSubCommand(new Command(this, "delete") {
-			
+
 			@Override
 			public void action(CommandInvokedEvent event) {
 				String rID = (String) event.getOption("recording");
@@ -162,11 +162,11 @@ public class CommandRecord extends ParentCommand {
 					DefaultMessage.COMMAND_RECORD_INVALID_RECORDING.reply(event);
 					return;
 				}
-				
+
 				r.remove();
 				DefaultMessage.COMMAND_RECORD_DELETED_RECORDING.reply(event, "id", rID);
 			}
-			
+
 			@Override
 			public List<OptionData> getOptions() {
 				return Arrays.asList(
@@ -177,28 +177,28 @@ public class CommandRecord extends ParentCommand {
 		.setDescription(DefaultLocaleString.COMMAND_RECORD_DELETE_DESCRIPTION)
 		.setUsage(DefaultLocaleString.COMMAND_RECORD_DELETE_USAGE)
 		.setPermission(DefaultPermissions.RECORD_DELETE);
-		
+
 		addSubCommand(new Command(this, "list") {
-			
+
 			@Override
 			public void action(CommandInvokedEvent event) {
 				List<GuildAudioRecording> recordings = event.getGuild().getRecordingsConfig().getRecordings();
-				
+
 				MessageCreateBuilder mb = new MessageCreateBuilder();
-				
+
 				mb.addContent(DefaultLocaleString.COMMAND_RECORD_LIST_TITLE.getFor(event.getSender(), "prefix", event.getGuild().getPrefix()));
 				mb.addContent("\n");
-				
+
 				if(!recordings.isEmpty()) {
 					StringBuilder sb = new StringBuilder();
 					List<String> s = recordings.stream().map(recording -> "[Channel: " + recording.getChannelName() + "] Name: " + recording.getName() + " (Length: " + GraphiteTimeParser.getTimestamp(recording.getAudioLength()) + ")\n").collect(Collectors.toList());
 					s.forEach(recording -> sb.append(recording));
 					mb.addContent("```\n" + sb + "\n```");
 				}
-				
+
 				event.reply(mb.build());
 			}
-			
+
 			@Override
 			public List<OptionData> getOptions() {
 				return Collections.emptyList();
@@ -207,35 +207,35 @@ public class CommandRecord extends ParentCommand {
 		.setDescription(DefaultLocaleString.COMMAND_RECORD_LIST_DESCRIPTION)
 		.setUsage(DefaultLocaleString.COMMAND_RECORD_LIST_USAGE)
 		.setPermission(DefaultPermissions.RECORD_LIST);
-		
+
 		addSubCommand(new Command(this, "rename") {
-			
+
 			@Override
 			public void action(CommandInvokedEvent event) {
 				String recording = (String) event.getOption("recording");
 				String newname = (String) event.getOption("new-name");
-				
+
 				if(!RECORDING_NAME_PATTERN.matcher(newname).matches()) {
 					DefaultMessage.COMMAND_RECORD_RENAME_INVALID_NAME.reply(event);
 					return;
 				}
-				
+
 				GraphiteGuild g = event.getGuild();
 				GuildRecordingsConfig rc = g.getRecordingsConfig();
 				if(rc.getRecording(recording) == null) {
 					DefaultMessage.COMMAND_RECORD_INVALID_RECORDING.reply(event);
 					return;
 				}
-				
+
 				if(rc.getRecording(newname) != null) {
 					DefaultMessage.COMMAND_RECORD_RENAME_ALREADY_EXISTS.reply(event);
 					return;
 				}
-				
+
 				rc.renameRecording(recording, newname);
 				DefaultMessage.COMMAND_RECORD_RENAME_MESSAGE.reply(event, "name", recording, "new_name", newname);
 			}
-			
+
 			@Override
 			public List<OptionData> getOptions() {
 				return Arrays.asList(
@@ -248,5 +248,5 @@ public class CommandRecord extends ParentCommand {
 		.setUsage(DefaultLocaleString.COMMAND_RECORD_RENAME_USAGE)
 		.setPermission(DefaultPermissions.RECORD_RENAME);
 	}
-	
+
 }

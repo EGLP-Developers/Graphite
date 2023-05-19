@@ -30,33 +30,31 @@ import me.eglp.gv2.util.mysql.SQLTable;
 public class UserConfig {
 
 	private GraphiteUser user;
-	
+
 	public UserConfig(GraphiteUser user) {
 		this.user = user;
 	}
-	
+
 	public GraphiteUser getUser() {
 		return user;
 	}
-	
+
 	public void addEasterEgg(EasterEgg easterEgg, boolean sendMessage) {
 		if(hasFoundEasterEgg(easterEgg)) return;
-		
-		easterEgg.apply(user);
-		
+
 		if(sendMessage) {
 			GraphitePrivateChannel ch = user.openPrivateChannel();
 			if(ch == null) return;
-			DefaultMessage.OTHER_FOUND_AN_EASTEREGG.sendMessage(ch, "money", String.valueOf(easterEgg.getMoney()));
+			DefaultMessage.OTHER_FOUND_AN_EASTEREGG.sendMessage(ch);
 		}
-		
+
 		Graphite.getMySQL().query("INSERT INTO users_eastereggs(UserId, EasterEgg) VALUES(?, ?)", user.getID(), easterEgg.name());
 	}
-	
+
 	public boolean hasFoundEasterEgg(EasterEgg easterEgg) {
 		return getFoundEasterEggs().contains(easterEgg);
 	}
-	
+
 	public List<EasterEgg> getFoundEasterEggs() {
 		return Graphite.getMySQL().queryArray(String.class, "SELECT EasterEgg FROM users_eastereggs WHERE UserId = ?", user.getID()).orElse(Collections.emptyList()).stream()
 				.map(s -> {
@@ -69,29 +67,29 @@ public class UserConfig {
 				.filter(Objects::nonNull)
 				.collect(Collectors.toList());
 	}
-	
+
 	public void addBlockedGuild(GraphiteGuild guild) {
 		if(isGuildBlocked(guild)) return;
 		Graphite.getMySQL().query("INSERT INTO users_blocked_scripts(UserId, GuildId) VALUES(?, ?)", user.getID(), guild.getID());
 	}
-	
+
 	public void removeBlockedGuild(GraphiteGuild guild) {
 		Graphite.getMySQL().query("DELETE FROM users_blocked_scripts WHERE UserId = ? AND GuildId = ?", user.getID(), guild.getID());
 	}
-	
+
 	public void removeAllBlockedGuilds() {
 		Graphite.getMySQL().query("DELETE FROM users_blocked_scripts WHERE UserId = ?", user.getID());
 	}
-	
+
 	public List<GraphiteGuild> getBlockedGuilds() {
 		return Graphite.getMySQL().queryArray(String.class, "SELECT GuildId FROM users_blocked_scripts WHERE UserId = ?", user.getID()).orElse(Collections.emptyList()).stream()
 				.map(Graphite::getGuild)
 				.filter(Objects::nonNull)
 				.collect(Collectors.toList());
 	}
-	
+
 	public boolean isGuildBlocked(GraphiteGuild guild) {
 		return getBlockedGuilds().contains(guild);
 	}
-	
+
 }

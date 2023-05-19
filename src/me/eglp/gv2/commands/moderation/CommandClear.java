@@ -19,7 +19,7 @@ import net.dv8tion.jda.api.interactions.commands.OptionType;
 import net.dv8tion.jda.api.interactions.commands.build.OptionData;
 
 public class CommandClear extends Command{
-	
+
 	private static final String CLEAR_TASK_ID = "clear";
 
 	public CommandClear() {
@@ -29,7 +29,7 @@ public class CommandClear extends Command{
 		setPermission(DefaultPermissions.MODERATION_CLEAR);
 		requirePermissions(Permission.MESSAGE_MANAGE);
 	}
-	
+
 	@Override
 	public void action(CommandInvokedEvent event) {
 		long amount = event.hasOption("amount") ? (long) event.getOption("amount") : 1;
@@ -37,12 +37,12 @@ public class CommandClear extends Command{
 			DefaultMessage.COMMAND_CLEAR_INVALID_AMOUNT.reply(event);
 			return;
 		}
-		
+
 		final int fAmount = (int) (event.isUsingSlashCommand() ? amount : amount + 1);
-		
+
 		DeferredReply r = event.deferReply();
 		String messageID = r.getMessage().getId();
-		GraphiteQueue q = Graphite.getQueue(event.getGuild());
+		GraphiteQueue q = Graphite.getQueue();
 		if(q.isHeavyBusy()) r.editOriginal(DefaultMessage.OTHER_HEAVY_BUSY.createEmbed(event.getSender(), "patreon", Graphite.getMainBotInfo().getLinks().getPatreon()));
 		q.queueHeavy(event.getGuild(), new GraphiteTaskInfo(CLEAR_TASK_ID, "Deleting messages (clear)"), () -> event.getTextChannel().clear((int) fAmount, messageID))
 			.thenRun(() -> r.editOriginal(DefaultMessage.COMMAND_CLEAR_SUCCESS.createEmbed(event.getSender(), "amount", ""+fAmount)));
@@ -54,5 +54,5 @@ public class CommandClear extends Command{
 				new OptionData(OptionType.INTEGER, "amount", "The amount of messages to remove", false)
 			);
 	}
-	
+
 }

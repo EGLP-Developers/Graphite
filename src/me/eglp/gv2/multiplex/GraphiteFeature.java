@@ -36,7 +36,6 @@ import me.eglp.gv2.commands.info.CommandEmoteInfo;
 import me.eglp.gv2.commands.info.CommandFAQ;
 import me.eglp.gv2.commands.info.CommandHelp;
 import me.eglp.gv2.commands.info.CommandInvite;
-import me.eglp.gv2.commands.info.CommandMoney;
 import me.eglp.gv2.commands.info.CommandUpvote;
 import me.eglp.gv2.commands.info.CommandUserInfo;
 import me.eglp.gv2.commands.info.CommandWhatAreYouDoing;
@@ -59,9 +58,6 @@ import me.eglp.gv2.commands.moderation.CommandUnban;
 import me.eglp.gv2.commands.moderation.CommandUnjail;
 import me.eglp.gv2.commands.moderation.CommandVoiceUnmute;
 import me.eglp.gv2.commands.music.CommandMusic;
-import me.eglp.gv2.commands.premium.CommandDonators;
-import me.eglp.gv2.commands.premium.CommandKeys;
-import me.eglp.gv2.commands.premium.CommandPremium;
 import me.eglp.gv2.commands.record.CommandRecord;
 import me.eglp.gv2.commands.reddit.CommandReddit;
 import me.eglp.gv2.commands.role_management.CommandAccessrole;
@@ -83,18 +79,15 @@ import me.mrletsplay.mrcore.json.converter.JSONPrimitiveStringConvertible;
 @JavaScriptEnum
 @JavaScriptClass(name = "Feature")
 public enum GraphiteFeature implements WebinterfaceObject, JSONPrimitiveStringConvertible {
-	
+
 	DEFAULT(
 		null,
 		new CommandHelp(),
 		new CommandAbout(),
 		new CommandPermission(),
-		new CommandPremium(),
 		new CommandInvite(),
 		new CommandPrefix(),
 		new CommandLocale(),
-		new CommandKeys(),
-		new CommandDonators(),
 		new CommandUpvote(),
 		new CommandWhatAreYouDoing(),
 		new CommandPurge(),
@@ -171,7 +164,6 @@ public enum GraphiteFeature implements WebinterfaceObject, JSONPrimitiveStringCo
 		new CommandFAQ(),
 		new CommandUserInfo(),
 		new CommandEmoteInfo(),
-		new CommandMoney(),
 		new CommandEasterEggs()
 	),
 	RECORD(
@@ -196,24 +188,24 @@ public enum GraphiteFeature implements WebinterfaceObject, JSONPrimitiveStringCo
 	),
 	MODULES(
 		null,
-		new CommandModule()	
+		new CommandModule()
 	),
 	CUSTOM_COMMANDS(DefaultPermissions.WEBINTERFACE_CUSTOM_COMMANDS),
 	STATISTICS(DefaultPermissions.WEBINTERFACE_STATISTICS),
 	;
-	
+
 	private String webinterfacePermission;
 	private final List<Command> commands;
-	
+
 	private GraphiteFeature(String webinterfacePermission, Command... commands) {
 		this.webinterfacePermission = webinterfacePermission;
 		this.commands = Arrays.asList(commands);
 	}
-	
+
 	public String getWebinterfacePermission() {
 		return webinterfacePermission;
 	}
-	
+
 	public List<Command> getCommands() {
 		return commands;
 	}
@@ -222,7 +214,7 @@ public enum GraphiteFeature implements WebinterfaceObject, JSONPrimitiveStringCo
 	public String toJSONPrimitive() {
 		return name();
 	}
-	
+
 	public static GraphiteFeature decodePrimitive(Object value) {
 		return valueOf((String) value);
 	}

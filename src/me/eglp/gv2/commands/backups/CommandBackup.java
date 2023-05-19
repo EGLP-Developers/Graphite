@@ -54,16 +54,16 @@ import net.dv8tion.jda.api.utils.FileUpload;
 import net.dv8tion.jda.api.utils.messages.MessageCreateBuilder;
 
 public class CommandBackup extends ParentCommand {
-	
+
 	public static final Pattern PARAMS_PATTERN = Pattern.compile("([+-])\\[(.*?)\\]");
 	public static final Pattern BACKUP_NAME_PATTERN = Pattern.compile("(?:\\w| |-){1,64}");
 
 	public CommandBackup() {
 		super(GraphiteModule.BACKUPS, CommandCategory.BACKUPS, "backup");
 		setDescription(DefaultLocaleString.COMMAND_BACKUP_DESCRIPTION);
-		
+
 		addSubCommand(new Command(this, "create") {
-			
+
 			@Override
 			public void action(CommandInvokedEvent event) {
 				EmbedBuilder eb = new EmbedBuilder();
@@ -73,9 +73,9 @@ public class CommandBackup extends ParentCommand {
 					event.reply(eb.build());
 					return;
 				}
-				
+
 				int messageCount = 20;
-				
+
 				if(event.hasOption("messages")) {
 					long messages = (long) event.getOption("messages");
 					if(messages < 0 || messages > 100) {
@@ -86,27 +86,27 @@ public class CommandBackup extends ParentCommand {
 					}
 					messageCount = (int) messages;
 				}
-				
+
 				eb.setAuthor(
 						DefaultLocaleString.COMMAND_BACKUP_CREATING_TITLE.getFor(event.getSender()),
 						null,
 						GraphiteIcon.LOADING_GIF.getPath());
 				eb.setDescription(DefaultLocaleString.COMMAND_BACKUP_CREATING_VALUE.getFor(event.getSender()));
 				DeferredReply d = event.deferReply(eb.build());
-				
+
 				KeyPair kp = messageCount > 0 ? GraphiteCrypto.generateKeyPair() : null;
 				GuildBackup b = event.getGuild().createBackup(kp != null ? kp.getPublic() : null, messageCount, false);
-				
+
 				if(kp != null) {
 					byte[] privateKeyData = kp.getPrivate().getEncoded();
-					
+
 					MessageEmbed embed = new EmbedBuilder()
 							.setDescription(DefaultLocaleString.COMMAND_BACKUP_CREATE_KEY_DESCRIPTION.getFor(event.getSender(), "faq", Graphite.getMainBotInfo().getWebsite().getFAQURL()))
 							.setColor(Color.ORANGE)
 							.build();
-					
+
 					FileUpload file = FileUpload.fromData(privateKeyData, "backup-" + event.getGuild().getID() + "-" + b.getName() + ".key");
-					
+
 					event.getAuthorChannel().getJDAChannel()
 						.sendFiles(file)
 						.setEmbeds(embed)
@@ -116,18 +116,18 @@ public class CommandBackup extends ParentCommand {
 										.setEmbeds(embed)
 										.queue()));
 				}
-				
+
 				EmbedBuilder eb2 = new EmbedBuilder();
 				eb2.setAuthor(
 						DefaultLocaleString.COMMAND_BACKUP_CREATED_TITLE.getFor(event.getSender()),
 						null,
 						GraphiteIcon.CHECKMARK.getPath());
 				eb2.setDescription(DefaultLocaleString.COMMAND_BACKUP_CREATED_VALUE.getFor(event.getSender(), "backup_name", b.getName()));
-				eb2.addField(DefaultLocaleString.COMMAND_BACKUP_CREATED_FIELD_1_TITLE.getFor(event.getSender()), 
+				eb2.addField(DefaultLocaleString.COMMAND_BACKUP_CREATED_FIELD_1_TITLE.getFor(event.getSender()),
 						DefaultLocaleString.COMMAND_BACKUP_CREATED_FIELD_1_VALUE.getFor(event.getSender(), "prefix", event.getPrefixUsed(), "webinterface", Graphite.getMainBotInfo().getWebsite().getWebinterfaceURL()), false);
 				d.editOriginal(eb2.build());
 			}
-			
+
 			@Override
 			public List<OptionData> getOptions() {
 				return Arrays.asList(
@@ -138,9 +138,9 @@ public class CommandBackup extends ParentCommand {
 		.setDescription(DefaultLocaleString.COMMAND_BACKUP_CREATE_DESCRIPTION)
 		.setUsage(DefaultLocaleString.COMMAND_BACKUP_CREATE_USAGE)
 		.setPermission(DefaultPermissions.BACKUP_CREATE);
-		
+
 		addSubCommand(new Command(this, "cancel") {
-			
+
 			@Override
 			public void action(CommandInvokedEvent event) {
 				EmbedBuilder eb = new EmbedBuilder();
@@ -157,7 +157,7 @@ public class CommandBackup extends ParentCommand {
 				eb.setDescription(DefaultLocaleString.COMMAND_BACKUP_CANCELLED_VALUE.getFor(event.getSender()));
 				event.reply(eb.build());
 			}
-			
+
 			@Override
 			public List<OptionData> getOptions() {
 				return Collections.emptyList();
@@ -167,14 +167,14 @@ public class CommandBackup extends ParentCommand {
 		.setUsage(DefaultLocaleString.COMMAND_BACKUP_CANCEL_USAGE)
 		.setPermission(DefaultPermissions.BACKUP_CANCEL)
 		.setBypassQueue(true);
-		
+
 		Command restore = addSubCommand(new Command(this, "restore") {
-			
+
 			@Override
 			public void action(CommandInvokedEvent event) {
 				String name = (String) event.getOption("name");
 				Attachment key = (Attachment) event.getOption("key");
-				
+
 				long cd = event.getGuild().getBackupCooldown();
 				if(cd > 0) {
 					EmbedBuilder eb = new EmbedBuilder();
@@ -183,7 +183,7 @@ public class CommandBackup extends ParentCommand {
 					event.replyEphemeral(eb.build());
 					return;
 				}
-				
+
 				GuildBackup b = event.getGuild().getBackupByName(name);
 				if(b == null) {
 					EmbedBuilder eb = new EmbedBuilder();
@@ -194,11 +194,11 @@ public class CommandBackup extends ParentCommand {
 				}
 
 				PrivateKey pk = null;
-				
+
 				if(key != null) {
 					byte[] bs = HttpRequest.createGet(key.getUrl()).execute().asRaw();
 					pk = GraphiteCrypto.decodePrivateKey(bs);
-					
+
 					if(pk == null) {
 						EmbedBuilder eb = new EmbedBuilder();
 						eb.setAuthor(DefaultLocaleString.COMMAND_BACKUP_INVALID_KEY_TITLE.getFor(event.getSender()), null, GraphiteIcon.ERROR.getPath());
@@ -206,7 +206,7 @@ public class CommandBackup extends ParentCommand {
 						event.replyEphemeral(eb.build());
 						return;
 					}
-					
+
 					if(!b.isCorrectKey(pk)) {
 						EmbedBuilder eb = new EmbedBuilder();
 						eb.setAuthor(DefaultLocaleString.COMMAND_BACKUP_INVALID_KEY_TITLE.getFor(event.getSender()), null, GraphiteIcon.ERROR.getPath());
@@ -215,9 +215,9 @@ public class CommandBackup extends ParentCommand {
 						return;
 					}
 				}
-				
+
 				final PrivateKey decryptionKey = pk;
-				
+
 				selectParameters(event.getAuthor(), event, decryptionKey != null, false, params -> {
 					if(params.contains(RestoreSelector.DISCORD_ROLES) && !event.getGuild().isAboveUserRoles()) {
 						EmbedBuilder eb = new EmbedBuilder();
@@ -226,8 +226,8 @@ public class CommandBackup extends ParentCommand {
 						event.replyEphemeral(eb.build());
 						return;
 					}
-					
-					GraphiteQueue q = Graphite.getQueue(event.getGuild());
+
+					GraphiteQueue q = Graphite.getQueue();
 					if(q.isHeavyBusy()) DefaultMessage.OTHER_HEAVY_BUSY.reply(event, "patreon", Graphite.getMainBotInfo().getLinks().getPatreon());
 					QueueTask<Long> tm = q.queueHeavy(event.getGuild(), new GraphiteTaskInfo(GuildBackup.TASK_ID,  "Restoring backup (backup restore)"), () -> b.restore(event.getGuild(), decryptionKey, params));
 					tm.thenAccept(t -> {
@@ -247,7 +247,7 @@ public class CommandBackup extends ParentCommand {
 					});
 				});
 			}
-			
+
 			@Override
 			public List<OptionData> getOptions() {
 				return Arrays.asList(
@@ -266,15 +266,15 @@ public class CommandBackup extends ParentCommand {
 		}));
 
 		Command copy = addSubCommand(new Command(this, "copy") {
-			
+
 			@Override
 			public void action(CommandInvokedEvent event) {
 				String fromID = (String) event.getOption("from");
 				String name = (String) event.getOption("name");
 				Attachment key = (Attachment) event.getOption("key");
-				
+
 				GraphiteGuild from = Graphite.getGuild(fromID);
-				
+
 				if(from == null) {
 					EmbedBuilder eb = new EmbedBuilder();
 					eb.setAuthor(DefaultLocaleString.COMMAND_BACKUP_COPY_CANT_FIND_SERVER_TITLE.getFor(event.getSender()), null, GraphiteIcon.ERROR.getPath());
@@ -282,7 +282,7 @@ public class CommandBackup extends ParentCommand {
 					event.replyEphemeral(eb.build());
 					return;
 				}
-				
+
 				boolean hasPerm = from.getPermissionManager().hasPermission(event.getAuthor(), DefaultPermissions.BACKUP_COPY_TO_OTHER);
 				if(!hasPerm) {
 					EmbedBuilder eb = new EmbedBuilder();
@@ -291,7 +291,7 @@ public class CommandBackup extends ParentCommand {
 					event.replyEphemeral(eb.build());
 					return;
 				}
-				
+
 				GuildBackup b = from.getBackupByName(name);
 				if(b == null) {
 					EmbedBuilder eb = new EmbedBuilder();
@@ -300,13 +300,13 @@ public class CommandBackup extends ParentCommand {
 					event.replyEphemeral(eb.build());
 					return;
 				}
-				
+
 				PrivateKey pk = null;
-				
+
 				if(key != null) {
 					byte[] bs = HttpRequest.createGet(key.getUrl()).execute().asRaw();
 					pk = GraphiteCrypto.decodePrivateKey(bs);
-					
+
 					if(pk == null) {
 						EmbedBuilder eb = new EmbedBuilder();
 						eb.setAuthor(DefaultLocaleString.COMMAND_BACKUP_INVALID_KEY_TITLE.getFor(event.getSender()), null, GraphiteIcon.ERROR.getPath());
@@ -314,7 +314,7 @@ public class CommandBackup extends ParentCommand {
 						event.replyEphemeral(eb.build());
 						return;
 					}
-					
+
 					if(!b.isCorrectKey(pk)) {
 						EmbedBuilder eb = new EmbedBuilder();
 						eb.setAuthor(DefaultLocaleString.COMMAND_BACKUP_INVALID_KEY_TITLE.getFor(event.getSender()), null, GraphiteIcon.ERROR.getPath());
@@ -323,9 +323,9 @@ public class CommandBackup extends ParentCommand {
 						return;
 					}
 				}
-				
+
 				final PrivateKey decryptionKey = pk;
-				
+
 				EmbedBuilder eb = new EmbedBuilder();
 				eb.setAuthor(
 						DefaultLocaleString.COMMAND_BACKUP_CREATING_TITLE.getFor(event.getSender()),
@@ -333,20 +333,20 @@ public class CommandBackup extends ParentCommand {
 						GraphiteIcon.LOADING_GIF.getPath());
 				eb.setDescription(DefaultLocaleString.COMMAND_BACKUP_CREATING_VALUE.getFor(event.getSender()));
 				DeferredReply d = event.deferReply(eb.build());
-				
+
 				KeyPair kp = decryptionKey != null && b.hasMessagesData() ? GraphiteCrypto.generateKeyPair() : null;
 				GuildBackup copy = GuildBackup.saveCopy(event.getGuild(), b, decryptionKey, kp != null ? kp.getPublic() : null);
-				
+
 				if(kp != null) {
 					byte[] privateKeyData = kp.getPrivate().getEncoded();
-					
+
 					MessageEmbed embed = new EmbedBuilder()
 							.setDescription(DefaultLocaleString.COMMAND_BACKUP_CREATE_KEY_DESCRIPTION.getFor(event.getSender(), "faq", Graphite.getMainBotInfo().getWebsite().getFAQURL()))
 							.setColor(Color.ORANGE)
 							.build();
-					
+
 					FileUpload file = FileUpload.fromData(privateKeyData, "backup-" + event.getGuild().getID() + "-" + copy.getName() + ".key");
-					
+
 					event.getAuthorChannel().getJDAChannel()
 						.sendFiles(file)
 						.setEmbeds(embed)
@@ -356,18 +356,18 @@ public class CommandBackup extends ParentCommand {
 										.setEmbeds(embed)
 										.queue()));
 				}
-				
+
 				EmbedBuilder eb2 = new EmbedBuilder();
 				eb2.setAuthor(
 						DefaultLocaleString.COMMAND_BACKUP_COPIED_TITLE.getFor(event.getSender()),
 						null,
 						GraphiteIcon.CHECKMARK.getPath());
 				eb2.setDescription(DefaultLocaleString.COMMAND_BACKUP_CREATED_VALUE.getFor(event.getSender(), "backup_name", copy.getName()));
-				eb2.addField(DefaultLocaleString.COMMAND_BACKUP_CREATED_FIELD_1_TITLE.getFor(event.getSender()), 
+				eb2.addField(DefaultLocaleString.COMMAND_BACKUP_CREATED_FIELD_1_TITLE.getFor(event.getSender()),
 						DefaultLocaleString.COMMAND_BACKUP_CREATED_FIELD_1_VALUE.getFor(event.getSender(), "prefix", event.getPrefixUsed(), "webinterface", Graphite.getMainBotInfo().getWebsite().getWebinterfaceURL()), false);
 				d.editOriginal(eb2.build());
 			}
-			
+
 			@Override
 			public List<OptionData> getOptions() {
 				return Arrays.asList(
@@ -392,9 +392,9 @@ public class CommandBackup extends ParentCommand {
 					.map(g -> new Choice(g.getName(), g.getID()))
 					.collect(Collectors.toList());
 		});
-		
+
 		addSubCommand(new Command(this, "delete") {
-			
+
 			@Override
 			public void action(CommandInvokedEvent event) {
 				EmbedBuilder eb = new EmbedBuilder();
@@ -409,21 +409,21 @@ public class CommandBackup extends ParentCommand {
 				eb.setAuthor(DefaultLocaleString.COMMAND_BACKUP_DELETED.getFor(event.getSender()), null, GraphiteIcon.CHECKMARK.getPath());
 				event.reply(eb.build());
 			}
-			
+
 			@Override
 			public List<OptionData> getOptions() {
 				return Arrays.asList(
 						new OptionData(OptionType.STRING, "backup", "The backup you want to delete", true)
 					);
 			}
-			
+
 		})
 		.setDescription(DefaultLocaleString.COMMAND_BACKUP_DELETE_DESCRIPTION)
 		.setUsage(DefaultLocaleString.COMMAND_BACKUP_DELETE_USAGE)
 		.setPermission(DefaultPermissions.BACKUP_DELETE);
-		
+
 		addSubCommand(new Command(this, "info") {
-			
+
 			@Override
 			public void action(CommandInvokedEvent event) {
 				EmbedBuilder eb = new EmbedBuilder();
@@ -434,17 +434,17 @@ public class CommandBackup extends ParentCommand {
 					event.reply(eb.build());
 					return;
 				}
-				
+
 				eb.setAuthor(DefaultLocaleString.COMMAND_BACKUP_INFO_MESSAGE_AUTHOR.getFor(event.getSender(), "backup_name", b.getName()), null, GraphiteIcon.INFORMATION.getPath());
-				
+
 				ChannelsData channels = b.loadChannelsData();
 				RolesData rolesD = b.loadRolesData();
-				
+
 				String tlTc = channels.getTextChannels().isEmpty() ? "" : channels.getTextChannels().stream().map(m -> "# " + m.getName()).collect(Collectors.joining("\n", "", "\n"));
 				String tlNc = channels.getNewsChannels().isEmpty() ? "" : channels.getNewsChannels().stream().map(m -> JDAEmote.MEGA.getUnicode() + " " + m.getName()).collect(Collectors.joining("\n", "", "\n"));
 				String tlVc = channels.getVoiceChannels().isEmpty() ? "" : channels.getVoiceChannels().stream().map(m -> JDAEmote.LOUD_SOUND.getUnicode() + " " + m.getName()).collect(Collectors.joining("\n", "", "\n"));
 				String tlSc = channels.getStageChannels().isEmpty() ? "" : channels.getStageChannels().stream().map(m -> JDAEmote.MICROPHONE.getUnicode() + " " + m.getName()).collect(Collectors.joining("\n", "", "\n"));
-				
+
 				String cats = channels.getCategories().stream().map(m -> {
 						return
 								"> " + m.getName() + "\n" +
@@ -452,26 +452,26 @@ public class CommandBackup extends ParentCommand {
 								(m.getNewsChannels().isEmpty() ? "" : m.getNewsChannels().stream().map(c -> "    " + JDAEmote.MEGA.getUnicode() + " " + c.getName()).collect(Collectors.joining("\n", "", "\n"))) +
 								(m.getVoiceChannels().isEmpty() ? "" : m.getVoiceChannels().stream().map(c -> "    " + JDAEmote.LOUD_SOUND.getUnicode() + " " + c.getName()).collect(Collectors.joining("\n", "", "\n"))) +
 								(m.getStageChannels().isEmpty() ? "" : m.getStageChannels().stream().map(c -> "    " + JDAEmote.MICROPHONE.getUnicode() + " " + c.getName()).collect(Collectors.joining("\n", "", "\n")));
-					}).collect(Collectors.joining());	
-				
+					}).collect(Collectors.joining());
+
 				String txt = tlTc + tlNc + tlVc + tlSc + cats;
-				
-				eb.addField(DefaultLocaleString.COMMAND_BACKUP_INFO_CHANNEL_FIELD_NAME.getFor(event.getSender()), 
+
+				eb.addField(DefaultLocaleString.COMMAND_BACKUP_INFO_CHANNEL_FIELD_NAME.getFor(event.getSender()),
 							"```" + (txt.length() > MessageEmbed.VALUE_MAX_LENGTH - 6 ? txt.substring(0, MessageEmbed.VALUE_MAX_LENGTH - 9) + "..." : txt) + "```",
 							true);
-				
+
 				eb.addBlankField(true);
-				
+
 				String roles = rolesD.getRoles().stream().map(m -> m.getName()).collect(Collectors.joining("\n"));
-				
+
 				String txt2 = DefaultLocaleString.COMMAND_BACKUP_INFO_ROLE_FIELD_VALUE.getFor(event.getSender(), "roles", roles);
-				
+
 				eb.addField(DefaultLocaleString.COMMAND_BACKUP_INFO_ROLE_FIELD_NAME.getFor(event.getSender()),
 						"```" + (txt2.length() > MessageEmbed.VALUE_MAX_LENGTH - 6 ? txt2.substring(0, MessageEmbed.VALUE_MAX_LENGTH - 9) + "..." : txt2) + "```",
 							true);
 				event.reply(eb.build());
 			}
-			
+
 			@Override
 			public List<OptionData> getOptions() {
 				return Arrays.asList(
@@ -482,9 +482,9 @@ public class CommandBackup extends ParentCommand {
 		.setDescription(DefaultLocaleString.COMMAND_BACKUP_INFO_DESCRIPTION)
 		.setUsage(DefaultLocaleString.COMMAND_BACKUP_INFO_USAGE)
 		.setPermission(DefaultPermissions.BACKUP_INFO);
-		
+
 		addSubCommand(new Command(this, "list") {
-			
+
 			@Override
 			public void action(CommandInvokedEvent event) {
 				EmbedBuilder eb = new EmbedBuilder();
@@ -496,19 +496,19 @@ public class CommandBackup extends ParentCommand {
 				}
 				event.reply(DefaultLocaleString.COMMAND_BACKUP_LIST_LIST.getFor(event.getSender(), "backups", backups.stream().map(GuildBackup::getName).collect(Collectors.joining("\n"))));
 			}
-			
+
 			@Override
 			public List<OptionData> getOptions() {
 				return Collections.emptyList();
 			}
-			
+
 		})
 		.setDescription(DefaultLocaleString.COMMAND_BACKUP_LIST_DESCRIPTION)
 		.setUsage(DefaultLocaleString.COMMAND_BACKUP_LIST_USAGE)
 		.setPermission(DefaultPermissions.BACKUP_LIST);
-		
+
 		addSubCommand(new Command(this, "interval") {
-			
+
 			@Override
 			public void action(CommandInvokedEvent event) {
 				EmbedBuilder eb = new EmbedBuilder();
@@ -518,13 +518,13 @@ public class CommandBackup extends ParentCommand {
 					event.reply(eb.build());
 					return;
 				}
-				
+
 				event.getGuild().getBackupConfig().setBackupInterval((int) intv);
 				eb.setAuthor(DefaultLocaleString.COMMAND_BACKUP_INTERVAL_TITLE.getFor(event.getSender()), null, GraphiteIcon.CHECKMARK.getPath());
 				eb.setDescription(DefaultLocaleString.COMMAND_BACKUP_INTERVAL_VALUE.getFor(event.getSender(), "interval", String.valueOf(intv)));
 				event.reply(eb.build());
 			}
-			
+
 			@Override
 			public List<OptionData> getOptions() {
 				return Arrays.asList(
@@ -540,34 +540,34 @@ public class CommandBackup extends ParentCommand {
 		.setDescription(DefaultLocaleString.COMMAND_BACKUP_INTERVAL_DESCRIPTION)
 		.setUsage(DefaultLocaleString.COMMAND_BACKUP_INTERVAL_USAGE)
 		.setPermission(DefaultPermissions.BACKUP_INTERVAL);
-		
+
 		addSubCommand(new Command(this, "rename") {
-			
+
 			@Override
 			public void action(CommandInvokedEvent event) {
 				String name = (String) event.getOption("name");
 				String newName = (String) event.getOption("new-name");
-				
+
 				if(!BACKUP_NAME_PATTERN.matcher(newName).matches()) {
 					DefaultMessage.COMMAND_BACKUP_RENAME_INVALID_NAME.reply(event);
 					return;
 				}
-				
+
 				GraphiteGuild g = event.getGuild();
 				if(GuildBackup.getBackupByName(g, name) == null) {
 					DefaultMessage.COMMAND_BACKUP_INVALID_BACKUP.reply(event);
 					return;
 				}
-				
+
 				if(GuildBackup.getBackupByName(g, newName) != null) {
 					DefaultMessage.COMMAND_BACKUP_RENAME_ALREADY_EXISTS.reply(event);
 					return;
 				}
-				
+
 				GuildBackup.renameBackup(g, name, newName);
 				DefaultMessage.COMMAND_BACKUP_RENAME_MESSAGE.reply(event, "name", name, "new_name", newName);
 			}
-			
+
 			@Override
 			public List<OptionData> getOptions() {
 				return Arrays.asList(
@@ -575,19 +575,19 @@ public class CommandBackup extends ParentCommand {
 						new OptionData(OptionType.STRING, "new-name", "The new backup name", true)
 					);
 			}
-			
+
 		})
 		.setDescription(DefaultLocaleString.COMMAND_BACKUP_RENAME_DESCRIPTION)
 		.setUsage(DefaultLocaleString.COMMAND_BACKUP_RENAME_USAGE)
 		.setPermission(DefaultPermissions.BACKUP_RENAME);
-		
+
 		addSubCommand(new CommandBackupTemplate(this));
 	}
-	
+
 	public static void selectParameters(GraphiteUser user, CommandInvokedEvent event, boolean keyAttached, boolean isTemplate, Consumer<EnumSet<RestoreSelector>> callback) {
 		EnumSet<RestoreSelector> params = EnumSet.allOf(RestoreSelector.class);
 		if(isTemplate) params.removeAll(CommandBackupTemplate.FORBIDDEN_PARAMETERS);
-		
+
 		Supplier<String> message = () -> {
 			List<String> lines = new ArrayList<>();
 			int idx = 1;
@@ -597,35 +597,35 @@ public class CommandBackup extends ParentCommand {
 				if(chK) e = JDAEmote.X;
 				EnumSet<RestoreSelector> missing = pr.getMissingRequirements(params);
 				if(chK || !missing.isEmpty()) e = JDAEmote.NO_ENTRY_SIGN;
-				
+
 				String line = e.getUnicode() + " " + idx + ". " + pr.getFriendlyName();
-				
+
 				if(chK) {
 					line += " (No key attached)";
 				}else if(!missing.isEmpty()) {
 					line += " (requires " + missing.stream().map(p -> p.getFriendlyName()).collect(Collectors.joining(", ")) + ")";
 				}
-				
+
 				lines.add(line);
 				idx++;
 			}
-			
+
 			return String.format(DefaultLocaleString.COMMAND_BACKUP_DISCLAIMER.getFor(event.getGuild()) + "\n```\nSelect parameters:\n%s\n```", lines.stream().collect(Collectors.joining("\n")));
 		};
-		
+
 		ButtonInput<NullableOptional<RestoreSelector>> pI = new ButtonInput<NullableOptional<RestoreSelector>>(user, ev -> {
 			if(!ev.getItem().isPresent()) {
 				ev.markCancelled();
 				return;
 			}
-			
+
 			RestoreSelector s = ev.getItem().get();
 			if(s == null) {
 				callback.accept(params);
 				ev.markDone();
 				return;
 			}
-			
+
 			if(s == RestoreSelector.DISCORD_CHAT_HISTORY && !keyAttached) return;
 			if(!params.remove(s)) params.add(s);
 			ev.getJDAEvent().editMessage(message.get()).queue();
@@ -644,5 +644,5 @@ public class CommandBackup extends ParentCommand {
 		pI.addOption(ButtonStyle.DANGER, "Cancel", NullableOptional.empty());
 		pI.replyEphemeral(event, new MessageCreateBuilder().setContent(message.get()));
 	}
-	
+
 }

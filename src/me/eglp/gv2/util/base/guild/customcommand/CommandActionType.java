@@ -90,10 +90,10 @@ public enum CommandActionType implements WebinterfaceObject, JSONPrimitiveString
 			new CommandActionProperty("color", "Color", CommandParameterType.COLOR)
 		),
 	EXECUTE_COMMAND(
-			"Execute command", 
+			"Execute command",
 			event -> {
 				String redirectedCommand = (String) event.getParameter("command");
-				
+
 				Command c = CommandHandler.getCommandExact(redirectedCommand);
 				if(c == null) throw new CustomCommandExecutionException(event, "Unknown command");
 
@@ -109,13 +109,13 @@ public enum CommandActionType implements WebinterfaceObject, JSONPrimitiveString
 			new CommandActionProperty("command", "Command", CommandParameterType.STRING)
 		),
 	EXECUTE_COMMAND_WITH_ARGUMENTS(
-			"Execute command with arguments", 
+			"Execute command with arguments",
 			event -> {
 				String redirectedCommand = (String) event.getParameter("command");
-				
+
 				Command c = CommandHandler.getCommandExact(redirectedCommand);
 				if(c == null) throw new CustomCommandExecutionException(event, "Unknown command");
-				
+
 				CommandInvokedEvent origEv = event.getCommandEvent();
 				ParsedCommand parsed = CommandParser.parse(origEv.getGuild(), origEv.getPrefixUsed(), (String) event.getParameter("arguments"));
 				Map<String, Object> options = new HashMap<>();
@@ -135,7 +135,7 @@ public enum CommandActionType implements WebinterfaceObject, JSONPrimitiveString
 				if(!event.getGuild().canCreateBackup()) {
 					throw new CustomCommandExecutionException(event, "Backup limit reached");
 				}
-				
+
 				event.getGuild().createBackup(null, 0, false);
 			}
 		),
@@ -148,7 +148,7 @@ public enum CommandActionType implements WebinterfaceObject, JSONPrimitiveString
 				String bid = (String) event.getParameter("backup-id");
 				GuildBackup bu = event.getGuild().getBackupByName(bid);
 				if(bu == null) throw new CustomCommandExecutionException(event, "Invalid backup id");
-				GraphiteQueue q = Graphite.getQueue(event.getGuild());
+				GraphiteQueue q = Graphite.getQueue();
 				if(q.isHeavyBusy()) throw new CustomCommandExecutionException(event, "Heavy queue is busy");
 				q.queueHeavy(event.getGuild(), new GraphiteTaskInfo(GuildBackup.TASK_ID, "Restoring backup (CustomCommand)"), () -> {
 					try {
@@ -230,7 +230,7 @@ public enum CommandActionType implements WebinterfaceObject, JSONPrimitiveString
 				String data = (String) event.getParameter("data");
 				GraphiteScript s = event.getGuild().getScripts().getScript(sc);
 				if(s == null) throw new CustomCommandExecutionException(event, "Script \"" + sc + "\" doesn't exist or failed to load");
-				GraphiteQueue q = Graphite.getQueue(event.getGuild());
+				GraphiteQueue q = Graphite.getQueue();
 				if(q.isHeavyBusy()) throw new CustomCommandExecutionException(event, "Heavy queue is busy");
 				q.queueHeavy(event.getGuild(), new GraphiteTaskInfo("run-script", "Executing script (CustomCommand)"), () -> {
 					try {
@@ -271,22 +271,22 @@ public enum CommandActionType implements WebinterfaceObject, JSONPrimitiveString
 
 	@JavaScriptValue(getter = "getDescription")
 	private String description;
-	
+
 	private Consumer<CustomCommandInvokedEvent> run;
-	
+
 	@JavaScriptValue(getter = "getProperties")
 	private List<CommandActionProperty> properties;
-	
+
 	private CommandActionType(String description, Consumer<CustomCommandInvokedEvent> run, CommandActionProperty... properties) {
 		this.description = description;
 		this.run = run;
 		this.properties = Arrays.asList(properties);
 	}
-	
+
 	public String getDescription() {
 		return description;
 	}
-	
+
 	public void run(CustomCommandInvokedEvent event) throws CustomCommandExecutionException {
 		run.accept(event);
 	}
@@ -303,11 +303,11 @@ public enum CommandActionType implements WebinterfaceObject, JSONPrimitiveString
 	public String toJSONPrimitive() {
 		return name();
 	}
-	
+
 	public static CommandActionType decodePrimitive(Object  value) {
 		return valueOf((String) value);
 	}
-	
+
 	@SuppressWarnings("unchecked")
 	private static <T> T[] combine(T[] a, T... b) {
 		T[] a2 = (T[]) Array.newInstance(a.getClass().getComponentType(), a.length + b.length);
@@ -315,5 +315,5 @@ public enum CommandActionType implements WebinterfaceObject, JSONPrimitiveString
 		System.arraycopy(b, 0, a2, a.length, b.length);
 		return a2;
 	}
-	
+
 }
