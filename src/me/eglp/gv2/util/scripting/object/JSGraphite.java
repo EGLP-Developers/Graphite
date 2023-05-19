@@ -3,7 +3,7 @@ package me.eglp.gv2.util.scripting.object;
 import me.eglp.gv2.main.Graphite;
 
 public class JSGraphite {
-	
+
 	/**
 	 * The Graphite instance stored in the {@code graphite} variable
 	 */
@@ -16,10 +16,10 @@ public class JSGraphite {
 	public String getName() {
 		return Graphite.getBotInfo().getName();
 	}
-	
+
 	@Override
 	public String toString() {
 		return "[JS Graphite]";
 	}
-	
+
 }

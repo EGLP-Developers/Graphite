@@ -15,8 +15,6 @@ import me.eglp.gv2.guild.GuildUserChannel;
 import me.eglp.gv2.guild.config.GuildChannelsConfig;
 import me.eglp.gv2.guild.config.GuildModerationConfig;
 import me.eglp.gv2.guild.config.GuildRolesConfig;
-import me.eglp.gv2.multiplex.GraphiteFeature;
-import me.eglp.gv2.multiplex.GraphiteMultiplex;
 import me.eglp.gv2.user.EasterEgg;
 import me.eglp.gv2.util.event.SingleEventHandler;
 import me.eglp.gv2.util.lang.DefaultMessage;
@@ -42,11 +40,11 @@ public class GraphiteCommonListeners {
 				GraphiteVoiceChannel channelLeft = guild.getVoiceChannel((VoiceChannel) event.getChannelLeft());
 
 				GuildUserChannel uc = channelsConfig.getUserChannelByChannel(channelLeft);
-				if(GraphiteMultiplex.isHighestRelativeHierarchy(guild, GraphiteFeature.CHANNEL_MANAGEMENT) && uc != null && event.getChannelLeft().getMembers().isEmpty()) {
+				if(uc != null && event.getChannelLeft().getMembers().isEmpty()) {
 					uc.delete();
 				}
 
-				if(GraphiteMultiplex.isHighestRelativeHierarchy(guild, GraphiteFeature.CHANNEL_MANAGEMENT) && channelsConfig.isAutoCreatedChannel(channelLeft) && event.getChannelLeft().getMembers().isEmpty()) {
+				if(channelsConfig.isAutoCreatedChannel(channelLeft) && event.getChannelLeft().getMembers().isEmpty()) {
 					event.getChannelLeft().delete().queue(null, new ErrorHandler(e -> {
 								GraphiteDebug.log(DebugCategory.MISCELLANEOUS, "Failed to delete channel", e);
 							})
@@ -76,7 +74,7 @@ public class GraphiteCommonListeners {
 				GuildRolesConfig rolesConfig = guild.getRolesConfig();
 
 				GuildJail jail = moderationConfig.getJail(member);
-				if(GraphiteMultiplex.isHighestRelativeHierarchy(guild, GraphiteFeature.MODERATION) && jail != null && !jail.getChannel().getJDAChannel().equals(event.getChannelJoined())) {
+				if(jail != null && !jail.getChannel().getJDAChannel().equals(event.getChannelJoined())) {
 					jail.addLeaveAttempt();
 					if(jail.getLeaveAttempts() >= 3) {
 						event.getGuild().kickVoiceMember(event.getMember()).queue(null, e -> {
@@ -89,8 +87,7 @@ public class GraphiteCommonListeners {
 					}
 				}
 
-				if(GraphiteMultiplex.isHighestRelativeHierarchy(guild, GraphiteFeature.MODERATION)
-						&& jail == null
+				if(jail == null
 						&& channelsConfig.getSupportQueue() != null
 						&& (!rolesConfig.getModeratorRoles().isEmpty() || channelsConfig.getModLogChannel() != null)
 						&& event.getChannelJoined().equals(channelsConfig.getSupportQueue().getJDAChannel())) {
@@ -103,7 +100,7 @@ public class GraphiteCommonListeners {
 				}
 
 				GuildAutoChannel ac = channelsConfig.getAutoChannelByID(channelJoined.getID());
-				if(GraphiteMultiplex.isHighestRelativeHierarchy(guild, GraphiteFeature.CHANNEL_MANAGEMENT) && ac != null) {
+				if(ac != null) {
 					ac.createAutoChannel().thenAccept(c -> {
 						Member m = member.getJDAMember();
 						if(!m.getVoiceState().inAudioChannel()) {
@@ -124,7 +121,7 @@ public class GraphiteCommonListeners {
 		Graphite.getJDAListener().registerHandler(SingleEventHandler.of(GuildMemberUpdateNicknameEvent.class, event -> {
 			GraphiteGuild guild = Graphite.getGuild(event.getGuild());
 			GraphiteMember member = guild.getMember(event.getMember());
-			if(GraphiteMultiplex.isHighestRelativeHierarchy(event.getGuild()) && !member.isBot() && event.getNewNickname() != null && event.getNewNickname().equalsIgnoreCase("Smile")) {
+			if(!member.isBot() && event.getNewNickname() != null && event.getNewNickname().equalsIgnoreCase("Smile")) {
 				if(!member.getConfig().hasFoundEasterEgg(EasterEgg.SMILE)) {
 					member.getConfig().addEasterEgg(EasterEgg.SMILE, true);
 				}
@@ -136,11 +133,9 @@ public class GraphiteCommonListeners {
 
 			if(event.getChannelType() == ChannelType.TEXT) {
 				TextChannel tc = (TextChannel) event.getChannel();
-				if(GraphiteMultiplex.isHighestRelativeHierarchy(guild, GraphiteFeature.MODERATION)) {
-					GraphiteRole mutedRole = guild.getRolesConfig().getMutedRoleRaw();
-					if(mutedRole != null) {
-						tc.upsertPermissionOverride(mutedRole.getJDARole()).deny(GuildRolesConfig.MUTED_ROLE_DENIED_PERMISSIONS).queue();
-					}
+				GraphiteRole mutedRole = guild.getRolesConfig().getMutedRoleRaw();
+				if(mutedRole != null) {
+					tc.upsertPermissionOverride(mutedRole.getJDARole()).deny(GuildRolesConfig.MUTED_ROLE_DENIED_PERMISSIONS).queue();
 				}
 			}
 		}));

@@ -2,8 +2,6 @@ package me.eglp.gv2.util.voting;
 
 import me.eglp.gv2.guild.GraphiteTextChannel;
 import me.eglp.gv2.main.Graphite;
-import me.eglp.gv2.multiplex.bot.GlobalBot;
-import me.eglp.gv2.multiplex.bot.MultiplexBot;
 import me.eglp.gv2.user.GraphiteUser;
 import me.eglp.gv2.util.emote.JDAEmote;
 import me.eglp.gv2.util.settings.MiscellaneousSettings;
@@ -16,7 +14,7 @@ public class GraphiteVoting {
 	public GraphiteVoting() {
 		MiscellaneousSettings misc = Graphite.getMainBotInfo().getMiscellaneous();
 		if(misc.getUpvotesChannelID() != null) {
-			voteChannel = Graphite.withBot(GlobalBot.INSTANCE, () -> Graphite.getGuild(misc.getMessageServerID()).getTextChannelByID(misc.getUpvotesChannelID()));
+			voteChannel = Graphite.getGuild(misc.getMessageServerID()).getTextChannelByID(misc.getUpvotesChannelID());
 		}
 	}
 
@@ -26,14 +24,14 @@ public class GraphiteVoting {
 					.setDescription(String.format("%s has upvoted the bot on [%s](%s)" + JDAEmote.DOLLARONEN.getUnicode(),
 							user.getName(),
 							source.getName(),
-							source.getUpvoteURL(source.getBot())))
+							source.getUpvoteURL()))
 					.setAuthor(user.getName(), null, user.getJDAUser().getAvatarUrl())
 					.build());
 		}
 	}
 
-	public GraphiteVoteSource getVoteSource(MultiplexBot bot, String id) {
-		return bot.getVoteSources().stream()
+	public GraphiteVoteSource getVoteSource(String id) {
+		return getVoteSources().stream()
 				.filter(vs -> vs.getIdentifier().equals(id))
 				.findFirst().orElse(null);
 	}

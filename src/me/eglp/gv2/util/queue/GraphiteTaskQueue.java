@@ -16,9 +16,6 @@ import me.eglp.gv2.guild.GraphiteGuild;
 import me.eglp.gv2.main.DebugCategory;
 import me.eglp.gv2.main.Graphite;
 import me.eglp.gv2.main.GraphiteDebug;
-import me.eglp.gv2.multiplex.ContextHandle;
-import me.eglp.gv2.multiplex.GraphiteMultiplex;
-import me.eglp.gv2.util.jdaobject.JDAObject;
 import me.mrletsplay.mrcore.misc.FriendlyException;
 
 public class GraphiteTaskQueue {
@@ -86,16 +83,11 @@ public class GraphiteTaskQueue {
 	}
 
 	public synchronized <T> QueueTask<T> queue(GraphiteGuild guild, GraphiteTaskInfo taskInfo, Callable<T> callable) {
-		ContextHandle handle = GraphiteMultiplex.handle();
 		block.put(guild, taskInfo);
 		return wrapAndSubmit(currentTasks, taskInfo, () -> {
 			T t;
 			try {
-				ContextHandle handle2 = GraphiteMultiplex.handle();
-				handle.reset(); // Set context to queue task context
 				t = callable.call();
-				handle2.reset(); // Reset to previous context, just to be sure
-				JDAObject.clearCurrentCache();
 			}catch(Exception e) {
 				throw e;
 			}finally {

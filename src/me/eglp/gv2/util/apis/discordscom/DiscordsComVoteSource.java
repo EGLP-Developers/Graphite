@@ -1,7 +1,6 @@
 package me.eglp.gv2.util.apis.discordscom;
 
 import me.eglp.gv2.main.Graphite;
-import me.eglp.gv2.multiplex.bot.MultiplexBot;
 import me.eglp.gv2.user.GraphiteUser;
 import me.eglp.gv2.util.voting.GraphiteVoteSource;
 import me.eglp.gv2.util.voting.InvalidVoteException;
@@ -9,17 +8,10 @@ import me.mrletsplay.mrcore.json.JSONObject;
 
 public class DiscordsComVoteSource implements GraphiteVoteSource {
 
-	private MultiplexBot bot;
 	private String voteSecret;
 
-	public DiscordsComVoteSource(MultiplexBot bot, String voteSecret) {
-		this.bot = bot;
+	public DiscordsComVoteSource(String voteSecret) {
 		this.voteSecret = voteSecret;
-	}
-
-	@Override
-	public MultiplexBot getBot() {
-		return bot;
 	}
 
 	@Override
@@ -33,8 +25,8 @@ public class DiscordsComVoteSource implements GraphiteVoteSource {
 	}
 
 	@Override
-	public String getUpvoteURL(MultiplexBot bot) {
-		return "https://discords.com/bots/bot/" + bot.getID();
+	public String getUpvoteURL() {
+		return "https://discords.com/bots/bot/" + Graphite.getBotID();
 	}
 
 	@Override

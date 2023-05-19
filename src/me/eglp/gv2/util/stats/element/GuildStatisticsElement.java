@@ -93,7 +93,7 @@ public class GuildStatisticsElement implements WebinterfaceObject {
 
 	private String getImageLink() {
 		String id = Graphite.getWebsiteEndpoint().getImageCache().addImage(renderImage(720, 480), 20 * 60 * 1000);
-		return Graphite.getMainBotInfo().getWebsite().getBaseURL() + "/api/image?id=" + id;
+		return Graphite.getBotInfo().getWebsite().getBaseURL() + "/api/image?id=" + id;
 	}
 
 	public void updateMessageIfExists() {

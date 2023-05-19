@@ -27,7 +27,6 @@ import me.eglp.gv2.main.DebugCategory;
 import me.eglp.gv2.main.Graphite;
 import me.eglp.gv2.main.GraphiteDebug;
 import me.eglp.gv2.main.GraphiteOption;
-import me.eglp.gv2.multiplex.bot.GlobalBot;
 import me.eglp.gv2.util.Statics;
 import me.eglp.gv2.util.webinterface.base.GraphiteWebinterfaceGuild;
 import me.eglp.gv2.util.webinterface.base.GraphiteWebinterfaceUser;
@@ -62,62 +61,60 @@ public class WebinterfaceWebSocketServer extends WebSocketServer {
 	@Override
 	public void onMessage(WebSocket conn, String message) {
 		if(Graphite.hasOption(GraphiteOption.WEBINTERFACE_DEBUG)) Graphite.log(">> " + message);
-		Graphite.withBot(GlobalBot.INSTANCE, () -> {
-			try {
-				WebinterfacePacket p = WebinterfacePacket.deserialize(new JSONObject(message));
+		try {
+			WebinterfacePacket p = WebinterfacePacket.deserialize(new JSONObject(message));
 
-				if(p.getRequestMethod().equals("login")) {
-					String code = p.getData().getString("code");
-					WebinterfaceResponse r = login(conn, code);
-					conn.send(r.toPacket(p.getID()).toJSON().toString());
-					return;
-				}
-
-				if(p.getRequestMethod().equals("setSession")) {
-					String sessionID = p.getData().getString("sessionID");
-
-					WebinterfaceSession s = Graphite.getWebinterface().getSessionStorage().getSession(sessionID);
-					boolean sessionValid = s != null && s.isValid();
-					JSONObject o = new JSONObject();
-					o.put("sessionValid", sessionValid);
-					conn.send(WebinterfacePacket.ofResponse(p.getID(), o).toJSON().toString());
-					if(!sessionValid) {
-						if(Graphite.hasOption(GraphiteOption.WEBINTERFACE_DEBUG)) Graphite.log("Session invalid: " + sessionID);
-						conn.close();
-					}else {
-						if(Graphite.hasOption(GraphiteOption.WEBINTERFACE_DEBUG)) Graphite.log("Session valid: " + sessionID + " (User: " + s.getUserID() + ")");
-						conn.setAttachment(s);
-					}
-
-					return;
-				}
-
-				WebinterfaceSession session = conn.getAttachment();
-				if(session == null) {
-					conn.close(CloseFrame.POLICY_VALIDATION, "Not logged in");
-					return;
-				}
-
-				if(p.getRequestMethod().equals("updateSelectedGuild")) {
-					if(p.getGuildID() != null && !session.getUser().isOnGuild(p.getGuildID())) {
-						conn.send(WebinterfaceResponse.error("No permission").toPacket(p.getID()).toJSON().toString());
-						return;
-					}
-
-					session.getData().put("lastKnownGuildID", p.getGuildID());
-					session.commitData();
-					conn.send(WebinterfacePacket.ofResponse(p.getID(), null).toJSON().toString());
-					return;
-				}
-
-				WebinterfacePacket r = Graphite.getWebinterface().handlePacket(conn, p);
-				if(Graphite.hasOption(GraphiteOption.WEBINTERFACE_DEBUG)) Graphite.log("<< " + r.toJSON().toString());
-				conn.send(r.toJSON().toString());
-			}catch(Exception e) {
-				GraphiteDebug.log(DebugCategory.WEBINTERFACE, e);
-				conn.close(CloseFrame.POLICY_VALIDATION, "Unknown error");
+			if(p.getRequestMethod().equals("login")) {
+				String code = p.getData().getString("code");
+				WebinterfaceResponse r = login(conn, code);
+				conn.send(r.toPacket(p.getID()).toJSON().toString());
+				return;
 			}
-		});
+
+			if(p.getRequestMethod().equals("setSession")) {
+				String sessionID = p.getData().getString("sessionID");
+
+				WebinterfaceSession s = Graphite.getWebinterface().getSessionStorage().getSession(sessionID);
+				boolean sessionValid = s != null && s.isValid();
+				JSONObject o = new JSONObject();
+				o.put("sessionValid", sessionValid);
+				conn.send(WebinterfacePacket.ofResponse(p.getID(), o).toJSON().toString());
+				if(!sessionValid) {
+					if(Graphite.hasOption(GraphiteOption.WEBINTERFACE_DEBUG)) Graphite.log("Session invalid: " + sessionID);
+					conn.close();
+				}else {
+					if(Graphite.hasOption(GraphiteOption.WEBINTERFACE_DEBUG)) Graphite.log("Session valid: " + sessionID + " (User: " + s.getUserID() + ")");
+					conn.setAttachment(s);
+				}
+
+				return;
+			}
+
+			WebinterfaceSession session = conn.getAttachment();
+			if(session == null) {
+				conn.close(CloseFrame.POLICY_VALIDATION, "Not logged in");
+				return;
+			}
+
+			if(p.getRequestMethod().equals("updateSelectedGuild")) {
+				if(p.getGuildID() != null && !session.getUser().isOnGuild(p.getGuildID())) {
+					conn.send(WebinterfaceResponse.error("No permission").toPacket(p.getID()).toJSON().toString());
+					return;
+				}
+
+				session.getData().put("lastKnownGuildID", p.getGuildID());
+				session.commitData();
+				conn.send(WebinterfacePacket.ofResponse(p.getID(), null).toJSON().toString());
+				return;
+			}
+
+			WebinterfacePacket r = Graphite.getWebinterface().handlePacket(conn, p);
+			if(Graphite.hasOption(GraphiteOption.WEBINTERFACE_DEBUG)) Graphite.log("<< " + r.toJSON().toString());
+			conn.send(r.toJSON().toString());
+		}catch(Exception e) {
+			GraphiteDebug.log(DebugCategory.WEBINTERFACE, e);
+			conn.close(CloseFrame.POLICY_VALIDATION, "Unknown error");
+		}
 	}
 
 	private WebinterfaceResponse login(WebSocket conn, String code) {

@@ -8,7 +8,6 @@ import java.util.Map;
 
 import me.eglp.gv2.guild.GraphiteGuild;
 import me.eglp.gv2.main.Graphite;
-import me.eglp.gv2.multiplex.bot.GlobalBot;
 import me.eglp.gv2.util.mysql.SQLTable;
 import me.mrletsplay.mrcore.misc.FriendlyException;
 
@@ -37,46 +36,42 @@ public class GraphiteDataManager {
 	}
 
 	public void updateGuilds() {
-		Graphite.withBot(GlobalBot.INSTANCE, () -> {
-			Graphite.getMySQL().run(con -> {
-				try(PreparedStatement s = con.prepareStatement("INSERT INTO global_guilds(GuildId, DeleteAt) VALUES(?, -1) ON DUPLICATE KEY UPDATE DeleteAt = -1")) {
-					for(GraphiteGuild guild : Graphite.getGuilds()) {
-						s.setString(1, guild.getID());
-						s.addBatch();
-					}
-
-					s.executeBatch();
+		Graphite.getMySQL().run(con -> {
+			try(PreparedStatement s = con.prepareStatement("INSERT INTO global_guilds(GuildId, DeleteAt) VALUES(?, -1) ON DUPLICATE KEY UPDATE DeleteAt = -1")) {
+				for(GraphiteGuild guild : Graphite.getGuilds()) {
+					s.setString(1, guild.getID());
+					s.addBatch();
 				}
-			});
+
+				s.executeBatch();
+			}
 		});
 	}
 
 	public void purgeGuilds() {
 		if(!Graphite.isOnline()) return;
 
-		Graphite.withBot(GlobalBot.INSTANCE, () -> {
-			List<String> savedGuilds = Graphite.getMySQL().queryArray(String.class, "SELECT GuildId FROM global_guilds WHERE DeleteAt = -1")
-				.orElseThrowOther(e -> new FriendlyException("Failed to load stored guilds from MySQL", e));
+		List<String> savedGuilds = Graphite.getMySQL().queryArray(String.class, "SELECT GuildId FROM global_guilds WHERE DeleteAt = -1")
+			.orElseThrowOther(e -> new FriendlyException("Failed to load stored guilds from MySQL", e));
 
-			List<String> newlyRemovedGuilds = new ArrayList<>();
-			for(String s : savedGuilds) {
-				if(Graphite.getGuild(s) == null) {
-					newlyRemovedGuilds.add(s);
-				}
+		List<String> newlyRemovedGuilds = new ArrayList<>();
+		for(String s : savedGuilds) {
+			if(Graphite.getGuild(s) == null) {
+				newlyRemovedGuilds.add(s);
 			}
+		}
 
-			Graphite.getMySQL().run(con -> {
-				long deleteAt = System.currentTimeMillis() + 7 * 24 * 60 * 60 * 1000;
-				try(PreparedStatement s = con.prepareStatement("UPDATE global_guilds SET DeleteAt = ? WHERE GuildId = ?")) {
-					for(String r : newlyRemovedGuilds) {
-						s.setLong(1, deleteAt);
-						s.setString(2, r);
-						s.addBatch();
-					}
-
-					s.executeBatch();
+		Graphite.getMySQL().run(con -> {
+			long deleteAt = System.currentTimeMillis() + 7 * 24 * 60 * 60 * 1000;
+			try(PreparedStatement s = con.prepareStatement("UPDATE global_guilds SET DeleteAt = ? WHERE GuildId = ?")) {
+				for(String r : newlyRemovedGuilds) {
+					s.setLong(1, deleteAt);
+					s.setString(2, r);
+					s.addBatch();
 				}
-			});
+
+				s.executeBatch();
+			}
 		});
 
 		List<String> deletedGuilds = Graphite.getMySQL().queryArray(String.class, "DELETE FROM global_guilds WHERE DeleteAt != -1 AND DeleteAt < ? RETURNING GuildId", System.currentTimeMillis())

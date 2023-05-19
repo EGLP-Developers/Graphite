@@ -3,7 +3,6 @@ package me.eglp.gv2.commands.info;
 import java.util.Collections;
 import java.util.List;
 
-import me.eglp.gv2.multiplex.GraphiteMultiplex;
 import me.eglp.gv2.util.command.Command;
 import me.eglp.gv2.util.command.CommandCategory;
 import me.eglp.gv2.util.command.CommandInvokedEvent;
@@ -22,7 +21,7 @@ public class CommandUpvote extends Command {
 		setDescription(DefaultLocaleString.COMMAND_UPVOTE_DESCRIPTION);
 		setUsage(DefaultLocaleString.COMMAND_UPVOTE_USAGE);
 	}
-	
+
 	@SpecialExecute(allowPrivate = true)
 	@SpecialSelfcheck(needsPermission = false)
 	@Override

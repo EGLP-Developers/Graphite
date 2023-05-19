@@ -15,7 +15,6 @@ import me.eglp.gv2.guild.GuildJail;
 import me.eglp.gv2.guild.modlog.ModLogEntry;
 import me.eglp.gv2.guild.modlog.ModLogEntryType;
 import me.eglp.gv2.main.Graphite;
-import me.eglp.gv2.multiplex.GraphiteFeature;
 import me.eglp.gv2.util.mysql.SQLTable;
 import me.mrletsplay.mrcore.json.JSONObject;
 import me.mrletsplay.mrcore.misc.FriendlyException;

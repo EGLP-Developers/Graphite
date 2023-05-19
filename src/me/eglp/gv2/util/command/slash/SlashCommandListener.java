@@ -12,7 +12,6 @@ import me.eglp.gv2.guild.customcommand.GraphiteCustomCommand;
 import me.eglp.gv2.main.DebugCategory;
 import me.eglp.gv2.main.Graphite;
 import me.eglp.gv2.main.GraphiteDebug;
-import me.eglp.gv2.multiplex.GraphiteMultiplex;
 import me.eglp.gv2.user.GraphitePrivateChannel;
 import me.eglp.gv2.user.GraphiteUser;
 import me.eglp.gv2.util.base.GraphiteMessageChannel;
@@ -49,7 +48,7 @@ public class SlashCommandListener implements AnnotationEventHandler {
 
 		if(tmpCmd == null) {
 			CommandAlias alias = guild != null ? guild.getCustomCommandsConfig().getCommandAlias(event.getFullCommandName()) : null;
-			if(alias != null) tmpCmd = CommandHandler.getGlobalCommandExact(alias.getForCommand());
+			if(alias != null) tmpCmd = CommandHandler.getCommandExact(alias.getForCommand());
 		}
 
 		Command cmd = tmpCmd;
@@ -102,7 +101,7 @@ public class SlashCommandListener implements AnnotationEventHandler {
 			return;
 		}
 
-		if(GraphiteMultiplex.getCurrentBot().isMainBot() && guild != null && cmd.getModule() != null && !guild.getConfig().hasModuleEnabled(cmd.getModule())) {
+		if(guild != null && cmd.getModule() != null && !guild.getConfig().hasModuleEnabled(cmd.getModule())) {
 			event.reply("Module disabled").setEphemeral(true).queue();
 			return;
 		}

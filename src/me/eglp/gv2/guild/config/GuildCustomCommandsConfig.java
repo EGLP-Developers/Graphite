@@ -147,7 +147,7 @@ public class GuildCustomCommandsConfig {
 
 			List<String> aliasesToRemove = new ArrayList<>();
 			aliases.forEach(a -> {
-				me.eglp.gv2.util.command.Command graphiteCommand = CommandHandler.getGlobalCommandExact(a.getForCommand());
+				me.eglp.gv2.util.command.Command graphiteCommand = CommandHandler.getCommandExact(a.getForCommand());
 				if(graphiteCommand == null) {
 					GraphiteDebug.log(DebugCategory.CUSTOM_COMMAND, "Removing alias '" + a.getAlias() + "' for invalid command '" + a.getForCommand() + "' on guild " + guild.getID());
 					aliasesToRemove.add(a.getAlias());

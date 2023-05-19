@@ -1,7 +1,6 @@
 package me.eglp.gv2.util.apis.topgg;
 
 import me.eglp.gv2.main.Graphite;
-import me.eglp.gv2.multiplex.bot.MultiplexBot;
 import me.eglp.gv2.user.GraphiteUser;
 import me.eglp.gv2.util.voting.GraphiteVoteSource;
 import me.eglp.gv2.util.voting.InvalidVoteException;
@@ -9,11 +8,9 @@ import me.mrletsplay.mrcore.json.JSONObject;
 
 public class TopGGVoteSource implements GraphiteVoteSource {
 
-	private MultiplexBot bot;
 	private String voteSecret;
 
-	public TopGGVoteSource(MultiplexBot bot, String voteSecret) {
-		this.bot = bot;
+	public TopGGVoteSource(String voteSecret) {
 		this.voteSecret = voteSecret;
 	}
 
@@ -34,11 +31,6 @@ public class TopGGVoteSource implements GraphiteVoteSource {
 	}
 
 	@Override
-	public MultiplexBot getBot() {
-		return bot;
-	}
-
-	@Override
 	public String getName() {
 		return "top.gg";
 	}
@@ -49,8 +41,8 @@ public class TopGGVoteSource implements GraphiteVoteSource {
 	}
 
 	@Override
-	public String getUpvoteURL(MultiplexBot bot) {
-		return "https://top.gg/bot/" + bot.getID() + "/vote";
+	public String getUpvoteURL() {
+		return "https://top.gg/bot/" + Graphite.getBotID() + "/vote";
 	}
 
 }

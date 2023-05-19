@@ -84,6 +84,7 @@ import me.eglp.gv2.util.mysql.GraphiteMySQL;
 import me.eglp.gv2.util.queue.GraphiteQueue;
 import me.eglp.gv2.util.scripting.GraphiteContextFactory;
 import me.eglp.gv2.util.selfcheck.Selfcheck;
+import me.eglp.gv2.util.settings.BotInfo;
 import me.eglp.gv2.util.settings.GraphiteSettings;
 import me.eglp.gv2.util.settings.MainBotInfo;
 import me.eglp.gv2.util.settings.MultiplexBotInfo;
@@ -143,11 +144,9 @@ public class Graphite {
 	private static PrintStream defaultSysOut, defaultSysErr;
 
 	private static GraphiteSettings settings;
-	protected static MainBotInfo botInfo;
+	protected static BotInfo botInfo;
 	private static List<GraphiteOption> options;
 
-	protected static MultiplexBot graphiteBot;
-	protected static List<MultiplexBot> multiplexBots;
 	protected static GraphiteJDAListener jdaListener;
 	protected static GraphiteListener customListener;
 	protected static CommandListener commandListener;
@@ -204,7 +203,7 @@ public class Graphite {
 			return;
 		}
 
-		botInfo = settings.getMainBotInfo();
+		botInfo = settings.getBotInfo();
 
 		if(hasOption(GraphiteOption.SELFCHECK)) {
 			selfcheckMode = true;
@@ -227,7 +226,6 @@ public class Graphite {
 		Stopwatch sw = Stopwatch.createStarted();
 		isOnline = false;
 		isShutdown = false;
-		multiplexBots = new ArrayList<>();
 		jdaListener = new GraphiteJDAListener();
 		customListener = new GraphiteListener();
 		fileManager = new FileManager(new File(botInfo.getFileLocation()));
@@ -243,9 +241,6 @@ public class Graphite {
 		}
 
 		log("Initializing main bot...");
-
-		graphiteBot = new MultiplexBot(botInfo);
-		GraphiteMultiplex.setCurrentBot(graphiteBot);
 
 		for(GraphiteFeature ft : botInfo.getFeatures()) {
 			ft.getCommands().forEach(CommandHandler::registerCommand);
@@ -352,31 +347,16 @@ public class Graphite {
 		GraphiteSetup.run();
 
 		commandListener = new CommandListener();
-
 		voting = new GraphiteVoting();
+		minigames = new GraphiteMinigames();
+		twitch = new GraphiteTwitch();
+		twitter = new GraphiteTwitter();
+		reddit = new GraphiteReddit();
 
-		if(needsFeature(GraphiteFeature.FUN)) {
-			minigames = new GraphiteMinigames();
-		}
+		if(botInfo.getSpotify().isEnabled()) spotify = new GraphiteSpotify();
+		if(botInfo.getGenius().isEnabled()) genius = new GraphiteGenius();
 
-		if(needsFeature(GraphiteFeature.TWITCH) && botInfo.getTwitch().isEnabled()) {
-			twitch = new GraphiteTwitch();
-		}
-
-		if(needsFeature(GraphiteFeature.TWITTER) && botInfo.getTwitter().isEnabled()) {
-			twitter = new GraphiteTwitter();
-		}
-
-		if(needsFeature(GraphiteFeature.REDDIT) && botInfo.getReddit().isEnabled()) {
-			reddit = new GraphiteReddit();
-		}
-
-		if(needsFeature(GraphiteFeature.MUSIC)) {
-			if(botInfo.getSpotify().isEnabled()) spotify = new GraphiteSpotify();
-			if(botInfo.getGenius().isEnabled()) genius = new GraphiteGenius();
-		}
-
-		if(needsFeature(GraphiteFeature.FUN) && botInfo.getAmongUs().isEnabled()) {
+		if(botInfo.getAmongUs().isEnabled()) {
 			amongUs = new GraphiteAmongUs();
 		}
 
@@ -387,8 +367,6 @@ public class Graphite {
 		ConsoleInputListener.init();
 
 		queue = new GraphiteQueue("Donator", 10, 3);
-
-		GraphiteMultiplex.setCurrentBot(GlobalBot.INSTANCE);
 
 		log("Initializing guilds");
 
@@ -420,34 +398,26 @@ public class Graphite {
 		jdaListener.registerHandler(new CommandCompleteListener());
 
 		jdaListener.registerHandler(SingleEventHandler.of(GuildLeaveEvent.class, event -> {
-			if(GraphiteMultiplex.isHighestRelativeHierarchy(event.getGuild())) {
-				GraphiteGuild g = getGuild(event.getGuild());
-				if(g == null) return; // Probably shouldn't ever happen, but who knows
-				List<MultiplexBot> botsOnTheGuild = GraphiteMultiplex.getAvailableBots(g);
-				botsOnTheGuild.remove(GraphiteMultiplex.getBot(event.getJDA())); // Remove the bot that just left, just to be sure
-				if(botsOnTheGuild.isEmpty()) discardGuild(event.getGuild()); // If there aren't any other multiplex bots still on the guild, discard it
-			}
+			GraphiteGuild g = getGuild(event.getGuild());
+			if(g == null) return; // Probably shouldn't ever happen, but who knows
+			discardGuild(event.getGuild());
 		}));
 
 		jdaListener.registerHandler(SingleEventHandler.of(GuildMemberRemoveEvent.class, event -> {
 			GraphiteGuild guild = getGuild(event.getGuild());
 			GuildGreeterConfig c = guild.getGreeterConfig();
-			if(GraphiteMultiplex.isHighestRelativeHierarchy(guild)) getGuild(event.getGuild()).discardMemberByID(event.getUser().getId());
-			if(GraphiteMultiplex.isHighestRelativeHierarchy(guild, GraphiteFeature.GREETER)) {
-				if(c.getFarewellChannel() != null && c.isFarewellEnabled()) {
-					c.getFarewellChannel().sendMessage(c.getFarewellMessage(), "user", event.getUser().getName(), "server", guild.getName());
-				}
+			getGuild(event.getGuild()).discardMemberByID(event.getUser().getId());
+			if(c.getFarewellChannel() != null && c.isFarewellEnabled()) {
+				c.getFarewellChannel().sendMessage(c.getFarewellMessage(), "user", event.getUser().getName(), "server", guild.getName());
 			}
 		}));
 
 		jdaListener.registerHandler(SingleEventHandler.of(RoleDeleteEvent.class, event -> {
-			if(GraphiteMultiplex.isHighestRelativeHierarchy(event.getGuild())) getGuild(event.getGuild()).discardRole(event.getRole());
+			getGuild(event.getGuild()).discardRole(event.getRole());
 		}));
 
 		jdaListener.registerHandler(SingleEventHandler.of(ChannelDeleteEvent.class, event -> {
-			if(GraphiteMultiplex.isHighestRelativeHierarchy(event.getGuild())) {
-				getGuild(event.getGuild()).discardChannel((GuildChannel) event.getChannel());
-			}
+			getGuild(event.getGuild()).discardChannel((GuildChannel) event.getChannel());
 		}));
 
 		jdaListener.registerHandler(SingleEventHandler.of(GuildJoinEvent.class, event -> {
@@ -514,27 +484,23 @@ public class Graphite {
 
 			GuildGreeterConfig c = guild.getGreeterConfig();
 
-			if(GraphiteMultiplex.isHighestRelativeHierarchy(guild, GraphiteFeature.GREETER)) {
-				if(c.isGreetingEnabled()) {
-					(c.getGreetingChannel() == null ? getMember(event.getMember()).openPrivateChannel() : c.getGreetingChannel()).sendMessage(c.getGreetingMessage(), "user", member.getName(), "mention", member.getAsMention(), "server", guild.getName());
-				}
+			if(c.isGreetingEnabled()) {
+				(c.getGreetingChannel() == null ? getMember(event.getMember()).openPrivateChannel() : c.getGreetingChannel()).sendMessage(c.getGreetingMessage(), "user", member.getName(), "mention", member.getAsMention(), "server", guild.getName());
 			}
 
-			if(GraphiteMultiplex.isHighestRelativeHierarchy(guild, GraphiteFeature.ROLE_MANAGEMENT)) {
-				GraphiteMember selfM = guild.getMember(event.getGuild().getSelfMember());
-				if(member.isBot()) {
-					guild.getRolesConfig().getBotRoles().forEach(r -> {
-						if(selfM.canInteract(r) && selfM.canInteract(member)) {
-							guild.addRoleToMember(member, r);
-						}
-					});
-				}else {
-					guild.getRolesConfig().getAutoRoles().forEach(r -> {
-						if(selfM.canInteract(r) && selfM.canInteract(member)) {
-							guild.addRoleToMember(member, r);
-						}
-					});
-				}
+			GraphiteMember selfM = guild.getMember(event.getGuild().getSelfMember());
+			if(member.isBot()) {
+				guild.getRolesConfig().getBotRoles().forEach(r -> {
+					if(selfM.canInteract(r) && selfM.canInteract(member)) {
+						guild.addRoleToMember(member, r);
+					}
+				});
+			}else {
+				guild.getRolesConfig().getAutoRoles().forEach(r -> {
+					if(selfM.canInteract(r) && selfM.canInteract(member)) {
+						guild.addRoleToMember(member, r);
+					}
+				});
 			}
 		}));
 
@@ -563,27 +529,25 @@ public class Graphite {
 			if(!event.isFromGuild()) return;
 			GraphiteGuild guild = getGuild(event.getGuild());
 
-			if(GraphiteMultiplex.isHighestRelativeHierarchy(guild, GraphiteFeature.STATISTICS)) {
-				List<GuildStatisticsElement> els = guild.getStatisticsConfig().getStatisticsElements();
-				boolean required = els.stream()
-						.flatMap(el -> el.getSettings().getStatistics().stream())
-						.anyMatch(s -> s == GraphiteStatistic.NEW_MESSAGES);
-				if(required) statistics.incrementCumulativeStatistic(guild, GraphiteStatistic.NEW_MESSAGES, null);
+			List<GuildStatisticsElement> els = guild.getStatisticsConfig().getStatisticsElements();
+			boolean required = els.stream()
+					.flatMap(el -> el.getSettings().getStatistics().stream())
+					.anyMatch(s -> s == GraphiteStatistic.NEW_MESSAGES);
+			if(required) statistics.incrementCumulativeStatistic(guild, GraphiteStatistic.NEW_MESSAGES, null);
 
-				boolean requiredByChannel = els.stream()
-						.flatMap(el -> el.getSettings().getStatistics().stream())
-						.anyMatch(s -> s == GraphiteStatistic.NEW_MESSAGES_BY_CHANNEL);
-				if(requiredByChannel) statistics.incrementCumulativeStatistic(guild, GraphiteStatistic.NEW_MESSAGES_BY_CHANNEL, GraphiteUtil.truncateToLength(event.getChannel().getName(), 64, false));
+			boolean requiredByChannel = els.stream()
+					.flatMap(el -> el.getSettings().getStatistics().stream())
+					.anyMatch(s -> s == GraphiteStatistic.NEW_MESSAGES_BY_CHANNEL);
+			if(requiredByChannel) statistics.incrementCumulativeStatistic(guild, GraphiteStatistic.NEW_MESSAGES_BY_CHANNEL, GraphiteUtil.truncateToLength(event.getChannel().getName(), 64, false));
 
-				boolean requiredEmoji = els.stream()
-						.flatMap(el -> el.getSettings().getStatistics().stream())
-						.anyMatch(s -> s == GraphiteStatistic.MESSAGE_EMOJI);
-				if(requiredEmoji) {
-					GraphiteUtil.extractUnicodeEmoji(event.getMessage().getContentRaw()).forEach(e -> statistics.incrementCumulativeStatistic(guild, GraphiteStatistic.MESSAGE_EMOJI, e.getUnicode()));
-					Matcher m = GraphiteUtil.CUSTOM_EMOJI_PATTERN.matcher(event.getMessage().getContentRaw());
-					while(m.find()) {
-						statistics.incrementCumulativeStatistic(guild, GraphiteStatistic.MESSAGE_EMOJI, m.group());
-					}
+			boolean requiredEmoji = els.stream()
+					.flatMap(el -> el.getSettings().getStatistics().stream())
+					.anyMatch(s -> s == GraphiteStatistic.MESSAGE_EMOJI);
+			if(requiredEmoji) {
+				GraphiteUtil.extractUnicodeEmoji(event.getMessage().getContentRaw()).forEach(e -> statistics.incrementCumulativeStatistic(guild, GraphiteStatistic.MESSAGE_EMOJI, e.getUnicode()));
+				Matcher m = GraphiteUtil.CUSTOM_EMOJI_PATTERN.matcher(event.getMessage().getContentRaw());
+				while(m.find()) {
+					statistics.incrementCumulativeStatistic(guild, GraphiteStatistic.MESSAGE_EMOJI, m.group());
 				}
 			}
 		}));
@@ -591,46 +555,40 @@ public class Graphite {
 		jdaListener.registerHandler(SingleEventHandler.of(GuildMemberJoinEvent.class, event -> {
 			GraphiteGuild guild = getGuild(event.getGuild());
 
-			if(GraphiteMultiplex.isHighestRelativeHierarchy(guild, GraphiteFeature.STATISTICS)) {
-				List<GuildStatisticsElement> els = guild.getStatisticsConfig().getStatisticsElements();
-				boolean required = els.stream()
-						.flatMap(el -> el.getSettings().getStatistics().stream())
-						.anyMatch(s -> s == GraphiteStatistic.NEW_MEMBERS);
-				if(required) statistics.incrementCumulativeStatistic(guild, GraphiteStatistic.NEW_MEMBERS, null);
-			}
+			List<GuildStatisticsElement> els = guild.getStatisticsConfig().getStatisticsElements();
+			boolean required = els.stream()
+					.flatMap(el -> el.getSettings().getStatistics().stream())
+					.anyMatch(s -> s == GraphiteStatistic.NEW_MEMBERS);
+			if(required) statistics.incrementCumulativeStatistic(guild, GraphiteStatistic.NEW_MEMBERS, null);
 		}));
 
 		jdaListener.registerHandler(SingleEventHandler.of(MessageReactionAddEvent.class, event -> {
 			GraphiteGuild guild = getGuild(event.getGuild());
 
-			if(GraphiteMultiplex.isHighestRelativeHierarchy(guild, GraphiteFeature.STATISTICS)) {
-				List<GuildStatisticsElement> els = guild.getStatisticsConfig().getStatisticsElements();
-				boolean requiredEmoji = els.stream()
-						.flatMap(el -> el.getSettings().getStatistics().stream())
-						.anyMatch(s -> s == GraphiteStatistic.REACTION_EMOJI);
+			List<GuildStatisticsElement> els = guild.getStatisticsConfig().getStatisticsElements();
+			boolean requiredEmoji = els.stream()
+					.flatMap(el -> el.getSettings().getStatistics().stream())
+					.anyMatch(s -> s == GraphiteStatistic.REACTION_EMOJI);
 
-				if(requiredEmoji) {
-					Emoji e = event.getEmoji();
-					String cat = e.getFormatted();
-					statistics.incrementCumulativeStatistic(guild, GraphiteStatistic.REACTION_EMOJI, cat);
-				}
+			if(requiredEmoji) {
+				Emoji e = event.getEmoji();
+				String cat = e.getFormatted();
+				statistics.incrementCumulativeStatistic(guild, GraphiteStatistic.REACTION_EMOJI, cat);
 			}
 		}));
 
 		jdaListener.registerHandler(SingleEventHandler.of(MessageReactionRemoveEvent.class, event -> {
 			GraphiteGuild guild = getGuild(event.getGuild());
 
-			if(GraphiteMultiplex.isHighestRelativeHierarchy(guild, GraphiteFeature.STATISTICS)) {
-				List<GuildStatisticsElement> els = guild.getStatisticsConfig().getStatisticsElements();
-				boolean requiredEmoji = els.stream()
-						.flatMap(el -> el.getSettings().getStatistics().stream())
-						.anyMatch(s -> s == GraphiteStatistic.REACTION_EMOJI);
+			List<GuildStatisticsElement> els = guild.getStatisticsConfig().getStatisticsElements();
+			boolean requiredEmoji = els.stream()
+					.flatMap(el -> el.getSettings().getStatistics().stream())
+					.anyMatch(s -> s == GraphiteStatistic.REACTION_EMOJI);
 
-				if(requiredEmoji) {
-					Emoji e = event.getEmoji();
-					String cat = e.getFormatted();
-					statistics.decrementCumulativeStatistic(guild, GraphiteStatistic.REACTION_EMOJI, cat);
-				}
+			if(requiredEmoji) {
+				Emoji e = event.getEmoji();
+				String cat = e.getFormatted();
+				statistics.decrementCumulativeStatistic(guild, GraphiteStatistic.REACTION_EMOJI, cat);
 			}
 		}));
 
@@ -681,7 +639,6 @@ public class Graphite {
 			queue.stop(60);
 			webinterface.stop();
 			websiteEndpoint.stop();
-			multiplexBots.forEach(MultiplexBot::shutdown);
 			scheduler.stop(60);
 			RPG.saveGlobalGame();
 			if(amongUs != null) amongUs.stop();
@@ -722,38 +679,8 @@ public class Graphite {
 		return options.contains(option);
 	}
 
-	public static boolean needsFeature(GraphiteFeature feature) {
-		return botInfo.hasFeaturesAvailable(feature);
-	}
-
-	public static void withBot(MultiplexBot bot, Runnable run) {
-		withBot(bot, () -> {
-			run.run();
-			return null;
-		});
-	}
-
-	public static <T> T withBot(MultiplexBot bot, Supplier<T> call) {
-		ContextHandle handle = GraphiteMultiplex.setCurrentBot(bot);
-		T val = call.get();
-		handle.reset();
-		return val;
-	}
-
 	public static List<GraphiteShard> getShards() {
 		return GraphiteMultiplex.getCurrentBot().getShards();
-	}
-
-	public static MultiplexBot getMultiplexBot(MultiplexBotInfo info) {
-		return multiplexBots.stream()
-				.filter(b -> b.getBotInfo().equals(info))
-				.findFirst().orElse(null);
-	}
-
-	public static MultiplexBot getMultiplexBot(String botIdentifier) {
-		return multiplexBots.stream()
-				.filter(b -> b.getIdentifier().equals(botIdentifier))
-				.findFirst().orElse(null);
 	}
 
 	public static List<GraphiteShard> getGlobalShards() {
@@ -791,14 +718,6 @@ public class Graphite {
 		return botInfo;
 	}
 
-	public static MultiplexBot getGraphiteBot() {
-		return graphiteBot;
-	}
-
-	public static MultiplexBotInfo getBotInfo() {
-		return GraphiteMultiplex.getCurrentBot().getBotInfo();
-	}
-
 	public static FileManager getFileManager() {
 		return fileManager;
 	}
@@ -828,12 +747,7 @@ public class Graphite {
 	}
 
 	public synchronized static void log(String message) {
-		String botName = (GraphiteMultiplex.getCurrentBot() != null ? GraphiteMultiplex.getCurrentBot() : GlobalBot.INSTANCE).getBotInfo().getName();
-		System.out.println("[" + botName + " | " + Thread.currentThread().getName() + "] " + message);
-	}
-
-	public static List<MultiplexBot> getMultiplexBots() {
-		return multiplexBots;
+		System.out.println("[Graphite] | " + Thread.currentThread().getName() + "] " + message);
 	}
 
 	public static GraphiteJDAListener getJDAListener() {
@@ -946,7 +860,6 @@ public class Graphite {
 			g = new GraphiteGuild(guild);
 			cachedGuilds.add(g);
 			final GraphiteGuild fG = g;
-			Graphite.withBot(GlobalBot.INSTANCE, () -> fG.load());
 		}
 		return g;
 	}

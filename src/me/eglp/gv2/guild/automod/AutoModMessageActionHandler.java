@@ -3,8 +3,6 @@ package me.eglp.gv2.guild.automod;
 import me.eglp.gv2.guild.GraphiteGuild;
 import me.eglp.gv2.guild.GraphiteModule;
 import me.eglp.gv2.main.Graphite;
-import me.eglp.gv2.multiplex.GraphiteFeature;
-import me.eglp.gv2.multiplex.GraphiteMultiplex;
 import me.eglp.gv2.util.event.AnnotationEventHandler;
 import me.eglp.gv2.util.event.EventHandler;
 import net.dv8tion.jda.api.Permission;
@@ -19,9 +17,7 @@ public interface AutoModMessageActionHandler<T extends AbstractAutoModSettings> 
 
 			T settings = getRelevantSettings(g.getAutoModSettings());
 
-			if(g.hasFeaturesAvailable(GraphiteFeature.MODERATION)
-					&& GraphiteMultiplex.isHighestRelativeHierarchy(g, GraphiteFeature.MODERATION)
-					&& settings.getAction() != AutoModAction.DISABLED
+			if(settings.getAction() != AutoModAction.DISABLED
 					&& g.getConfig().hasModuleEnabled(GraphiteModule.MODERATION)) {
 				if(event.getMember().hasPermission(Permission.ADMINISTRATOR)
 						|| settings.getChannels().stream().anyMatch(c -> g.getGuildMessageChannel(event.getGuildChannel()).getID().equals(c))

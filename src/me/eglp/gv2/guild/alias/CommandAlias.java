@@ -40,7 +40,7 @@ public class CommandAlias {
 	}
 
 	public void createOrUpdateSlashCommand(GraphiteGuild guild) {
-		Command graphiteCommand = CommandHandler.getGlobalCommandExact(forCommand);
+		Command graphiteCommand = CommandHandler.getCommandExact(forCommand);
 		if(graphiteCommand == null) return;
 		slashCommandID = guild.getJDAGuild().upsertCommand(alias, "Alias for " + forCommand)
 			.addOptions(graphiteCommand.getOptions())

@@ -15,9 +15,6 @@ import me.eglp.gv2.guild.customcommand.GraphiteCustomCommand;
 import me.eglp.gv2.main.DebugCategory;
 import me.eglp.gv2.main.Graphite;
 import me.eglp.gv2.main.GraphiteDebug;
-import me.eglp.gv2.multiplex.GraphiteFeature;
-import me.eglp.gv2.multiplex.GraphiteMultiplex;
-import me.eglp.gv2.multiplex.bot.MultiplexBot;
 import me.eglp.gv2.user.GraphitePrivateChannel;
 import me.eglp.gv2.user.GraphiteUser;
 import me.eglp.gv2.util.base.GraphiteMessageChannel;
@@ -39,7 +36,7 @@ import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 
 public class CommandHandler {
 
-	private static Map<MultiplexBot, List<Command>> commands = new HashMap<>();
+	private static List<Command> commands = new ArrayList<>();
 
 	public static void handleCommand(MessageReceivedEvent event, String prefix, String commandLine) {
 		if(commandLine.isEmpty()) return;
@@ -63,55 +60,53 @@ public class CommandHandler {
 
 		if(tmpCmd == null) {
 			CommandAlias alias = guild != null ? guild.getCustomCommandsConfig().getCommandAlias(parsed.getArgs()[0].getRaw()) : null;
-			if(alias != null) tmpCmd = CommandHandler.getGlobalCommandExact(alias.getForCommand());
+			if(alias != null) tmpCmd = CommandHandler.getCommandExact(alias.getForCommand());
 		}
 
 		Command c = tmpCmd;
 
 		if(c == null) {
-			if(guild != null && guild.hasFeaturesAvailable(GraphiteFeature.CUSTOM_COMMANDS)) {
-				GraphiteCustomCommand cc = guild.getCustomCommandsConfig().getCustomCommandByName(parsed.getArgs()[0].getRaw());
+			GraphiteCustomCommand cc = guild.getCustomCommandsConfig().getCustomCommandByName(parsed.getArgs()[0].getRaw());
 
-				if(cc == null) {
-					Graphite.getCustomListener().fire(new GraphiteMessageReceivedEvent(event));
-					return;
-				}
+			if(cc == null) {
+				Graphite.getCustomListener().fire(new GraphiteMessageReceivedEvent(event));
+				return;
+			}
 
-				if(cc.getPermission() != null && !guild.getPermissionManager().hasPermission(guild.getMember(event.getMember()), cc.getPermission())) {
-					DefaultMessage.ERROR_NO_PERMISSION.sendMessage(channel, "permission", cc.getPermission());
-					Graphite.getCustomListener().fire(new GraphiteMessageReceivedEvent(event, cc, false));
-					return;
-				}
+			if(cc.getPermission() != null && !guild.getPermissionManager().hasPermission(guild.getMember(event.getMember()), cc.getPermission())) {
+				DefaultMessage.ERROR_NO_PERMISSION.sendMessage(channel, "permission", cc.getPermission());
+				Graphite.getCustomListener().fire(new GraphiteMessageReceivedEvent(event, cc, false));
+				return;
+			}
 
-				if(guild.isQueueBusy()) {
-					event.getChannel().sendMessage(DefaultMessage.ERROR_SERVER_BUSY.getFor(guild)).queue();
-					Graphite.getCustomListener().fire(new GraphiteMessageReceivedEvent(event, cc, false));
-					return;
-				}
+			if(guild.isQueueBusy()) {
+				event.getChannel().sendMessage(DefaultMessage.ERROR_SERVER_BUSY.getFor(guild)).queue();
+				Graphite.getCustomListener().fire(new GraphiteMessageReceivedEvent(event, cc, false));
+				return;
+			}
 
-				CommandArgument[] cArgs = Arrays.copyOfRange(parsed.getArgs(), 1, parsed.getArgs().length);
-				try {
-					Map<String, Object> options = new HashMap<>();
-					if(!SlashCommandHelper.gatherOptions(author, cArgs, channel, event.getMessage().getAttachments(), () -> cc.sendCommandHelp(channel), options, cc.getOptions())) return;
-					CommandInvokedEvent ev = CommandInvokedEvent.ofCustomMessageEvent(cc, event, author, guild == null ? author : guild, channel, parsed.getPrefix(), options);
-					Graphite.getCustomListener().fire(new GraphiteMessageReceivedEvent(event, cc, true));
-					QueueTask<?> t = guild.getResponsibleQueue().queue(guild, () -> cc.invoke(ev));
-					t.exceptionally(exc -> {
-						if(t.isCancelled()) return null;
-						DefaultMessage.ERROR_EXCEPTION.sendMessage(guild.getGuildMessageChannel(event.getGuildChannel()), "error_message", exc.getMessage());
-						return null;
-					});
-				}catch(Exception e) {
-					GraphiteDebug.log(DebugCategory.COMMAND_HANDLER, e);
-					channel.sendMessage("Oops, error: " + e.getClass().getName());
-				}
+			CommandArgument[] cArgs = Arrays.copyOfRange(parsed.getArgs(), 1, parsed.getArgs().length);
+			try {
+				Map<String, Object> options = new HashMap<>();
+				if(!SlashCommandHelper.gatherOptions(author, cArgs, channel, event.getMessage().getAttachments(), () -> cc.sendCommandHelp(channel), options, cc.getOptions())) return;
+				CommandInvokedEvent ev = CommandInvokedEvent.ofCustomMessageEvent(cc, event, author, guild == null ? author : guild, channel, parsed.getPrefix(), options);
+				Graphite.getCustomListener().fire(new GraphiteMessageReceivedEvent(event, cc, true));
+				QueueTask<?> t = guild.getResponsibleQueue().queue(guild, () -> cc.invoke(ev));
+				t.exceptionally(exc -> {
+					if(t.isCancelled()) return null;
+					DefaultMessage.ERROR_EXCEPTION.sendMessage(guild.getGuildMessageChannel(event.getGuildChannel()), "error_message", exc.getMessage());
+					return null;
+				});
+			}catch(Exception e) {
+				GraphiteDebug.log(DebugCategory.COMMAND_HANDLER, e);
+				channel.sendMessage("Oops, error: " + e.getClass().getName());
 			}
 
 			Graphite.getCustomListener().fire(new GraphiteMessageReceivedEvent(event));
 			return;
 		}
 
-		if(GraphiteMultiplex.getCurrentBot().isMainBot() && guild != null && c.getModule() != null && !guild.getConfig().hasModuleEnabled(c.getModule())) {
+		if(guild != null && c.getModule() != null && !guild.getConfig().hasModuleEnabled(c.getModule())) {
 			Graphite.getCustomListener().fire(new GraphiteMessageReceivedEvent(event, c, false));
 			return;
 		}
@@ -214,15 +209,10 @@ public class CommandHandler {
 		if(command.isBeta() && !Graphite.getMainBotInfo().isBeta()) return;
 		List<Command> c = getCommands();
 		c.add(command);
-		commands.put(GraphiteMultiplex.getCurrentBot(), c);
 	}
 
 	public static List<Command> getCommands() {
-		return commands.getOrDefault(GraphiteMultiplex.getCurrentBot(), new ArrayList<>());
-	}
-
-	public static List<Command> getAllCommands() {
-		return commands.values().stream().flatMap(Collection::stream).distinct().collect(Collectors.toList());
+		return commands;
 	}
 
 	public static Command getCommandByPath(String... path) {
@@ -246,10 +236,6 @@ public class CommandHandler {
 		return getCommands().stream().filter(c -> c.getName().equalsIgnoreCase(name) || c.getAliases().stream().anyMatch(a -> a.equalsIgnoreCase(name))).findFirst().orElse(null);
 	}
 
-	public static Command getGlobalCommand(String name) {
-		return getAllCommands().stream().filter(c -> c.getName().equalsIgnoreCase(name) || c.getAliases().stream().anyMatch(a -> a.equalsIgnoreCase(name))).findFirst().orElse(null);
-	}
-
 	public static Command getCommandExact(String name) {
 		if(name.isBlank()) return null;
 		List<String> parts = new ArrayList<>(Arrays.asList(name.toLowerCase().split(" ")));
@@ -258,23 +244,6 @@ public class CommandHandler {
 		while(!parts.isEmpty()) {
 			String cmd = parts.remove(0);
 			c = c == null ? getCommand(cmd) : c.getSubCommands().stream()
-					.filter(cm -> cm.getName().equals(cmd) || cm.getAliases().contains(cmd))
-					.findFirst().orElse(null);
-
-			if(c == null) return null;
-		}
-
-		return c;
-	}
-
-	public static Command getGlobalCommandExact(String name) {
-		if(name.isBlank()) return null;
-		List<String> parts = new ArrayList<>(Arrays.asList(name.toLowerCase().split(" ")));
-
-		Command c = null;
-		while(!parts.isEmpty()) {
-			String cmd = parts.remove(0);
-			c = c == null ? getGlobalCommand(cmd) : c.getSubCommands().stream()
 					.filter(cm -> cm.getName().equals(cmd) || cm.getAliases().contains(cmd))
 					.findFirst().orElse(null);
 

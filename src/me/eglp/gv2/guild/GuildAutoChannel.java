@@ -5,8 +5,6 @@ import java.util.concurrent.CompletableFuture;
 
 import me.eglp.gv2.main.DebugCategory;
 import me.eglp.gv2.main.GraphiteDebug;
-import me.eglp.gv2.multiplex.ContextHandle;
-import me.eglp.gv2.multiplex.GraphiteMultiplex;
 import me.eglp.gv2.util.webinterface.js.JavaScriptClass;
 import me.eglp.gv2.util.webinterface.js.JavaScriptFunction;
 import me.eglp.gv2.util.webinterface.js.JavaScriptGetter;
@@ -74,9 +72,7 @@ public class GuildAutoChannel implements WebinterfaceObject {
 		}
 
 		CompletableFuture<GraphiteVoiceChannel> vcn = new CompletableFuture<>();
-		ContextHandle h = GraphiteMultiplex.handle();
 		vc.queue(v -> {
-			h.reset();
 			try {
 				GraphiteVoiceChannel ch = guild.getVoiceChannel(v);
 				guild.getChannelsConfig().addAutoCreatedChannel(ch);

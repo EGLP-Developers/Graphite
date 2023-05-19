@@ -11,8 +11,6 @@ import java.util.function.Consumer;
 import me.eglp.gv2.main.DebugCategory;
 import me.eglp.gv2.main.Graphite;
 import me.eglp.gv2.main.GraphiteDebug;
-import me.eglp.gv2.multiplex.GraphiteMultiplex;
-import me.eglp.gv2.multiplex.bot.MultiplexBot;
 import me.eglp.gv2.user.GraphiteUser;
 import me.eglp.gv2.util.emote.JDAEmote;
 import me.eglp.gv2.util.event.AnnotationEventHandler;
@@ -26,7 +24,6 @@ import net.dv8tion.jda.api.events.message.react.MessageReactionRemoveEvent;
 @Deprecated
 public class SelectInput<T> implements GraphiteInput, AnnotationEventHandler {
 
-	private MultiplexBot byBot;
 	private String messageID;
 	private Map<JDAEmote, T> mappings;
 	private List<GraphiteUser> allowedUsers;
@@ -103,7 +100,6 @@ public class SelectInput<T> implements GraphiteInput, AnnotationEventHandler {
 
 	@EventHandler
 	public void onReaction(GenericMessageReactionEvent event) {
-		if(!GraphiteMultiplex.getCurrentBot().equals(byBot)) return;
 		if(event.getMessageId().equals(messageID)) {
 			if(event.getUser().isBot()) return; // Ignore bots
 			if(removeUserInput && event.isFromGuild()) {
@@ -141,7 +137,6 @@ public class SelectInput<T> implements GraphiteInput, AnnotationEventHandler {
 	public void apply(Message m) {
 		applyReactions(m);
 		this.messageID = m.getId();
-		this.byBot = GraphiteMultiplex.getCurrentBot();
 		Graphite.getJDAListener().registerTemporaryHandler(this, 1, TimeUnit.HOURS);
 	}
 

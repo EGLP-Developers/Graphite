@@ -100,7 +100,7 @@ public class GraphiteWebinterface {
 		}
 	}
 
-	public void sendRequestToGuildUsers(String requestMethod, JSONObject requestData, String guildID, GraphiteFeature... requiredFeatures) {
+	public void sendRequestToGuildUsers(String requestMethod, JSONObject requestData, String guildID) {
 		for(WebSocket socket : webSocketServer.getConnections()) {
 			WebinterfaceSession sess = socket.getAttachment();
 			if(sess == null) continue;

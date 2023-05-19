@@ -12,8 +12,6 @@ import java.util.stream.Collectors;
 import me.eglp.gv2.guild.GraphiteGuild;
 import me.eglp.gv2.guild.customcommand.GraphiteCustomCommand;
 import me.eglp.gv2.main.Graphite;
-import me.eglp.gv2.multiplex.GraphiteFeature;
-import me.eglp.gv2.multiplex.GraphiteMultiplex;
 import me.eglp.gv2.util.command.Command;
 import me.eglp.gv2.util.command.CommandCategory;
 import me.eglp.gv2.util.command.CommandInvokedEvent;
@@ -67,7 +65,7 @@ public class CommandHelp extends Command {
 							.map(c -> event.getPrefixUsed() + c.getFullName()).collect(Collectors.toList()));
 			});
 
-			if(event.isFromGuild() && event.getGuild().hasFeaturesAvailable(GraphiteFeature.CUSTOM_COMMANDS)) {
+			if(event.isFromGuild()) {
 				List<GraphiteCustomCommand> ccs = event.getGuild().getCustomCommandsConfig().getCustomCommands();
 				if(!ccs.isEmpty()) {
 					helpCategories.put(
@@ -93,7 +91,7 @@ public class CommandHelp extends Command {
 		}else {
 			Command c = CommandHandler.getCommandByPath(command.split(" "));
 			if(c == null) {
-				if(event.isFromGuild() && event.getGuild().hasFeaturesAvailable(GraphiteFeature.CUSTOM_COMMANDS)) {
+				if(event.isFromGuild()) {
 					GraphiteCustomCommand cc = event.getGuild().getCustomCommandsConfig().getCustomCommandByName(command);
 					if(cc != null) {
 						event.reply(cc.getCommandHelpFor(event.getSender()));
@@ -112,8 +110,7 @@ public class CommandHelp extends Command {
 	private void removeUnwantedCommands(GraphiteGuild guild, Map<CommandCategory, List<Command>> commands) {
 		commands.forEach((cat, cmds) -> {
 			cmds.removeIf(c -> {
-				if(GraphiteMultiplex.getCurrentBot().isMainBot()
-					&& guild != null
+				if(guild != null
 					&& c.getModule() != null
 					&& !guild.getConfig().hasModuleEnabled(c.getModule())) return true;
 

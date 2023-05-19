@@ -5,7 +5,6 @@ import java.util.Collections;
 import java.util.List;
 import java.util.function.Function;
 
-import me.eglp.gv2.multiplex.bot.MultiplexBot;
 import me.eglp.gv2.util.apis.discordbotlistcom.DiscordBotListComVoteSource;
 import me.eglp.gv2.util.apis.discordscom.DiscordsComVoteSource;
 import me.eglp.gv2.util.apis.topgg.TopGGVoteSource;
@@ -16,25 +15,25 @@ import me.mrletsplay.mrcore.json.converter.JSONConvertible;
 import me.mrletsplay.mrcore.json.converter.JSONValue;
 
 public class VoteSettings implements JSONConvertible {
-	
+
 	@JSONValue
 	private boolean enable;
-	
+
 	@JSONValue("top.gg")
 	private String topggVoteSecret;
-	
+
 	@JSONValue("discords.com")
 	private String discordscomVoteSecret;
-	
+
 	@JSONValue("discordbotlist.com")
 	private String discordbotlistcomVoteSecret;
-	
+
 	@JSONValue
 	private boolean enableBetaVoteSource;
-	
+
 	@JSONConstructor
 	private VoteSettings() {}
-	
+
 	public boolean isEnabled() {
 		return enable;
 	}
@@ -50,31 +49,31 @@ public class VoteSettings implements JSONConvertible {
 	public String getDiscordbotlistcomVoteSecret() {
 		return discordbotlistcomVoteSecret;
 	}
-	
-	public List<Function<MultiplexBot, GraphiteVoteSource>> getVoteSources() {
+
+	public List<GraphiteVoteSource> getVoteSources() {
 		if(enable) return Collections.emptyList();
-		
-		List<Function<MultiplexBot, GraphiteVoteSource>> c = new ArrayList<>();
-		
+
+		List<GraphiteVoteSource> c = new ArrayList<>();
+
 		if(topggVoteSecret != null) {
-			c.add(bot -> new TopGGVoteSource(bot, topggVoteSecret));
+			c.add(new TopGGVoteSource(topggVoteSecret));
 		}
-		
+
 		if(discordscomVoteSecret != null) {
-			c.add(bot -> new DiscordsComVoteSource(bot, discordscomVoteSecret));
+			c.add(new DiscordsComVoteSource(discordscomVoteSecret));
 		}
-		
+
 		if(discordbotlistcomVoteSecret != null) {
-			c.add(bot -> new DiscordBotListComVoteSource(bot, topggVoteSecret));
+			c.add(new DiscordBotListComVoteSource(topggVoteSecret));
 		}
-		
+
 		if(enableBetaVoteSource) {
-			c.add(bot -> new BetaVoteSource(bot));
+			c.add(new BetaVoteSource());
 		}
-		
+
 		return c;
 	}
-	
+
 	public static VoteSettings createDefault() {
 		VoteSettings s = new VoteSettings();
 		s.enable = false;
@@ -84,5 +83,5 @@ public class VoteSettings implements JSONConvertible {
 		s.enableBetaVoteSource = false;
 		return s;
 	}
-	
+
 }

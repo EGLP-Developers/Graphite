@@ -16,46 +16,46 @@ import me.mrletsplay.mrcore.json.converter.SerializationOption;
 import me.mrletsplay.mrcore.misc.FriendlyException;
 
 public class GraphiteSettings {
-	
+
 	// TODO: validation for most settings
 
 	private boolean defaultCreated;
-	
-	private MainBotInfo mainBotInfo;
-	
+
+	private BotInfo botInfo;
+
 	public GraphiteSettings(String path) {
 		try {
 			File settingsFile = new File(path);
 			IOUtils.createFile(settingsFile);
 			if(settingsFile.length() == 0) {
 				try(BufferedWriter w = new BufferedWriter(new FileWriter(settingsFile))) {
-					w.write(MainBotInfo.createDefault().toJSON(SerializationOption.DONT_INCLUDE_CLASS).toFancyString());
+					w.write(BotInfo.createDefault().toJSON(SerializationOption.DONT_INCLUDE_CLASS).toFancyString());
 					w.newLine();
 				}catch(IOException e) {
 					throw new FriendlyException(e);
 				}
-				
+
 				defaultCreated = true;
 				return;
 			}
 			JSONObject j = new JSONObject(new String(Files.readAllBytes(settingsFile.toPath()), StandardCharsets.UTF_8));
-			mainBotInfo = JSONConverter.decodeObject(j, MainBotInfo.class);
+			botInfo = JSONConverter.decodeObject(j, BotInfo.class);
 		}catch(Exception e) {
 			throw new FriendlyException("Failed to load bot settings", e);
 		}
 	}
-	
-	public MainBotInfo getMainBotInfo() {
-		return mainBotInfo;
+
+	public BotInfo getBotInfo() {
+		return botInfo;
 	}
-	
+
 	public boolean isDefaultCreated() {
 		return defaultCreated;
 	}
-	
+
 	public List<String> validate() {
 		List<String> errors = new ArrayList<>();
-		mainBotInfo.validate(errors);
+		botInfo.validate(errors);
 		return errors;
 	}
 

@@ -48,21 +48,17 @@ public class GraphiteAmongUs {
 
 			@Override
 			public void mutePlayer(AmongUsCaptureUser captureUser, AmongUsPlayer player) {
-				Graphite.withBot(Graphite.getGraphiteBot(), () -> {
-					GraphiteMember d = (GraphiteMember) player.getData("discord");
-					if(d != null) {
-						boolean df = !player.isDead();
-						d.getGuild().updateMember(d, true, df);
-					}
-				});
+				GraphiteMember d = (GraphiteMember) player.getData("discord");
+				if(d != null) {
+					boolean df = !player.isDead();
+					d.getGuild().updateMember(d, true, df);
+				}
 			}
 
 			@Override
 			public void unmutePlayer(AmongUsCaptureUser captureUser, AmongUsPlayer player) {
-				Graphite.withBot(Graphite.getGraphiteBot(), () -> {
-					GraphiteMember d = (GraphiteMember) player.getData("discord");
-					if(d != null) d.getGuild().updateMember(d, false, false);
-				});
+				GraphiteMember d = (GraphiteMember) player.getData("discord");
+				if(d != null) d.getGuild().updateMember(d, false, false);
 			}
 
 			@Override
@@ -77,10 +73,8 @@ public class GraphiteAmongUs {
 
 			@Override
 			public void playerJoined(AmongUsCaptureUser captureUser, AmongUsPlayer player) {
-				Graphite.withBot(Graphite.getGraphiteBot(), () -> {
-					autoLinkUserIfExists(captureUser, player);
-					queueUpdateMessage(captureUser);
-				});
+				autoLinkUserIfExists(captureUser, player);
+				queueUpdateMessage(captureUser);
 			}
 
 			@Override
@@ -115,24 +109,22 @@ public class GraphiteAmongUs {
 	}
 
 	private void updateMessage(AmongUsCaptureUser captureUser) {
-		Graphite.withBot(Graphite.getGraphiteBot(), () -> {
-			GraphiteMember u = (GraphiteMember) captureUser.getData("discord");
+		GraphiteMember u = (GraphiteMember) captureUser.getData("discord");
 
-			EmbedBuilder b = new EmbedBuilder();
-			b.addField("Connected to", u.getAsMention(), false);
-			if(captureUser.getRoom().getLobbyCode() != null && captureUser.getRoom().getRegion() != null) b.addField("Code", String.format("%s (%s)", captureUser.getRoom().getLobbyCode(), captureUser.getRoom().getRegion().getFriendlyName()), false);
+		EmbedBuilder b = new EmbedBuilder();
+		b.addField("Connected to", u.getAsMention(), false);
+		if(captureUser.getRoom().getLobbyCode() != null && captureUser.getRoom().getRegion() != null) b.addField("Code", String.format("%s (%s)", captureUser.getRoom().getLobbyCode(), captureUser.getRoom().getRegion().getFriendlyName()), false);
 
-			List<AmongUsPlayer> pls = new ArrayList<>(captureUser.getRoom().getPlayers());
-			pls.sort((p1, p2) -> p1.getAmongUsColor().ordinal() - p2.getAmongUsColor().ordinal());
-			for(AmongUsPlayer pl : pls) {
-				GraphiteUser d = (GraphiteUser) pl.getData("discord");
-				b.addField(pl.getAmongUsName(), (pl.isKnownDead() ? JDAEmote.getDeadCrewmateEmote(pl.getAmongUsColor()) : JDAEmote.getCrewmateEmote(pl.getAmongUsColor())).getUnicode() + " " + (d != null ? d.getAsMention() : "Not linked"), true);
-			}
+		List<AmongUsPlayer> pls = new ArrayList<>(captureUser.getRoom().getPlayers());
+		pls.sort((p1, p2) -> p1.getAmongUsColor().ordinal() - p2.getAmongUsColor().ordinal());
+		for(AmongUsPlayer pl : pls) {
+			GraphiteUser d = (GraphiteUser) pl.getData("discord");
+			b.addField(pl.getAmongUsName(), (pl.isKnownDead() ? JDAEmote.getDeadCrewmateEmote(pl.getAmongUsColor()) : JDAEmote.getCrewmateEmote(pl.getAmongUsColor())).getUnicode() + " " + (d != null ? d.getAsMention() : "Not linked"), true);
+		}
 
-			Message m = (Message) captureUser.getData("message");
-			m.editMessageEmbeds(b.build()).queue(null, t -> {
-				GraphiteDebug.log(DebugCategory.MISCELLANEOUS, "Failed to edit message", t);
-			});
+		Message m = (Message) captureUser.getData("message");
+		m.editMessageEmbeds(b.build()).queue(null, t -> {
+			GraphiteDebug.log(DebugCategory.MISCELLANEOUS, "Failed to edit message", t);
 		});
 	}
 
