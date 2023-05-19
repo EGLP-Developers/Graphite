@@ -5,8 +5,8 @@ import java.util.List;
 
 import org.apache.commons.text.StringEscapeUtils;
 
+import me.eglp.gv2.guild.GraphiteModule;
 import me.eglp.gv2.main.Graphite;
-import me.eglp.gv2.util.base.guild.GraphiteModule;
 import me.eglp.gv2.util.command.Command;
 import me.eglp.gv2.util.command.CommandCategory;
 import me.eglp.gv2.util.command.CommandInvokedEvent;
@@ -19,7 +19,7 @@ import me.mrletsplay.mrcore.json.JSONParseException;
 import net.dv8tion.jda.api.interactions.commands.build.OptionData;
 
 public class CommandChuckNorris extends Command{
-	
+
 	public CommandChuckNorris() {
 		super(GraphiteModule.FUN, CommandCategory.FUN, "chucknorris");
 		setDescription(DefaultLocaleString.COMMAND_CHUCKNORRIS_DESCRIPTION);

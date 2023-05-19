@@ -3,10 +3,10 @@ package me.eglp.gv2.util.webinterface.handlers.scripting;
 import java.util.Base64;
 
 import me.eglp.gv2.commands.scripting.CommandScript;
+import me.eglp.gv2.guild.GraphiteGuild;
 import me.eglp.gv2.main.Graphite;
 import me.eglp.gv2.multiplex.GraphiteFeature;
-import me.eglp.gv2.util.base.guild.GraphiteGuild;
-import me.eglp.gv2.util.base.user.GraphiteUser;
+import me.eglp.gv2.user.GraphiteUser;
 import me.eglp.gv2.util.scripting.GraphiteScript;
 import me.eglp.gv2.util.selfcheck.SpecialSelfcheck;
 import me.eglp.gv2.util.webinterface.WebinterfaceHandler;
@@ -39,13 +39,13 @@ public class ScriptRequestHandler {
 		if(!r.isPresent()) {
 			return WebinterfaceResponse.error("Exception: " + r.getException().toString());
 		}
-		
+
 		JSONObject o = new JSONObject();
 		o.put("script", r.get().toWebinterfaceObject());
-		
+
 		return WebinterfaceResponse.success(o);
 	}
-	
+
 	@WebinterfaceHandler(requestMethod = "deleteGuildScript", requireGuild = true, requireFeatures = GraphiteFeature.SCRIPTING)
 	public static WebinterfaceResponse deleteGuildScript(WebinterfaceRequestEvent event) {
 		GraphiteGuild g = event.getSelectedGuild();
@@ -54,11 +54,11 @@ public class ScriptRequestHandler {
 		if(s == null) {
 			return WebinterfaceResponse.error("Script doesn't exist");
 		}
-		
+
 		g.getScripts().removeScript(name);
 		return WebinterfaceResponse.success();
 	}
-	
+
 	@SpecialSelfcheck(ignoreAccessibleToEveryone = true)
 	@WebinterfaceHandler(requestMethod = "blockScripts")
 	public static WebinterfaceResponse blockScripts(WebinterfaceRequestEvent event) {
@@ -86,5 +86,5 @@ public class ScriptRequestHandler {
 		u.getConfig().removeAllBlockedGuilds();
 		return WebinterfaceResponse.success(null);
 	}
-	
+
 }

@@ -5,8 +5,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+import me.eglp.gv2.guild.GraphiteGuildChannel;
 import me.eglp.gv2.util.base.GraphiteMessageChannel;
-import me.eglp.gv2.util.base.guild.GraphiteGuildChannel;
 import me.eglp.gv2.util.command.CommandSender;
 import me.eglp.gv2.util.command.text.argument.CommandArgument;
 import me.eglp.gv2.util.command.text.argument.MentionArgument;
@@ -18,7 +18,7 @@ import net.dv8tion.jda.api.interactions.commands.OptionType;
 import net.dv8tion.jda.api.interactions.commands.build.OptionData;
 
 public class SlashCommandHelper {
-	
+
 	public static boolean gatherOptions(CommandSender sender, CommandArgument[] args, GraphiteMessageChannel<?> channel, List<Attachment> attachments, Runnable sendHelp, Map<String, Object> options, List<OptionData> optionsData) {
 		int argIdx = 0;
 		for(int i = 0; i < optionsData.size(); i++) {
@@ -31,7 +31,7 @@ public class SlashCommandHelper {
 				}
 				break;
 			}
-			
+
 			CommandArgument arg = args[argIdx];
 			switch(d.getType()) {
 				case BOOLEAN:
@@ -39,7 +39,7 @@ public class SlashCommandHelper {
 						DefaultMessage.ERROR_ARGUMENT_TYPE_BOOLEAN.sendMessage(channel, "parameter", d.getName());
 						return false;
 					}
-					
+
 					options.put(d.getName(), arg.asBoolean(sender));
 					break;
 				case CHANNEL:
@@ -49,12 +49,12 @@ public class SlashCommandHelper {
 						DefaultMessage.ERROR_INVALID_MENTION.sendMessage(channel);
 						return false;
 					}
-					
+
 					if(m.getMention().isAmbiguous()) {
 						DefaultMessage.ERROR_AMBIGUOUS_MENTION.sendMessage(channel);
 						return false;
 					}
-					
+
 					GraphiteMention mention = m.getMention();
 					GraphiteGuildChannel ch;
 					MentionType t = mention.getType();
@@ -78,14 +78,14 @@ public class SlashCommandHelper {
 							ch = null;
 							break;
 					}
-					
+
 					if(ch == null || !d.getChannelTypes().contains(ch.getJDAChannel().getType())) {
 						DefaultMessage.ERROR_ALLOWED_MENTION_TYPE_MESSAGE.sendMessage(channel,
 							"mention_types",
 							DefaultMessage.getMentionTypesString(sender, d.getChannelTypes().stream().map(MentionType::getMentionType).toArray(MentionType[]::new)));
 						return false;
 					}
-					
+
 					options.put(d.getName(), ch);
 					break;
 				}
@@ -95,7 +95,7 @@ public class SlashCommandHelper {
 						DefaultMessage.ERROR_ARGUMENT_TYPE_INTEGER.sendMessage(channel, "parameter", d.getName());
 						return false;
 					}
-					
+
 					long v = arg.asLong();
 					if(!d.getChoices().isEmpty() && !d.getChoices().stream().anyMatch(c -> c.getAsLong() == v)) {
 						DefaultMessage.ERROR_CHOICE_INVALID.sendMessage(channel,
@@ -103,7 +103,7 @@ public class SlashCommandHelper {
 								"choices", d.getChoices().stream().map(vl -> String.valueOf(vl.getAsString())).collect(Collectors.joining(", ")));
 						return false;
 					}
-					
+
 					options.put(d.getName(), v);
 					break;
 				}
@@ -113,7 +113,7 @@ public class SlashCommandHelper {
 						DefaultMessage.ERROR_ARGUMENT_TYPE_NUMBER.sendMessage(channel, "parameter", d.getName());
 						return false;
 					}
-					
+
 					double v = arg.asDouble();
 					if(!d.getChoices().isEmpty() && !d.getChoices().stream().anyMatch(c -> c.getAsDouble() == v)) {
 						DefaultMessage.ERROR_CHOICE_INVALID.sendMessage(channel,
@@ -121,7 +121,7 @@ public class SlashCommandHelper {
 								"choices", d.getChoices().stream().map(vl -> String.valueOf(vl.getAsString())).collect(Collectors.joining(", ")));
 						return false;
 					}
-					
+
 					options.put(d.getName(), v);
 					break;
 				}
@@ -132,12 +132,12 @@ public class SlashCommandHelper {
 						DefaultMessage.ERROR_INVALID_MENTION.sendMessage(channel);
 						return false;
 					}
-					
+
 					if(m.getMention().isAmbiguous()) {
 						DefaultMessage.ERROR_AMBIGUOUS_MENTION.sendMessage(channel);
 						return false;
 					}
-					
+
 					GraphiteMention mention = m.getMention();
 					MentionType t = mention.getType();
 					switch(t) {
@@ -163,7 +163,7 @@ public class SlashCommandHelper {
 						DefaultMessage.ERROR_INVALID_MENTION.sendMessage(channel);
 						return false;
 					}
-					
+
 					GraphiteMention mention = m.getMention();
 					MentionType t = mention.getType();
 					switch(t) {
@@ -197,7 +197,7 @@ public class SlashCommandHelper {
 							return false;
 						}
 					}
-					
+
 					options.put(d.getName(), val);
 					if(isLast) argIdx = args.length;
 					break;
@@ -209,12 +209,12 @@ public class SlashCommandHelper {
 						DefaultMessage.ERROR_INVALID_MENTION.sendMessage(channel);
 						return false;
 					}
-					
+
 					if(m.getMention().isAmbiguous()) {
 						DefaultMessage.ERROR_AMBIGUOUS_MENTION.sendMessage(channel);
 						return false;
 					}
-					
+
 					GraphiteMention mention = m.getMention();
 					if(mention.getType() != MentionType.USER) {
 						DefaultMessage.ERROR_ALLOWED_MENTION_TYPE_MESSAGE.sendMessage(channel,
@@ -234,15 +234,15 @@ public class SlashCommandHelper {
 				default:
 					throw new UnsupportedOperationException("Invalid option type");
 			}
-			
+
 			argIdx++;
 		}
-		
+
 		if(argIdx < args.length) {
 			sendHelp.run();
 			return false;
 		}
-		
+
 		return true;
 	}
 

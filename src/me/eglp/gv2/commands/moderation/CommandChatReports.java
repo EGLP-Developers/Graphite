@@ -5,13 +5,13 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
-import me.eglp.gv2.util.base.guild.GraphiteGuild;
-import me.eglp.gv2.util.base.guild.GraphiteModule;
-import me.eglp.gv2.util.base.guild.chatreport.GuildChatReport;
-import me.eglp.gv2.util.base.guild.config.GuildReportsConfig;
 import me.eglp.gv2.util.command.CommandCategory;
 import me.eglp.gv2.util.command.CommandInvokedEvent;
 import me.eglp.gv2.util.command.ParentCommand;
+import me.eglp.gv2.guild.GraphiteGuild;
+import me.eglp.gv2.guild.GraphiteModule;
+import me.eglp.gv2.guild.chatreport.GuildChatReport;
+import me.eglp.gv2.guild.config.GuildReportsConfig;
 import me.eglp.gv2.util.command.Command;
 import me.eglp.gv2.util.lang.DefaultLocaleString;
 import me.eglp.gv2.util.lang.DefaultMessage;
@@ -26,9 +26,9 @@ public class CommandChatReports extends ParentCommand {
 		super(GraphiteModule.MODERATION, CommandCategory.MODERATION, "chatreports");
 		setDescription(DefaultLocaleString.COMMAND_CHATREPORTS_DESCRIPTION);
 		setPermission(DefaultPermissions.MODERATION_CHATREPORTS);
-		
+
 		addSubCommand(new Command(this, "list") {
-			
+
 			@Override
 			public void action(CommandInvokedEvent event) {
 				GraphiteGuild g = event.getGuild();
@@ -37,12 +37,12 @@ public class CommandChatReports extends ParentCommand {
 					DefaultMessage.COMMAND_CHATREPORTS_LIST_NO_REPORTS.reply(event);
 					return;
 				}
-				
+
 				EmbedBuilder eb = new EmbedBuilder();
 				eb.setColor(Color.ORANGE);
 				int index = 0;
 				for(GuildChatReport r : c.getChatReports()) {
-					eb.appendDescription(DefaultLocaleString.COMMAND_CHATREPORTS_LIST_FIELD_HEAD.getFor(event.getSender(), 
+					eb.appendDescription(DefaultLocaleString.COMMAND_CHATREPORTS_LIST_FIELD_HEAD.getFor(event.getSender(),
 									"reporter", r.getReporter(),
 									"index", String.valueOf(index)));
 					index++;
@@ -50,7 +50,7 @@ public class CommandChatReports extends ParentCommand {
 				eb.setFooter(DefaultLocaleString.COMMAND_CHATREPORTS_LIST_FIELD_FOOTER.getFor(event.getSender(), "chatreports", ""+c.getChatReports().size()), null);
 				event.reply(eb.build());
 			}
-			
+
 			@Override
 			public List<OptionData> getOptions() {
 				return Collections.emptyList();
@@ -59,9 +59,9 @@ public class CommandChatReports extends ParentCommand {
 		.setPermission(DefaultPermissions.MODERATION_CHATREPORTS_LIST)
 		.setDescription(DefaultLocaleString.COMMAND_CHATREPORTS_LIST_DESCRIPTION)
 		.setUsage(DefaultLocaleString.COMMAND_CHATREPORTS_LIST_USAGE);
-		
+
 		addSubCommand(new Command(this, "remove") {
-			
+
 			@Override
 			public void action(CommandInvokedEvent event) {
 				GraphiteGuild g = event.getGuild();
@@ -72,13 +72,13 @@ public class CommandChatReports extends ParentCommand {
 					DefaultMessage.ERROR_OUT_OF_BOUNDS.reply(event);
 					return;
 				}
-				
+
 				c.removeChatReport(c.getChatReports().get((int) index));
-				
+
 				DefaultMessage.COMMAND_CHATREPORTS_REMOVE_SUCCESS.reply(event,
 						"index", String.valueOf(index));
 			}
-			
+
 			@Override
 			public List<OptionData> getOptions() {
 				return Arrays.asList(

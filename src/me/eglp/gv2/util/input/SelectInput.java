@@ -13,7 +13,7 @@ import me.eglp.gv2.main.Graphite;
 import me.eglp.gv2.main.GraphiteDebug;
 import me.eglp.gv2.multiplex.GraphiteMultiplex;
 import me.eglp.gv2.multiplex.bot.MultiplexBot;
-import me.eglp.gv2.util.base.user.GraphiteUser;
+import me.eglp.gv2.user.GraphiteUser;
 import me.eglp.gv2.util.emote.JDAEmote;
 import me.eglp.gv2.util.event.AnnotationEventHandler;
 import me.eglp.gv2.util.event.EventHandler;
@@ -30,14 +30,14 @@ public class SelectInput<T> implements GraphiteInput, AnnotationEventHandler {
 	private String messageID;
 	private Map<JDAEmote, T> mappings;
 	private List<GraphiteUser> allowedUsers;
-	
+
 	private boolean
 		autoRemove,
 		removeMessage,
 		removeUserInput;
-	
+
 	private TriConsumer<SelectInput<T>, GraphiteUser, T> callback;
-	
+
 	public SelectInput(List<GraphiteUser> allowedUsers, TriConsumer<SelectInput<T>, GraphiteUser, T> callback) {
 		this.allowedUsers = allowedUsers;
 		this.callback = callback;
@@ -46,27 +46,27 @@ public class SelectInput<T> implements GraphiteInput, AnnotationEventHandler {
 		this.removeUserInput = false;
 		this.mappings = new LinkedHashMap<>();
 	}
-	
+
 	public SelectInput(List<GraphiteUser> allowedUsers, BiConsumer<SelectInput<T>, T> callback) {
 		this(allowedUsers, (it, user, t) -> callback.accept(it, t));
 	}
-	
+
 	public SelectInput(List<GraphiteUser> allowedUsers, Consumer<T> callback) {
 		this(allowedUsers, (it, t) -> callback.accept(t));
 	}
-	
+
 	public SelectInput(GraphiteUser allowedUser, TriConsumer<SelectInput<T>, GraphiteUser, T> callback) {
 		this(Collections.singletonList(allowedUser), callback);
 	}
-	
+
 	public SelectInput(GraphiteUser allowedUser, BiConsumer<SelectInput<T>, T> callback) {
 		this(Collections.singletonList(allowedUser), callback);
 	}
-	
+
 	public SelectInput(GraphiteUser allowedUser, Consumer<T> callback) {
 		this(Collections.singletonList(allowedUser), callback);
 	}
-	
+
 	/**
 	 * Sets whether the input should be automatically removed (the listener unregistered) when an input is submitted<br>
 	 * <code>true</code> by default
@@ -88,7 +88,7 @@ public class SelectInput<T> implements GraphiteInput, AnnotationEventHandler {
 		this.removeMessage = removeMessage;
 		return this;
 	}
-	
+
 	/**
 	 * Sets whether the input reactions should be treated as buttons instead of toggle switches<br>
 	 * (= the reaction of a user will be removed when they input something)<br>
@@ -100,7 +100,7 @@ public class SelectInput<T> implements GraphiteInput, AnnotationEventHandler {
 		this.removeUserInput = removeUserInput;
 		return this;
 	}
-	
+
 	@EventHandler
 	public void onReaction(GenericMessageReactionEvent event) {
 		if(!GraphiteMultiplex.getCurrentBot().equals(byBot)) return;
@@ -122,11 +122,11 @@ public class SelectInput<T> implements GraphiteInput, AnnotationEventHandler {
 			if(removeMessage) event.getChannel().deleteMessageById(event.getMessageId()).queue();
 		}
 	}
-	
+
 	public void addOption(JDAEmote emote, T option) {
 		mappings.put(emote, option);
 	}
-	
+
 	public void applyReactions(Message m) {
 		m = m.getChannel().retrieveMessageById(m.getIdLong()).complete();
 		if(m == null) return;
@@ -137,14 +137,14 @@ public class SelectInput<T> implements GraphiteInput, AnnotationEventHandler {
 			});
 		}
 	}
-	
+
 	public void apply(Message m) {
 		applyReactions(m);
 		this.messageID = m.getId();
 		this.byBot = GraphiteMultiplex.getCurrentBot();
 		Graphite.getJDAListener().registerTemporaryHandler(this, 1, TimeUnit.HOURS);
 	}
-	
+
 	@Override
 	public void remove() {
 		Graphite.getJDAListener().unregisterHandler(this);

@@ -21,14 +21,14 @@ import org.java_websocket.framing.CloseFrame;
 import org.java_websocket.handshake.ClientHandshake;
 import org.java_websocket.server.WebSocketServer;
 
+import me.eglp.gv2.guild.GraphiteGuild;
+import me.eglp.gv2.guild.GraphiteMember;
 import me.eglp.gv2.main.DebugCategory;
 import me.eglp.gv2.main.Graphite;
 import me.eglp.gv2.main.GraphiteDebug;
 import me.eglp.gv2.main.GraphiteOption;
 import me.eglp.gv2.multiplex.bot.GlobalBot;
 import me.eglp.gv2.util.Statics;
-import me.eglp.gv2.util.base.guild.GraphiteGuild;
-import me.eglp.gv2.util.base.guild.GraphiteMember;
 import me.eglp.gv2.util.webinterface.base.GraphiteWebinterfaceGuild;
 import me.eglp.gv2.util.webinterface.base.GraphiteWebinterfaceUser;
 import me.eglp.gv2.util.webinterface.base.WebinterfaceResponse;
@@ -38,7 +38,7 @@ import me.mrletsplay.mrcore.json.JSONArray;
 import me.mrletsplay.mrcore.json.JSONObject;
 
 public class WebinterfaceWebSocketServer extends WebSocketServer {
-	
+
 	public WebinterfaceWebSocketServer(int port) {
 		super(new InetSocketAddress("127.0.0.1", port));
 		setReuseAddr(true);
@@ -55,7 +55,7 @@ public class WebinterfaceWebSocketServer extends WebSocketServer {
 
 	@Override
 	public void onClose(WebSocket conn, int code, String reason, boolean remote) {
-		
+
 	}
 
 	@SuppressWarnings("null")
@@ -65,17 +65,17 @@ public class WebinterfaceWebSocketServer extends WebSocketServer {
 		Graphite.withBot(GlobalBot.INSTANCE, () -> {
 			try {
 				WebinterfacePacket p = WebinterfacePacket.deserialize(new JSONObject(message));
-				
+
 				if(p.getRequestMethod().equals("login")) {
 					String code = p.getData().getString("code");
 					WebinterfaceResponse r = login(conn, code);
 					conn.send(r.toPacket(p.getID()).toJSON().toString());
 					return;
 				}
-				
+
 				if(p.getRequestMethod().equals("setSession")) {
 					String sessionID = p.getData().getString("sessionID");
-					
+
 					WebinterfaceSession s = Graphite.getWebinterface().getSessionStorage().getSession(sessionID);
 					boolean sessionValid = s != null && s.isValid();
 					JSONObject o = new JSONObject();
@@ -88,28 +88,28 @@ public class WebinterfaceWebSocketServer extends WebSocketServer {
 						if(Graphite.hasOption(GraphiteOption.WEBINTERFACE_DEBUG)) Graphite.log("Session valid: " + sessionID + " (User: " + s.getUserID() + ")");
 						conn.setAttachment(s);
 					}
-					
+
 					return;
 				}
-				
+
 				WebinterfaceSession session = conn.getAttachment();
 				if(session == null) {
 					conn.close(CloseFrame.POLICY_VALIDATION, "Not logged in");
 					return;
 				}
-				
+
 				if(p.getRequestMethod().equals("updateSelectedGuild")) {
 					if(p.getGuildID() != null && !session.getUser().isOnGuild(p.getGuildID())) {
 						conn.send(WebinterfaceResponse.error("No permission").toPacket(p.getID()).toJSON().toString());
 						return;
 					}
-					
+
 					session.getData().put("lastKnownGuildID", p.getGuildID());
 					session.commitData();
 					conn.send(WebinterfacePacket.ofResponse(p.getID(), null).toJSON().toString());
 					return;
 				}
-				
+
 				WebinterfacePacket r = Graphite.getWebinterface().handlePacket(conn, p);
 				if(Graphite.hasOption(GraphiteOption.WEBINTERFACE_DEBUG)) Graphite.log("<< " + r.toJSON().toString());
 				conn.send(r.toJSON().toString());
@@ -119,7 +119,7 @@ public class WebinterfaceWebSocketServer extends WebSocketServer {
 			}
 		});
 	}
-	
+
 	private WebinterfaceResponse login(WebSocket conn, String code) {
 		try {
 			String in = post("https://discord.com/api/oauth2/token", null,
@@ -165,7 +165,7 @@ public class WebinterfaceWebSocketServer extends WebSocketServer {
 			return WebinterfaceResponse.error("Failed to verify login");
 		}
 	}
-	
+
 	public static String post(String url, String auth, String... postParams) throws IOException {
 		HttpClient cl = HttpClients.createDefault();
 		HttpPost post = new HttpPost(url);
@@ -179,7 +179,7 @@ public class WebinterfaceWebSocketServer extends WebSocketServer {
 		InputStream in = p.getEntity().getContent();
 		return readString(in);
 	}
-	
+
 	private static String get(String url, String auth) throws IOException {
 		HttpClient cl = HttpClients.createDefault();
 		HttpGet get = new HttpGet(url);
@@ -188,7 +188,7 @@ public class WebinterfaceWebSocketServer extends WebSocketServer {
 		InputStream in = p.getEntity().getContent();
 		return readString(in);
 	}
-	
+
 	private static String readString(InputStream in) throws IOException {
 		ByteArrayOutputStream bO = new ByteArrayOutputStream();
 		byte[] buf = new byte[4096];
@@ -207,7 +207,7 @@ public class WebinterfaceWebSocketServer extends WebSocketServer {
 
 	@Override
 	public void onStart() {
-		
+
 	}
 
 }

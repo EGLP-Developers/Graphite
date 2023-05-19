@@ -4,13 +4,13 @@ import java.util.Base64;
 import java.util.List;
 
 import me.eglp.gv2.commands.record.CommandRecord;
+import me.eglp.gv2.guild.GraphiteAudioChannel;
+import me.eglp.gv2.guild.GraphiteGuild;
+import me.eglp.gv2.guild.GraphiteMember;
+import me.eglp.gv2.guild.config.GuildRecordingsConfig;
+import me.eglp.gv2.guild.recorder.GuildRecorder;
+import me.eglp.gv2.guild.recorder.recording.GuildAudioRecording;
 import me.eglp.gv2.multiplex.GraphiteFeature;
-import me.eglp.gv2.util.base.guild.GraphiteAudioChannel;
-import me.eglp.gv2.util.base.guild.GraphiteGuild;
-import me.eglp.gv2.util.base.guild.GraphiteMember;
-import me.eglp.gv2.util.base.guild.config.GuildRecordingsConfig;
-import me.eglp.gv2.util.base.guild.recorder.GuildRecorder;
-import me.eglp.gv2.util.base.guild.recorder.recording.GuildAudioRecording;
 import me.eglp.gv2.util.webinterface.WebinterfaceHandler;
 import me.eglp.gv2.util.webinterface.base.WebinterfaceRequestEvent;
 import me.eglp.gv2.util.webinterface.base.WebinterfaceResponse;
@@ -19,7 +19,7 @@ import me.mrletsplay.mrcore.json.JSONObject;
 import net.dv8tion.jda.api.entities.Member;
 
 public class RecordRequestHandler {
-	
+
 	@WebinterfaceHandler(requestMethod = "getRecording", requireGuild = true, requireBot = true, requireFeatures = GraphiteFeature.RECORD)
 	public static WebinterfaceResponse getRecording(WebinterfaceRequestEvent event) {
 		GraphiteGuild g = event.getSelectedGuild();
@@ -33,7 +33,7 @@ public class RecordRequestHandler {
 		res.put("recording", r.toWebinterfaceObject());
 		return WebinterfaceResponse.success(res);
 	}
-	
+
 	@WebinterfaceHandler(requestMethod = "getRecordingAudio", requireGuild = true, requireBot = true, requireFeatures = GraphiteFeature.RECORD)
 	public static WebinterfaceResponse getRecordingAudio(WebinterfaceRequestEvent event) {
 		GraphiteGuild g = event.getSelectedGuild();
@@ -47,7 +47,7 @@ public class RecordRequestHandler {
 		res.put("audio", Base64.getEncoder().encodeToString(r.loadAudioData()));
 		return WebinterfaceResponse.success(res);
 	}
-	
+
 	@WebinterfaceHandler(requestMethod = "getRecordings", requireGuild = true, requireBot = true, requireFeatures = GraphiteFeature.RECORD)
 	public static WebinterfaceResponse getRecordings(WebinterfaceRequestEvent event) {
 		List<GuildAudioRecording> r = event.getSelectedGuild().getRecordingsConfig().getRecordings();
@@ -57,45 +57,45 @@ public class RecordRequestHandler {
 		rec.put("recordings", recs);
 		return WebinterfaceResponse.success(rec);
 	}
-	
+
 	@WebinterfaceHandler(requestMethod = "startRecording", requireGuild = true, requireBot = true, requireFeatures = GraphiteFeature.RECORD)
 	public static WebinterfaceResponse startRecording(WebinterfaceRequestEvent event) {
 		GraphiteGuild g = event.getSelectedGuild();
 		GraphiteMember m = g.getMember(event.getUser().getDiscordUser());
-		
+
 		if(m.getCurrentAudioChannel() == null) {
 			return WebinterfaceResponse.error("You must be in an audio channel");
 		}
-		
+
 		GuildRecorder rec = g.getRecorder();
 		if(rec.isRecording()) {
 			return WebinterfaceResponse.success();
 		}
-		
+
 		Member selfMember = g.getSelfMember().getJDAMember();
-		if(selfMember.getVoiceState() != null 
-				&& selfMember.getVoiceState().getChannel() != null 
+		if(selfMember.getVoiceState() != null
+				&& selfMember.getVoiceState().getChannel() != null
 				&& selfMember.getVoiceState().isDeafened()) {
 			g.getJDAGuild().getAudioManager().setSelfDeafened(false);
 		}
-		
+
 		GraphiteAudioChannel ac = m.getCurrentAudioChannel();
 		rec.record(ac);
-		
+
 		return WebinterfaceResponse.success();
 	}
-	
+
 	@WebinterfaceHandler(requestMethod = "isRecording", requireGuild = true, requireBot = true, requireFeatures = GraphiteFeature.RECORD)
 	public static WebinterfaceResponse isRecording(WebinterfaceRequestEvent event) {
 		GraphiteGuild g = event.getSelectedGuild();
 		GuildRecorder rec = g.getRecorder();
-		
+
 		JSONObject obj = new JSONObject();
 		obj.put("is_recording", rec.isRecording());
-		
+
 		return WebinterfaceResponse.success(obj);
 	}
-	
+
 	@WebinterfaceHandler(requestMethod = "stopRecording", requireGuild = true, requireBot = true, requireFeatures = GraphiteFeature.RECORD)
 	public static WebinterfaceResponse stopRecording(WebinterfaceRequestEvent event) {
 		GraphiteGuild g = event.getSelectedGuild();
@@ -106,7 +106,7 @@ public class RecordRequestHandler {
 		rec.stop();
 		return WebinterfaceResponse.success();
 	}
-	
+
 	@WebinterfaceHandler(requestMethod = "deleteRecording", requireGuild = true, requireBot = true, requireFeatures = GraphiteFeature.RECORD)
 	public static WebinterfaceResponse deleteRecording(WebinterfaceRequestEvent event) {
 		String name = event.getRequestData().getString("recording_name");
@@ -115,22 +115,22 @@ public class RecordRequestHandler {
 		r.remove();
 		return WebinterfaceResponse.success();
 	}
-	
+
 	@WebinterfaceHandler(requestMethod = "deleteAllRecordings", requireGuild = true, requireBot = true, requireFeatures = GraphiteFeature.RECORD)
 	public static WebinterfaceResponse deleteAllRecordings(WebinterfaceRequestEvent event) {
 		List<GuildAudioRecording> r = event.getSelectedGuild().getRecordingsConfig().getRecordings();
 		r.forEach(rec -> rec.remove());
 		return WebinterfaceResponse.success();
 	}
-	
+
 	@WebinterfaceHandler(requestMethod = "renameRecording", requireGuild = true, requireBot = true, requireFeatures = GraphiteFeature.RECORD)
 	public static WebinterfaceResponse renameRecording(WebinterfaceRequestEvent event) {
 		String name = event.getRequestData().getString("name");
 		String newName = event.getRequestData().getString("new_name");
-		
+
 		GraphiteGuild g = event.getSelectedGuild();
 		GuildAudioRecording r = g.getRecordingsConfig().getRecording(name);
-		
+
 		if(r == null) {
 			return WebinterfaceResponse.error("Recording doesn't exist");
 		}
@@ -139,14 +139,14 @@ public class RecordRequestHandler {
 		if(nR != null) {
 			return WebinterfaceResponse.error("A recording with this name already exists");
 		}
-		
+
 		if(!CommandRecord.RECORDING_NAME_PATTERN.matcher(newName).matches()) {
 			return WebinterfaceResponse.error("New recording name doesn't match our requirements");
 		}
-		
+
 		GuildRecordingsConfig rc = g.getRecordingsConfig();
 		rc.renameRecording(name, newName);
-		
+
 		return WebinterfaceResponse.success();
 	}
 }

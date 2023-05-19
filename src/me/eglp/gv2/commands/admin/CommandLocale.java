@@ -13,8 +13,8 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
+import me.eglp.gv2.guild.GraphiteGuild;
 import me.eglp.gv2.main.Graphite;
-import me.eglp.gv2.util.base.guild.GraphiteGuild;
 import me.eglp.gv2.util.command.Command;
 import me.eglp.gv2.util.command.CommandCategory;
 import me.eglp.gv2.util.command.CommandInvokedEvent;
@@ -38,16 +38,16 @@ import net.dv8tion.jda.api.interactions.components.buttons.ButtonStyle;
 import net.dv8tion.jda.api.utils.FileUpload;
 
 public class CommandLocale extends ParentCommand {
-	
+
 	private static final Pattern LOCALE_NAME_PATTERN = Pattern.compile("\\w{1,16}");
 
 	public CommandLocale() {
 		super(null, CommandCategory.ADMIN, "locale");
 		setDescription(DefaultLocaleString.COMMAND_LOCALE_DESCRIPTION);
 		setPermission(DefaultPermissions.ADMIN_LOCALE);
-		
+
 		addSubCommand(new Command(this, "list") {
-			
+
 			@Override
 			public void action(CommandInvokedEvent event) {
 				Set<String> locales = event.getGuild().getLocale().getAvailableLocales();
@@ -57,7 +57,7 @@ public class CommandLocale extends ParentCommand {
 				b.addField("Current Locale", "`" + event.getGuild().getConfig().getLocale() + "`", false);
 				event.reply(b.build());
 			}
-			
+
 			@Override
 			public List<OptionData> getOptions() {
 				return Collections.emptyList();
@@ -66,9 +66,9 @@ public class CommandLocale extends ParentCommand {
 		.setDescription(DefaultLocaleString.COMMAND_LOCALE_LIST_DESCRIPTION)
 		.setUsage(DefaultLocaleString.COMMAND_LOCALE_LIST_USAGE)
 		.setPermission(DefaultPermissions.ADMIN_LOCALE_LIST);
-		
+
 		addSubCommand(new Command(this, "set") {
-			
+
 			@Override
 			public void action(CommandInvokedEvent event) {
 				String locale = (String) event.getOption("locale");
@@ -76,11 +76,11 @@ public class CommandLocale extends ParentCommand {
 					DefaultMessage.COMMAND_LOCALE_INVALID_LOCALE.reply(event);
 					return;
 				}
-				
+
 				event.getGuild().getConfig().setLocale(locale);
 				DefaultMessage.COMMAND_LOCALE_SET_MESSAGE.reply(event, "locale", locale);
 			}
-			
+
 			@Override
 			public List<OptionData> getOptions() {
 				return Arrays.asList(
@@ -91,16 +91,16 @@ public class CommandLocale extends ParentCommand {
 		.setDescription(DefaultLocaleString.COMMAND_LOCALE_SET_DESCRIPTION)
 		.setUsage(DefaultLocaleString.COMMAND_LOCALE_SET_USAGE)
 		.setPermission(DefaultPermissions.ADMIN_LOCALE_SET);
-		
+
 		addSubCommand(new Command(this, "download") {
-			
+
 			@Override
 			public void action(CommandInvokedEvent event) {
 				if(event.isFromGuild() && !event.getTextChannel().canAttachFiles()) {
 					DefaultMessage.ERROR_LACKING_PERMISSION.reply(event, "permission", Permission.MESSAGE_ATTACH_FILES.getName());
 					return;
 				}
-				
+
 				String localeName = (String) event.getOption("locale");
 				ByteArrayOutputStream o = new ByteArrayOutputStream();
 				if(localeName == null) {
@@ -111,21 +111,21 @@ public class CommandLocale extends ParentCommand {
 						DefaultMessage.COMMAND_LOCALE_INVALID_LOCALE.reply(event);
 						return;
 					}
-					
+
 					event.getGuild().getLocale().generateLocaleFile(localeName).save(o);
 				}
-				
+
 				byte[] b = o.toByteArray();
 				event.getChannel().sendFiles(FileUpload.fromData(b, localeName + ".yml"));
-				
+
 				EmbedBuilder eb = new EmbedBuilder();
 				eb.addField(
-						DefaultLocaleString.COMMAND_LOCALE_DOWNLOAD_TITLE.getFor(event.getSender()), 
+						DefaultLocaleString.COMMAND_LOCALE_DOWNLOAD_TITLE.getFor(event.getSender()),
 						DefaultLocaleString.COMMAND_LOCALE_DOWNLOAD_VALUES.getFor(event.getSender(), "prefix", event.getGuild().getPrefix()), true);
 				eb.setFooter(DefaultLocaleString.COMMAND_LOCALE_DOWNLOAD_FOOTER.getFor(event.getSender(), "amount", ""+Graphite.getCustomizableMessageAmount()), null);
 				event.reply(eb.build());
 			}
-			
+
 			@Override
 			public List<OptionData> getOptions() {
 				return Arrays.asList(
@@ -137,20 +137,20 @@ public class CommandLocale extends ParentCommand {
 		.setUsage(DefaultLocaleString.COMMAND_LOCALE_DOWNLOAD_USAGE)
 		.setPermission(DefaultPermissions.ADMIN_LOCALE_DOWNLOAD)
 		.requirePermissions(Permission.MESSAGE_ATTACH_FILES);
-		
+
 		addSubCommand(new Command(this, "upload") {
-			
+
 			@Override
 			public void action(CommandInvokedEvent event) {
 				String name = (String) event.getOption("name");
 				Attachment at = (Attachment) event.getOption("file");
-				
+
 				Matcher m = LOCALE_NAME_PATTERN.matcher(name);
 				if(!m.matches()) {
 					DefaultMessage.COMMAND_LOCALE_UPLOAD_INVALID_SHORT.reply(event);
 					return;
 				}
-				
+
 				if(event.getGuild().hasLocale(name)) {
 					ButtonInput<Integer> inp = new ButtonInput<Integer>(event.getAuthor(), ev -> {
 						if(ev.getItem() == -1) {
@@ -160,17 +160,17 @@ public class CommandLocale extends ParentCommand {
 					})
 					.autoRemove(true)
 					.removeMessage(true);
-					
+
 					inp.addOption(ButtonStyle.DANGER, "Overwrite", -1); // NONBETA: msg
 					inp.addOption(ButtonStyle.SECONDARY, "Cancel", -2);
 					inp.replyEphemeral(event, DefaultLocaleString.COMMAND_LOCALE_UPLOAD_ALREADY_EXISTS);
 					return;
 				}
-				
+
 				createLocale(event, name, at.getUrl());
 				DefaultMessage.COMMAND_LOCALE_UPLOAD_SUCCESS.reply(event, "prefix", event.getPrefixUsed(), "locale", name);
 			}
-			
+
 			@Override
 			public List<OptionData> getOptions() {
 				return Arrays.asList(
@@ -182,9 +182,9 @@ public class CommandLocale extends ParentCommand {
 		.setDescription(DefaultLocaleString.COMMAND_LOCALE_UPLOAD_DESCRIPTION)
 		.setUsage(DefaultLocaleString.COMMAND_LOCALE_UPLOAD_USAGE)
 		.setPermission(DefaultPermissions.ADMIN_LOCALE_UPLOAD);
-		
+
 		addSubCommand(new Command(this, "delete") {
-			
+
 			@Override
 			public void action(CommandInvokedEvent event) {
 				GraphiteGuild guild = event.getGuild();
@@ -193,16 +193,16 @@ public class CommandLocale extends ParentCommand {
 					DefaultMessage.COMMAND_LOCALE_DELETE_INVALID_LOCALE.reply(event);
 					return;
 				}
-				
+
 				if(guild.getConfig().getLocale().equals(localeIdentifier)) {
 					guild.getConfig().setLocale(GraphiteLocale.DEFAULT_LOCALE_KEY);
 				}
-				
+
 				guild.getLocale().deleteLocale(localeIdentifier);
-				
+
 				DefaultMessage.COMMAND_LOCALE_DELETE_SUCCESS.reply(event, "locale", localeIdentifier);
 			}
-			
+
 			@Override
 			public List<OptionData> getOptions() {
 				return Arrays.asList(
@@ -214,34 +214,34 @@ public class CommandLocale extends ParentCommand {
 		.setUsage(DefaultLocaleString.COMMAND_LOCALE_DELETE_USAGE)
 		.setPermission(DefaultPermissions.ADMIN_LOCALE_DELETE);
 	}
-	
+
 	private void createLocale(CommandInvokedEvent event, String locale, String fileURL) {
 		byte[] bytes = HttpRequest.createGet(fileURL).execute().asRaw();
 		try {
 			Map<String, String> messages = new HashMap<>();
-			
+
 			CustomConfig c = ConfigLoader.loadStreamConfig(new ByteArrayInputStream(bytes), true);
 			for(String key : c.getKeys(true, true)) {
 				if(c.getTypeOf(key) != ConfigValueType.STRING) continue;
 				String v = c.getString(key);
-				
+
 				DefaultLocaleString s = DefaultLocaleString.getByPath(key);
 				if(s != null) {
 					if(s.getFallback().equals(v)) continue; // Ignore the values left at default
 					messages.put(key, v);
 					continue;
 				}
-				
+
 				DefaultMessage dm = DefaultMessage.getByPath(key);
 				if(dm != null) {
 					if(dm.getFallback().equals(v)) continue; // Ignore the values left at default
 					messages.put(key, v);
 					continue;
 				}
-				
+
 				// Ignore invalid values
 			}
-			
+
 			event.getGuild().getLocale().createOrOverrideLocale(locale, messages);
 		}catch(ConfigException e) {
 			e.printStackTrace();

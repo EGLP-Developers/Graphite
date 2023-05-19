@@ -2,7 +2,7 @@ package me.eglp.gv2.util.webinterface.js.classes.music;
 
 import com.sedmelluq.discord.lavaplayer.track.AudioTrackInfo;
 
-import me.eglp.gv2.util.base.guild.GraphiteGuild;
+import me.eglp.gv2.guild.GraphiteGuild;
 import me.eglp.gv2.util.lang.GraphiteTimeParser;
 import me.eglp.gv2.util.music.GraphiteTrack;
 import me.eglp.gv2.util.webinterface.js.JavaScriptValue;

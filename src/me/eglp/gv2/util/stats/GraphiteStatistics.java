@@ -11,24 +11,24 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+import me.eglp.gv2.guild.GraphiteGuild;
 import me.eglp.gv2.main.Graphite;
-import me.eglp.gv2.util.base.guild.GraphiteGuild;
 import me.eglp.gv2.util.stats.element.StatisticsElementPointFrequency;
 import me.eglp.gv2.util.stats.element.StatisticsElementTimeframe;
 import me.mrletsplay.mrcore.misc.FriendlyException;
 
 public class GraphiteStatistics {
-	
+
 	public static final int STATISTICS_INTERVAL = 20 * 60 * 1000;
-	
+
 	private static final Comparator<StatisticValue> STATISTICS_SORT =
 			Comparator.<StatisticValue>comparingInt(v -> v.getValue()).reversed() // First sort by highest value
 			.thenComparing(Comparator.<StatisticValue>comparingLong(v -> v.getTimestamp()).reversed()); // Then, for equal values, use the newest timestamp
-	
+
 	private static final Comparator<PartialStatistics> PARTIAL_STATISTICS_SORT =
 			Comparator.<PartialStatistics>comparingDouble(v -> v.sortValue()).reversed() // First sort by highest total/average value
 			.thenComparing(Comparator.<PartialStatistics>comparingLong(v -> v.getNewestTimestamp()).reversed()); // Then, for equal values, use the one that contains the newest timestamp
-	
+
 	static {
 		Graphite.getMySQL().createTable("guilds_statistics")
 			.guildReference("GuildId")
@@ -43,13 +43,13 @@ public class GraphiteStatistics {
 					"PRIMARY KEY(GuildId, Statistic, Category, Timestamp)")
 			.create();
 	}
-	
+
 	private Map<GraphiteStatistic, CumulativeStatistics> cumulativeStatistics;
-	
+
 	public GraphiteStatistics() {
 		this.cumulativeStatistics = new HashMap<>();
 	}
-	
+
 	public void incrementCumulativeStatistic(GraphiteGuild guild, GraphiteStatistic statistic, String category) {
 		CumulativeStatistics s = cumulativeStatistics.get(statistic);
 		if(s == null) {
@@ -58,7 +58,7 @@ public class GraphiteStatistics {
 		}
 		s.incrementStatistic(guild, category);
 	}
-	
+
 	public void decrementCumulativeStatistic(GraphiteGuild guild, GraphiteStatistic statistic, String category) {
 		CumulativeStatistics s = cumulativeStatistics.get(statistic);
 		if(s == null) {
@@ -67,7 +67,7 @@ public class GraphiteStatistics {
 		}
 		s.decrementStatistic(guild, category);
 	}
-	
+
 	public void saveStatisticsToMySQL(GraphiteGuild g, EnumSet<GraphiteStatistic> statistics) {
 		for(GraphiteStatistic s : statistics) {
 			Map<String, Integer> v;
@@ -77,11 +77,11 @@ public class GraphiteStatistics {
 			}else {
 				v = s.getCurrentValue(g);
 			}
-			
+
 			addStatisticValues(g, s, v);
 		}
 	}
-	
+
 	private void addStatisticValues(GraphiteGuild guild, GraphiteStatistic statistic, Map<String, Integer> values) {
 		if(values.isEmpty()) return;
 		Graphite.getMySQL().run(con -> {
@@ -98,7 +98,7 @@ public class GraphiteStatistics {
 			}
 		});
 	}
-	
+
 	private List<StatisticValue> getStatisticValues(GraphiteGuild guild, GraphiteStatistic statistic, long timeframe) {
 		return Graphite.getMySQL().run(con -> {
 			try(PreparedStatement s = con.prepareStatement("SELECT Timestamp, Value FROM guilds_statistics WHERE GuildId = ? AND Statistic = ? AND Timestamp > ? ORDER BY Timestamp ASC")) {
@@ -115,7 +115,7 @@ public class GraphiteStatistics {
 			}
 		}).orElseThrowOther(e -> new FriendlyException("Failed to load statistic values from MySQL", e));
 	}
-	
+
 	private List<StatisticValue> getStatisticValues(GraphiteGuild guild, GraphiteStatistic statistic, String category, long timeframe) {
 		return Graphite.getMySQL().run(con -> {
 			try(PreparedStatement s = con.prepareStatement("SELECT Timestamp, Value FROM guilds_statistics WHERE GuildId = ? AND Statistic = ? AND Category = ? AND Timestamp > ? ORDER BY Timestamp ASC")) {
@@ -133,11 +133,11 @@ public class GraphiteStatistics {
 			}
 		}).orElseThrowOther(e -> new FriendlyException("Failed to load statistic values from MySQL", e));
 	}
-	
+
 	private PartialStatistics getPartialStatistics(GraphiteGuild guild, GraphiteStatistic statistic, StatisticsElementTimeframe timeframe, StatisticsElementPointFrequency pointFrequency) {
 		return new PartialStatistics(guild, statistic, getStatisticValues(guild, statistic, timeframe.getRawTimeframe() + pointFrequency.getRawTimeframe()), pointFrequency);
 	}
-	
+
 	private List<PartialStatistics> getPartialStatistics2(GraphiteGuild guild, GraphiteStatistic statistic, StatisticsElementTimeframe timeframe, StatisticsElementPointFrequency pointFrequency) {
 		List<PartialStatistics> s = new ArrayList<>();
 		for(String c : getCategories(guild, statistic)) {
@@ -149,7 +149,7 @@ public class GraphiteStatistics {
 				.limit(5)
 				.collect(Collectors.toList());
 	}
-	
+
 	private List<StatisticValue> generatePreviewValues(GraphiteStatistic statistic, StatisticsElementTimeframe timeframe, StatisticsElementPointFrequency pointFrequency, double offset) {
 		List<StatisticValue> values = new ArrayList<>();
 		long t = System.currentTimeMillis();
@@ -158,7 +158,7 @@ public class GraphiteStatistics {
 		}
 		return values;
 	}
-	
+
 	private List<PartialStatistics> getPreviewStatistics2(GraphiteGuild guild, GraphiteStatistic statistic, StatisticsElementTimeframe timeframe, StatisticsElementPointFrequency pointFrequency, double offset) {
 		if(!statistic.hasCategories()) return Collections.singletonList(new PartialStatistics(guild, statistic, generatePreviewValues(statistic, timeframe, pointFrequency, offset), pointFrequency));
 		List<PartialStatistics> s = new ArrayList<>();
@@ -167,13 +167,13 @@ public class GraphiteStatistics {
 		}
 		return s;
 	}
-	
+
 	public List<PartialStatistics> getPartialStatistics(GraphiteGuild guild, GraphiteStatistic statistic, StatisticsElementTimeframe timeframe, StatisticsElementPointFrequency pointFrequency, double offset, boolean preview) {
 		if(preview) return getPreviewStatistics2(guild, statistic, timeframe, pointFrequency, offset);
 		if(!statistic.hasCategories()) return Collections.singletonList(getPartialStatistics(guild, statistic, timeframe, pointFrequency));
 		return getPartialStatistics2(guild, statistic, timeframe, pointFrequency);
 	}
-	
+
 	private StatisticValue getLastStatisticValue(GraphiteGuild guild, GraphiteStatistic statistic) {
 		if(!statistic.isCumulative()) return new StatisticValue(statistic, System.currentTimeMillis(), statistic.getCurrentValue(guild).get("default"));
 		return Graphite.getMySQL().run(con -> {
@@ -187,13 +187,13 @@ public class GraphiteStatistics {
 			}
 		}).orElseThrowOther(e -> new FriendlyException("Failed to load statistic values from MySQL", e));
 	}
-	
+
 	private List<String> getCategories(GraphiteGuild guild, GraphiteStatistic statistic) {
 		if(!statistic.hasCategories()) throw new FriendlyException("Statistic doesn't have categories");
 		return Graphite.getMySQL().queryArray(String.class, "SELECT DISTINCT Category FROM guilds_statistics WHERE GuildId = ? AND Statistic = ?", guild.getID(), statistic.name())
 				.orElseThrowOther(e -> new FriendlyException("Failed to load statistic categories from MySQL", e));
 	}
-	
+
 	private List<StatisticValue> getLastStatisticValues(GraphiteGuild guild, GraphiteStatistic statistic) {
 		if(!statistic.hasCategories()) return Collections.singletonList(getLastStatisticValue(guild, statistic));
 		List<StatisticValue> vals = new ArrayList<>();
@@ -215,7 +215,7 @@ public class GraphiteStatistics {
 				.limit(5)
 				.collect(Collectors.toList());
 	}
-	
+
 	public List<StatisticValue> getLastStatisticValues(GraphiteGuild guild, GraphiteStatistic statistic, boolean preview, int index, int total) {
 		if(preview) {
 			if(!statistic.hasCategories()) return Collections.singletonList(new StatisticValue(statistic, System.currentTimeMillis(), (int) Math.ceil(100 * Math.pow(2/3d, index - 1))));
@@ -227,5 +227,5 @@ public class GraphiteStatistics {
 		}
 		return getLastStatisticValues(guild, statistic);
 	}
-	
+
 }

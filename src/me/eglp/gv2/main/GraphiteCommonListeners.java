@@ -4,20 +4,20 @@ import java.util.stream.Collectors;
 
 import me.eglp.amongus4graphite.game.AmongUsCaptureUser;
 import me.eglp.amongus4graphite.game.AmongUsPlayer;
+import me.eglp.gv2.guild.GraphiteGuild;
+import me.eglp.gv2.guild.GraphiteMember;
+import me.eglp.gv2.guild.GraphiteRole;
+import me.eglp.gv2.guild.GraphiteTextChannel;
+import me.eglp.gv2.guild.GraphiteVoiceChannel;
+import me.eglp.gv2.guild.GuildAutoChannel;
+import me.eglp.gv2.guild.GuildJail;
+import me.eglp.gv2.guild.GuildUserChannel;
+import me.eglp.gv2.guild.config.GuildChannelsConfig;
+import me.eglp.gv2.guild.config.GuildModerationConfig;
+import me.eglp.gv2.guild.config.GuildRolesConfig;
 import me.eglp.gv2.multiplex.GraphiteFeature;
 import me.eglp.gv2.multiplex.GraphiteMultiplex;
-import me.eglp.gv2.util.base.guild.GraphiteGuild;
-import me.eglp.gv2.util.base.guild.GraphiteMember;
-import me.eglp.gv2.util.base.guild.GraphiteRole;
-import me.eglp.gv2.util.base.guild.GraphiteTextChannel;
-import me.eglp.gv2.util.base.guild.GraphiteVoiceChannel;
-import me.eglp.gv2.util.base.guild.GuildAutoChannel;
-import me.eglp.gv2.util.base.guild.GuildJail;
-import me.eglp.gv2.util.base.guild.GuildUserChannel;
-import me.eglp.gv2.util.base.guild.config.GuildChannelsConfig;
-import me.eglp.gv2.util.base.guild.config.GuildModerationConfig;
-import me.eglp.gv2.util.base.guild.config.GuildRolesConfig;
-import me.eglp.gv2.util.base.user.EasterEgg;
+import me.eglp.gv2.user.EasterEgg;
 import me.eglp.gv2.util.event.SingleEventHandler;
 import me.eglp.gv2.util.lang.DefaultMessage;
 import net.dv8tion.jda.api.entities.Member;
@@ -31,21 +31,21 @@ import net.dv8tion.jda.api.exceptions.ErrorHandler;
 import net.dv8tion.jda.api.requests.ErrorResponse;
 
 public class GraphiteCommonListeners {
-	
+
 	public static void register() {
 		Graphite.getJDAListener().registerHandler(SingleEventHandler.of(GuildVoiceUpdateEvent.class, event -> {
 			GraphiteGuild guild = Graphite.getGuild(event.getGuild());
 			GraphiteMember member = guild.getMember(event.getMember());
 			GuildChannelsConfig channelsConfig = guild.getChannelsConfig();
-			
+
 			if(event.getChannelLeft() != null && event.getChannelLeft().getType() == ChannelType.VOICE) { // NONBETA: stage channels?
 				GraphiteVoiceChannel channelLeft = guild.getVoiceChannel((VoiceChannel) event.getChannelLeft());
-				
+
 				GuildUserChannel uc = channelsConfig.getUserChannelByChannel(channelLeft);
 				if(GraphiteMultiplex.isHighestRelativeHierarchy(guild, GraphiteFeature.CHANNEL_MANAGEMENT) && uc != null && event.getChannelLeft().getMembers().isEmpty()) {
 					uc.delete();
 				}
-				
+
 				if(GraphiteMultiplex.isHighestRelativeHierarchy(guild, GraphiteFeature.CHANNEL_MANAGEMENT) && channelsConfig.isAutoCreatedChannel(channelLeft) && event.getChannelLeft().getMembers().isEmpty()) {
 					event.getChannelLeft().delete().queue(null, new ErrorHandler(e -> {
 								GraphiteDebug.log(DebugCategory.MISCELLANEOUS, "Failed to delete channel", e);
@@ -58,23 +58,23 @@ public class GraphiteCommonListeners {
 					AmongUsPlayer pl = u.getRoom().getPlayers().stream()
 							.filter(p -> member.equals(p.getData("discord")))
 							.findFirst().orElse(null);
-					
+
 					if(pl != null) {
 						pl.setData("discord", null);
 						Graphite.getGuild(event.getGuild()).updateMember(member, false, false);
 						Graphite.getAmongUs().queueUpdateMessage(u);
 					}
 				}
-				
+
 				AmongUsCaptureUser u2 = Graphite.getAmongUs().getCaptureUser(member);
 				if(u2 != null) Graphite.getAmongUs().stopRound(u2);
 			}
-			
+
 			if(event.getChannelJoined() != null && event.getChannelJoined().getType() == ChannelType.VOICE) { // NONBETA: stage channels?
 				GraphiteVoiceChannel channelJoined = guild.getVoiceChannel((VoiceChannel) event.getChannelJoined());
 				GuildModerationConfig moderationConfig = guild.getModerationConfig();
 				GuildRolesConfig rolesConfig = guild.getRolesConfig();
-				
+
 				GuildJail jail = moderationConfig.getJail(member);
 				if(GraphiteMultiplex.isHighestRelativeHierarchy(guild, GraphiteFeature.MODERATION) && jail != null && !jail.getChannel().getJDAChannel().equals(event.getChannelJoined())) {
 					jail.addLeaveAttempt();
@@ -88,7 +88,7 @@ public class GraphiteCommonListeners {
 						DefaultMessage.COMMAND_JAIL_JAILED.sendMessage(member.openPrivateChannel(), "attempts", String.valueOf(jail.getLeaveAttempts()), "max_attempts", "3");
 					}
 				}
-				
+
 				if(GraphiteMultiplex.isHighestRelativeHierarchy(guild, GraphiteFeature.MODERATION)
 						&& jail == null
 						&& channelsConfig.getSupportQueue() != null
@@ -97,11 +97,11 @@ public class GraphiteCommonListeners {
 					guild.getMembersWithAnyRole(rolesConfig.getModeratorRoles()).stream()
 						.filter(m -> !m.isBot())
 						.forEach(mem -> DefaultMessage.OTHER_JOINED_SUPPORT_QUEUE.sendMessage(mem.openPrivateChannel(), "users", channelsConfig.getSupportQueue().getJDAChannel().getMembers().stream().map(u -> u.getEffectiveName()).collect(Collectors.joining(", "))));
-					
+
 					GraphiteTextChannel modLogChannel = channelsConfig.getModLogChannel();
 					if(modLogChannel != null) DefaultMessage.OTHER_JOINED_SUPPORT_QUEUE.sendMessage(modLogChannel, "users", channelsConfig.getSupportQueue().getJDAChannel().getMembers().stream().map(u -> u.getEffectiveName()).collect(Collectors.joining(", ")));
 				}
-				
+
 				GuildAutoChannel ac = channelsConfig.getAutoChannelByID(channelJoined.getID());
 				if(GraphiteMultiplex.isHighestRelativeHierarchy(guild, GraphiteFeature.CHANNEL_MANAGEMENT) && ac != null) {
 					ac.createAutoChannel().thenAccept(c -> {
@@ -115,12 +115,12 @@ public class GraphiteCommonListeners {
 						event.getGuild().moveVoiceMember(m, c.getJDAChannel()).queue();
 					});
 				}
-				
+
 				AmongUsCaptureUser u = Graphite.getAmongUs().getCaptureUserInChannel(channelJoined);
 				if(u != null) Graphite.getAmongUs().autoLinkUserIfExists(u, member);
 			}
 		}));
-		
+
 		Graphite.getJDAListener().registerHandler(SingleEventHandler.of(GuildMemberUpdateNicknameEvent.class, event -> {
 			GraphiteGuild guild = Graphite.getGuild(event.getGuild());
 			GraphiteMember member = guild.getMember(event.getMember());
@@ -130,10 +130,10 @@ public class GraphiteCommonListeners {
 				}
 			}
 		}));
-		
+
 		Graphite.getJDAListener().registerHandler(SingleEventHandler.of(ChannelCreateEvent.class, event -> {
 			GraphiteGuild guild = Graphite.getGuild(event.getGuild());
-			
+
 			if(event.getChannelType() == ChannelType.TEXT) {
 				TextChannel tc = (TextChannel) event.getChannel();
 				if(GraphiteMultiplex.isHighestRelativeHierarchy(guild, GraphiteFeature.MODERATION)) {

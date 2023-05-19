@@ -6,12 +6,12 @@ import java.util.stream.Collectors;
 
 import org.mozilla.javascript.Scriptable;
 
+import me.eglp.gv2.guild.GraphiteGuild;
+import me.eglp.gv2.guild.GraphiteMember;
+import me.eglp.gv2.guild.GraphiteRole;
+import me.eglp.gv2.guild.GraphiteTextChannel;
+import me.eglp.gv2.guild.GraphiteVoiceChannel;
 import me.eglp.gv2.util.backup.GuildBackup;
-import me.eglp.gv2.util.base.guild.GraphiteGuild;
-import me.eglp.gv2.util.base.guild.GraphiteMember;
-import me.eglp.gv2.util.base.guild.GraphiteRole;
-import me.eglp.gv2.util.base.guild.GraphiteTextChannel;
-import me.eglp.gv2.util.base.guild.GraphiteVoiceChannel;
 import me.eglp.gv2.util.queue.GraphiteQueue;
 import me.eglp.gv2.util.queue.GraphiteTaskInfo;
 import me.eglp.gv2.util.scripting.GraphiteScript;

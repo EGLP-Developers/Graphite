@@ -8,8 +8,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import me.eglp.gv2.guild.GraphiteGuild;
 import me.eglp.gv2.main.Graphite;
-import me.eglp.gv2.util.base.guild.GraphiteGuild;
 import me.eglp.gv2.util.mysql.GraphiteMySQL.UnsafeConsumer;
 import me.eglp.gv2.util.permission.EveryonePermissions;
 import me.eglp.gv2.util.permission.MemberPermissions;
@@ -25,11 +25,11 @@ import me.mrletsplay.mrcore.json.converter.JSONValue;
 import me.mrletsplay.mrcore.misc.Complex;
 
 public class PermissionsData implements JSONConvertible {
-	
+
 	@JSONValue("everyone")
 	@JSONListType(JSONType.STRING)
 	private List<String> everyonePermissions;
-	
+
 	private Map<String, List<String>> rolePermissions;
 	private Map<String, List<String>> memberPermissions;
 
@@ -39,13 +39,13 @@ public class PermissionsData implements JSONConvertible {
 		this.rolePermissions = new HashMap<>();
 		this.memberPermissions = new HashMap<>();
 	}
-	
+
 	public PermissionsData(GraphiteGuild guild) {
 		this();
 		Graphite.getMySQL().run((UnsafeConsumer<Connection>) con -> {
 			try(PreparedStatement st = con.prepareStatement("SELECT PermissibleType, PermissibleId, Permission FROM guilds_permissions WHERE GuildId = ?")) {
 				st.setString(1, guild.getID());
-				
+
 				try(ResultSet r = st.executeQuery()) {
 					while(r.next()) {
 						String id = r.getString("PermissibleId");
@@ -76,19 +76,19 @@ public class PermissionsData implements JSONConvertible {
 			}
 		});
 	}
-	
+
 	public List<String> getEveryonePermissions() {
 		return everyonePermissions;
 	}
-	
+
 	public Map<String, List<String>> getMemberPermissions() {
 		return memberPermissions;
 	}
-	
+
 	public Map<String, List<String>> getRolePermissions() {
 		return rolePermissions;
 	}
-	
+
 	public void restore(GraphiteGuild guild) {
 		guild.getPermissionManager().discardEverything();
 		Graphite.getMySQL().run((UnsafeConsumer<Connection>) con -> {
@@ -100,7 +100,7 @@ public class PermissionsData implements JSONConvertible {
 					st.setString(4, p);
 					st.addBatch();
 				}
-	
+
 				for(Map.Entry<String, List<String>> en : memberPermissions.entrySet()) {
 					for(String p : en.getValue()) {
 						st.setString(1, guild.getID());
@@ -110,7 +110,7 @@ public class PermissionsData implements JSONConvertible {
 						st.addBatch();
 					}
 				}
-	
+
 				for(Map.Entry<String, List<String>> en : rolePermissions.entrySet()) {
 					for(String p : en.getValue()) {
 						st.setString(1, guild.getID());
@@ -120,31 +120,31 @@ public class PermissionsData implements JSONConvertible {
 						st.addBatch();
 					}
 				}
-				
+
 				st.executeBatch();
 			}
 		});
 	}
-	
+
 	@Override
 	public void preSerialize(JSONObject object) {
 		JSONObject members = new JSONObject();
 		memberPermissions.forEach((id, p) -> members.put(id, new JSONArray(p)));
 		object.put("members", members);
-		
+
 		JSONObject roles = new JSONObject();
 		rolePermissions.forEach((id, p) -> roles.put(id, new JSONArray(p)));
 		object.put("roles", roles);
 	}
-	
+
 	@Override
 	public void preDeserialize(JSONObject object) {
 		object.getJSONObject("members").forEach((k, v) -> memberPermissions.put(k, new ArrayList<>(Complex.castList((JSONArray) v, String.class).get())));
 		object.getJSONObject("roles").forEach((k, v) -> rolePermissions.put(k, new ArrayList<>(Complex.castList((JSONArray) v, String.class).get())));
 	}
-	
+
 	public static PermissionsData load(String json) {
 		return JSONConverter.decodeObject(new JSONObject(json), PermissionsData.class);
 	}
-	
+
 }

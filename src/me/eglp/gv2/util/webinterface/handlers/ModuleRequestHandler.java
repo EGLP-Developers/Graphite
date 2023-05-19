@@ -2,10 +2,10 @@ package me.eglp.gv2.util.webinterface.handlers;
 
 import java.util.stream.Collectors;
 
+import me.eglp.gv2.guild.GraphiteGuild;
+import me.eglp.gv2.guild.GraphiteModule;
+import me.eglp.gv2.guild.config.GuildConfig;
 import me.eglp.gv2.multiplex.GraphiteFeature;
-import me.eglp.gv2.util.base.guild.GraphiteGuild;
-import me.eglp.gv2.util.base.guild.GraphiteModule;
-import me.eglp.gv2.util.base.guild.config.GuildConfig;
 import me.eglp.gv2.util.command.SpecialHelp;
 import me.eglp.gv2.util.command.text.CommandHandler;
 import me.eglp.gv2.util.selfcheck.SpecialSelfcheck;
@@ -17,7 +17,7 @@ import me.mrletsplay.mrcore.json.JSONArray;
 import me.mrletsplay.mrcore.json.JSONObject;
 
 public class ModuleRequestHandler {
-	
+
 	@SpecialSelfcheck(ignoreAccessibleToEveryone = true)
 	@WebinterfaceHandler(requestMethod = "getModules", requireGuild = true)
 	public static WebinterfaceResponse getModules(WebinterfaceRequestEvent event) {
@@ -35,7 +35,7 @@ public class ModuleRequestHandler {
 		res.put("modules", modules);
 		return WebinterfaceResponse.success(res);
 	}
-	
+
 	@WebinterfaceHandler(requestMethod = "enableModule", requireGuild = true, requireGuildAdmin = true)
 	public static WebinterfaceResponse enableModule(WebinterfaceRequestEvent event) {
 		GuildConfig c = event.getSelectedGuild().getConfig();
@@ -49,7 +49,7 @@ public class ModuleRequestHandler {
 		c.addEnabledModule(m);
 		return WebinterfaceResponse.success();
 	}
-	
+
 	@WebinterfaceHandler(requestMethod = "disableModule", requireGuild = true, requireGuildAdmin = true)
 	public static WebinterfaceResponse disableModule(WebinterfaceRequestEvent event) {
 		GuildConfig c = event.getSelectedGuild().getConfig();

@@ -1,7 +1,7 @@
 package me.eglp.gv2.util.backup.data.overview_settings;
 
+import me.eglp.gv2.guild.GraphiteGuild;
 import me.eglp.gv2.util.backup.IDMappings;
-import me.eglp.gv2.util.base.guild.GraphiteGuild;
 import me.mrletsplay.mrcore.json.JSONObject;
 import me.mrletsplay.mrcore.json.converter.JSONConstructor;
 import me.mrletsplay.mrcore.json.converter.JSONConverter;
@@ -15,7 +15,7 @@ import net.dv8tion.jda.api.entities.Guild.VerificationLevel;
 import net.dv8tion.jda.api.managers.GuildManager;
 
 public class OverviewSettingsData implements JSONConvertible {
-	
+
 	@JSONValue
 	private String
 		serverName,
@@ -25,10 +25,10 @@ public class OverviewSettingsData implements JSONConvertible {
 		afkTimeout,
 		verificationLevel,
 		explicitContentLevel;
-	
+
 	@JSONConstructor
 	private OverviewSettingsData() {}
-	
+
 	public OverviewSettingsData(GraphiteGuild guild) {
 		if(guild.getJDAGuild() == null) throw new IllegalStateException("Unknown guild or invalid context");
 
@@ -41,7 +41,7 @@ public class OverviewSettingsData implements JSONConvertible {
 		this.verificationLevel = g.getVerificationLevel().name();
 		this.explicitContentLevel = g.getExplicitContentLevel().name();
 	}
-	
+
 	public String getServerName() {
 		return serverName;
 	}
@@ -73,33 +73,33 @@ public class OverviewSettingsData implements JSONConvertible {
 	public void restore(GraphiteGuild guild, IDMappings mappings) {
 		if(guild.getJDAGuild() == null) throw new IllegalStateException("Unknown guild or invalid context");
 		GuildManager gM = guild.getJDAGuild().getManager();
-		
+
 		gM.setName(serverName);
 		String newAFKChannelID = mappings.getNewID(afkChannelID);
 		gM.setAfkChannel(afkChannelID == null ? null : guild.getVoiceChannelByID(newAFKChannelID).getJDAChannel());
-		
+
 		try {
 			gM.setAfkTimeout(Timeout.valueOf(afkTimeout));
 		}catch(Exception e) {}
-		
+
 		try {
 			gM.setDefaultNotificationLevel(NotificationLevel.valueOf(notificationLevel));
 		}catch(Exception e) {}
-		
+
 		String newSystemChannelID = mappings.getNewID(systemChannelID);
 		gM.setSystemChannel(systemChannelID == null ? null : guild.getTextChannelByID(newSystemChannelID).getJDAChannel());
-		
+
 		try {
 			gM.setVerificationLevel(VerificationLevel.valueOf(verificationLevel));
 		}catch(Exception e) {}
-		
+
 		try {
 			gM.setExplicitContentLevel(ExplicitContentLevel.valueOf(explicitContentLevel));
 		}catch(Exception e) {}
-		
+
 		gM.complete();
 	}
-	
+
 	public static OverviewSettingsData load(String json) {
 		return JSONConverter.decodeObject(new JSONObject(json), OverviewSettingsData.class);
 	}

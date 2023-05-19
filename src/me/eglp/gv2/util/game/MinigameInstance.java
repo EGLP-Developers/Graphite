@@ -4,7 +4,7 @@ import java.util.List;
 import java.util.Objects;
 
 import me.eglp.gv2.main.Graphite;
-import me.eglp.gv2.util.base.user.GraphiteUser;
+import me.eglp.gv2.user.GraphiteUser;
 import me.eglp.gv2.util.game.output.GameOutput;
 import me.eglp.gv2.util.input.GraphiteInput;
 

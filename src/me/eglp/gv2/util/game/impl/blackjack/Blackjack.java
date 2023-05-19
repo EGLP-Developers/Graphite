@@ -6,7 +6,7 @@ import java.util.Collections;
 import java.util.List;
 
 import me.eglp.gv2.main.Graphite;
-import me.eglp.gv2.util.base.user.GraphiteUser;
+import me.eglp.gv2.user.GraphiteUser;
 import me.eglp.gv2.util.emote.JDAEmote;
 import me.eglp.gv2.util.game.GraphiteMinigame;
 import me.eglp.gv2.util.game.SinglePlayerMinigameInstance;

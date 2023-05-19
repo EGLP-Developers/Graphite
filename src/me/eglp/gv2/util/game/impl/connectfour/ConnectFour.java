@@ -5,7 +5,7 @@ import java.util.Collections;
 import java.util.List;
 
 import me.eglp.gv2.main.Graphite;
-import me.eglp.gv2.util.base.user.GraphiteUser;
+import me.eglp.gv2.user.GraphiteUser;
 import me.eglp.gv2.util.emote.JDAEmote;
 import me.eglp.gv2.util.game.GraphiteMinigame;
 import me.eglp.gv2.util.game.GraphiteMinigameMoney;
@@ -19,7 +19,7 @@ import me.eglp.gv2.util.input.SelectInput;
 import me.eglp.gv2.util.lang.DefaultMessage;
 
 public class ConnectFour implements MultiPlayerMinigameInstance {
-	
+
 	public static final String DEFAULT_STAT_CATEGORY = "Connect Four 1v1";
 
 	private GraphiteUser playerOne, playerTwo;
@@ -27,18 +27,18 @@ public class ConnectFour implements MultiPlayerMinigameInstance {
 	private SelectInput<Integer> moveInput;
 	private MessageOutput message1, message2;
 	private boolean running, stopped;
-	
+
 	public ConnectFour(GraphiteUser user) {
 		this.playerOne = user;
 		this.running = true;
 		this.board = new C4Board();
 	}
-	
+
 	@Override
 	public List<GraphiteInput> getActiveInputs() {
 		return Collections.singletonList(moveInput);
 	}
-	
+
 	@Override
 	public List<GameOutput> getActiveOutputs() {
 		return Arrays.asList(message1, message2);
@@ -48,12 +48,12 @@ public class ConnectFour implements MultiPlayerMinigameInstance {
 	public GraphiteMinigame getGame() {
 		return GraphiteMinigame.CONNECT_FOUR;
 	}
-	
+
 	@Override
 	public boolean isJoinable() {
 		return playerTwo == null && !stopped;
 	}
-	
+
 	@Override
 	public void addUser(GraphiteUser user) {
 		if(playerTwo != null) throw new UnsupportedOperationException("Game is full");
@@ -63,7 +63,7 @@ public class ConnectFour implements MultiPlayerMinigameInstance {
 		message2 = new MessageOutput(playerTwo.openPrivateChannel());
 		step(false);
 	}
-	
+
 	private void step(boolean p2) {
 		sendField(p2);
 		moveInput = new SelectInput<Integer>(Arrays.asList(p2 ? playerTwo : playerOne), i -> {
@@ -92,7 +92,7 @@ public class ConnectFour implements MultiPlayerMinigameInstance {
 		})
 		.autoRemove(true)
 		.removeMessage(false);
-		
+
 		for(int x = 0; x < board.getWidth(); x++) {
 			moveInput.addOption(JDAEmote.getKeycapNumber(x + 1), x);
 		}
@@ -100,12 +100,12 @@ public class ConnectFour implements MultiPlayerMinigameInstance {
 		moveInput.applyReactions(message2.getMessage());
 		moveInput.apply(p2 ? message2.getMessage() : message1.getMessage());
 	}
-	
+
 	private void sendField(boolean p2) {
 		sendField(message1, false, p2);
 		sendField(message2, true, p2);
 	}
-	
+
 	private void sendField(MessageOutput m, boolean youArePlayerTwo, boolean p2) {
 		MessageGraphics g = new MessageGraphics();
 		g.setSymbol(youArePlayerTwo == p2 ? JDAEmote.WHITE_CHECK_MARK : JDAEmote.CLOCK1);
@@ -116,7 +116,7 @@ public class ConnectFour implements MultiPlayerMinigameInstance {
 		}
 		g.setSymbol(JDAEmote.ASTERISK);
 		for(int y = 0; y < board.getHeight(); y++) g.point(0, y + 1);
-		
+
 		IntMappingGetterRenderer r = new IntMappingGetterRenderer(board.getWidth(), board.getHeight(), board::get);
 		r.addMapping(0, JDAEmote.WHITE_CIRCLE);
 		r.addMapping(1, JDAEmote.RED_CIRCLE);
@@ -124,7 +124,7 @@ public class ConnectFour implements MultiPlayerMinigameInstance {
 		MessageGraphics g2 = new MessageGraphics();
 		r.render(g2);
 		g.draw(1, 1, g2);
-		
+
 		m.update(g);
 	}
 
@@ -140,7 +140,7 @@ public class ConnectFour implements MultiPlayerMinigameInstance {
 		getPlayingUsers().stream().filter(p -> p != null && !p.equals(user)).forEach(p -> DefaultMessage.COMMAND_MINIGAME_LEAVE_MULTIPLAYER_AUTOLEAVE.sendMessage(p.openPrivateChannel(), "user", user.getName()));
 		stop();
 	}
-	
+
 	@Override
 	public void stop() {
 		MultiPlayerMinigameInstance.super.stop();

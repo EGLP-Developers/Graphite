@@ -12,8 +12,8 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import me.eglp.gv2.guild.GraphiteGuild;
 import me.eglp.gv2.main.Graphite;
-import me.eglp.gv2.util.base.guild.GraphiteGuild;
 import me.eglp.gv2.util.stats.StatisticValue;
 import me.eglp.gv2.util.stats.element.GuildStatisticsElement;
 import me.eglp.gv2.util.stats.element.Label;
@@ -21,7 +21,7 @@ import me.eglp.gv2.util.stats.element.StatisticsElementSettings;
 import me.eglp.gv2.util.stats.element.StatisticsRenderer;
 
 public class PieChartRenderer implements StatisticsRenderer {
-	
+
 	public static final PieChartRenderer INSTANCE = new PieChartRenderer();
 
 	@Override
@@ -29,7 +29,7 @@ public class PieChartRenderer implements StatisticsRenderer {
 		g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 		g2d.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
 		PieChartSettings settings = (PieChartSettings) element.getSettings();
-		
+
 		int spaceRight = 10;
 		int labelSpace = 20;
 		int labelSize = 16;
@@ -39,12 +39,12 @@ public class PieChartRenderer implements StatisticsRenderer {
 				.flatMap(s -> Graphite.getStatistics().getLastStatisticValues(element.getGuild(), s, element.isPreviewMode(), settings.getStatistics().indexOf(s) + 1, settings.getStatistics().size()).stream())
 				.sorted(Comparator.<StatisticValue>comparingInt(v -> v.getValue()).reversed())
 				.collect(Collectors.toList()));
-		
+
 		int sum = values.stream().mapToInt(v -> v.getValue()).sum();
-		
+
 		int circleSize = Math.min(width * 3 / 4, height * 3 / 4);
 		float spaceWidth = (float) settings.getSpacing();
-		
+
 		// Area
 		int cIdx = 0;
 		double angleSum = 90;
@@ -56,7 +56,7 @@ public class PieChartRenderer implements StatisticsRenderer {
 			g2d.fill(d);
 			angleSum -= angle;
 		}
-		
+
 		// Outline
 //		g2d.setStroke(new BasicStroke(2f));
 //		angleSum = 90;
@@ -67,17 +67,17 @@ public class PieChartRenderer implements StatisticsRenderer {
 //			g2d.draw(d);
 //			angleSum += angle;
 //		}
-		
+
 		// Transparency
 		angleSum = 90;
 		for(StatisticValue v : values) {
 			double angle = v.getValue() / (double) sum * 360;
-			
+
 			double startX = height / 2;
 			double startY = height / 2;
 			double endX = height / 2 + Math.cos(Math.toRadians(-angleSum)) * circleSize / 2;
 			double endY = height / 2 + Math.sin(Math.toRadians(-angleSum)) * circleSize / 2;
-			
+
 			if(values.size() > 1) {
 				Line2D.Double ln = new Line2D.Double(startX, startY, endX, endY);
 				g2d.setStroke(new BasicStroke(spaceWidth, BasicStroke.CAP_ROUND, BasicStroke.JOIN_MITER));
@@ -85,7 +85,7 @@ public class PieChartRenderer implements StatisticsRenderer {
 				g2d.setColor(new Color(0, 0, 0, 0));
 				g2d.draw(ln);
 			}
-			
+
 			angleSum -= angle;
 		}
 
@@ -94,11 +94,11 @@ public class PieChartRenderer implements StatisticsRenderer {
 		List<Label> labels = values.stream()
 				.map(v -> Label.parse(g2d, label(element.getGuild(), v), EMOJI_SIZE))
 				.collect(Collectors.toList());
-		
+
 		int maxWidth = labels.stream()
 				.mapToInt(l -> (int) l.getBounds().getWidth())
 				.max().orElse(0);
-		
+
 		int boxHeight = values.size() * 30;
 		int i = 0;
 		int cIdx2 = 0;
@@ -112,7 +112,7 @@ public class PieChartRenderer implements StatisticsRenderer {
 			i++;
 		}
 	}
-	
+
 	// TODO: Improve label rendering to allow mixing text with emoji
 	private String label(GraphiteGuild guild, StatisticValue value) {
 		return value.getCategory() == null ? value.getStatistic().getFriendlyName(guild) + " (" + value.getValue() + ")" : value.getCategory();

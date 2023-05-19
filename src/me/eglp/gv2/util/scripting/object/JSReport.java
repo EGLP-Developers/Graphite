@@ -1,15 +1,15 @@
 package me.eglp.gv2.util.scripting.object;
 
-import me.eglp.gv2.util.base.guild.GuildReport;
+import me.eglp.gv2.guild.GuildReport;
 
 public class JSReport {
-	
+
 	protected GuildReport report;
-	
+
 	public JSReport(GuildReport report) {
 		this.report = report;
 	}
-	
+
 	/**
 	 * Returns this report's unique id
 	 * @return This report's unique id
@@ -17,7 +17,7 @@ public class JSReport {
 	public String getID() {
 		return report.getID();
 	}
-	
+
 	/**
 	 * Returns the reporter (the user that reported another user)
 	 * @return The reporter
@@ -35,7 +35,7 @@ public class JSReport {
 	public JSUser getReported() {
 		return new JSUser(report.getReported());
 	}
-	
+
 	/**
 	 * Returns the reason the reporter provided for this report
 	 * @return The reason the reporter provided for this report
@@ -43,7 +43,7 @@ public class JSReport {
 	public String getReason() {
 		return report.getReason();
 	}
-	
+
 	/**
 	 * Returns the timestamp of this report as an epoch millisecond
 	 * @return The timestamp of this report
@@ -51,10 +51,10 @@ public class JSReport {
 	public long getTimestamp() {
 		return report.getTimestamp();
 	}
-	
+
 	@Override
 	public String toString() {
 		return "[JS Report: " + getID() + "]";
 	}
-	
+
 }

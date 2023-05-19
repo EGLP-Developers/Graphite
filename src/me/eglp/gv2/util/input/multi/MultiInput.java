@@ -9,8 +9,8 @@ import java.util.concurrent.TimeUnit;
 import java.util.function.Consumer;
 
 import me.eglp.gv2.main.Graphite;
+import me.eglp.gv2.user.GraphiteUser;
 import me.eglp.gv2.util.base.GraphiteMessageChannel;
-import me.eglp.gv2.util.base.user.GraphiteUser;
 import me.eglp.gv2.util.command.CommandInvokedEvent;
 import me.eglp.gv2.util.emote.JDAEmote;
 import me.eglp.gv2.util.event.AnnotationEventHandler;
@@ -34,7 +34,7 @@ import net.dv8tion.jda.api.utils.messages.MessageCreateBuilder;
 import net.dv8tion.jda.api.utils.messages.MessageEditBuilder;
 
 public class MultiInput implements GraphiteInput, AnnotationEventHandler {
-	
+
 	private static final Consumer<ButtonPressedEvent> SUBMIT_CALLBACK = event -> {
 		Consumer<MultiInputSubmitEvent> cb = event.getInput().onSubmit;
 		if(cb != null) cb.accept(new MultiInputSubmitEvent(event.getInput(), event));
@@ -43,26 +43,26 @@ public class MultiInput implements GraphiteInput, AnnotationEventHandler {
 	};
 
 	private List<GraphiteUser> allowedUsers;
-	
+
 	private List<ItemComponent> components;
 	private Map<String, String> selectMenuIDs;
 	private Map<String, List<String>> selectMenuValues;
 	private Map<String, Consumer<ButtonPressedEvent>> buttonCallbacks;
 	private Consumer<MultiInputSubmitEvent> onSubmit;
-	
+
 	private boolean
 		editOnExpire;
-	
+
 	private long expiryTime;
 	private TimeUnit expiryTimeUnit;
-	
+
 	private Consumer<MultiInput> onExpire;
-	
+
 	private long expiresAt;
-	
+
 	private Message message;
 	private InteractionHook interactionHook;
-	
+
 	public MultiInput(List<GraphiteUser> allowedUsers) {
 		this.allowedUsers = allowedUsers;
 		this.editOnExpire = true;
@@ -73,7 +73,7 @@ public class MultiInput implements GraphiteInput, AnnotationEventHandler {
 		this.expiryTime = 5;
 		this.expiryTimeUnit = TimeUnit.MINUTES;
 	}
-	
+
 	public MultiInput(GraphiteUser allowedUser) {
 		this(Collections.singletonList(allowedUser));
 	}
@@ -101,7 +101,7 @@ public class MultiInput implements GraphiteInput, AnnotationEventHandler {
 		this.editOnExpire = editOnExpire;
 		return this;
 	}
-	
+
 	/**
 	 * Sets a callback that will be executed when the underlying event handler expires (the timeout can be changed using {@link #expireAfter(long, TimeUnit)})
 	 * @param onExpire The callback
@@ -110,7 +110,7 @@ public class MultiInput implements GraphiteInput, AnnotationEventHandler {
 	public void setOnExpire(Consumer<MultiInput> onExpire) {
 		this.onExpire = onExpire;
 	}
-	
+
 	/**
 	 * Sets a callback that will be executed when the input is submitted using a submit button
 	 * @param onSubmit The callback
@@ -126,15 +126,15 @@ public class MultiInput implements GraphiteInput, AnnotationEventHandler {
 	public void onButton(ButtonInteractionEvent event) {
 		if(System.currentTimeMillis() > expiresAt) return;
 		if(!buttonCallbacks.containsKey(event.getComponentId())) return;
-		
+
 		if(allowedUsers != null && !allowedUsers.stream().anyMatch(u -> u.getID().equals(event.getUser().getId()))) {
 			event.deferReply(true).setContent("You can't interact with this").queue();
 			return;
 		}
-		
+
 		Consumer<ButtonPressedEvent> callback = buttonCallbacks.get(event.getComponentId());
 		callback.accept(new ButtonPressedEvent(this, event, Graphite.getUser(event.getUser())));
-		
+
 		if(!event.isAcknowledged()) event.deferEdit().queue();
 	}
 
@@ -145,63 +145,63 @@ public class MultiInput implements GraphiteInput, AnnotationEventHandler {
 			event.deferReply(true).setContent("You can't interact with this").queue();
 			return;
 		}
-		
+
 		if(!selectMenuValues.containsKey(event.getComponentId())) return;
-		
+
 		selectMenuValues.put(event.getComponentId(), event.getValues());
-		
+
 		if(!event.isAcknowledged()) event.deferEdit().queue();
 	}
-	
+
 	public void addButton(ButtonStyle style, Emoji emoji, Consumer<ButtonPressedEvent> callback) {
 		addButtonRaw(Button.of(style, newID(), emoji), callback);
 	}
-	
+
 	public void addButton(ButtonStyle style, String label, Consumer<ButtonPressedEvent> callback) {
 		addButtonRaw(Button.of(style, newID(), label), callback);
 	}
-	
+
 	public void addButton(ButtonStyle style, Emoji emoji, String label, Consumer<ButtonPressedEvent> callback) {
 		addButtonRaw(Button.of(style, newID(), label, emoji), callback);
 	}
-	
+
 	public void addLink(JDAEmote emote, String url) {
 		components.add(Button.of(ButtonStyle.LINK, url, emote.getEmoji()));
 	}
-	
+
 	public void addLink(String label, String url) {
 		components.add(Button.of(ButtonStyle.LINK, url, label));
 	}
-	
+
 	public void addLink(JDAEmote emote, String label, String url) {
 		components.add(Button.of(ButtonStyle.LINK, url, label, emote.getEmoji()));
 	}
-	
+
 	public void addSubmit(ButtonStyle style, Emoji emoji) {
 		addButtonRaw(Button.of(style, newID(), emoji), SUBMIT_CALLBACK);
 	}
-	
+
 	public void addSubmit(ButtonStyle style, String label) {
 		addButtonRaw(Button.of(style, newID(), label), SUBMIT_CALLBACK);
 	}
-	
+
 	public void addSubmit(ButtonStyle style, Emoji emoji, String label) {
 		addButtonRaw(Button.of(style, newID(), label, emoji), SUBMIT_CALLBACK);
 	}
-	
+
 	public void newRow() {
 		components.add(null);
 	}
-	
+
 	public void addButtonRaw(Button button, Consumer<ButtonPressedEvent> callback) {
 		components.add(button);
 		buttonCallbacks.put(button.getId(), callback);
 	}
-	
+
 	public void addSelectMenu(String id, List<SelectOption> options) {
 		addSelectMenu(id, options.toArray(SelectOption[]::new));
 	}
-	
+
 	public void addSelectMenu(String id, SelectOption... options) {
 		StringSelectMenu.Builder b = StringSelectMenu.create(newID());
 		b.addOptions(options);
@@ -209,11 +209,11 @@ public class MultiInput implements GraphiteInput, AnnotationEventHandler {
 		selectMenuIDs.put(id, b.getId());
 		selectMenuValues.put(b.getId(), Collections.emptyList());
 	}
-	
+
 	private String newID() {
 		return "mi_" + Long.toHexString(System.nanoTime());
 	}
-	
+
 	public void registerHandler() {
 		expiresAt = System.currentTimeMillis() + expiryTimeUnit.toMillis(expiryTime);
 		Graphite.getJDAListener().registerTemporaryHandler(this, editOnExpire ? () -> {
@@ -226,19 +226,19 @@ public class MultiInput implements GraphiteInput, AnnotationEventHandler {
 	public List<String> getSelectMenuValues(String id) {
 		return selectMenuValues.get(selectMenuIDs.get(id));
 	}
-	
+
 	public void send(GraphiteMessageChannel<?> channel, DefaultLocaleString message, String... params) {
 		send(channel, new MessageCreateBuilder().setContent(message.getFor(channel.getOwner(), params)));
 	}
-	
+
 	public void send(GraphiteMessageChannel<?> channel, DefaultMessage message, String... params) {
 		send(channel, new MessageCreateBuilder().setEmbeds(message.createEmbed(channel.getOwner(), params)));
 	}
-	
+
 	public void send(GraphiteMessageChannel<?> channel, MessageCreateBuilder builder) {
 		send(channel, builder, null);
 	}
-	
+
 	public void send(GraphiteMessageChannel<?> channel, MessageCreateBuilder builder, Consumer<Message> onSuccess) {
 		channel.getJDAChannel().sendMessage(builder.setComponents(createActionRows()).build()).queue(m -> {
 			this.message = m;
@@ -246,33 +246,33 @@ public class MultiInput implements GraphiteInput, AnnotationEventHandler {
 		});
 		registerHandler();
 	}
-	
+
 	public Message sendComplete(GraphiteMessageChannel<?> channel, DefaultLocaleString message, String... params) {
 		return sendComplete(channel, new MessageCreateBuilder().setContent(message.getFor(channel.getOwner(), params)));
 	}
-	
+
 	public Message sendComplete(GraphiteMessageChannel<?> channel, DefaultMessage message, String... params) {
 		return sendComplete(channel, new MessageCreateBuilder().setEmbeds(message.createEmbed(channel.getOwner(), params)));
 	}
-	
+
 	public Message sendComplete(GraphiteMessageChannel<?> channel, MessageCreateBuilder builder) {
 		this.message = channel.sendMessageComplete(builder.setComponents(createActionRows()).build());
 		registerHandler();
 		return this.message;
 	}
-	
+
 	public void reply(CommandInvokedEvent event, DefaultLocaleString message, String... params) {
 		reply(event, new MessageCreateBuilder().setContent(message.getFor(event.getSender(), params)));
 	}
-	
+
 	public void reply(CommandInvokedEvent event, DefaultMessage message, String... params) {
 		reply(event, new MessageCreateBuilder().setEmbeds(message.createEmbed(event.getSender(), params)));
 	}
-	
+
 	public void reply(CommandInvokedEvent event, MessageCreateBuilder builder) {
 		reply(event, builder, null);
 	}
-	
+
 	public void reply(CommandInvokedEvent event, MessageCreateBuilder builder, Consumer<Object> onSuccess) {
 		event.reply(builder.setComponents(createActionRows()).build(), o -> {
 			if(onSuccess != null) onSuccess.accept(o);
@@ -284,19 +284,19 @@ public class MultiInput implements GraphiteInput, AnnotationEventHandler {
 		});
 		registerHandler();
 	}
-	
+
 	public void replyEphemeral(CommandInvokedEvent event, DefaultLocaleString message, String... params) {
 		replyEphemeral(event, new MessageCreateBuilder().setContent(message.getFor(event.getSender(), params)));
 	}
-	
+
 	public void replyEphemeral(CommandInvokedEvent event, DefaultMessage message, String... params) {
 		replyEphemeral(event, new MessageCreateBuilder().setEmbeds(message.createEmbed(event.getSender(), params)));
 	}
-	
+
 	public void replyEphemeral(CommandInvokedEvent event, MessageCreateBuilder builder) {
 		replyEphemeral(event, builder, null);
 	}
-	
+
 	public void replyEphemeral(CommandInvokedEvent event, MessageCreateBuilder builder, Consumer<Object> onSuccess) {
 		event.replyEphemeral(builder.setComponents(createActionRows()).build(), o -> {
 			if(o instanceof Message) {
@@ -307,7 +307,7 @@ public class MultiInput implements GraphiteInput, AnnotationEventHandler {
 		});
 		registerHandler();
 	}
-	
+
 	public List<ActionRow> createActionRows(boolean isDisabled) {
 		List<ActionRow> rows = new ArrayList<>();
 		List<ItemComponent> comps = new ArrayList<>(components);
@@ -328,21 +328,21 @@ public class MultiInput implements GraphiteInput, AnnotationEventHandler {
 		rows.add(ActionRow.of(temp));
 		return rows;
 	}
-	
+
 	public void apply(MessageCreateBuilder builder) {
 		builder.setComponents(createActionRows());
 		registerHandler();
 	}
-	
+
 	public void apply(MessageEditBuilder builder) {
 		builder.setComponents(createActionRows());
 		registerHandler();
 	}
-	
+
 	public List<ActionRow> createActionRows() {
 		return createActionRows(false);
 	}
-	
+
 	@Override
 	public void remove() {
 		Graphite.getJDAListener().unregisterHandler(this);

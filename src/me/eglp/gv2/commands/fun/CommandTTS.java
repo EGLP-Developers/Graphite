@@ -7,9 +7,9 @@ import com.sedmelluq.discord.lavaplayer.source.http.HttpAudioSourceManager;
 import com.sedmelluq.discord.lavaplayer.track.AudioReference;
 import com.sedmelluq.discord.lavaplayer.track.AudioTrack;
 
+import me.eglp.gv2.guild.GraphiteGuild;
+import me.eglp.gv2.guild.GraphiteModule;
 import me.eglp.gv2.main.Graphite;
-import me.eglp.gv2.util.base.guild.GraphiteGuild;
-import me.eglp.gv2.util.base.guild.GraphiteModule;
 import me.eglp.gv2.util.command.Command;
 import me.eglp.gv2.util.command.CommandCategory;
 import me.eglp.gv2.util.command.CommandInvokedEvent;
@@ -21,7 +21,7 @@ import net.dv8tion.jda.api.interactions.commands.build.OptionData;
 
 // NONBETA: poopy implementation, fix
 public class CommandTTS extends Command {
-	
+
 	public CommandTTS() {
 		super(GraphiteModule.FUN, CommandCategory.FUN, "tts");
 		setDescription("amogus");
@@ -39,15 +39,15 @@ public class CommandTTS extends Command {
 //					.redirectOutput(new File("/home/mr/Desktop/out.wav"))
 //					.start();
 //			b.waitFor();
-			
+
 //			HttpRequest r = HttpRequest.createGet("http://translate.google.com/translate_tts")
 //				.addQueryParameter("ie", "UTF-8")
 //				.addQueryParameter("client", "tw-ob")
 //				.addQueryParameter("tl", "en")
 //				.addQueryParameter("q", text);
-//			
+//
 //			r.execute().transferTo(new File("/home/mr/Desktop/out.wav"));
-			
+
 			System.out.println("DONE");
 			GraphiteGuild g = event.getGuild();
 //			LocalAudioSourceManager man = new LocalAudioSourceManager();
@@ -77,7 +77,7 @@ public class CommandTTS extends Command {
 					.addChoice("Spanish", "es-ES")
 					.addChoice("French", "fr-FR")
 					.addChoice("Italian", "it-IT")
-			);	
+			);
 	}
 
 }

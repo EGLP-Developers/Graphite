@@ -3,7 +3,7 @@ package me.eglp.gv2.commands.admin;
 import java.util.Arrays;
 import java.util.List;
 
-import me.eglp.gv2.util.base.guild.config.GuildConfig;
+import me.eglp.gv2.guild.config.GuildConfig;
 import me.eglp.gv2.util.command.Command;
 import me.eglp.gv2.util.command.CommandCategory;
 import me.eglp.gv2.util.command.CommandInvokedEvent;
@@ -14,14 +14,14 @@ import net.dv8tion.jda.api.interactions.commands.OptionType;
 import net.dv8tion.jda.api.interactions.commands.build.OptionData;
 
 public class CommandPrefix extends Command {
-	
+
 	public CommandPrefix() {
 		super(null, CommandCategory.ADMIN, "prefix");
 		setPermission(DefaultPermissions.ADMIN_PREFIX);
 		setDescription(DefaultLocaleString.COMMAND_PREFIX_DESCRIPTION);
 		setUsage(DefaultLocaleString.COMMAND_PREFIX_USAGE);
 	}
-	
+
 	@Override
 	public void action(CommandInvokedEvent event) {
 		String prefix = (String) event.getOption("prefix");
@@ -30,11 +30,11 @@ public class CommandPrefix extends Command {
 			DefaultMessage.COMMAND_PREFIX_INVALID.reply(event);
 			return;
 		}
-		
+
 		event.getGuild().getConfig().setPrefix(newPrefix);
 		DefaultMessage.COMMAND_PREFIX_SUCCESS.reply(event, "prefix", newPrefix);
 	}
-	
+
 	@Override
 	public List<OptionData> getOptions() {
 		return Arrays.asList(

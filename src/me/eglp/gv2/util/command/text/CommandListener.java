@@ -1,8 +1,8 @@
 package me.eglp.gv2.util.command.text;
 
+import me.eglp.gv2.guild.GraphiteGuild;
+import me.eglp.gv2.guild.GraphiteRole;
 import me.eglp.gv2.main.Graphite;
-import me.eglp.gv2.util.base.guild.GraphiteGuild;
-import me.eglp.gv2.util.base.guild.GraphiteRole;
 import me.eglp.gv2.util.event.AnnotationEventHandler;
 import me.eglp.gv2.util.event.EventHandler;
 import me.eglp.gv2.util.event.custom.impl.GraphiteMessageReceivedEvent;
@@ -29,11 +29,11 @@ public class CommandListener implements AnnotationEventHandler {
 				if(sr == null || !mentionValid) return; // Redundant null check
 				boolean selfUserMentioned = mentionValid && sr.getMention().isOfType(MentionType.USER)
 						&& Graphite.getUser(event.getJDA().getSelfUser()).equals(sr.getMention().asUserMention().getMentionedUser());
-				
+
 				GraphiteRole selfRole = g.getSelfRole();
 				boolean selfRoleMentioned = mentionValid && selfRole != null && sr.getMention().isOfType(MentionType.ROLE)
 						&& selfRole.equals(sr.getMention().asRoleMention().getMentionedRole());
-				
+
 				if(selfUserMentioned || selfRoleMentioned) {
 					prefix = sr.getFullResult();
 				}else {
@@ -58,7 +58,7 @@ public class CommandListener implements AnnotationEventHandler {
 				}
 			}
 		}else return;
-		
+
 		String cmdLine = event.getMessage().getContentRaw().substring(prefix.length()).trim();
 		CommandHandler.handleCommand(event, prefix, cmdLine);
 	}

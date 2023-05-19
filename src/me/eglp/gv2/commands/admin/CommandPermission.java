@@ -6,9 +6,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-import me.eglp.gv2.util.base.guild.GraphiteGuild;
-import me.eglp.gv2.util.base.guild.GraphiteRole;
-import me.eglp.gv2.util.base.user.GraphiteUser;
+import me.eglp.gv2.guild.GraphiteGuild;
+import me.eglp.gv2.guild.GraphiteRole;
+import me.eglp.gv2.user.GraphiteUser;
 import me.eglp.gv2.util.command.Command;
 import me.eglp.gv2.util.command.CommandCategory;
 import me.eglp.gv2.util.command.CommandInvokedEvent;
@@ -27,29 +27,29 @@ public class CommandPermission extends ParentCommand {
 	public CommandPermission() {
 		super(null, CommandCategory.ADMIN, "permission");
 		setDescription(DefaultLocaleString.COMMAND_PERMISSION_DESCRIPTION);
-		
+
 		addSubCommand(new Command(this, "add") {
-			
+
 			@Override
 			public void action(CommandInvokedEvent event) {
 				Object o = event.getOption("who");
 				String perm = (String) event.getOption("permission");
-				
+
 				Permissible perms = getPermissible(event.getGuild(), o);
 				if(perms == null) {
 					DefaultMessage.COMMAND_PERMISSION_ALLOWED_MENTION_TYPES.reply(event);
 					return;
 				}
-				
+
 				if(perms.hasPermissionExactly(perm)) {
 					DefaultMessage.COMMAND_PERMISSION_ADD_ALREADY_HAS_PERMISSION.reply(event, "entity", getAsMention(o));
 					return;
 				}
-				
+
 				perms.addPermission(perm);
 				DefaultMessage.COMMAND_PERMISSION_ADD_PERMISSION_ADDED.reply(event, "permission", perm, "entity", getAsMention(o));
 			}
-			
+
 			@Override
 			public List<OptionData> getOptions() {
 				return Arrays.asList(
@@ -61,29 +61,29 @@ public class CommandPermission extends ParentCommand {
 		.setPermission(DefaultPermissions.ADMIN_PERMISSION_ADD)
 		.setDescription(DefaultLocaleString.COMMAND_PERMISSION_ADD_DESCRIPTION)
 		.setUsage(DefaultLocaleString.COMMAND_PERMISSION_ADD_USAGE);
-		
+
 		addSubCommand(new Command(this, "remove") {
-			
+
 			@Override
 			public void action(CommandInvokedEvent event) {
 				Object o = event.getOption("who");
 				String perm = (String) event.getOption("permission");
-				
+
 				Permissible perms = getPermissible(event.getGuild(), o);
 				if(perms == null) {
 					DefaultMessage.COMMAND_PERMISSION_ALLOWED_MENTION_TYPES.reply(event);
 					return;
 				}
-				
+
 				if(!perms.hasPermissionExactly(perm)) {
 					DefaultMessage.COMMAND_PERMISSION_REMOVE_DOESNT_HAVE_PERMISSION.reply(event, "entity", getAsMention(o));
 					return;
 				}
-				
+
 				perms.removePermission(perm);
 				DefaultMessage.COMMAND_PERMISSION_REMOVE_PERMISSION_REMOVED.reply(event, "permission", perm, "entity", getAsMention(o));
 			}
-			
+
 			@Override
 			public List<OptionData> getOptions() {
 				return Arrays.asList(
@@ -95,31 +95,31 @@ public class CommandPermission extends ParentCommand {
 		.setPermission(DefaultPermissions.ADMIN_PERMISSION_REMOVE)
 		.setDescription(DefaultLocaleString.COMMAND_PERMISSION_REMOVE_DESCRIPTION)
 		.setUsage(DefaultLocaleString.COMMAND_PERMISSION_REMOVE_USAGE);
-		
+
 		addSubCommand(new Command(this, "list") {
-			
+
 			@Override
 			public void action(CommandInvokedEvent event) {
 				Object o = event.getOption("who");
-				
+
 				EmbedBuilder b = new EmbedBuilder();
 				Map<String, List<String>> map = getFullPermissions(event.getGuild(), o);
-				
+
 				List<String> selfPerms = map.get(null);
 				if(!selfPerms.isEmpty()) b.addField(DefaultLocaleString.COMMAND_PERMISSION_LIST_SELF_TITLE.getFor(event.getGuild(), "entity", getFriendlyName(o)), selfPerms.stream().collect(Collectors.joining("\n", "```\n", "\n```")), false);
 				map.forEach((t, v) -> {
 					if(t == null || v.isEmpty()) return;
 					b.addField(DefaultLocaleString.COMMAND_PERMISSION_LIST_INHERITED_TITLE.getFor(event.getGuild(), "entity", t), map.get(t).stream().collect(Collectors.joining("\n", "```\n", "\n```")), false);
 				});
-				
+
 				if(b.isEmpty()) {
 					DefaultMessage.COMMAND_PERMISSION_LIST_NO_PERMISSIONS.reply(event, "entity", getAsMention(o));
 					return;
 				}
-				
+
 				event.reply(b.build());
 			}
-			
+
 			@Override
 			public List<OptionData> getOptions() {
 				return Arrays.asList(
@@ -130,27 +130,27 @@ public class CommandPermission extends ParentCommand {
 		.setPermission(DefaultPermissions.ADMIN_PERMISSION_LIST)
 		.setDescription(DefaultLocaleString.COMMAND_PERMISSION_LIST_DESCRIPTION)
 		.setUsage(DefaultLocaleString.COMMAND_PERMISSION_LIST_USAGE);
-		
+
 		addSubCommand(new Command(this, "check") {
-			
+
 			@Override
 			public void action(CommandInvokedEvent event) {
 				Object o = event.getOption("who");
 				String perm = (String) event.getOption("permission");
-				
+
 				Permissible perms = getPermissible(event.getGuild(), o);
 				if(perms == null) {
 					DefaultMessage.COMMAND_PERMISSION_ALLOWED_MENTION_TYPES.reply(event);
 					return;
 				}
-				
+
 				if(perms.hasPermission(perm)) {
 					DefaultMessage.COMMAND_PERMISSION_CHECK_HAS_PERMISSION.reply(event, "entity", getAsMention(o), "permission", perm);
 				}else {
 					DefaultMessage.COMMAND_PERMISSION_CHECK_NO_PERMISSION.reply(event, "entity", getAsMention(o), "permission", perm);
 				}
 			}
-			
+
 			@Override
 			public List<OptionData> getOptions() {
 				return Arrays.asList(
@@ -163,7 +163,7 @@ public class CommandPermission extends ParentCommand {
 		.setDescription(DefaultLocaleString.COMMAND_PERMISSION_CHECK_DESCRIPTION)
 		.setUsage(DefaultLocaleString.COMMAND_PERMISSION_CHECK_USAGE);
 	}
-	
+
 	private Permissible getPermissible(GraphiteGuild guild, Object o) {
 		GuildPermissionManager m = guild.getPermissionManager();
 		if(o instanceof GraphiteUser) {
@@ -179,7 +179,7 @@ public class CommandPermission extends ParentCommand {
 			return null;
 		}
 	}
-	
+
 	private String getAsMention(Object o) {
 		if(o instanceof GraphiteUser) {
 			return ((GraphiteUser) o).getAsMention();
@@ -189,7 +189,7 @@ public class CommandPermission extends ParentCommand {
 			return null;
 		}
 	}
-	
+
 	private String getFriendlyName(Object o) {
 		if(o instanceof GraphiteUser) {
 			return "@" + ((GraphiteUser) o).getName();
@@ -204,10 +204,10 @@ public class CommandPermission extends ParentCommand {
 			return null;
 		}
 	}
-	
+
 	private Map<String, List<String>> getFullPermissions(GraphiteGuild guild, Object o) {
 		Map<String, List<String>> permissionsMap = new LinkedHashMap<>();
-		
+
 		if(o instanceof GraphiteUser) {
 			GraphiteUser u = (GraphiteUser) o;
 			permissionsMap.put(null, getPermissible(guild, u).getRawPermissions());
@@ -226,5 +226,5 @@ public class CommandPermission extends ParentCommand {
 		}
 		return permissionsMap;
 	}
-	
+
 }

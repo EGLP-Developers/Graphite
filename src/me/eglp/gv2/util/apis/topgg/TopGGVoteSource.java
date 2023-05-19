@@ -2,7 +2,7 @@ package me.eglp.gv2.util.apis.topgg;
 
 import me.eglp.gv2.main.Graphite;
 import me.eglp.gv2.multiplex.bot.MultiplexBot;
-import me.eglp.gv2.util.base.user.GraphiteUser;
+import me.eglp.gv2.user.GraphiteUser;
 import me.eglp.gv2.util.voting.GraphiteVoteSource;
 import me.eglp.gv2.util.voting.InvalidVoteException;
 import me.mrletsplay.mrcore.json.JSONObject;

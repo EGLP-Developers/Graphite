@@ -9,9 +9,9 @@ import org.mozilla.javascript.Context;
 import org.mozilla.javascript.Scriptable;
 import org.mozilla.javascript.ScriptableObject;
 
+import me.eglp.gv2.guild.GraphiteGuild;
 import me.eglp.gv2.main.DebugCategory;
 import me.eglp.gv2.main.GraphiteDebug;
-import me.eglp.gv2.util.base.guild.GraphiteGuild;
 import me.eglp.gv2.util.scripting.object.JSGraphite;
 import me.eglp.gv2.util.scripting.object.JSVars;
 import me.eglp.gv2.util.webinterface.js.JavaScriptClass;
@@ -33,7 +33,7 @@ public class GraphiteScript implements WebinterfaceObject {
 		this.owner = owner;
 		this.name = name;
 		this.content = content;
-		
+
 		Context cx = enterContext();
 		this.globalScope = cx.initSafeStandardObjects(null, true);
 		ScriptableObject.putProperty(globalScope, "graphite", JSGraphite.INSTANCE);
@@ -41,12 +41,12 @@ public class GraphiteScript implements WebinterfaceObject {
 		cx.evaluateString(globalScope, content, "<" + name + ">", 1, null);
 		exitContext();
 	}
-	
+
 	@JavaScriptGetter(name = "getName", returning = "name")
 	public String getName() {
 		return name;
 	}
-	
+
 	public String getContent() {
 		return content;
 	}
@@ -68,7 +68,7 @@ public class GraphiteScript implements WebinterfaceObject {
 		ScriptableObject.callMethod(enterContext(), getGlobalScope(), method, args);
 		exitContext();
 	}
-	
+
 	public Context enterContext() {
 		Context c = Context.enter();
 		c.setLanguageVersion(Context.VERSION_ES6);
@@ -77,17 +77,17 @@ public class GraphiteScript implements WebinterfaceObject {
 		c.putThreadLocal("messageCount", 0);
 		return c;
 	}
-	
+
 	public void exitContext() {
 		Context.exit();
 	}
-	
+
 	public static Scriptable createJSArray(Object[] array) {
 		Context cx = Context.getCurrentContext();
 		GraphiteScript sc = (GraphiteScript) cx.getThreadLocal("script");
 		return Context.getCurrentContext().newArray(sc.getGlobalScope(), Arrays.stream(array).toArray(Object[]::new));
 	}
-	
+
 	@SuppressWarnings("unchecked")
 	public static void runRatelimitedAction(String key, long delay, Runnable action) {
 		Context c = Context.getCurrentContext();
@@ -104,7 +104,7 @@ public class GraphiteScript implements WebinterfaceObject {
 		action.run();
 		map.put(key, System.currentTimeMillis());
 	}
-	
+
 	@Override
 	public void preSerializeWI(JSONObject object) {
 		object.put("name", getName());

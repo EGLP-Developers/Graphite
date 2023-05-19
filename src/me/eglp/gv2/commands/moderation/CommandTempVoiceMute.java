@@ -3,11 +3,11 @@ package me.eglp.gv2.commands.moderation;
 import java.util.Arrays;
 import java.util.List;
 
-import me.eglp.gv2.util.base.guild.GraphiteGuild;
-import me.eglp.gv2.util.base.guild.GraphiteMember;
-import me.eglp.gv2.util.base.guild.GraphiteModule;
-import me.eglp.gv2.util.base.guild.config.GuildTemporaryActionsConfig;
-import me.eglp.gv2.util.base.user.GraphiteUser;
+import me.eglp.gv2.guild.GraphiteGuild;
+import me.eglp.gv2.guild.GraphiteMember;
+import me.eglp.gv2.guild.GraphiteModule;
+import me.eglp.gv2.guild.config.GuildTemporaryActionsConfig;
+import me.eglp.gv2.user.GraphiteUser;
 import me.eglp.gv2.util.command.CommandCategory;
 import me.eglp.gv2.util.command.CommandInvokedEvent;
 import me.eglp.gv2.util.command.Command;
@@ -21,7 +21,7 @@ import net.dv8tion.jda.api.interactions.commands.OptionType;
 import net.dv8tion.jda.api.interactions.commands.build.OptionData;
 
 public class CommandTempVoiceMute extends Command{
-	
+
 	public CommandTempVoiceMute() {
 		super(GraphiteModule.MODERATION, CommandCategory.MODERATION, "tempvoicemute");
 		addAlias("tvmute");
@@ -30,7 +30,7 @@ public class CommandTempVoiceMute extends Command{
 		setPermission(DefaultPermissions.MODERATION_TEMPVOICEMUTE);
 		requirePermissions(Permission.VOICE_MUTE_OTHERS);
 	}
-	
+
 	@Override
 	public void action(CommandInvokedEvent event) {
 		GraphiteGuild g = event.getGuild();
@@ -40,44 +40,44 @@ public class CommandTempVoiceMute extends Command{
 			DefaultMessage.ERROR_NOT_A_MEMBER.reply(event);
 			return;
 		}
-		
+
 		if(mem.isBot()) {
 			DefaultMessage.ERROR_IS_BOT.reply(event);
 			return;
 		}
-		
+
 		if(mem.getCurrentAudioChannel() == null) {
 			DefaultMessage.ERROR_NOT_IN_VOICECHANNEL.reply(event);
 			return;
 		}
-		
+
 		GuildTemporaryActionsConfig c = g.getTemporaryActionsConfig();
 		if(!g.getSelfMember().canInteract(mem)) {
 			DefaultMessage.ERROR_CANT_INTERACT_MEMBER.reply(event);
 			return;
 		}
-		
+
 		if(c.isTempMuted(mem)) {
 			DefaultMessage.ERROR_ALREADY_MUTED.reply(event);
 			return;
 		}
-		
+
 		long duration = GraphiteTimeParser.parseShortDuration((String) event.getOption("duration"));
 		if(duration == -1) {
 			DefaultMessage.ERROR_INVALID_DURATION.reply(event);
 			return;
 		}
-		
+
 		if(duration < 1000 * 60) {
 			DefaultMessage.ERROR_MINIMUM_TEMP_DURATION.reply(event);
 			return;
 		}
-		
+
 		String r = (String) event.getOption("reason");
 		g.getTemporaryActionsConfig().tempMuteMember(mem, duration, event.getMember(), r);
-		
-		DefaultMessage.COMMAND_TEMPVOICEMUTE_SUCCESS.reply(event, 
-				"user", user.getName(), 
+
+		DefaultMessage.COMMAND_TEMPVOICEMUTE_SUCCESS.reply(event,
+				"user", user.getName(),
 				"duration", LocalizedTimeUnit.formatTime(event.getGuild(), duration),
 				"reason", r == null ? "No reason" : r);
 	}

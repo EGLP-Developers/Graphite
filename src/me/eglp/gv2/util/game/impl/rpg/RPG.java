@@ -15,7 +15,7 @@ import java.util.zip.DeflaterOutputStream;
 import java.util.zip.InflaterInputStream;
 
 import me.eglp.gv2.main.Graphite;
-import me.eglp.gv2.util.base.user.GraphiteUser;
+import me.eglp.gv2.user.GraphiteUser;
 import me.eglp.gv2.util.game.GlobalMinigameInstance;
 import me.eglp.gv2.util.game.GraphiteMinigame;
 import me.eglp.gv2.util.game.impl.rpg.enemy.RPGEnemyType;
@@ -41,9 +41,9 @@ import me.mrletsplay.mrcore.misc.Probability;
 	}
 )
 public class RPG implements GlobalMinigameInstance, JSONConvertible {
-	
+
 	public static final RPG INSTANCE;
-	
+
 	static {
 		if(!Graphite.getScheduler().isShutdown()) {
 			INSTANCE = loadGame();
@@ -54,33 +54,33 @@ public class RPG implements GlobalMinigameInstance, JSONConvertible {
 				if(t == null) return;
 				if(l.getPlayers().isEmpty() && l.getEnemies().isEmpty()) l.addEnemy(t.createEnemy(x, y));
 			}, 1000);
-	
+
 			Graphite.getScheduler().scheduleWithFixedDelay("rpg-autosave", () -> RPG.INSTANCE.saveGame(), 5 * 60000);
 		}else {
 			INSTANCE = null;
 		}
 	}
-	
+
 	private Random random;
-	
+
 	@JSONValue
 	@JSONComplexListType(RPGPlayer.class)
 	private List<RPGPlayer> players;
-	
+
 	@JSONValue
 	private RPGMap map;
-	
+
 	@JSONConstructor
 	public RPG() {
 		this.players = new ArrayList<>();
 		this.random = new Random();
 		this.map = new RPGMap();
 	}
-	
+
 	public Random getRandom() {
 		return random;
 	}
-	
+
 	public RPGMap getMap() {
 		return map;
 	}
@@ -99,7 +99,7 @@ public class RPG implements GlobalMinigameInstance, JSONConvertible {
 	public GraphiteMinigame getGame() {
 		return GraphiteMinigame.GAME_RPG;
 	}
-	
+
 	@Override
 	public boolean isJoinable() {
 		return true;
@@ -119,7 +119,7 @@ public class RPG implements GlobalMinigameInstance, JSONConvertible {
 	public List<RPGPlayer> getPlayers() {
 		return players;
 	}
-	
+
 	@Override
 	public List<GraphiteUser> getPlayingUsers() {
 		return players.stream().map(RPGPlayer::getUser).filter(Objects::nonNull).collect(Collectors.toList());
@@ -129,7 +129,7 @@ public class RPG implements GlobalMinigameInstance, JSONConvertible {
 	public void onUserLeave(GraphiteUser user) {
 		players.stream().filter(u -> u.getUserID().equals(user.getID())).forEach(u -> u.setUser(null));
 	}
-	
+
 	private static RPG loadGame() {
 		byte[] in = Graphite.getMySQL().query(byte[].class, null, "SELECT State FROM global_rpg_data")
 				.orElseThrowOther(e -> new FriendlyException("Failed to load data from MySQL", e));
@@ -164,10 +164,10 @@ public class RPG implements GlobalMinigameInstance, JSONConvertible {
 			}
 		});
 	}
-	
+
 	public static void saveGlobalGame() {
 		if(INSTANCE == null) return;
 		INSTANCE.saveGame();
 	}
-	
+
 }

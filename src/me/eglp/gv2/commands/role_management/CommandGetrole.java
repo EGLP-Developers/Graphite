@@ -3,10 +3,10 @@ package me.eglp.gv2.commands.role_management;
 import java.util.Arrays;
 import java.util.List;
 
-import me.eglp.gv2.util.base.guild.GraphiteGuild;
-import me.eglp.gv2.util.base.guild.GraphiteModule;
-import me.eglp.gv2.util.base.guild.GraphiteRole;
-import me.eglp.gv2.util.base.guild.config.GuildRolesConfig;
+import me.eglp.gv2.guild.GraphiteGuild;
+import me.eglp.gv2.guild.GraphiteModule;
+import me.eglp.gv2.guild.GraphiteRole;
+import me.eglp.gv2.guild.config.GuildRolesConfig;
 import me.eglp.gv2.util.command.Command;
 import me.eglp.gv2.util.command.CommandCategory;
 import me.eglp.gv2.util.command.CommandInvokedEvent;
@@ -18,14 +18,14 @@ import net.dv8tion.jda.api.interactions.commands.OptionType;
 import net.dv8tion.jda.api.interactions.commands.build.OptionData;
 
 public class CommandGetrole extends Command{
-	
+
 	public CommandGetrole() {
 		super(GraphiteModule.ROLE_MANAGEMENT, CommandCategory.ROLE_MANAGEMENT, "getrole");
 		setDescription(DefaultLocaleString.COMMAND_GETROLE_DESCRIPTION);
 		setUsage(DefaultLocaleString.COMMAND_GETROLE_USAGE);
 		requirePermissions(Permission.MANAGE_ROLES);
 	}
-	
+
 	@SpecialSelfcheck(needsPermission = false)
 	@Override
 	public void action(CommandInvokedEvent event) {
@@ -45,7 +45,7 @@ public class CommandGetrole extends Command{
 			return;
 		}
 		g.addRoleToMember(event.getMember(), rol);
-		DefaultMessage.COMMAND_GETROLE_SUCCESS.reply(event, 
+		DefaultMessage.COMMAND_GETROLE_SUCCESS.reply(event,
 				"role", rol.getName());
 	}
 

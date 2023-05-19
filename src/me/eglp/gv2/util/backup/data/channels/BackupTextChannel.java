@@ -4,10 +4,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import me.eglp.gv2.guild.GraphiteGuild;
+import me.eglp.gv2.guild.GraphiteTextChannel;
 import me.eglp.gv2.util.backup.IDMappings;
 import me.eglp.gv2.util.backup.data.channels.BackupPermissionOverride.Type;
-import me.eglp.gv2.util.base.guild.GraphiteGuild;
-import me.eglp.gv2.util.base.guild.GraphiteTextChannel;
 import me.eglp.gv2.util.webinterface.js.JavaScriptValue;
 import me.eglp.gv2.util.webinterface.js.WebinterfaceObject;
 import me.mrletsplay.mrcore.json.converter.JSONComplexListType;
@@ -26,7 +26,7 @@ public class BackupTextChannel implements JSONConvertible, WebinterfaceObject, B
 	@JavaScriptValue(getter = "getName")
 	@JSONValue
 	private String name;
-	
+
 	@JavaScriptValue(getter = "getPosition")
 	@JSONValue
 	private int position = -1;
@@ -46,14 +46,14 @@ public class BackupTextChannel implements JSONConvertible, WebinterfaceObject, B
 	@JSONValue
 	@JSONComplexListType(BackupPermissionOverride.class)
 	private List<BackupPermissionOverride> permissionOverrides;
-	
+
 	@JSONConstructor
 	private BackupTextChannel() {}
-	
+
 	public BackupTextChannel(GraphiteTextChannel graphiteChannel) {
 		TextChannel ch = graphiteChannel.getJDAChannel();
 		if(ch == null) throw new IllegalStateException("Unknown channel or invalid context");
-		
+
 		this.id = graphiteChannel.getID();
 		this.name = ch.getName();
 		this.position = ch.getPosition();
@@ -70,7 +70,7 @@ public class BackupTextChannel implements JSONConvertible, WebinterfaceObject, B
 	public String getName() {
 		return name;
 	}
-	
+
 	@Override
 	public int getPosition() {
 		return position;
@@ -91,7 +91,7 @@ public class BackupTextChannel implements JSONConvertible, WebinterfaceObject, B
 	public List<BackupPermissionOverride> getPermissionOverrides() {
 		return permissionOverrides;
 	}
-	
+
 	@Override
 	public void restore(GraphiteGuild guild, Category parent, IDMappings mappings) {
 		ChannelAction<TextChannel> c = guild.getJDAGuild().createTextChannel(name, parent);
@@ -99,11 +99,11 @@ public class BackupTextChannel implements JSONConvertible, WebinterfaceObject, B
 		c.setTopic(topic);
 		c.setNSFW(nsfw);
 		c.setSlowmode(slowmode);
-		
+
 		permissionOverrides.stream()
 			.filter(o -> o.getType() == Type.MEMBER)
 			.forEach(o -> c.addMemberPermissionOverride(Long.parseLong(o.getID()), o.getAllowed(), o.getDenied()));
-		
+
 		permissionOverrides.stream()
 			.filter(o -> o.getType() == Type.ROLE)
 			.forEach(o -> {
@@ -111,8 +111,8 @@ public class BackupTextChannel implements JSONConvertible, WebinterfaceObject, B
 				if(newRoleID == null) return; // Because of the role rate limit, the role might not have been restored
 				c.addRolePermissionOverride(Long.parseLong(newRoleID), o.getAllowed(), o.getDenied());
 			});
-		
+
 		mappings.put(id, c.complete().getId());
 	}
-	
+
 }

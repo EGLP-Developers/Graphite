@@ -5,7 +5,7 @@ import java.util.Collections;
 import java.util.List;
 
 import me.eglp.gv2.main.Graphite;
-import me.eglp.gv2.util.base.user.GraphiteUser;
+import me.eglp.gv2.user.GraphiteUser;
 import me.eglp.gv2.util.emote.JDAEmote;
 import me.eglp.gv2.util.game.GraphiteMinigame;
 import me.eglp.gv2.util.game.GraphiteMinigameMoney;
@@ -18,19 +18,19 @@ import me.eglp.gv2.util.lang.DefaultLocaleString;
 import me.eglp.gv2.util.lang.DefaultMessage;
 
 public class RockPaperScissors implements MultiPlayerMinigameInstance {
-	
+
 	private static final int
 		ROCK = 1,
 		PAPER = 2,
 		SCISSORS = 3;
-	
+
 	private GraphiteUser playerOne, playerTwo;
 	private boolean running, stopped;
 	private SelectInput<Integer> moveInput1, moveInput2;
 	private MessageOutput out1, out2;
 	private int score1, score2;
 	private int otherSelected;
-	
+
 	public RockPaperScissors(GraphiteUser user) {
 		this.playerOne = user;
 		this.running = true;
@@ -56,22 +56,22 @@ public class RockPaperScissors implements MultiPlayerMinigameInstance {
 		if(playerTwo != null) throw new UnsupportedOperationException("Game is full");
 		Graphite.getMinigames().unshareMinigame(this);
 		this.playerTwo = user;
-		
+
 		setup(true);
 		setup(false);
 	}
-	
+
 	private void setup(boolean p1) {
 		GraphiteUser user = p1 ? playerOne : playerTwo;
-		
+
 		MessageOutput out = new MessageOutput(user.openPrivateChannel());
-		
+
 		out.update(DefaultLocaleString.MINIGAME_ROCK_PAPER_SCISSORS_SELECT.getFor(user, "score_self", ""+(p1 ? score1 : score2), "score_other", ""+(p1 ? score2 : score1)));
-		
+
 		SelectInput<Integer> move = new SelectInput<Integer>(Collections.singletonList(user), it -> {
 			if(otherSelected != 0) {
 				int state = winStateAgainst(it, otherSelected);
-				
+
 				if(state == -1) {
 					DefaultMessage.MINIGAME_TIED.sendMessage(playerOne.openPrivateChannel());
 					DefaultMessage.MINIGAME_TIED.sendMessage(playerTwo.openPrivateChannel());
@@ -79,17 +79,17 @@ public class RockPaperScissors implements MultiPlayerMinigameInstance {
 					boolean playerOneWins = (p1 && state == 1) || (!p1 && state == 0);
 					userWon(playerOneWins ? playerOne : playerTwo, "Rock Paper Scissors 1v1", GraphiteMinigameMoney.ROCK_PAPER_SCISSORS);
 					userLost(playerOneWins ? playerTwo : playerOne, "Rock Paper Scissors 1v1");
-					
+
 					if(playerOneWins) {
 						score1++;
 					}else {
 						score2++;
 					}
-					
+
 					DefaultMessage.MINIGAME_WON.sendMessage((playerOneWins ? playerOne : playerTwo).openPrivateChannel(), "money", ""+GraphiteMinigameMoney.ROCK_PAPER_SCISSORS.getMoney());
 					DefaultMessage.MINIGAME_LOST.sendMessage((playerOneWins ? playerTwo : playerOne).openPrivateChannel());
 				}
-				
+
 //				stop(true);
 //				sendRematchInvite(playerOne, playerTwo);
 				otherSelected = 0;
@@ -101,12 +101,12 @@ public class RockPaperScissors implements MultiPlayerMinigameInstance {
 		})
 		.autoRemove(true)
 		.removeMessage(false);
-		
+
 		move.addOption(JDAEmote.BRICKS, ROCK);
 		move.addOption(JDAEmote.ROLL_OF_PAPER, PAPER);
 		move.addOption(JDAEmote.SCISSORS, SCISSORS);
 		move.apply(out.getMessage());
-		
+
 		if(p1) {
 			out1 = out;
 			moveInput1 = move;
@@ -115,7 +115,7 @@ public class RockPaperScissors implements MultiPlayerMinigameInstance {
 			moveInput2 = move;
 		}
 	}
-	
+
 	private int winStateAgainst(int a, int b) {
 		if(a == b) return -1;
 		switch(b) {
@@ -128,7 +128,7 @@ public class RockPaperScissors implements MultiPlayerMinigameInstance {
 		}
 		return -1; // Shouldn't ever happen
 	}
-	
+
 	@Override
 	public List<GraphiteUser> getPlayingUsers() {
 		return Arrays.asList(playerOne, playerTwo);
@@ -146,7 +146,7 @@ public class RockPaperScissors implements MultiPlayerMinigameInstance {
 	public boolean isJoinable() {
 		return playerTwo == null && !stopped;
 	}
-	
+
 	@Override
 	public void stop() {
 		MultiPlayerMinigameInstance.super.stop();

@@ -8,7 +8,7 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
-import me.eglp.gv2.util.base.user.GraphiteUser;
+import me.eglp.gv2.user.GraphiteUser;
 import me.eglp.gv2.util.emote.JDAEmote;
 import me.eglp.gv2.util.game.impl.rpg.dialog.DialogAction;
 import me.eglp.gv2.util.game.impl.rpg.enemy.RPGEnemy;
@@ -36,41 +36,41 @@ public class RPGPlayer implements JSONConvertible {
 	private static final int
 		INVENTORY_SIZE = 5,
 		INITIAL_MAX_HEALTH = 100;
-	
+
 	private GraphiteUser user;
 	private MessageOutput output, helpOutput;
 	private MessageInput input;
 	private SelectInput<Integer> helpInput;
 	private boolean helpDisplayed;
-	
+
 	private String tmpMsg = "";
-	
+
 	private DialogAction dialogAction;
-	
+
 	@JSONValue
 	private String userID;
-	
+
 	@JSONValue
 	private int x, y, money, health, maxHealth;
-	
+
 	@JSONValue
 	@JSONComplexListType(RPGObject.class)
 	private List<RPGObject> inventory;
-	
+
 	@JSONValue
 	@JSONListType(JSONType.INTEGER)
 	private List<Integer> explored;
-	
+
 	@JSONValue
 	@JSONComplexListType(RPGQuest.class)
 	private List<RPGQuest> activeQuests;
-	
+
 	@JSONValue
 	private RPGObject equippedItem;
-	
+
 	@JSONConstructor
 	private RPGPlayer() {}
-	
+
 	public RPGPlayer(GraphiteUser user, int x, int y) {
 		this.x = x;
 		this.y = y;
@@ -81,7 +81,7 @@ public class RPGPlayer implements JSONConvertible {
 		explored.add(RPG.INSTANCE.getMap().xyp(x, y));
 		setUser(user);
 	}
-	
+
 	private void onInput(String msg) {
 		if(dialogAction != null) {
 			int idx = dialogAction.getIndex(msg);
@@ -105,9 +105,9 @@ public class RPGPlayer implements JSONConvertible {
 			pushMsg();
 			return;
 		}
-		
+
 		RPGLocation l = getLocation();
-		
+
 		for(RPGEnemy en : l.getEnemies()) {
 			int ad = en.onAttack(this);
 			if(ad < 0) continue;
@@ -127,7 +127,7 @@ public class RPGPlayer implements JSONConvertible {
 				return;
 			}
 		}
-		
+
 		String subject = msg.substring(ac.getValue().length()).trim();
 		o: switch(ac.getKey()) {
 			case INSPECT:
@@ -231,7 +231,7 @@ public class RPGPlayer implements JSONConvertible {
 			}
 			case INVENTORY:
 			{
-				
+
 				String invS = "You are currently at " + health + "/" + maxHealth + " health\n\n";
 				invS += "You have " + money + "$\n\n";
 				invS += (equippedItem == null ? "Your hands are currently empty" : "You are currently holding a *" + equippedItem.getName() + "* in your hands") + "\n\n";
@@ -314,54 +314,54 @@ public class RPGPlayer implements JSONConvertible {
 				send("Not implemented");
 				break;
 		}
-		
+
 		pushMsg();
 	}
-	
+
 	private boolean requireSubject(String subj, String message) {
 		if(subj != null && !subj.isEmpty()) return true;
 		send(message);
 		return false;
 	}
-	
+
 	private void pushMsg() {
 		if(tmpMsg.isEmpty()) return;
 		output.update(tmpMsg, true);
 		tmpMsg = "";
 	}
-	
+
 	public RPGLocation getLocation() {
 		return RPG.INSTANCE.getMap().getLocation(x, y);
 	}
-	
+
 	public List<RPGQuest> getActiveQuests() {
 		return activeQuests;
 	}
-	
+
 	public void setDialogAction(DialogAction dialogAction) {
 		this.dialogAction = dialogAction;
 	}
-	
+
 	public DialogAction getDialogAction() {
 		return dialogAction;
 	}
-	
+
 	public RPGObject getInventoryItem(String name) {
 		return RPGLocation.find(inventory, name, RPGObject::getName);
 	}
-	
+
 	public boolean hasObject(RPGObjectType type) {
 		return (equippedItem != null && equippedItem.getType().equals(type)) || inventory.stream().anyMatch(o -> o.getType().equals(type));
 	}
-	
+
 	public boolean hasObjectCategory(RPGObjectCategory type) {
 		return (equippedItem != null && equippedItem.getType().getCategory().equals(type)) || inventory.stream().anyMatch(o -> o.getType().getCategory().equals(type));
 	}
-	
+
 	public boolean isInventoryFull() {
 		return inventory.size() >= INVENTORY_SIZE;
 	}
-	
+
 	private void sendLocationInfo() {
 		RPGLocation l = getLocation();
 		String st = LocalizedMessage.formatMessage(l.getType().getLocationDescription(), "x", ""+x, "y", ""+y);
@@ -376,7 +376,7 @@ public class RPGPlayer implements JSONConvertible {
 		}
 		send(st + "\n\nYou see: " + s.stream().collect(Collectors.joining(", ")));
 	}
-	
+
 	private void sendMap() {
 		MessageGraphics g = new MessageGraphics();
 		for(int rx = -3; rx <= 3; rx++) {
@@ -391,15 +391,15 @@ public class RPGPlayer implements JSONConvertible {
 		g.point(0, 0);
 		send(g);
 	}
-	
+
 	public void send(String msg) {
 		tmpMsg += (tmpMsg.isEmpty() ? "" : "\n\n") + msg;
 	}
-	
+
 	private void send(MessageGraphics msg) {
 		send(msg.render());
 	}
-	
+
 	public void setUser(GraphiteUser user) {
 		if(user == null) {
 			this.user = null;
@@ -417,7 +417,7 @@ public class RPGPlayer implements JSONConvertible {
 		input.apply(user.openPrivateChannel());
 		sendLocationInfo();
 		pushMsg();
-		
+
 		this.helpInput = new SelectInput<Integer>(user, it -> {
 			helpDisplayed = !helpDisplayed;
 			if(helpDisplayed) {
@@ -428,77 +428,77 @@ public class RPGPlayer implements JSONConvertible {
 		})
 		.autoRemove(false)
 		.removeMessage(false);
-		
+
 		helpInput.addOption(JDAEmote.QUESTION, 0);
 		helpInput.apply(output.getMessage());
 	}
-	
+
 	public boolean isPlaying() {
 		return user != null;
 	}
-	
+
 	public GraphiteUser getUser() {
 		return user;
 	}
-	
+
 	public MessageOutput getOutput() {
 		return output;
 	}
-	
+
 	public MessageOutput getHelpOutput() {
 		return helpOutput;
 	}
-	
+
 	public MessageInput getInput() {
 		return input;
 	}
-	
+
 	public SelectInput<Integer> getHelpInput() {
 		return helpInput;
 	}
-	
+
 	public String getUserID() {
 		return userID;
 	}
-	
+
 	public int getX() {
 		return x;
 	}
-	
+
 	public int getY() {
 		return y;
 	}
-	
+
 	public void addHealth(int amount) {
 		health = Math.min(health + amount, maxHealth);
 	}
-	
+
 	public void reduceHealth(int amount) {
 		health = Math.max(health - amount, 0);
 	}
-	
+
 	public int getHealth() {
 		return health;
 	}
-	
+
 	public int getMaxHealth() {
 		return maxHealth;
 	}
-	
+
 	public void setMoney(int money) {
 		this.money = money;
 	}
-	
+
 	public void addMoney(int amount) {
 		this.money += amount;
 	}
-	
+
 	public int getMoney() {
 		return money;
 	}
-	
+
 	public List<RPGObject> getInventory() {
 		return inventory;
 	}
-	
+
 }

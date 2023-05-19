@@ -14,15 +14,15 @@ import java.util.List;
 import javax.imageio.ImageIO;
 import javax.sql.rowset.serial.SerialBlob;
 
+import me.eglp.gv2.guild.GraphiteGuild;
 import me.eglp.gv2.main.Graphite;
+import me.eglp.gv2.user.GraphiteUser;
 import me.eglp.gv2.util.GraphiteUtil;
 import me.eglp.gv2.util.backup.data.channels.ChannelsData;
 import me.eglp.gv2.util.backup.data.config.GuildConfigData;
 import me.eglp.gv2.util.backup.data.overview_settings.OverviewSettingsData;
 import me.eglp.gv2.util.backup.data.permissions.PermissionsData;
 import me.eglp.gv2.util.backup.data.roles.RolesData;
-import me.eglp.gv2.util.base.guild.GraphiteGuild;
-import me.eglp.gv2.util.base.user.GraphiteUser;
 import me.eglp.gv2.util.mysql.GraphiteMySQL.UnsafeFunction;
 import me.eglp.gv2.util.mysql.SQLTable;
 import me.eglp.gv2.util.webinterface.js.JavaScriptClass;
@@ -62,8 +62,8 @@ import me.mrletsplay.mrcore.misc.FriendlyException;
 )
 @JavaScriptClass(name = "TempBackup")
 public class TemplateBackup implements WebinterfaceObject {
-	
-	public static final int 
+
+	public static final int
 		MAX_TEMPLATE_NAME_LENGTH = 50,
 		MAX_TEMPLATE_DESCRIPTION_LENGTH = 255,
 		USER_TEMPLATE_CREATE_COOLDOWN = 60 * 60 * 1000;
@@ -79,10 +79,10 @@ public class TemplateBackup implements WebinterfaceObject {
 
 	@JavaScriptValue(getter = "getName")
 	private String name;
-	
+
 	@JavaScriptValue(getter = "getDescription")
 	private String description;
-	
+
 	private TemplateBackup(String id, String authorID, long timestamp, String name, String description) {
 		this.id = id;
 		this.authorID = authorID;
@@ -90,56 +90,56 @@ public class TemplateBackup implements WebinterfaceObject {
 		this.name = name;
 		this.description = description;
 	}
-	
+
 	public String getID() {
 		return id;
 	}
-	
+
 	public String getAuthorID() {
 		return authorID;
 	}
-	
+
 	public GraphiteUser getAuthor() {
 		return Graphite.getGlobalUser(authorID);
 	}
-	
+
 	public long getTimestamp() {
 		return timestamp;
 	}
-	
+
 	@JavaScriptGetter(name = "getUpvotes", returning = "upvotes")
 	public int loadUpvotes() {
 		return Graphite.getMySQL().query(Long.class, 0L, "SELECT COUNT(UserId) FROM global_template_upvotes WHERE TemplateId = ?", id)
 				.orElseThrowOther(e -> new FriendlyException("Failed to retrieve upvote data from MySQL", e))
 				.intValue();
 	}
-	
+
 	public boolean hasUpvoted(String userID) {
 		return Graphite.getMySQL().query(String.class, null, "SELECT UserId FROM global_template_upvotes WHERE TemplateId = ? AND UserId = ?", id, userID)
 				.orElseThrowOther(e -> new FriendlyException("Failed to load upvote from MySQL", e)) != null;
 	}
-	
+
 	public void addUpvote(String userID) {
 		Graphite.getMySQL().query("INSERT IGNORE INTO global_template_upvotes(TemplateId, UserId) VALUES(?, ?)", id, userID);
 	}
-	
+
 	public void removeUpvote(String userID) {
 		Graphite.getMySQL().query("DELETE FROM global_template_upvotes WHERE TemplateId = ? AND UserId = ?", id, userID);
 	}
-	
+
 	public String getName() {
 		return name;
 	}
-	
+
 	public String getDescription() {
 		return description;
 	}
-	
+
 	public byte[] loadGuildIconRaw() {
 		return Graphite.getMySQL().run(con -> {
 			try(PreparedStatement st = con.prepareStatement("SELECT GuildIcon FROM global_templates WHERE TemplateId = ?")) {
 				st.setString(1, id);
-				
+
 				try(ResultSet set = st.executeQuery()) {
 					if(!set.next()) return null;
 					Blob b = set.getBlob("GuildIcon");
@@ -149,7 +149,7 @@ public class TemplateBackup implements WebinterfaceObject {
 			}
 		}).orElseThrowOther(e -> new FriendlyException("Failed to retrieve guild icon from MySQL", e));
 	}
-	
+
 	public BufferedImage loadGuildIcon() {
 		try {
 			return ImageIO.read(new ByteArrayInputStream(loadGuildIconRaw()));
@@ -157,12 +157,12 @@ public class TemplateBackup implements WebinterfaceObject {
 			throw new FriendlyException("Failed to load guild icon");
 		}
 	}
-	
+
 	public ChannelsData loadChannelsData() {
 		return Graphite.getMySQL().run(con -> {
 			try(PreparedStatement st = con.prepareStatement("SELECT Channels FROM global_templates WHERE TemplateId = ?")) {
 				st.setString(1, id);
-				
+
 				try(ResultSet set = st.executeQuery()) {
 					if(!set.next()) return null;
 					return ChannelsData.load(set.getString("Channels"));
@@ -170,12 +170,12 @@ public class TemplateBackup implements WebinterfaceObject {
 			}
 		}).orElseThrowOther(e -> new FriendlyException("Failed to retrieve channels data from MySQL", e));
 	}
-	
+
 	public RolesData loadRolesData() {
 		return Graphite.getMySQL().run(con -> {
 			try(PreparedStatement st = con.prepareStatement("SELECT Roles FROM global_templates WHERE TemplateId = ?")) {
 				st.setString(1, id);
-				
+
 				try(ResultSet set = st.executeQuery()) {
 					if(!set.next()) return null;
 					return RolesData.load(set.getString("Roles"));
@@ -183,12 +183,12 @@ public class TemplateBackup implements WebinterfaceObject {
 			}
 		}).orElseThrowOther(e -> new FriendlyException("Failed to retrieve roles data from MySQL", e));
 	}
-	
+
 	public PermissionsData loadPermissionsData() {
 		return Graphite.getMySQL().run(con -> {
 			try(PreparedStatement st = con.prepareStatement("SELECT Permissions FROM global_templates WHERE TemplateId = ?")) {
 				st.setString(1, id);
-				
+
 				try(ResultSet set = st.executeQuery()) {
 					if(!set.next()) return null;
 					return PermissionsData.load(set.getString("Permissions"));
@@ -196,12 +196,12 @@ public class TemplateBackup implements WebinterfaceObject {
 			}
 		}).orElseThrowOther(e -> new FriendlyException("Failed to retrieve permissions data from MySQL", e));
 	}
-	
+
 	public GuildConfigData loadConfigData() {
 		return Graphite.getMySQL().run(con -> {
 			try(PreparedStatement st = con.prepareStatement("SELECT Config FROM global_templates WHERE TemplateId = ?")) {
 				st.setString(1, id);
-				
+
 				try(ResultSet set = st.executeQuery()) {
 					if(!set.next()) return null;
 					return GuildConfigData.load(set.getString("Permissions"));
@@ -209,12 +209,12 @@ public class TemplateBackup implements WebinterfaceObject {
 			}
 		}).orElseThrowOther(e -> new FriendlyException("Failed to config permissions data from MySQL", e));
 	}
-	
+
 	public OverviewSettingsData loadDiscordOverviewSettingsData() {
 		return Graphite.getMySQL().run(con -> {
 			try(PreparedStatement st = con.prepareStatement("SELECT OverviewSettings FROM global_templates WHERE TemplateId = ?")) {
 				st.setString(1, id);
-				
+
 				try(ResultSet set = st.executeQuery()) {
 					if(!set.next()) return null;
 					return OverviewSettingsData.load(set.getString("OverviewSettings"));
@@ -222,39 +222,39 @@ public class TemplateBackup implements WebinterfaceObject {
 			}
 		}).orElseThrowOther(e -> new FriendlyException("Failed to retrieve overview settings data from MySQL", e));
 	}
-	
+
 	public long restore(GraphiteGuild guild, EnumSet<RestoreSelector> selectors) {
 		long start = System.currentTimeMillis();
-		
+
 		IDMappings mappings = new IDMappings();
-		
+
 		if(RestoreSelector.DISCORD_ROLES.appliesTo(selectors)) {
 			RolesData roles = loadRolesData();
 			roles.restore(guild, RestoreSelector.DISCORD_ROLE_ASSIGNMENTS.appliesTo(selectors), mappings);
 		}
-		
+
 		if(RestoreSelector.DISCORD_CHANNELS.appliesTo(selectors)) {
 			ChannelsData channels = loadChannelsData();
 			channels.restore(guild, selectors, mappings);
 		}
-		
+
 		if(RestoreSelector.PERMISSIONS.appliesTo(selectors)) {
 			PermissionsData d = loadPermissionsData();
 			d.restore(guild);
 		}
-		
+
 		if(RestoreSelector.DISCORD_OVERVIEW_SETTINGS.appliesTo(selectors)) {
 			OverviewSettingsData d = loadDiscordOverviewSettingsData();
 			d.restore(guild, mappings);
 		}
-		
+
 		return System.currentTimeMillis() - start;
 	}
-	
+
 	public static TemplateBackup createNew(GuildBackup backup, GraphiteUser author, String name, String description) {
 		return Graphite.getMySQL().run(con -> {
 			String templateID = GraphiteUtil.randomShortID();
-			
+
 			try(PreparedStatement s = con.prepareStatement("INSERT INTO global_templates(TemplateId, AuthorId, Timestamp, GuildIcon, Channels, Roles, OverviewSettings, Permissions, Config, Name, Description) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)")) {
 				s.setString(1, templateID); // TemplateId
 				s.setString(2, author.getID()); // AuthorId
@@ -270,12 +270,12 @@ public class TemplateBackup implements WebinterfaceObject {
 				s.setString(10, name); // Name
 				s.setString(11, description); // Description
 				s.execute();
-				
+
 				return new TemplateBackup(templateID, author.getID(), timestamp, name, description);
 			}
 		}).orElseThrowOther(e -> new FriendlyException("Failed to create backup", e));
 	}
-	
+
 	public static TemplateBackup getTemplateByID(String id) {
 		return Graphite.getMySQL().run((UnsafeFunction<Connection, TemplateBackup>) con -> {
 			try(PreparedStatement s = con.prepareStatement("SELECT * FROM global_templates WHERE TemplateId = ?")) {
@@ -301,37 +301,37 @@ public class TemplateBackup implements WebinterfaceObject {
 			}
 		}).orElseThrowOther(e -> new FriendlyException("Failed to get template backups", e));
 	}
-	
+
 	private static long getLastTemplate(String userID) {
 		return Graphite.getMySQL().query(Long.class, 0L,  "SELECT Timestamp FROM global_templates WHERE AuthorId = ? ORDER BY Timestamp DESC LIMIT 1", userID)
 				.orElseThrowOther(e -> new FriendlyException("Failed to load last template timestamp from MySQL", e));
 	}
-	
+
 	public static long getTemplateCreateCooldown(GraphiteUser user) {
 		return Math.max(0, (getLastTemplate(user.getID()) + USER_TEMPLATE_CREATE_COOLDOWN) - System.currentTimeMillis());
 	}
-	
+
 	public void delete() {
 		Graphite.getMySQL().query("DELETE FROM global_templates WHERE TemplateId = ?", id);
 	}
-	
+
 	@Override
 	public void preSerializeWI(JSONObject object) {
 		object.put("upvotes", loadUpvotes());
 	}
-	
+
 	@JavaScriptFunction(calling = "getTempBackups", returning = "template_backups", withGuild = true)
 	public static void getTempBackups() {}
-	
+
 	@JavaScriptFunction(calling = "createTemplateBackup", returning = "template_backup", withGuild = true)
 	public static void createTemplateBackup(@JavaScriptParameter(name = "backup_name") String backupName, @JavaScriptParameter(name = "name") String name, @JavaScriptParameter(name = "description") String description) {}
-	
+
 	@JavaScriptFunction(calling = "deleteTemplateBackup", withGuild = true)
 	public static void deleteTemplateBackup(@JavaScriptParameter(name = "backup_id") String id) {}
-	
+
 	@JavaScriptFunction(calling = "getTemplateBackupChannelsData", returning = "data", withGuild = true)
 	public static void getTemplateBackupChannelsData(@JavaScriptParameter(name = "backup_id") String id) {}
-	
+
 	@JavaScriptFunction(calling = "getTemplateBackupRolesData", returning = "data", withGuild = true)
 	public static void getTemplateBackupRolesData(@JavaScriptParameter(name = "backup_id") String id) {}
 
@@ -343,8 +343,8 @@ public class TemplateBackup implements WebinterfaceObject {
 
 	@JavaScriptFunction(calling = "upvoteTemplateBackupByID", withGuild = false)
 	public static void upvoteTemplateBackupByID(@JavaScriptParameter(name = "id") String id) {}
-	
+
 	@JavaScriptFunction(calling = "hasUpvotedTemplateByID", returning = "upvoted", withGuild = false)
 	public static void hasUpvotedTemplateByID(@JavaScriptParameter(name = "id") String id, @JavaScriptParameter(name = "user_id") String userID) {}
-	
+
 }

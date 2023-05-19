@@ -5,15 +5,15 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import me.eglp.gv2.util.base.guild.GraphiteAudioChannel;
-import me.eglp.gv2.util.base.guild.GraphiteGuild;
-import me.eglp.gv2.util.base.guild.GraphiteMember;
-import me.eglp.gv2.util.base.guild.GraphiteModule;
-import me.eglp.gv2.util.base.guild.GraphiteVoiceChannel;
-import me.eglp.gv2.util.base.guild.GuildJail;
-import me.eglp.gv2.util.base.guild.config.GuildChannelsConfig;
-import me.eglp.gv2.util.base.guild.config.GuildModerationConfig;
-import me.eglp.gv2.util.base.user.GraphiteUser;
+import me.eglp.gv2.guild.GraphiteAudioChannel;
+import me.eglp.gv2.guild.GraphiteGuild;
+import me.eglp.gv2.guild.GraphiteMember;
+import me.eglp.gv2.guild.GraphiteModule;
+import me.eglp.gv2.guild.GraphiteVoiceChannel;
+import me.eglp.gv2.guild.GuildJail;
+import me.eglp.gv2.guild.config.GuildChannelsConfig;
+import me.eglp.gv2.guild.config.GuildModerationConfig;
+import me.eglp.gv2.user.GraphiteUser;
 import me.eglp.gv2.util.command.Command;
 import me.eglp.gv2.util.command.CommandCategory;
 import me.eglp.gv2.util.command.CommandInvokedEvent;
@@ -26,9 +26,9 @@ import net.dv8tion.jda.api.interactions.commands.OptionType;
 import net.dv8tion.jda.api.interactions.commands.build.OptionData;
 
 public class CommandJail extends Command{
-	
+
 	public static Map<String, String> jail = new HashMap<>();
-	
+
 	public CommandJail() {
 		super(GraphiteModule.MODERATION, CommandCategory.MODERATION, "jail");
 		setDescription(DefaultLocaleString.COMMAND_JAIL_DESCRIPTION);
@@ -36,7 +36,7 @@ public class CommandJail extends Command{
 		setPermission(DefaultPermissions.MODERATION_JAIL);
 		requirePermissions(Permission.VOICE_MOVE_OTHERS);
 	}
-	
+
 	@Override
 	public void action(CommandInvokedEvent event) {
 		GraphiteGuild g = event.getGuild();
@@ -46,43 +46,43 @@ public class CommandJail extends Command{
 			DefaultMessage.ERROR_NOT_A_MEMBER.reply(event);
 			return;
 		}
-		
+
 		if(mem.isBot()) {
 			DefaultMessage.ERROR_IS_BOT.reply(event);
 			return;
 		}
-		
+
 		GraphiteAudioChannel aCh = mem.getCurrentAudioChannel();
-		
+
 		if(aCh == null) {
 			DefaultMessage.ERROR_NOT_IN_AUDIOCHANNEL.reply(event);
 			return;
 		}
-		
+
 		GuildChannelsConfig c = g.getChannelsConfig();
 		if(aCh.isVoiceChannel() && c.isAutoCreatedChannel((GraphiteVoiceChannel) aCh)) {
 			DefaultMessage.COMMAND_JAIL_ERROR_AUTOCHANNEL.reply(event);
 			return;
 		}
-		
+
 		if(aCh.isVoiceChannel() && c.isUserChannel((GraphiteVoiceChannel) aCh)) {
 			DefaultMessage.COMMAND_JAIL_ERROR_USERCHANNEL.reply(event);
 			return;
 		}
-		
+
 		GuildModerationConfig mC = g.getModerationConfig();
 		if(mC.isJailed(mem)) {
 			DefaultMessage.COMMAND_JAIL_ERROR_ALREADY_JAILED.reply(event);
 			return;
 		}
-		
+
 		if(event.hasOption("channel")) {
 			aCh = (GraphiteAudioChannel) event.getOption("channel");
 		}
-		
+
 		String r = (String) event.getOption("reason");
 		GuildJail j = mC.createJail(mem, aCh, event.getMember(), r);
-		
+
 		DefaultMessage.COMMAND_JAIL_JAILED.sendMessage(mem.openPrivateChannel(), "attempts", String.valueOf(j.getLeaveAttempts()), "max_attempts", "3");
 		DefaultMessage.COMMAND_JAIL_SUCCESS.reply(event, "channel", aCh.getName());
 	}

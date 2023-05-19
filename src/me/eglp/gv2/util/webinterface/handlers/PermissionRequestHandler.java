@@ -7,9 +7,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+import me.eglp.gv2.guild.GraphiteGuild;
+import me.eglp.gv2.guild.customcommand.GraphiteCustomCommand;
 import me.eglp.gv2.main.Graphite;
-import me.eglp.gv2.util.base.guild.GraphiteGuild;
-import me.eglp.gv2.util.base.guild.customcommand.GraphiteCustomCommand;
 import me.eglp.gv2.util.command.Command;
 import me.eglp.gv2.util.command.text.CommandHandler;
 import me.eglp.gv2.util.permission.DefaultPermissions;
@@ -26,35 +26,35 @@ import me.mrletsplay.mrcore.json.JSONArray;
 import me.mrletsplay.mrcore.json.JSONObject;
 
 public class PermissionRequestHandler {
-	
+
 	@WebinterfaceHandler(requestMethod = "getPermissionGroups", requireGuild = true, requireGuildAdmin = true)
 	public static WebinterfaceResponse getPermissionGroups(WebinterfaceRequestEvent event) {
 		JSONArray e = new JSONArray();
-		
+
 		Map<String, List<JSPermission>> perms = new HashMap<>();
-		
+
 		for(String permission : DefaultPermissions.getPermissions()) {
 			addPermission(perms, permission, findCommands(CommandHandler.getAllCommands(), permission).stream()
 					.map(c -> c.getFullName())
 					.collect(Collectors.toList()));
 		}
-		
+
 		for(GraphiteCustomCommand cc : event.getSelectedGuild().getCustomCommandsConfig().getCustomCommands()) {
 			if(cc.getPermission() == null) continue;
 			addPermission(perms, cc.getPermission(), Collections.singletonList(cc.getName()));
 		}
-		
+
 		e.add(new PermissionGroup(null, Collections.singletonList(new JSPermission("*", Collections.emptyList()))).toWebinterfaceObject());
 		perms.forEach((group, permissions) -> { // NONBETA: sort
 			permissions.add(0, new JSPermission(group + ".*", Collections.emptyList()));
 			e.add(new PermissionGroup(group, permissions).toWebinterfaceObject());
 		});
-		
+
 		JSONObject o = new JSONObject();
 		o.put("permissionGroups", e);
 		return WebinterfaceResponse.success(o);
 	}
-	
+
 	private static void addPermission(Map<String, List<JSPermission>> perms, String permission, List<String> commands) {
 		String group = permission.split("\\.")[0];
 		List<JSPermission> ps = perms.getOrDefault(group, new ArrayList<>());
@@ -68,7 +68,7 @@ public class PermissionRequestHandler {
 			p.getAvailableCommands().addAll(commands);
 		}
 	}
-	
+
 	private static List<Command> findCommands(List<Command> commands, String permission) {
 		List<Command> res = new ArrayList<>();
 		for(Command c : commands) {
@@ -77,7 +77,7 @@ public class PermissionRequestHandler {
 		}
 		return res;
 	}
-	
+
 	@WebinterfaceHandler(requestMethod = "getMemberPermissions", requireGuild = true, requireGuildAdmin = true)
 	public static WebinterfaceResponse getMemberPermissions(WebinterfaceRequestEvent event) {
 		JSONArray arr = new JSONArray();
@@ -90,7 +90,7 @@ public class PermissionRequestHandler {
 		o.put("permissions", arr);
 		return WebinterfaceResponse.success(o);
 	}
-	
+
 	@WebinterfaceHandler(requestMethod = "setMemberPermission", requireGuild = true, requireGuildAdmin = true)
 	public static WebinterfaceResponse setMemberPermission(WebinterfaceRequestEvent event) {
 		GraphiteGuild g = event.getSelectedGuild();
@@ -105,7 +105,7 @@ public class PermissionRequestHandler {
 		}
 		return WebinterfaceResponse.success();
 	}
-	
+
 	@WebinterfaceHandler(requestMethod = "getRolePermissions", requireGuild = true, requireGuildAdmin = true)
 	public static WebinterfaceResponse getRolePermissions(WebinterfaceRequestEvent event) {
 		JSONArray arr = new JSONArray();
@@ -116,7 +116,7 @@ public class PermissionRequestHandler {
 		o.put("permissions", arr);
 		return WebinterfaceResponse.success(o);
 	}
-	
+
 	@WebinterfaceHandler(requestMethod = "setRolePermission", requireGuild = true, requireGuildAdmin = true)
 	public static WebinterfaceResponse setRolePermission(WebinterfaceRequestEvent event) {
 		GraphiteGuild g = event.getSelectedGuild();
@@ -131,7 +131,7 @@ public class PermissionRequestHandler {
 		}
 		return WebinterfaceResponse.success();
 	}
-	
+
 	@WebinterfaceHandler(requestMethod = "getEveryonePermissions", requireGuild = true, requireGuildAdmin = true)
 	public static WebinterfaceResponse getEveryonePermissions(WebinterfaceRequestEvent event) {
 		JSONArray arr = new JSONArray();
@@ -142,7 +142,7 @@ public class PermissionRequestHandler {
 		o.put("permissions", arr);
 		return WebinterfaceResponse.success(o);
 	}
-	
+
 	@WebinterfaceHandler(requestMethod = "setEveryonePermission", requireGuild = true, requireGuildAdmin = true)
 	public static WebinterfaceResponse setEveryonePermission(WebinterfaceRequestEvent event) {
 		GraphiteGuild g = event.getSelectedGuild();
@@ -156,5 +156,5 @@ public class PermissionRequestHandler {
 		}
 		return WebinterfaceResponse.success();
 	}
-	
+
 }

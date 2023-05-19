@@ -3,7 +3,7 @@ package me.eglp.gv2.util.command.text;
 import java.util.ArrayList;
 import java.util.List;
 
-import me.eglp.gv2.util.base.guild.GraphiteGuild;
+import me.eglp.gv2.guild.GraphiteGuild;
 import me.eglp.gv2.util.command.text.argument.CommandArgument;
 import me.eglp.gv2.util.command.text.argument.MentionArgument;
 import me.eglp.gv2.util.mention.MentionFinder;
@@ -56,7 +56,7 @@ public class CommandParser {
 						args.add(new CommandArgument(arg));
 					}
 				}
-				
+
 				if(quotedString != null) {
 					args.add(new CommandArgument(quotedString));
 				}
@@ -65,31 +65,31 @@ public class CommandParser {
 		}
 		return new ParsedCommand(prefix, commandLine, args.toArray(new CommandArgument[args.size()]));
 	}
-	
+
 	public static class ParsedCommand {
-		
+
 		private String prefix;
 		private String raw;
 		private CommandArgument[] args;
-		
+
 		public ParsedCommand(String prefix, String raw, CommandArgument[] args) {
 			this.prefix = prefix;
 			this.raw = raw;
 			this.args = args;
 		}
-		
+
 		public String getPrefix() {
 			return prefix;
 		}
-		
+
 		public String getRaw() {
 			return raw;
 		}
-		
+
 		public CommandArgument[] getArgs() {
 			return args;
 		}
-		
+
 	}
-	
+
 }

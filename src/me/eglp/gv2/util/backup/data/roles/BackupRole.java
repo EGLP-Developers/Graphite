@@ -6,12 +6,12 @@ import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 
+import me.eglp.gv2.guild.GraphiteGuild;
+import me.eglp.gv2.guild.GraphiteMember;
+import me.eglp.gv2.guild.GraphiteRole;
 import me.eglp.gv2.main.DebugCategory;
 import me.eglp.gv2.main.GraphiteDebug;
 import me.eglp.gv2.util.backup.IDMappings;
-import me.eglp.gv2.util.base.guild.GraphiteGuild;
-import me.eglp.gv2.util.base.guild.GraphiteMember;
-import me.eglp.gv2.util.base.guild.GraphiteRole;
 import me.eglp.gv2.util.lang.DefaultLocaleString;
 import me.eglp.gv2.util.webinterface.js.JavaScriptValue;
 import me.eglp.gv2.util.webinterface.js.WebinterfaceObject;
@@ -27,7 +27,7 @@ import net.dv8tion.jda.api.managers.RoleManager;
 import net.dv8tion.jda.api.requests.restaction.RoleAction;
 
 public class BackupRole implements JSONConvertible, WebinterfaceObject {
-	
+
 	@JavaScriptValue(getter = "getID")
 	@JSONValue
 	private String id;
@@ -35,7 +35,7 @@ public class BackupRole implements JSONConvertible, WebinterfaceObject {
 	@JavaScriptValue(getter = "getName")
 	@JSONValue
 	private String name;
-	
+
 	@JSONValue
 	private boolean
 		isPublic,
@@ -56,10 +56,10 @@ public class BackupRole implements JSONConvertible, WebinterfaceObject {
 	@JavaScriptValue(getter = "getIconImage")
 	@JSONValue
 	private String iconImage;
-	
+
 	@JSONConstructor
 	private BackupRole() {}
-	
+
 	public BackupRole(GraphiteRole role) {
 		this.id = role.getID();
 		this.name = role.getName();
@@ -68,7 +68,7 @@ public class BackupRole implements JSONConvertible, WebinterfaceObject {
 		this.mentionable = role.getJDARole().isMentionable();
 		this.permissions = role.getJDARole().getPermissionsRaw();
 		this.color = role.getJDARole().getColorRaw();
-		
+
 		RoleIcon icon = role.getJDARole().getIcon();
 		if(icon != null) {
 			this.iconEmoji = icon.getEmoji();
@@ -109,15 +109,15 @@ public class BackupRole implements JSONConvertible, WebinterfaceObject {
 	public int getColor() {
 		return color;
 	}
-	
+
 	public String getIconEmoji() {
 		return iconEmoji;
 	}
-	
+
 	public String getIconImage() {
 		return iconImage;
 	}
-	
+
 	public boolean restore(GraphiteGuild guild, IDMappings mappings) {
 		if(isPublic) {
 			Role r = guild.getJDAGuild().getPublicRole();
@@ -136,13 +136,13 @@ public class BackupRole implements JSONConvertible, WebinterfaceObject {
 			r.setMentionable(mentionable);
 			r.setPermissions(permissions);
 			r.setColor(color);
-			
+
 			if(iconEmoji != null) {
 				r.setIcon(iconEmoji);
 			}else if(iconImage != null){
 				r.setIcon(Icon.from(Base64.getDecoder().decode(iconImage)));
 			}
-			
+
 			CompletableFuture<Role> createRole = r.timeout(10, TimeUnit.SECONDS).submit();
 			Role role;
 			try {
@@ -157,18 +157,18 @@ public class BackupRole implements JSONConvertible, WebinterfaceObject {
 					owner.openPrivateChannel().sendMessage(eb.build());
 					return false;
 				}
-				
+
 				GraphiteDebug.log(DebugCategory.BACKUP, e);
 				return false;
 			}
-			
+
 			if(role != null) { // Check null because of 250 role limit
 				mappings.put(id, role.getId());
 			}
-			
+
 		}
-		
+
 		return true;
 	}
-	
+
 }

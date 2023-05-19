@@ -4,9 +4,9 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import me.eglp.gv2.console.AbstractConsoleCommand;
+import me.eglp.gv2.guild.GraphiteGuild;
 import me.eglp.gv2.main.Graphite;
 import me.eglp.gv2.multiplex.bot.GlobalBot;
-import me.eglp.gv2.util.base.guild.GraphiteGuild;
 import me.eglp.twitch.entity.TwitchUser;
 import me.mrletsplay.mrcore.command.event.CommandInvokedEvent;
 import me.mrletsplay.mrcore.command.option.impl.DefaultCommandOption;
@@ -18,7 +18,7 @@ public class CommandTwitch  extends AbstractConsoleCommand {
 		setDescription("Twitch stuff");
 		addOption(DefaultCommandOption.HELP);
 	}
-	
+
 	@Override
 	public void action(CommandInvokedEvent event) {
 		if(event.getParsedCommand().isOptionPresent(DefaultCommandOption.HELP)) {

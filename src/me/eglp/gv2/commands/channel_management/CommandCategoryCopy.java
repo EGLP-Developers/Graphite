@@ -3,8 +3,8 @@ package me.eglp.gv2.commands.channel_management;
 import java.util.Arrays;
 import java.util.List;
 
-import me.eglp.gv2.util.base.guild.GraphiteCategory;
-import me.eglp.gv2.util.base.guild.GraphiteModule;
+import me.eglp.gv2.guild.GraphiteCategory;
+import me.eglp.gv2.guild.GraphiteModule;
 import me.eglp.gv2.util.command.Command;
 import me.eglp.gv2.util.command.CommandCategory;
 import me.eglp.gv2.util.command.CommandInvokedEvent;
@@ -33,17 +33,17 @@ public class CommandCategoryCopy extends Command{
 	public void action(CommandInvokedEvent event) {
 		GraphiteCategory fromCategory = (GraphiteCategory) event.getOption("from-category");
 		GraphiteCategory toCategory = (GraphiteCategory) event.getOption("to-category");
-		
+
 		if(!toCategory.equals(fromCategory)) {
 			List<PermissionOverride> newOverrides = fromCategory.getJDACategory().getPermissionOverrides();
 			List<PermissionOverride> oldOverrides = toCategory.getJDACategory().getPermissionOverrides();
-			
+
 			CategoryManager m = toCategory.getJDACategory().getManager();
 			oldOverrides.forEach(o -> m.removePermissionOverride(o.getIdLong()));
 			newOverrides.forEach(o -> m.putPermissionOverride(o.getPermissionHolder(), o.getAllowedRaw(), o.getDeniedRaw()));
 			m.queue();
 		}
-		
+
 		DefaultMessage.COMMAND_CATEGORYCOPY_SUCCESS.reply(event, "from_category", fromCategory.getName(), "to_category", toCategory.getName());
 	}
 

@@ -1,6 +1,6 @@
 package me.eglp.gv2.util.input.multi;
 
-import me.eglp.gv2.util.base.user.GraphiteUser;
+import me.eglp.gv2.user.GraphiteUser;
 import me.eglp.gv2.util.emote.JDAEmote;
 import net.dv8tion.jda.api.events.interaction.component.ButtonInteractionEvent;
 import net.dv8tion.jda.api.interactions.components.ActionRow;
@@ -34,7 +34,7 @@ public class ButtonPressedEvent {
 	public GraphiteUser getUser() {
 		return user;
 	}
-	
+
 	/**
 	 * Replaces the buttons with a "Done" button.
 	 */
@@ -55,5 +55,5 @@ public class ButtonPressedEvent {
 	public void acknowledge() {
 		jdaEvent.deferEdit().queue();
 	}
-	
+
 }

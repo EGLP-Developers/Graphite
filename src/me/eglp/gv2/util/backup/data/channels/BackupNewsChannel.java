@@ -4,10 +4,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import me.eglp.gv2.guild.GraphiteGuild;
+import me.eglp.gv2.guild.GraphiteNewsChannel;
 import me.eglp.gv2.util.backup.IDMappings;
 import me.eglp.gv2.util.backup.data.channels.BackupPermissionOverride.Type;
-import me.eglp.gv2.util.base.guild.GraphiteGuild;
-import me.eglp.gv2.util.base.guild.GraphiteNewsChannel;
 import me.eglp.gv2.util.webinterface.js.JavaScriptValue;
 import me.eglp.gv2.util.webinterface.js.WebinterfaceObject;
 import me.mrletsplay.mrcore.json.converter.JSONComplexListType;
@@ -27,7 +27,7 @@ public class BackupNewsChannel implements JSONConvertible, WebinterfaceObject, B
 	@JavaScriptValue(getter = "getName")
 	@JSONValue
 	private String name;
-	
+
 	@JavaScriptValue(getter = "getPosition")
 	@JSONValue
 	private int position = -1;
@@ -43,20 +43,20 @@ public class BackupNewsChannel implements JSONConvertible, WebinterfaceObject, B
 	@JSONValue
 	@JSONComplexListType(BackupPermissionOverride.class)
 	private List<BackupPermissionOverride> permissionOverrides;
-	
+
 	@JSONConstructor
 	private BackupNewsChannel() {}
-	
+
 	public BackupNewsChannel(GraphiteNewsChannel graphiteChannel) {
 		NewsChannel ch = graphiteChannel.getJDAChannel();
 		if(ch == null) throw new IllegalStateException("Unknown channel or invalid context");
-		
+
 		this.id = graphiteChannel.getID();
 		this.name = ch.getName();
 		this.position = ch.getPosition();
 		this.topic = ch.getTopic();
 		this.nsfw = ch.isNSFW();
-		
+
 		this.permissionOverrides = new ArrayList<>(ch.getPermissionOverrides().stream().map(BackupPermissionOverride::new).collect(Collectors.toList()));
 	}
 
@@ -67,7 +67,7 @@ public class BackupNewsChannel implements JSONConvertible, WebinterfaceObject, B
 	public String getName() {
 		return name;
 	}
-	
+
 	@Override
 	public int getPosition() {
 		return position;
@@ -84,21 +84,21 @@ public class BackupNewsChannel implements JSONConvertible, WebinterfaceObject, B
 	public List<BackupPermissionOverride> getPermissionOverrides() {
 		return permissionOverrides;
 	}
-	
+
 	@Override
 	public void restore(GraphiteGuild guild, Category parent, IDMappings mappings) {
 		Guild g = guild.getJDAGuild();
 		if(!g.getFeatures().contains("COMMUNITY")) return;
-		
+
 		ChannelAction<NewsChannel> c = g.createNewsChannel(name, parent);
 		if(position >= 0) c.setPosition(position);
 		c.setTopic(topic);
 		c.setNSFW(nsfw);
-		
+
 		permissionOverrides.stream()
 			.filter(o -> o.getType() == Type.MEMBER)
 			.forEach(o -> c.addMemberPermissionOverride(Long.parseLong(o.getID()), o.getAllowed(), o.getDenied()));
-		
+
 		permissionOverrides.stream()
 			.filter(o -> o.getType() == Type.ROLE)
 			.forEach(o -> {
@@ -106,8 +106,8 @@ public class BackupNewsChannel implements JSONConvertible, WebinterfaceObject, B
 				if(newRoleID == null) return; // Because of the role rate limit, the role might not have been restored
 				c.addRolePermissionOverride(Long.parseLong(newRoleID), o.getAllowed(), o.getDenied());
 			});
-		
+
 		mappings.put(id, c.complete().getId());
 	}
-	
+
 }

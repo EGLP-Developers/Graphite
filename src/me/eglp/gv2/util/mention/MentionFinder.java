@@ -7,17 +7,17 @@ import java.util.regex.Pattern;
 
 import javax.annotation.Nullable;
 
+import me.eglp.gv2.guild.GraphiteGuild;
 import me.eglp.gv2.main.Graphite;
-import me.eglp.gv2.util.base.guild.GraphiteGuild;
 import net.dv8tion.jda.api.entities.channel.concrete.Category;
 import net.dv8tion.jda.api.entities.channel.concrete.NewsChannel;
 import net.dv8tion.jda.api.entities.channel.concrete.StageChannel;
 import net.dv8tion.jda.api.entities.channel.concrete.TextChannel;
 import net.dv8tion.jda.api.entities.channel.concrete.VoiceChannel;
-import net.dv8tion.jda.api.entities.channel.middleman.GuildChannel;	
+import net.dv8tion.jda.api.entities.channel.middleman.GuildChannel;
 
 public class MentionFinder {
-	
+
 	public static final Pattern
 		DISCORD_MENTION_PATTERN = Pattern.compile("(?<fullresult>(?<ctype>[:@])\\<(?:(?<cid>\\d++)|(?<cname>.+?))\\>|@?everyone|@here|(?:\\<(?<result>(?<type>(?:@|@&|@!|#|:(?<ename>[^:]+):))(?<id>\\d++))\\>))"),
 		USER_HASH_PATTERN = Pattern.compile("(?<name>.+?)#(?<hash>(?:\\d){4})");
@@ -26,7 +26,7 @@ public class MentionFinder {
 		return findFirstMention(guild, raw, 0);
 	}
 
-	
+
 	public static SearchResult findFirstMention(@Nullable GraphiteGuild guild, String raw, int startIndex) {
 		String oRaw = raw;
 		raw = raw.substring(startIndex);
@@ -107,7 +107,7 @@ public class MentionFinder {
 		}
 		return null;
 	}
-	
+
 	public static List<SearchResult> findAllMentions(@Nullable GraphiteGuild guild, String raw) {
 		List<SearchResult> results = new ArrayList<>();
 		SearchResult r;
@@ -118,13 +118,13 @@ public class MentionFinder {
 		}
 		return results;
 	}
-	
+
 	public static class SearchResult {
-		
+
 		private GraphiteMention mention;
 		private int index;
 		private String result, fullResult, before, after;
-		
+
 		public SearchResult(GraphiteMention mention, String result, String fullResult, int index, String before, String after) {
 			this.mention = mention;
 			this.result = result;
@@ -133,31 +133,31 @@ public class MentionFinder {
 			this.before = before;
 			this.after = after;
 		}
-		
+
 		public GraphiteMention getMention() {
 			return mention;
 		}
-		
+
 		public int getIndex() {
 			return index;
 		}
-		
+
 		public String getResult() {
 			return result;
 		}
-		
+
 		public String getFullResult() {
 			return fullResult;
 		}
-		
+
 		public String getBefore() {
 			return before;
 		}
-		
+
 		public String getAfter() {
 			return after;
 		}
-		
+
 	}
-	
+
 }

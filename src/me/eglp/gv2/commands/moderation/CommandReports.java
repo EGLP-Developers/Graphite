@@ -5,13 +5,13 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
-import me.eglp.gv2.util.base.guild.GraphiteGuild;
-import me.eglp.gv2.util.base.guild.GraphiteModule;
-import me.eglp.gv2.util.base.guild.GuildReport;
-import me.eglp.gv2.util.base.guild.config.GuildReportsConfig;
 import me.eglp.gv2.util.command.CommandCategory;
 import me.eglp.gv2.util.command.CommandInvokedEvent;
 import me.eglp.gv2.util.command.ParentCommand;
+import me.eglp.gv2.guild.GraphiteGuild;
+import me.eglp.gv2.guild.GraphiteModule;
+import me.eglp.gv2.guild.GuildReport;
+import me.eglp.gv2.guild.config.GuildReportsConfig;
 import me.eglp.gv2.util.command.Command;
 import me.eglp.gv2.util.lang.DefaultLocaleString;
 import me.eglp.gv2.util.lang.DefaultMessage;
@@ -26,9 +26,9 @@ public class CommandReports extends ParentCommand {
 		super(GraphiteModule.MODERATION, CommandCategory.MODERATION, "reports");
 		setDescription(DefaultLocaleString.COMMAND_REPORTS_DESCRIPTION);
 		setPermission(DefaultPermissions.MODERATION_REPORTS);
-		
+
 		addSubCommand(new Command(this, "list") {
-			
+
 			@Override
 			public void action(CommandInvokedEvent event) {
 				GraphiteGuild g = event.getGuild();
@@ -37,17 +37,17 @@ public class CommandReports extends ParentCommand {
 					DefaultMessage.COMMAND_REPORTS_NO_REPORTS.reply(event);
 					return;
 				}
-				
+
 				EmbedBuilder eb = new EmbedBuilder();
 				eb.setColor(Color.ORANGE);
 				int index = 0;
 				for(GuildReport r : c.getReports()) {
 					eb.addField(
-							DefaultLocaleString.COMMAND_REPORTS_FIELD_HEAD.getFor(event.getSender(), 
+							DefaultLocaleString.COMMAND_REPORTS_FIELD_HEAD.getFor(event.getSender(),
 									"reporter", r.getReporter().getName(),
 									"reported", r.getReported().getName(),
 									"index", String.valueOf(index)),
-							
+
 							DefaultLocaleString.COMMAND_REPORTS_FIELD_VALUES.getFor(event.getSender(),
 									"reason", r.getReason()), false);
 					index++;
@@ -55,7 +55,7 @@ public class CommandReports extends ParentCommand {
 				eb.setFooter(DefaultLocaleString.COMMAND_REPORTS_FIELD_FOOTER.getFor(event.getSender(), "reports", ""+c.getReports().size()), null);
 				event.reply(eb.build());
 			}
-			
+
 			@Override
 			public List<OptionData> getOptions() {
 				return Collections.emptyList();
@@ -64,9 +64,9 @@ public class CommandReports extends ParentCommand {
 		.setPermission(DefaultPermissions.MODERATION_REPORTS_LIST)
 		.setDescription(DefaultLocaleString.COMMAND_REPORTS_LIST_DESCRIPTION)
 		.setUsage(DefaultLocaleString.COMMAND_REPORTS_LIST_USAGE);
-		
+
 		addSubCommand(new Command(this, "remove") {
-			
+
 			@Override
 			public void action(CommandInvokedEvent event) {
 				GraphiteGuild g = event.getGuild();
@@ -77,13 +77,13 @@ public class CommandReports extends ParentCommand {
 					DefaultMessage.ERROR_OUT_OF_BOUNDS.reply(event);
 					return;
 				}
-				
+
 				c.removeReport(reports.get((int) index));
-				
+
 				DefaultMessage.COMMAND_REPORTS_REMOVE_SUCCESS.reply(event,
 						"index", String.valueOf(index));
 			}
-			
+
 			@Override
 			public List<OptionData> getOptions() {
 				return Arrays.asList(

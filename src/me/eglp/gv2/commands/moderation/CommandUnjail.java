@@ -3,11 +3,11 @@ package me.eglp.gv2.commands.moderation;
 import java.util.Arrays;
 import java.util.List;
 
-import me.eglp.gv2.util.base.guild.GraphiteGuild;
-import me.eglp.gv2.util.base.guild.GraphiteMember;
-import me.eglp.gv2.util.base.guild.GraphiteModule;
-import me.eglp.gv2.util.base.guild.config.GuildModerationConfig;
-import me.eglp.gv2.util.base.user.GraphiteUser;
+import me.eglp.gv2.guild.GraphiteGuild;
+import me.eglp.gv2.guild.GraphiteMember;
+import me.eglp.gv2.guild.GraphiteModule;
+import me.eglp.gv2.guild.config.GuildModerationConfig;
+import me.eglp.gv2.user.GraphiteUser;
 import me.eglp.gv2.util.command.CommandCategory;
 import me.eglp.gv2.util.command.CommandInvokedEvent;
 import me.eglp.gv2.util.command.Command;
@@ -19,14 +19,14 @@ import net.dv8tion.jda.api.interactions.commands.OptionType;
 import net.dv8tion.jda.api.interactions.commands.build.OptionData;
 
 public class CommandUnjail extends Command{
-	
+
 	public CommandUnjail() {
 		super(GraphiteModule.MODERATION, CommandCategory.MODERATION, "unjail");
 		setDescription(DefaultLocaleString.COMMAND_UNJAIL_DESCRIPTION);
 		setUsage(DefaultLocaleString.COMMAND_UNJAIL_USAGE);
 		setPermission(DefaultPermissions.MODERATION_UNJAIL);
 	}
-	
+
 	@Override
 	public void action(CommandInvokedEvent event) {
 		GraphiteUser user = (GraphiteUser) event.getOption("user");
@@ -35,7 +35,7 @@ public class CommandUnjail extends Command{
 			DefaultMessage.ERROR_NOT_A_MEMBER.reply(event);
 			return;
 		}
-		
+
 		GraphiteGuild g = event.getGuild();
 		GuildModerationConfig c = g.getModerationConfig();
 		if(!c.isJailed(mem)) {
@@ -45,7 +45,7 @@ public class CommandUnjail extends Command{
 
 		String r = (String) event.getOption("reason");
 		c.removeJailByMemberID(mem.getID(), event.getMember(), r);
-		
+
 		event.react(JDAEmote.WHITE_CHECK_MARK);
 	}
 

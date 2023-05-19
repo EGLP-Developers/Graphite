@@ -12,24 +12,24 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
 
+import me.eglp.gv2.guild.GraphiteGuild;
 import me.eglp.gv2.main.DebugCategory;
 import me.eglp.gv2.main.Graphite;
 import me.eglp.gv2.main.GraphiteDebug;
 import me.eglp.gv2.multiplex.ContextHandle;
 import me.eglp.gv2.multiplex.GraphiteMultiplex;
-import me.eglp.gv2.util.base.guild.GraphiteGuild;
 import me.eglp.gv2.util.jdaobject.JDAObject;
 import me.mrletsplay.mrcore.misc.FriendlyException;
 
 public class GraphiteTaskQueue {
-	
+
 	private String name;
 	private int threadID;
 	private int numRunnerThreads;
 	private ExecutorService executor;
 	private final Map<GraphiteGuild, GraphiteTaskInfo> block;
 	private final List<QueueTask<?>> currentTasks;
-	
+
 	public GraphiteTaskQueue(String name, int numRunnerThreads) {
 		this.name = name;
 		this.numRunnerThreads = numRunnerThreads;
@@ -38,11 +38,11 @@ public class GraphiteTaskQueue {
 		this.executor = Executors.newFixedThreadPool(numRunnerThreads + 1, this::createThread);
 		executor.submit(checkTasks(currentTasks));
 	}
-	
+
 	private Thread createThread(Runnable run) {
 		return new Thread(run, "Queue-" + name + "-" + (threadID++));
 	}
-	
+
 	private Runnable checkTasks(List<QueueTask<?>> taskList) {
 		return () -> {
 			while(!Thread.interrupted() && !executor.isShutdown()) {
@@ -61,30 +61,30 @@ public class GraphiteTaskQueue {
 			}
 		};
 	}
-	
+
 	public String getName() {
 		return name;
 	}
-	
+
 	public synchronized boolean isBusy(GraphiteGuild guild) {
 		return block.containsKey(guild);
 	}
-	
+
 	public boolean isBusy() {
 		return currentTasks.size() >= numRunnerThreads;
 	}
-	
+
 	public GraphiteTaskInfo getTask(GraphiteGuild guild) {
 		return block.get(guild);
 	}
-	
+
 	public synchronized QueueTask<?> queue(GraphiteGuild guild, GraphiteTaskInfo taskInfo, Runnable run) {
 		return queue(guild, taskInfo, () -> {
 			run.run();
 			return null;
 		});
 	}
-	
+
 	public synchronized <T> QueueTask<T> queue(GraphiteGuild guild, GraphiteTaskInfo taskInfo, Callable<T> callable) {
 		ContextHandle handle = GraphiteMultiplex.handle();
 		block.put(guild, taskInfo);
@@ -104,7 +104,7 @@ public class GraphiteTaskQueue {
 			return t;
 		});
 	}
-	
+
 	private <T> QueueTask<T> wrapAndSubmit(List<QueueTask<?>> taskList, GraphiteTaskInfo taskInfo, Callable<T> task) {
 		QueueTask<T> f = new QueueTask<>();
 		FriendlyException ex = new FriendlyException("Queue error");
@@ -128,7 +128,7 @@ public class GraphiteTaskQueue {
 		}
 		return f;
 	}
-	
+
 	public synchronized void stop(int timeoutSeconds) {
 		try {
 			Graphite.log("Shutting down task queue " + name);

@@ -2,18 +2,18 @@ package me.eglp.gv2.util.scripting.object;
 
 import org.mozilla.javascript.Scriptable;
 
-import me.eglp.gv2.util.base.guild.GraphiteCategory;
+import me.eglp.gv2.guild.GraphiteCategory;
 import me.eglp.gv2.util.scripting.GraphiteScript;
 import net.dv8tion.jda.api.entities.channel.ChannelType;
 
 public class JSCategory {
 
 	private GraphiteCategory channel;
-	
+
 	public JSCategory(GraphiteCategory channel) {
 		this.channel = channel;
 	}
-	
+
 	/**
 	 * Returns the name of this channel
 	 * @return The name of this channel
@@ -29,11 +29,11 @@ public class JSCategory {
 	public String getID() {
 		return channel.getID();
 	}
-	
+
 	public JSChannelType getType() {
 		return new JSChannelType(ChannelType.CATEGORY);
 	}
-	
+
 	/**
 	 * Returns an array of all text channels in this category
 	 * @return An array of all text channels in this category
@@ -51,10 +51,10 @@ public class JSCategory {
 	public Scriptable getVoiceChannels() {
 		return GraphiteScript.createJSArray(channel.getVoiceChannels().stream().map(JSVoiceChannel::new).toArray(JSVoiceChannel[]::new));
 	}
-	
+
 	@Override
 	public String toString() {
 		return "[JS Category: " + getID() + "]";
 	}
-	
+
 }

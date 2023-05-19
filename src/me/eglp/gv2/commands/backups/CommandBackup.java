@@ -13,15 +13,15 @@ import java.util.function.Supplier;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
+import me.eglp.gv2.guild.GraphiteGuild;
+import me.eglp.gv2.guild.GraphiteModule;
 import me.eglp.gv2.main.Graphite;
+import me.eglp.gv2.user.GraphiteUser;
 import me.eglp.gv2.util.GraphiteIcon;
 import me.eglp.gv2.util.backup.GuildBackup;
 import me.eglp.gv2.util.backup.RestoreSelector;
 import me.eglp.gv2.util.backup.data.channels.ChannelsData;
 import me.eglp.gv2.util.backup.data.roles.RolesData;
-import me.eglp.gv2.util.base.guild.GraphiteGuild;
-import me.eglp.gv2.util.base.guild.GraphiteModule;
-import me.eglp.gv2.util.base.user.GraphiteUser;
 import me.eglp.gv2.util.command.Command;
 import me.eglp.gv2.util.command.CommandCategory;
 import me.eglp.gv2.util.command.CommandInvokedEvent;

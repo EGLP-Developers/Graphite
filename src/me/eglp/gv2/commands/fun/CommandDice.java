@@ -4,7 +4,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Random;
 
-import me.eglp.gv2.util.base.guild.GraphiteModule;
+import me.eglp.gv2.guild.GraphiteModule;
 import me.eglp.gv2.util.command.Command;
 import me.eglp.gv2.util.command.CommandCategory;
 import me.eglp.gv2.util.command.CommandInvokedEvent;
@@ -22,7 +22,7 @@ public class CommandDice extends Command {
 		setDescription(DefaultLocaleString.COMMAND_DICE_DESCRIPTION);
 		setUsage(DefaultLocaleString.COMMAND_DICE_USAGE);
 	}
-	
+
 	@SpecialSelfcheck(needsPermission = false)
 	@Override
 	public void action(CommandInvokedEvent event) {

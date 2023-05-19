@@ -6,24 +6,24 @@ import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
-import me.eglp.gv2.util.base.guild.GraphiteGuild;
+import me.eglp.gv2.guild.GraphiteGuild;
 import me.eglp.gv2.util.emote.JDAEmote;
 import net.dv8tion.jda.api.entities.Icon;
 import net.dv8tion.jda.api.entities.emoji.Emoji;
 import net.dv8tion.jda.api.entities.emoji.RichCustomEmoji;
 
 public class GraphiteSetup {
-	
+
 	public static void run() {
 		// Load and create emojis on emoji guilds
 		List<GraphiteGuild> guilds = Graphite.getMainBotInfo().getMiscellaneous().getEmojiServerIDs().stream()
 			.map(Graphite::getGlobalGuild)
 			.collect(Collectors.toList());
-		
+
 		if(guilds.stream().anyMatch(g -> g == null)) {
 			throw new GraphiteSetupException("Config contains invalid emoji guilds");
 		}
-		
+
 		for(JDAEmote emote : JDAEmote.values()) {
 			if(emote.isCustomEmoji()) {
 				if(!emote.loadDefault()) {
@@ -31,18 +31,18 @@ public class GraphiteSetup {
 						.flatMap(g -> g.getJDAGuild().getEmojisByName(emote.getCustomEmojiName(), false).stream())
 						.filter(Objects::nonNull)
 						.findFirst().orElse(null);
-					
+
 					if(foundEmoji != null) {
 						emote.load(foundEmoji);
 						continue;
 					}
-					
+
 					GraphiteGuild guild = guilds.stream()
 						.filter(g -> g.getJDAGuild().getEmojis().size() < g.getJDAGuild().getMaxEmojis())
 						.findFirst().orElse(null);
-					
+
 					if(guild == null) throw new GraphiteSetupException("Failed to create emoji: No emoji guild with free slots available");
-					
+
 					try {
 						Graphite.log("Creating emoji " + emote.getCustomEmojiName());
 						String resPath = "/include/emoji/" + emote.getCustomEmojiName() + ".png";

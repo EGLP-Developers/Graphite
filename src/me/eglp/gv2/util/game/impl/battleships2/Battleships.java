@@ -3,7 +3,7 @@ package me.eglp.gv2.util.game.impl.battleships2;
 import java.util.Arrays;
 import java.util.List;
 
-import me.eglp.gv2.util.base.user.GraphiteUser;
+import me.eglp.gv2.user.GraphiteUser;
 import me.eglp.gv2.util.game.AbstractMultiplayerMinigameInstance;
 import me.eglp.gv2.util.game.GraphiteMinigame;
 import me.eglp.gv2.util.game.output.GameOutput;
@@ -11,39 +11,39 @@ import me.eglp.gv2.util.input.GraphiteInput;
 import me.eglp.gv2.util.lang.DefaultMessage;
 
 public class Battleships extends AbstractMultiplayerMinigameInstance {
-	
+
 	public static final String DEFAULT_STAT_CATEGORY = "Battleships 1v1";
 
 	private BSPlayer
 		playerOne,
 		playerTwo;
-	
+
 	private boolean running;
-	
+
 	private BSMoveState moveState;
-	
+
 	public Battleships(GraphiteUser user) {
 		this.playerOne = new BSPlayer(this, user);
 		this.running = true;
 		this.moveState = null;
 	}
-	
+
 	public void setMoveState(BSMoveState moveState) {
 		this.moveState = moveState;
 	}
-	
+
 	public BSMoveState getMoveState() {
 		return moveState;
 	}
-	
+
 	public boolean isTurnForPlayer(BSPlayer player) {
 		return (moveState == BSMoveState.PLAYER_ONE) == (player == playerOne);
 	}
-	
+
 	public BSPlayer getOpponent(BSPlayer player) {
 		return player == playerOne ? playerTwo : playerOne;
 	}
-	
+
 	@Override
 	public List<GraphiteInput> getActiveInputs() {
 		return Arrays.asList(playerOne.getInput(), playerTwo == null ? null : playerTwo.getInput());
@@ -58,7 +58,7 @@ public class Battleships extends AbstractMultiplayerMinigameInstance {
 	public GraphiteMinigame getGame() {
 		return GraphiteMinigame.BATTLESHIPS;
 	}
-	
+
 	public void startGame() {
 		moveState = BSMoveState.PLACE_SHIPS;
 		playerOne.sendMessage();
@@ -86,5 +86,5 @@ public class Battleships extends AbstractMultiplayerMinigameInstance {
 	public boolean isJoinable() {
 		return playerTwo == null && running;
 	}
-	
+
 }

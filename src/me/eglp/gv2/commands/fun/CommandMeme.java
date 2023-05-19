@@ -5,8 +5,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+import me.eglp.gv2.guild.GraphiteModule;
 import me.eglp.gv2.main.Graphite;
-import me.eglp.gv2.util.base.guild.GraphiteModule;
 import me.eglp.gv2.util.command.Command;
 import me.eglp.gv2.util.command.CommandCategory;
 import me.eglp.gv2.util.command.CommandInvokedEvent;
@@ -20,7 +20,7 @@ import net.dv8tion.jda.api.interactions.commands.OptionType;
 import net.dv8tion.jda.api.interactions.commands.build.OptionData;
 
 public class CommandMeme extends Command{
-	
+
 	private Map<String, String> moreMemes = new QuickMap<String, String>()
 			.put("dogs", "dogmemes")
 			.put("cats", "catmemes")
@@ -37,17 +37,17 @@ public class CommandMeme extends Command{
 	@Override
 	public void action(CommandInvokedEvent event) {
 		String subreddit = "memes";
-		
+
 		if(event.hasOption("subreddit")) {
 			String m = (String) event.getOption("subreddit");
 			if(!moreMemes.containsKey(m)) {
 				DefaultMessage.COMMAND_MEME_AVAILABLE.reply(event, "meme_categories", moreMemes.keySet().stream().collect(Collectors.joining(", ")));
 				return;
 			}
-			
+
 			subreddit = moreMemes.get(m);
 		}
-		
+
 		Link s = Graphite.getReddit().getRedditAPI().getRandomPost(subreddit);
 		EmbedBuilder b = new EmbedBuilder();
 		b.setDescription(s.getTitle());

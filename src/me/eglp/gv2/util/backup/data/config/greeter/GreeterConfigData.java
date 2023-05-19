@@ -2,17 +2,17 @@ package me.eglp.gv2.util.backup.data.config.greeter;
 
 import java.util.EnumSet;
 
+import me.eglp.gv2.guild.GraphiteGuild;
+import me.eglp.gv2.guild.GraphiteTextChannel;
+import me.eglp.gv2.guild.config.GuildGreeterConfig;
 import me.eglp.gv2.util.backup.IDMappings;
 import me.eglp.gv2.util.backup.RestoreSelector;
-import me.eglp.gv2.util.base.guild.GraphiteGuild;
-import me.eglp.gv2.util.base.guild.GraphiteTextChannel;
-import me.eglp.gv2.util.base.guild.config.GuildGreeterConfig;
 import me.mrletsplay.mrcore.json.converter.JSONConstructor;
 import me.mrletsplay.mrcore.json.converter.JSONConvertible;
 import me.mrletsplay.mrcore.json.converter.JSONValue;
 
 public class GreeterConfigData implements JSONConvertible {
-	
+
 	@JSONValue
 	private boolean greetingEnabled;
 
@@ -21,7 +21,7 @@ public class GreeterConfigData implements JSONConvertible {
 
 	@JSONValue
 	private String greetingMessage;
-	
+
 	@JSONValue
 	private boolean farewellEnabled;
 
@@ -30,16 +30,16 @@ public class GreeterConfigData implements JSONConvertible {
 
 	@JSONValue
 	private String farewellMessage;
-	
+
 	@JSONConstructor
 	private GreeterConfigData() {}
-	
+
 	public GreeterConfigData(GraphiteGuild guild) {
 		GuildGreeterConfig c = guild.getGreeterConfig();
 		this.greetingEnabled = c.isGreetingEnabled();
 		this.greetingChannel = c.getGreetingChannel() != null ? c.getGreetingChannel().getID() : null;
 		this.greetingMessage = c.getGreetingMessage();
-		
+
 		this.farewellEnabled = c.isFarewellEnabled();
 		this.farewellChannel = c.getFarewellChannel() != null ? c.getFarewellChannel().getID() : null;
 		this.farewellMessage = c.getFarewellMessage();
@@ -68,11 +68,11 @@ public class GreeterConfigData implements JSONConvertible {
 	public String getFarewellMessage() {
 		return farewellMessage;
 	}
-	
+
 	public void restore(GraphiteGuild guild, EnumSet<RestoreSelector> selectors, IDMappings mappings) {
 		if(RestoreSelector.GREETER.appliesTo(selectors)) {
 			GuildGreeterConfig c = guild.getGreeterConfig();
-			
+
 			String newGreetingChannel = mappings.getNewID(greetingChannel);
 			GraphiteTextChannel gC = greetingChannel == null ? null : guild.getTextChannelByID(newGreetingChannel);
 			c.setGreetingChannel(gC);
@@ -86,5 +86,5 @@ public class GreeterConfigData implements JSONConvertible {
 			c.setFarewellMessage(farewellMessage);
 		}
 	}
-	
+
 }

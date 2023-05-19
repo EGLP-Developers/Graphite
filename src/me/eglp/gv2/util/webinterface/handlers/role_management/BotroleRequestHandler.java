@@ -3,10 +3,10 @@ package me.eglp.gv2.util.webinterface.handlers.role_management;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import me.eglp.gv2.guild.GraphiteGuild;
+import me.eglp.gv2.guild.GraphiteRole;
+import me.eglp.gv2.guild.config.GuildRolesConfig;
 import me.eglp.gv2.multiplex.GraphiteFeature;
-import me.eglp.gv2.util.base.guild.GraphiteGuild;
-import me.eglp.gv2.util.base.guild.GraphiteRole;
-import me.eglp.gv2.util.base.guild.config.GuildRolesConfig;
 import me.eglp.gv2.util.webinterface.WebinterfaceHandler;
 import me.eglp.gv2.util.webinterface.base.WebinterfaceRequestEvent;
 import me.eglp.gv2.util.webinterface.base.WebinterfaceResponse;

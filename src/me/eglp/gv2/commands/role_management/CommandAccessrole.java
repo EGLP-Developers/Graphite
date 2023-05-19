@@ -5,13 +5,13 @@ import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import me.eglp.gv2.util.base.guild.GraphiteGuild;
-import me.eglp.gv2.util.base.guild.GraphiteModule;
-import me.eglp.gv2.util.base.guild.GraphiteRole;
-import me.eglp.gv2.util.base.guild.config.GuildRolesConfig;
 import me.eglp.gv2.util.command.CommandCategory;
 import me.eglp.gv2.util.command.CommandInvokedEvent;
 import me.eglp.gv2.util.command.ParentCommand;
+import me.eglp.gv2.guild.GraphiteGuild;
+import me.eglp.gv2.guild.GraphiteModule;
+import me.eglp.gv2.guild.GraphiteRole;
+import me.eglp.gv2.guild.config.GuildRolesConfig;
 import me.eglp.gv2.util.command.Command;
 import me.eglp.gv2.util.lang.DefaultLocaleString;
 import me.eglp.gv2.util.lang.DefaultMessage;
@@ -21,13 +21,13 @@ import net.dv8tion.jda.api.interactions.commands.OptionType;
 import net.dv8tion.jda.api.interactions.commands.build.OptionData;
 
 public class CommandAccessrole extends ParentCommand{
-	
+
 	public CommandAccessrole() {
 		super(GraphiteModule.ROLE_MANAGEMENT, CommandCategory.ROLE_MANAGEMENT, "accessrole");
 		setDescription(DefaultLocaleString.COMMAND_ACCESSROLE_DESCRIPTION);
-		
+
 		addSubCommand(new Command(this, "add") {
-			
+
 			@Override
 			public void action(CommandInvokedEvent event) {
 				GraphiteRole rol = (GraphiteRole) event.getOption("role");
@@ -42,25 +42,25 @@ public class CommandAccessrole extends ParentCommand{
 					return;
 				}
 				c.addAccessibleRole(rol);
-				DefaultMessage.COMMAND_ACCESSROLE_ADDED_ACCESSIBLE_ROLE.reply(event, 
-						"role", rol.getAsMention(), 
+				DefaultMessage.COMMAND_ACCESSROLE_ADDED_ACCESSIBLE_ROLE.reply(event,
+						"role", rol.getAsMention(),
 						"everyone", g.getJDAGuild().getPublicRole().getAsMention());
 			}
-			
+
 			@Override
 			public List<OptionData> getOptions() {
 				return Arrays.asList(
 						new OptionData(OptionType.ROLE, "role", "The role you want to make accessible", true)
 					);
 			}
-			
+
 		})
 		.setDescription(DefaultLocaleString.COMMAND_ACCESSROLE_ADD_DESCRIPTION)
 		.setUsage(DefaultLocaleString.COMMAND_ACCESSROLE_ADD_USAGE)
 		.setPermission(DefaultPermissions.ROLE_ACCESSROLE_ADD);
-		
+
 		addSubCommand(new Command(this, "remove") {
-			
+
 			@Override
 			public void action(CommandInvokedEvent event) {
 				GraphiteRole rol = (GraphiteRole) event.getOption("role");
@@ -75,24 +75,24 @@ public class CommandAccessrole extends ParentCommand{
 					return;
 				}
 				c.removeAccessibleRole(rol);
-				DefaultMessage.COMMAND_ACCESSROLE_REMOVED_ACCESSIBLE_ROLE.reply(event, 
+				DefaultMessage.COMMAND_ACCESSROLE_REMOVED_ACCESSIBLE_ROLE.reply(event,
 						"role", rol.getAsMention());
 			}
-			
+
 			@Override
 			public List<OptionData> getOptions() {
 				return Arrays.asList(
 						new OptionData(OptionType.ROLE, "role", "The role you want to remove from accessible roles", true)
 					);
 			}
-			
+
 		})
 		.setDescription(DefaultLocaleString.COMMAND_ACCESSROLE_REMOVE_DESCRIPTION)
 		.setUsage(DefaultLocaleString.COMMAND_ACCESSROLE_REMOVE_USAGE)
 		.setPermission(DefaultPermissions.ROLE_ACCESSROLE_REMOVE);
-		
+
 		addSubCommand(new Command(this, "list") {
-			
+
 			@Override
 			public void action(CommandInvokedEvent event) {
 				GraphiteGuild g = event.getGuild();
@@ -103,16 +103,16 @@ public class CommandAccessrole extends ParentCommand{
 				}
 				EmbedBuilder eb = new EmbedBuilder();
 				eb.addField(DefaultLocaleString.COMMAND_ACCESSROLE_LIST_FIELD_TITLE.getFor(event.getSender()),
-							accessibleRoles.stream().map(m -> m.getAsMention()).collect(Collectors.joining(", ")), 
+							accessibleRoles.stream().map(m -> m.getAsMention()).collect(Collectors.joining(", ")),
 							true);
 				event.reply(eb.build());
 			}
-			
+
 			@Override
 			public List<OptionData> getOptions() {
 				return Collections.emptyList();
 			}
-			
+
 		})
 		.setDescription(DefaultLocaleString.COMMAND_ACCESSROLE_LIST_DESCRIPTION)
 		.setUsage(DefaultLocaleString.COMMAND_ACCESSROLE_LIST_USAGE)

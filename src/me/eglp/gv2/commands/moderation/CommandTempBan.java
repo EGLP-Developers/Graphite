@@ -3,10 +3,10 @@ package me.eglp.gv2.commands.moderation;
 import java.util.Arrays;
 import java.util.List;
 
-import me.eglp.gv2.util.base.guild.GraphiteGuild;
-import me.eglp.gv2.util.base.guild.GraphiteMember;
-import me.eglp.gv2.util.base.guild.GraphiteModule;
-import me.eglp.gv2.util.base.user.GraphiteUser;
+import me.eglp.gv2.guild.GraphiteGuild;
+import me.eglp.gv2.guild.GraphiteMember;
+import me.eglp.gv2.guild.GraphiteModule;
+import me.eglp.gv2.user.GraphiteUser;
 import me.eglp.gv2.util.command.CommandCategory;
 import me.eglp.gv2.util.command.CommandInvokedEvent;
 import me.eglp.gv2.util.command.Command;
@@ -38,36 +38,36 @@ public class CommandTempBan extends Command {
 			DefaultMessage.ERROR_NOT_A_MEMBER.reply(event);
 			return;
 		}
-		
+
 		if(mem.isBot()) {
 			DefaultMessage.ERROR_IS_BOT.reply(event);
 			return;
 		}
-		
+
 		if(!g.getSelfMember().canInteract(mem)) {
 			DefaultMessage.ERROR_CANT_INTERACT_MEMBER.reply(event);
 			return;
 		}
-		
+
 		if(g.isBanned(mem.getID())) {
 			DefaultMessage.COMMAND_TEMPBAN_ALREADY_BANNED.reply(event);
 			return;
 		}
-		
+
 		long duration = GraphiteTimeParser.parseShortDuration((String) event.getOption("duration"));
 		if(duration == -1) {
 			DefaultMessage.ERROR_INVALID_DURATION.reply(event);
 			return;
 		}
-		
+
 		if(duration < 1000 * 60) {
 			DefaultMessage.ERROR_MINIMUM_TEMP_DURATION.reply(event);
 			return;
 		}
-		
+
 		String r = (String) event.getOption("reason");
 		g.getTemporaryActionsConfig().tempBanMember(mem, duration, event.getMember(), r);
-		
+
 		DefaultMessage.COMMAND_TEMPBAN_SUCCESS.reply(event,
 				"user", mem.getAsMention(),
 				"duration", LocalizedTimeUnit.formatTime(g, duration),
@@ -82,5 +82,5 @@ public class CommandTempBan extends Command {
 				new OptionData(OptionType.STRING, "reason", "A short reason why you want to temporarily ban this user", false)
 			);
 	}
-	
+
 }

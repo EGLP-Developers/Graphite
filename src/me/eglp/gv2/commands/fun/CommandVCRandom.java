@@ -5,8 +5,8 @@ import java.util.List;
 import java.util.Random;
 import java.util.stream.Collectors;
 
-import me.eglp.gv2.util.base.guild.GraphiteAudioChannel;
-import me.eglp.gv2.util.base.guild.GraphiteModule;
+import me.eglp.gv2.guild.GraphiteAudioChannel;
+import me.eglp.gv2.guild.GraphiteModule;
 import me.eglp.gv2.util.command.Command;
 import me.eglp.gv2.util.command.CommandCategory;
 import me.eglp.gv2.util.command.CommandInvokedEvent;

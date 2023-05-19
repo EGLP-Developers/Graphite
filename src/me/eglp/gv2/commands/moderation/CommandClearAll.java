@@ -3,8 +3,8 @@ package me.eglp.gv2.commands.moderation;
 import java.util.Collections;
 import java.util.List;
 
+import me.eglp.gv2.guild.GraphiteModule;
 import me.eglp.gv2.main.Graphite;
-import me.eglp.gv2.util.base.guild.GraphiteModule;
 import me.eglp.gv2.util.command.CommandCategory;
 import me.eglp.gv2.util.command.CommandInvokedEvent;
 import me.eglp.gv2.util.command.slash.DeferredReply;
