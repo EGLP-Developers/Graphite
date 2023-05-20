@@ -6,8 +6,8 @@ import java.util.stream.Collectors;
 import me.eglp.gv2.guild.GraphiteGuild;
 import me.eglp.gv2.guild.GraphiteGuildMessageChannel;
 import me.eglp.gv2.main.Graphite;
-import me.eglp.gv2.multiplex.GraphiteFeature;
 import me.eglp.gv2.util.apis.reddit.GraphiteSubreddit;
+import me.eglp.gv2.util.permission.DefaultPermissions;
 import me.eglp.gv2.util.webinterface.WebinterfaceHandler;
 import me.eglp.gv2.util.webinterface.base.WebinterfaceRequestEvent;
 import me.eglp.gv2.util.webinterface.base.WebinterfaceResponse;
@@ -18,7 +18,7 @@ import me.mrletsplay.mrcore.json.JSONObject;
 
 public class RedditRequestHandler {
 
-	@WebinterfaceHandler(requestMethod = "getSubreddits", requireGuild = true, requireFeatures = GraphiteFeature.REDDIT)
+	@WebinterfaceHandler(requestMethod = "getSubreddits", requireGuild = true, requirePermissions = DefaultPermissions.WEBINTERFACE_REDDIT)
 	public static WebinterfaceResponse getSubreddits(WebinterfaceRequestEvent event) {
 		GraphiteGuild g = event.getSelectedGuild();
 		List<GraphiteSubreddit> subreddits = g.getRedditConfig().getSubreddits();
@@ -27,7 +27,7 @@ public class RedditRequestHandler {
 		return WebinterfaceResponse.success(o);
 	}
 
-	@WebinterfaceHandler(requestMethod = "addSubreddit", requireGuild = true, requireFeatures = GraphiteFeature.REDDIT)
+	@WebinterfaceHandler(requestMethod = "addSubreddit", requireGuild = true, requirePermissions = DefaultPermissions.WEBINTERFACE_REDDIT)
 	public static WebinterfaceResponse addSubreddit(WebinterfaceRequestEvent event) {
 		GraphiteGuild g = event.getSelectedGuild();
 		String subreddit = event.getRequestData().getString("subreddit");
@@ -55,7 +55,7 @@ public class RedditRequestHandler {
 		return WebinterfaceResponse.success(o);
 	}
 
-	@WebinterfaceHandler(requestMethod = "removeSubreddit", requireGuild = true, requireFeatures = GraphiteFeature.REDDIT)
+	@WebinterfaceHandler(requestMethod = "removeSubreddit", requireGuild = true, requirePermissions = DefaultPermissions.WEBINTERFACE_REDDIT)
 	public static WebinterfaceResponse removeSubreddit(WebinterfaceRequestEvent event) {
 		GraphiteGuild g = event.getSelectedGuild();
 		String subreddit = event.getRequestData().getString("subreddit");
@@ -67,7 +67,7 @@ public class RedditRequestHandler {
 		return WebinterfaceResponse.success();
 	}
 
-	@WebinterfaceHandler(requestMethod = "updateSubreddit", requireGuild = true, requireFeatures = GraphiteFeature.REDDIT)
+	@WebinterfaceHandler(requestMethod = "updateSubreddit", requireGuild = true, requirePermissions = DefaultPermissions.WEBINTERFACE_REDDIT)
 	public static WebinterfaceResponse updateSubreddit(WebinterfaceRequestEvent event) {
 		GraphiteGuild g = event.getSelectedGuild();
 		JSONObject o = event.getRequestData().getJSONObject("object");

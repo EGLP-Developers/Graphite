@@ -120,11 +120,11 @@ public class WebinterfaceWebSocketServer extends WebSocketServer {
 	private WebinterfaceResponse login(WebSocket conn, String code) {
 		try {
 			String in = post("https://discord.com/api/oauth2/token", null,
-					"client_id", Graphite.getGraphiteBot().getID(),
-					"client_secret", Graphite.getMainBotInfo().getClientSecret(),
+					"client_id", Graphite.getBotID(),
+					"client_secret", Graphite.getBotInfo().getClientSecret(),
 					"grant_type", "authorization_code",
 					"code", code,
-					"redirect_uri", Graphite.getMainBotInfo().getWebsite().getBaseURL() + "/login",
+					"redirect_uri", Graphite.getBotInfo().getWebsite().getBaseURL() + "/login",
 					"scope", "identify guilds");
 			JSONObject tokenThing = new JSONObject(in);
 			if(tokenThing.has("error")) {

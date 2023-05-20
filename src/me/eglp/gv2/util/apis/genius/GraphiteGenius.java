@@ -8,7 +8,7 @@ public class GraphiteGenius {
 	private GeniusAPI genius;
 	
 	public GraphiteGenius() {
-		this.genius = new GeniusAPI(Graphite.getMainBotInfo().getGenius().getAccessToken());
+		this.genius = new GeniusAPI(Graphite.getBotInfo().getGenius().getAccessToken());
 	}
 	
 	public GeniusAPI getGeniusAPI() {

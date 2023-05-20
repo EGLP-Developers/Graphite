@@ -30,8 +30,8 @@ public class GraphiteSpotify {
 		
 		try {
 			spotify = SpotifyApi.builder()
-					.setClientId(Graphite.getMainBotInfo().getSpotify().getClientID())
-					.setClientSecret(Graphite.getMainBotInfo().getSpotify().getClientSecret())
+					.setClientId(Graphite.getBotInfo().getSpotify().getClientID())
+					.setClientSecret(Graphite.getBotInfo().getSpotify().getClientSecret())
 					.build();
 			refreshCredentials();
 		}catch(Exception e) {

@@ -5,8 +5,8 @@ import java.util.Base64;
 import me.eglp.gv2.commands.scripting.CommandScript;
 import me.eglp.gv2.guild.GraphiteGuild;
 import me.eglp.gv2.main.Graphite;
-import me.eglp.gv2.multiplex.GraphiteFeature;
 import me.eglp.gv2.user.GraphiteUser;
+import me.eglp.gv2.util.permission.DefaultPermissions;
 import me.eglp.gv2.util.scripting.GraphiteScript;
 import me.eglp.gv2.util.selfcheck.SpecialSelfcheck;
 import me.eglp.gv2.util.webinterface.WebinterfaceHandler;
@@ -17,7 +17,7 @@ import me.mrletsplay.mrcore.json.JSONObject;
 
 public class ScriptRequestHandler {
 
-	@WebinterfaceHandler(requestMethod = "getScripts", requireGuild = true, requireFeatures = GraphiteFeature.SCRIPTING)
+	@WebinterfaceHandler(requestMethod = "getScripts", requireGuild = true, requirePermissions = DefaultPermissions.WEBINTERFACE_SCRIPTING)
 	public static WebinterfaceResponse getScripts(WebinterfaceRequestEvent event) {
 		GraphiteGuild g = event.getSelectedGuild();
 		JSONArray arr = new JSONArray();
@@ -27,7 +27,7 @@ public class ScriptRequestHandler {
 		return WebinterfaceResponse.success(r);
 	}
 
-	@WebinterfaceHandler(requestMethod = "uploadScript", requireGuild = true, requireFeatures = GraphiteFeature.SCRIPTING)
+	@WebinterfaceHandler(requestMethod = "uploadScript", requireGuild = true, requirePermissions = DefaultPermissions.WEBINTERFACE_SCRIPTING)
 	public static WebinterfaceResponse uploadScript(WebinterfaceRequestEvent event) {
 		String name = event.getRequestData().getString("script_name");
 		if(!CommandScript.SCRIPT_NAME_PATTERN.matcher(name).matches()) {
@@ -46,7 +46,7 @@ public class ScriptRequestHandler {
 		return WebinterfaceResponse.success(o);
 	}
 
-	@WebinterfaceHandler(requestMethod = "deleteGuildScript", requireGuild = true, requireFeatures = GraphiteFeature.SCRIPTING)
+	@WebinterfaceHandler(requestMethod = "deleteGuildScript", requireGuild = true, requirePermissions = DefaultPermissions.WEBINTERFACE_SCRIPTING)
 	public static WebinterfaceResponse deleteGuildScript(WebinterfaceRequestEvent event) {
 		GraphiteGuild g = event.getSelectedGuild();
 		String name = event.getRequestData().getString("script_name");

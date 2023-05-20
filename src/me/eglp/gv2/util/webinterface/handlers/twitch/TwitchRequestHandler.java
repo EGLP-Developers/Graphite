@@ -6,9 +6,9 @@ import java.util.stream.Collectors;
 import me.eglp.gv2.guild.GraphiteGuild;
 import me.eglp.gv2.guild.GraphiteGuildMessageChannel;
 import me.eglp.gv2.main.Graphite;
-import me.eglp.gv2.multiplex.GraphiteFeature;
 import me.eglp.gv2.util.apis.twitch.GraphiteTwitchUser;
 import me.eglp.gv2.util.lang.DefaultLocaleString;
+import me.eglp.gv2.util.permission.DefaultPermissions;
 import me.eglp.gv2.util.webinterface.WebinterfaceHandler;
 import me.eglp.gv2.util.webinterface.base.WebinterfaceRequestEvent;
 import me.eglp.gv2.util.webinterface.base.WebinterfaceResponse;
@@ -19,7 +19,7 @@ import me.mrletsplay.mrcore.json.JSONObject;
 
 public class TwitchRequestHandler {
 
-	@WebinterfaceHandler(requestMethod = "getTwitchStreamers", requireGuild = true, requireFeatures = GraphiteFeature.TWITCH)
+	@WebinterfaceHandler(requestMethod = "getTwitchStreamers", requireGuild = true, requirePermissions = DefaultPermissions.WEBINTERFACE_TWITCH)
 	public static WebinterfaceResponse getTwitchStreamers(WebinterfaceRequestEvent event) {
 		GraphiteGuild g = event.getSelectedGuild();
 		List<GraphiteTwitchUser> streamers = g.getTwitchConfig().getTwitchUsers();
@@ -28,7 +28,7 @@ public class TwitchRequestHandler {
 		return WebinterfaceResponse.success(o);
 	}
 
-	@WebinterfaceHandler(requestMethod = "addTwitchStreamer", requireGuild = true, requireFeatures = GraphiteFeature.TWITCH)
+	@WebinterfaceHandler(requestMethod = "addTwitchStreamer", requireGuild = true, requirePermissions = DefaultPermissions.WEBINTERFACE_TWITCH)
 	public static WebinterfaceResponse addTwitchStreamer(WebinterfaceRequestEvent event) {
 		GraphiteGuild g = event.getSelectedGuild();
 		String streamer = event.getRequestData().getString("streamer_name");
@@ -56,7 +56,7 @@ public class TwitchRequestHandler {
 		return WebinterfaceResponse.success(o);
 	}
 
-	@WebinterfaceHandler(requestMethod = "removeTwitchStreamer", requireGuild = true, requireFeatures = GraphiteFeature.TWITCH)
+	@WebinterfaceHandler(requestMethod = "removeTwitchStreamer", requireGuild = true, requirePermissions = DefaultPermissions.WEBINTERFACE_TWITCH)
 	public static WebinterfaceResponse removeTwitchStreamer(WebinterfaceRequestEvent event) {
 		GraphiteGuild g = event.getSelectedGuild();
 		String id = event.getRequestData().getString("streamer_id");
@@ -68,7 +68,7 @@ public class TwitchRequestHandler {
 		return WebinterfaceResponse.success();
 	}
 
-	@WebinterfaceHandler(requestMethod = "updateTwitchStreamer", requireGuild = true, requireFeatures = GraphiteFeature.TWITCH)
+	@WebinterfaceHandler(requestMethod = "updateTwitchStreamer", requireGuild = true, requirePermissions = DefaultPermissions.WEBINTERFACE_TWITCH)
 	public static WebinterfaceResponse updateTwitchStreamer(WebinterfaceRequestEvent event) {
 		GraphiteGuild g = event.getSelectedGuild();
 		JSONObject o = event.getRequestData().getJSONObject("object");
@@ -80,14 +80,14 @@ public class TwitchRequestHandler {
 		return WebinterfaceResponse.success();
 	}
 
-	@WebinterfaceHandler(requestMethod = "getDefaultTwitchNotificationMessage", requireGuild = true, requireFeatures = GraphiteFeature.TWITCH)
+	@WebinterfaceHandler(requestMethod = "getDefaultTwitchNotificationMessage", requireGuild = true, requirePermissions = DefaultPermissions.WEBINTERFACE_TWITCH)
 	public static WebinterfaceResponse getDefaultTwitchNotificationMessage(WebinterfaceRequestEvent event) {
 		JSONObject obj = new JSONObject();
 		obj.put("message", DefaultLocaleString.TWITCH_NOTIFICATION_DEFAULT_MESSAGE.getFor(event.getSelectedGuild()));
 		return WebinterfaceResponse.success(obj);
 	}
 
-	@WebinterfaceHandler(requestMethod = "sendTwitchAnnouncement", requireGuild = true, requireFeatures = GraphiteFeature.TWITCH)
+	@WebinterfaceHandler(requestMethod = "sendTwitchAnnouncement", requireGuild = true, requirePermissions = DefaultPermissions.WEBINTERFACE_TWITCH)
 	public static WebinterfaceResponse sendTwitchAnnouncement(WebinterfaceRequestEvent event) {
 		GraphiteGuild g = event.getSelectedGuild();
 		String id = event.getRequestData().getString("streamer_id");

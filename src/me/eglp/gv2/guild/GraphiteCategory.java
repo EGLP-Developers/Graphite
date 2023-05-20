@@ -4,7 +4,6 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import me.eglp.gv2.main.Graphite;
-import me.eglp.gv2.multiplex.bot.GlobalBot;
 import me.eglp.gv2.util.base.GraphiteIdentifiable;
 import me.eglp.gv2.util.webinterface.js.JavaScriptClass;
 import me.eglp.gv2.util.webinterface.js.JavaScriptFunction;
@@ -69,11 +68,6 @@ public class GraphiteCategory implements GraphiteIdentifiable, WebinterfaceObjec
 
 	public List<GraphiteStageChannel> getStageChannels() {
 		return getJDACategory().getStageChannels().stream().map(t -> guild.getStageChannel(t)).collect(Collectors.toList());
-	}
-
-	@Override
-	public boolean existsJDA() {
-		return Graphite.withBot(GlobalBot.INSTANCE, () -> getJDACategory() != null);
 	}
 
 	@Override

@@ -5,24 +5,21 @@ import java.nio.ByteBuffer;
 import com.sedmelluq.discord.lavaplayer.track.playback.AudioFrame;
 
 import me.eglp.gv2.guild.GraphiteGuild;
-import me.eglp.gv2.multiplex.bot.MultiplexBot;
 import net.dv8tion.jda.api.audio.AudioSendHandler;
 
 public class GuildAudioSendHandler implements AudioSendHandler {
 
 	private GraphiteGuild guild;
-	private MultiplexBot bot;
 	private AudioFrame lastFrame;
 
-	public GuildAudioSendHandler(MultiplexBot bot, GraphiteGuild guild) {
-		this.bot = bot;
+	public GuildAudioSendHandler(GraphiteGuild guild) {
 		this.guild = guild;
 	}
 
 	@Override
 	public boolean canProvide() {
 		if (lastFrame == null) {
-			lastFrame = guild.getMusic().getTrackManager(bot).getPlayer().provide();
+			lastFrame = guild.getMusic().getTrackManager().getPlayer().provide();
 		}
 		return lastFrame != null;
 	}
@@ -30,7 +27,7 @@ public class GuildAudioSendHandler implements AudioSendHandler {
 	@Override
 	public ByteBuffer provide20MsAudio() {
 		if (lastFrame == null)
-			lastFrame = guild.getMusic().getTrackManager(bot).getPlayer().provide();
+			lastFrame = guild.getMusic().getTrackManager().getPlayer().provide();
 		byte[] data = lastFrame != null ? lastFrame.getData() : null;
 		lastFrame = null;
 		return ByteBuffer.wrap(data);

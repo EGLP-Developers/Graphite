@@ -6,7 +6,7 @@ import java.util.stream.Collectors;
 import me.eglp.gv2.guild.GraphiteGuild;
 import me.eglp.gv2.guild.GraphiteRole;
 import me.eglp.gv2.guild.config.GuildRolesConfig;
-import me.eglp.gv2.multiplex.GraphiteFeature;
+import me.eglp.gv2.util.permission.DefaultPermissions;
 import me.eglp.gv2.util.webinterface.WebinterfaceHandler;
 import me.eglp.gv2.util.webinterface.base.WebinterfaceRequestEvent;
 import me.eglp.gv2.util.webinterface.base.WebinterfaceResponse;
@@ -15,7 +15,7 @@ import me.mrletsplay.mrcore.json.JSONObject;
 
 public class BotroleRequestHandler {
 
-	@WebinterfaceHandler(requestMethod = "getBotroles", requireGuild = true, requireFeatures = GraphiteFeature.ROLE_MANAGEMENT)
+	@WebinterfaceHandler(requestMethod = "getBotroles", requireGuild = true, requirePermissions = DefaultPermissions.WEBINTERFACE_ROLE_MANAGEMENT)
 	public static WebinterfaceResponse getBotroles(WebinterfaceRequestEvent event) {
 		GraphiteGuild g = event.getSelectedGuild();
 		List<GraphiteRole> roles = g.getRolesConfig().getBotRoles();
@@ -24,7 +24,7 @@ public class BotroleRequestHandler {
 		return WebinterfaceResponse.success(o);
 	}
 
-	@WebinterfaceHandler(requestMethod = "addBotrole", requireGuild = true, requireFeatures = GraphiteFeature.ROLE_MANAGEMENT)
+	@WebinterfaceHandler(requestMethod = "addBotrole", requireGuild = true, requirePermissions = DefaultPermissions.WEBINTERFACE_ROLE_MANAGEMENT)
 	public static WebinterfaceResponse addBotrole(WebinterfaceRequestEvent event) {
 		GraphiteGuild g = event.getSelectedGuild();
 		String id = event.getRequestData().getString("id");
@@ -42,7 +42,7 @@ public class BotroleRequestHandler {
 		return WebinterfaceResponse.success(o);
 	}
 
-	@WebinterfaceHandler(requestMethod = "removeBotrole", requireGuild = true, requireFeatures = GraphiteFeature.ROLE_MANAGEMENT)
+	@WebinterfaceHandler(requestMethod = "removeBotrole", requireGuild = true, requirePermissions = DefaultPermissions.WEBINTERFACE_ROLE_MANAGEMENT)
 	public static WebinterfaceResponse removeBotrole(WebinterfaceRequestEvent event) {
 		GraphiteGuild g = event.getSelectedGuild();
 		String id = event.getRequestData().getString("id");

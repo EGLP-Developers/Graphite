@@ -136,7 +136,7 @@ public class GraphiteTwitchUser implements WebinterfaceObject, JSONConvertible {
 
 	public Message sendNotificationMessage(GraphiteGuild guild) {
 		GraphiteGuildMessageChannel notChannel = getNotificationChannel(guild);
-		if(notChannel != null && notChannel.existsJDA() && notChannel.canWrite()) {
+		if(notChannel != null && notChannel.canWrite()) {
 			TwitchStream str = twitchUser.getStream();
 			if(str == null) return null;
 			String link = "https://twitch.tv/" + twitchUser.getLogin();

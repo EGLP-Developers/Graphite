@@ -1,8 +1,6 @@
 package me.eglp.gv2.guild.music;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Objects;
 import java.util.concurrent.CompletableFuture;
 import java.util.regex.Matcher;
@@ -21,13 +19,10 @@ import me.eglp.gv2.guild.GraphiteGuild;
 import me.eglp.gv2.main.DebugCategory;
 import me.eglp.gv2.main.Graphite;
 import me.eglp.gv2.main.GraphiteDebug;
-import me.eglp.gv2.multiplex.ContextHandle;
-import me.eglp.gv2.multiplex.GraphiteFeature;
-import me.eglp.gv2.multiplex.GraphiteMultiplex;
-import me.eglp.gv2.multiplex.bot.MultiplexBot;
 import me.eglp.gv2.util.apis.spotify.GraphiteSpotify;
 import me.eglp.gv2.util.music.GraphiteMusic;
 import me.eglp.gv2.util.music.GraphiteTrack;
+import me.eglp.gv2.util.permission.DefaultPermissions;
 import me.mrletsplay.mrcore.json.JSONObject;
 
 public class GuildMusic extends GraphiteMusic {
@@ -37,26 +32,17 @@ public class GuildMusic extends GraphiteMusic {
 	// NONBETA: move setVolume() etc. to GuildTrackManager
 
 	private GraphiteGuild guild;
-	private Map<MultiplexBot, GuildTrackManager> trackManagers;
+	private GuildTrackManager trackManager;
 
 	public GuildMusic(GraphiteGuild guild) {
 		super(guild);
 		this.guild = guild;
-		this.trackManagers = new HashMap<>();
+		this.trackManager = new GuildTrackManager(guild);
+		guild.getJDAGuild().getAudioManager().setSendingHandler(new GuildAudioSendHandler(guild));
 	}
 
-	public GuildTrackManager getTrackManager(MultiplexBot bot) {
-		GuildTrackManager m = trackManagers.get(bot);
-		if(m == null) {
-			m = new GuildTrackManager(bot, guild);
-			trackManagers.put(bot, m);
-			Graphite.withBot(bot, () -> guild.getJDAGuild().getAudioManager().setSendingHandler(new GuildAudioSendHandler(bot, guild)));
-		}
-		return m;
-	}
-
-	private GuildTrackManager getTrackManager() {
-		return getTrackManager(GraphiteMultiplex.getCurrentBot());
+	public GuildTrackManager getTrackManager() {
+		return trackManager;
 	}
 
 	public GraphiteGuild getGuild() {
@@ -70,7 +56,7 @@ public class GuildMusic extends GraphiteMusic {
 	public void setVolume(int volume) {
 		getTrackManager().getPlayer().setVolume(volume);
 
-		Graphite.getWebinterface().sendRequestToGuildUsers("updatePlayerState", null, guild.getID(), GraphiteFeature.MUSIC);
+		Graphite.getWebinterface().sendRequestToGuildUsers("updatePlayerState", null, guild.getID(), DefaultPermissions.WEBINTERFACE_MUSIC);
 	}
 
 	public int getVolume() {
@@ -92,7 +78,7 @@ public class GuildMusic extends GraphiteMusic {
 	public void setPaused(boolean paused) {
 		getTrackManager().getPlayer().setPaused(paused);
 
-		Graphite.getWebinterface().sendRequestToGuildUsers("updatePlayerState", null, guild.getID(), GraphiteFeature.MUSIC);
+		Graphite.getWebinterface().sendRequestToGuildUsers("updatePlayerState", null, guild.getID(), DefaultPermissions.WEBINTERFACE_MUSIC);
 	}
 
 	public GraphiteTrack removeRelative(int idx) {
@@ -123,7 +109,7 @@ public class GuildMusic extends GraphiteMusic {
 	public void shuffleQueue() {
 		getTrackManager().shuffleQueue();
 
-		Graphite.getWebinterface().sendRequestToGuildUsers("updateQueue", null, guild.getID(), GraphiteFeature.MUSIC);
+		Graphite.getWebinterface().sendRequestToGuildUsers("updateQueue", null, guild.getID(), DefaultPermissions.WEBINTERFACE_MUSIC);
 	}
 
 	public void setLooping(boolean looping) {
@@ -139,7 +125,7 @@ public class GuildMusic extends GraphiteMusic {
 
 		JSONObject d = new JSONObject();
 		d.put("position", position);
-		Graphite.getWebinterface().sendRequestToGuildUsers("updatePosition", d, guild.getID(), GraphiteFeature.MUSIC);
+		Graphite.getWebinterface().sendRequestToGuildUsers("updatePosition", d, guild.getID(), DefaultPermissions.WEBINTERFACE_MUSIC);
 		return true;
 	}
 
@@ -229,7 +215,6 @@ public class GuildMusic extends GraphiteMusic {
 
 	public static CompletableFuture<MusicSearchResult> loadTrack(String linkOrQuery) {
 		CompletableFuture<MusicSearchResult> f = new CompletableFuture<>();
-		ContextHandle h = GraphiteMultiplex.handle();
 
 		GraphiteSpotify spotify = Graphite.getSpotify();
 		if(spotify != null) {
@@ -305,26 +290,22 @@ public class GuildMusic extends GraphiteMusic {
 					}
 				}
 
-				h.reset();
 				f.complete(new MusicSearchResult(tr));
 			}
 
 			@Override
 			public void playlistLoaded(AudioPlaylist playlist) {
-				h.reset();
 				List<GraphiteTrack> trs = playlist.getTracks().stream().map(GraphiteTrack::new).collect(Collectors.toList());
 				f.complete(new MusicSearchResult(trs, !fIdentifier.startsWith("ytsearch: ")));
 			}
 
 			@Override
 			public void noMatches() {
-				h.reset();
 				f.complete(new MusicSearchResult());
 			}
 
 			@Override
 			public void loadFailed(FriendlyException exception) {
-				h.reset();
 				f.completeExceptionally(exception);
 			}
 		});

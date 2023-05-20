@@ -63,9 +63,9 @@ public class CommandAmongUs extends ParentCommand {
 				EmbedBuilder b = new EmbedBuilder();
 				b.setTitle("Link your Among Us Capture");
 
-				String url = Graphite.getMainBotInfo().getAmongUs().getCaptureURL().replace("{code}", capture.getCode());
+				String url = Graphite.getBotInfo().getAmongUs().getCaptureURL().replace("{code}", capture.getCode());
 				b.setDescription("Click to link automatically:\n<" + url + ">\n\nDownload AmongUsCapture: Download it [here](https://capture.automute.us/)\n\nTo link manually:");
-				b.addField("URL", Graphite.getMainBotInfo().getAmongUs().getCaptureAlternativeURL(), true);
+				b.addField("URL", Graphite.getBotInfo().getAmongUs().getCaptureAlternativeURL(), true);
 				b.addField("Code", capture.getCode(), true);
 
 				GraphiteMessageChannel<?> mCh = event.getAuthor().openPrivateChannel();

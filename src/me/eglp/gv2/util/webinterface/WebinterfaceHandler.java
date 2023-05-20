@@ -11,10 +11,10 @@ public @interface WebinterfaceHandler {
 
 	public String requestMethod();
 
-	public boolean requireBot() default false;
-
 	public boolean requireGuild() default false;
 
 	public boolean requireGuildAdmin() default false;
+
+	public String[] requirePermissions() default {};
 
 }

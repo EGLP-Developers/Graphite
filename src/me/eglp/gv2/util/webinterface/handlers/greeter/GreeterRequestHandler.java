@@ -3,7 +3,7 @@ package me.eglp.gv2.util.webinterface.handlers.greeter;
 import me.eglp.gv2.guild.GraphiteGuild;
 import me.eglp.gv2.guild.GraphiteTextChannel;
 import me.eglp.gv2.guild.config.GuildGreeterConfig;
-import me.eglp.gv2.multiplex.GraphiteFeature;
+import me.eglp.gv2.util.permission.DefaultPermissions;
 import me.eglp.gv2.util.webinterface.WebinterfaceHandler;
 import me.eglp.gv2.util.webinterface.base.WebinterfaceRequestEvent;
 import me.eglp.gv2.util.webinterface.base.WebinterfaceResponse;
@@ -11,7 +11,7 @@ import me.mrletsplay.mrcore.json.JSONObject;
 
 public class GreeterRequestHandler {
 
-	@WebinterfaceHandler(requestMethod = "getGreeterInfo", requireGuild = true, requireFeatures = GraphiteFeature.GREETER)
+	@WebinterfaceHandler(requestMethod = "getGreeterInfo", requireGuild = true, requirePermissions = DefaultPermissions.WEBINTERFACE_GREETER)
 	public static WebinterfaceResponse getGreeterInfo(WebinterfaceRequestEvent event) {
 		GraphiteGuild g = event.getSelectedGuild();
 		GuildGreeterConfig c = g.getGreeterConfig();
@@ -22,7 +22,7 @@ public class GreeterRequestHandler {
 		return WebinterfaceResponse.success(o);
 	}
 
-	@WebinterfaceHandler(requestMethod = "setGreeterInfo", requireGuild = true, requireFeatures = GraphiteFeature.GREETER)
+	@WebinterfaceHandler(requestMethod = "setGreeterInfo", requireGuild = true, requirePermissions = DefaultPermissions.WEBINTERFACE_GREETER)
 	public static WebinterfaceResponse setGreeterInfo(WebinterfaceRequestEvent event) {
 		GraphiteGuild g = event.getSelectedGuild();
 		GuildGreeterConfig c = g.getGreeterConfig();
@@ -44,14 +44,14 @@ public class GreeterRequestHandler {
 		return WebinterfaceResponse.success();
 	}
 
-	@WebinterfaceHandler(requestMethod = "unsetFarewellChannel", requireGuild = true, requireFeatures = GraphiteFeature.GREETER)
+	@WebinterfaceHandler(requestMethod = "unsetFarewellChannel", requireGuild = true, requirePermissions = DefaultPermissions.WEBINTERFACE_GREETER)
 	public static WebinterfaceResponse unsetFarewellChannel(WebinterfaceRequestEvent event) {
 		GraphiteGuild g = event.getSelectedGuild();
 		g.getGreeterConfig().unsetFarewellChannel();
 		return WebinterfaceResponse.success();
 	}
 
-	@WebinterfaceHandler(requestMethod = "unsetGreetingChannel", requireGuild = true, requireFeatures = GraphiteFeature.GREETER)
+	@WebinterfaceHandler(requestMethod = "unsetGreetingChannel", requireGuild = true, requirePermissions = DefaultPermissions.WEBINTERFACE_GREETER)
 	public static WebinterfaceResponse unsetGreetingChannel(WebinterfaceRequestEvent event) {
 		GraphiteGuild g = event.getSelectedGuild();
 		g.getGreeterConfig().unsetGreetingChannel();

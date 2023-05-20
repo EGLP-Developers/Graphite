@@ -7,7 +7,7 @@ import java.util.List;
 import me.mrletsplay.mrcore.misc.FriendlyException;
 
 public class DefaultPermissions {
-	
+
 	public static final String
 		ADMIN_LOCALE_DOWNLOAD = "admin.locale.download",
 		ADMIN_LOCALE_UPLOAD = "admin.locale.upload",
@@ -27,10 +27,10 @@ public class DefaultPermissions {
 		ADMIN_TEXTCOMMANDS = "admin.textcommands",
 		ADMIN_UPDATESLASHCOMMANDS = "admin.updateslashcommands",
 		ADMIN_TIMEZONE = "admin.timezone",
-		
+
 		PREMIUM_REDEEM = "premium.redeem",
 		PREMIUM_LEVEL = "premium.level",
-		
+
 		BACKUP_CREATE = "backup.create",
 		BACKUP_CANCEL = "backup.cancel",
 		BACKUP_RESTORE = "backup.restore",
@@ -47,7 +47,7 @@ public class DefaultPermissions {
 		BACKUP_TEMPLATE_LOAD = "backup.template.load",
 		BACKUP_TEMPLATE_SEARCH = "backup.template.search",
 		BACKUP_RENAME = "backup.rename",
-		
+
 		MUSIC_PLAY = "music.play",
 		MUSIC_PAUSE = "music.pause",
 		MUSIC_STOP = "music.stop",
@@ -76,7 +76,7 @@ public class DefaultPermissions {
 		MUSIC_PLAYLIST_RENAME = "music.playlist.rename",
 		MUSIC_PLAYLIST_LIST = "music.playlist.list",
 		MUSIC_PLAYLIST_INFO = "music.playlist.info",
-		
+
 		MODERATION_CHATREPORTS = "moderation.chatreports",
 		MODERATION_CHATREPORTS_LIST = "moderation.chatreports.list",
 		MODERATION_CHATREPORTS_REMOVE = "moderation.chatreports.remove",
@@ -110,7 +110,7 @@ public class DefaultPermissions {
 		ROLE_MODROLE_ADD = "role.modrole.add",
 		ROLE_MODROLE_REMOVE = "role.modrole.remove",
 		ROLE_MODROLE_LIST = "role.modrole.list",
-				
+
 		GREETER_FAREWELL_CHANNEL  = "greeter.farewell.channel",
 		GREETER_FAREWELL_MESSAGE  = "greeter.farewell.message",
 		GREETER_FAREWELL_ENABLE = "greeter.farewell.enable",
@@ -119,36 +119,36 @@ public class DefaultPermissions {
 		GREETER_GREETING_MESSAGE  = "greeter.greeting.message",
 		GREETER_GREETING_ENABLE = "greeter.greeting.enable",
 		GREETER_GREETING_DISABLE = "greeter.greeting.disable",
-		
+
 		CHANNEL_USERCHANNEL_CREATE = "channel.userchannel.create",
 		CHANNEL_AUTOCHANNEL = "channel.autochannel",
 		CHANNEL_CATEGORYCOPY = "channel.categorycopy",
-		
+
 		RECORD_START = "record.start",
 		RECORD_STOP = "record.stop",
 		RECORD_DOWNLOAD = "record.download",
 		RECORD_DELETE = "record.delete",
 		RECORD_LIST = "record.list",
 		RECORD_RENAME = "record.rename",
-		
+
 		TWITCH_MESSAGE = "twitch.message",
 		TWITCH_CHANNEL = "twitch.channel",
 		TWITCH_ADD = "twitch.add",
 		TWITCH_REMOVE = "twitch.remove",
-				
+
 		TWITTER_CHANNEL = "twitter.channel",
 		TWITTER_ADD = "twitter.add",
 		TWITTER_REMOVE = "twitter.remove",
-				
+
 		REDDIT_CHANNEL = "reddit.channel",
 		REDDIT_SUBREDDIT_ADD = "reddit.subreddit.add",
 		REDDIT_SUBREDDIT_REMOVE = "reddit.subreddit.remove",
-		
+
 		SCRIPT_UPLOAD = "script.upload",
 		SCRIPT_DOWNLOAD = "script.download",
 		SCRIPT_DELETE = "script.delete",
 		SCRIPT_LIST = "script.list",
-		
+
 		FUN_AMONGUS_CREATE = "fun.amongus.create",
 		FUN_AMONGUS_LINK = "fun.amongus.link",
 		FUN_TCRANDOM = "fun.tcrandom",
@@ -160,7 +160,7 @@ public class DefaultPermissions {
 		FUN_REMINDER_REMOVE = "fun.reminder.remove",
 		FUN_REMINDER_LIST = "fun.reminder.list",
 		FUN_REMINDER_INFO = "fun.reminder.info",
-		
+
 		WEBINTERFACE_BACKUPS = "webinterface.backups",
 		WEBINTERFACE_MUSIC = "webinterface.music",
 		WEBINTERFACE_MODERATION = "webinterface.moderation",
@@ -173,8 +173,9 @@ public class DefaultPermissions {
 		WEBINTERFACE_REDDIT = "webinterface.reddit",
 		WEBINTERFACE_RECORD = "webinterface.record",
 		WEBINTERFACE_CUSTOM_COMMANDS = "webinterface.custom-commands",
-		WEBINTERFACE_STATISTICS = "webinterface.statistics";
-	
+		WEBINTERFACE_STATISTICS = "webinterface.statistics",
+		WEBINTERFACE_FUN = "webinterface.fun";
+
 	public static List<String> getPermissions() {
 		List<String> p = new ArrayList<>();
 		for(Field f : DefaultPermissions.class.getDeclaredFields()) {
@@ -187,5 +188,5 @@ public class DefaultPermissions {
 		}
 		return p;
 	}
-	
+
 }

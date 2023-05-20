@@ -6,7 +6,6 @@ import java.util.stream.Collectors;
 
 import me.eglp.gv2.main.Graphite;
 import me.eglp.gv2.user.GraphiteUser;
-import me.eglp.gv2.util.jdaobject.JDAObject;
 import me.eglp.gv2.util.permission.MemberPermissions;
 import me.eglp.gv2.util.webinterface.js.JavaScriptClass;
 import me.eglp.gv2.util.webinterface.js.JavaScriptFunction;
@@ -17,38 +16,29 @@ import me.mrletsplay.mrcore.misc.FriendlyException;
 import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.GuildVoiceState;
 import net.dv8tion.jda.api.entities.Member;
+import net.dv8tion.jda.api.entities.User;
 import net.dv8tion.jda.api.entities.UserSnowflake;
 
 @JavaScriptClass(name = "Member")
 public class GraphiteMember extends GraphiteUser implements WebinterfaceObject {
 
 	private String memberID;
-	private JDAObject<Member> jdaMember;
+	private Member member;
 	private GraphiteGuild guild;
 
 	public GraphiteMember(Member member, GraphiteGuild guild) {
 		super(member.getUser());
 		memberID = member.getId();
-		String gID = member.getGuild().getId();
-		this.jdaMember = new JDAObject<>(jda -> jda.getGuildById(gID) == null ? null : jda.getGuildById(gID).retrieveMemberById(memberID).complete(), o -> o.getId().equals(memberID) && o.getGuild().getId().equals(gID));
+		this.member = member;
 		this.guild = guild;
 	}
 
-	@Override
-	public boolean isAvailable() {
-		return super.isAvailable() && jdaMember.isAvailable();
-	}
-
-	public JDAObject<Member> getJDAMemberObject() {
-		return jdaMember;
-	}
-
-	public Member getJDAMember() {
-		return jdaMember.get();
+	public Member getMember() {
+		return member;
 	}
 
 	public GraphiteUser getUser() {
-		return Graphite.getUser(getJDAMember().getUser());
+		return Graphite.getUser(getMember().getUser());
 	}
 
 	public GraphiteGuild getGuild() {
@@ -62,12 +52,12 @@ public class GraphiteMember extends GraphiteUser implements WebinterfaceObject {
 
 	@JavaScriptGetter(name = "getName", returning = "memberName")
 	public String getName() {
-		return getUser().getName();
+		return getJDAUser().getName();
 	}
 
 	@JavaScriptGetter(name = "getDiscriminator", returning = "memberDiscriminator")
 	public String getDiscriminator() {
-		return getUser().getDiscriminator();
+		return getJDAUser().getDiscriminator();
 	}
 
 	public MemberPermissions getMemberPermissions() {
@@ -75,25 +65,24 @@ public class GraphiteMember extends GraphiteUser implements WebinterfaceObject {
 	}
 
 	public boolean isOwner() {
-		return getJDAMember().isOwner();
+		return getMember().isOwner();
 	}
 
 	public List<GraphiteRole> getRoles() {
-		return getJDAMember().getRoles().stream().map(r -> guild.getRole(r)).collect(Collectors.toList());
+		return getMember().getRoles().stream().map(r -> guild.getRole(r)).collect(Collectors.toList());
 	}
 
 	public GraphiteAudioChannel getCurrentAudioChannel() {
-		if(!isAvailable()) throw new FriendlyException("Member is not available (in this context)");
-		if(getJDAMember().getVoiceState() == null || !getJDAMember().getVoiceState().inAudioChannel()) return null;
-		return Graphite.getAudioChannel(getJDAMember().getVoiceState().getChannel());
+		if(getMember().getVoiceState() == null || !getMember().getVoiceState().inAudioChannel()) return null;
+		return Graphite.getAudioChannel(getMember().getVoiceState().getChannel());
 	}
 
 	public boolean canInteract(GraphiteMember other) {
-		return getJDAMember().canInteract(other.getJDAMember());
+		return getMember().canInteract(other.getMember());
 	}
 
 	public boolean canInteract(GraphiteRole other) {
-		return getJDAMember().canInteract(other.getJDARole());
+		return getMember().canInteract(other.getJDARole());
 	}
 
 	public boolean isBanned() {
@@ -105,23 +94,23 @@ public class GraphiteMember extends GraphiteUser implements WebinterfaceObject {
 	}
 
 	public boolean isGuildMuted() {
-		GuildVoiceState s = getJDAMember().getVoiceState();
+		GuildVoiceState s = getMember().getVoiceState();
 		if(s == null) return false;
 		return s.isGuildMuted();
 	}
 
 	public boolean isMuted() {
-		GuildVoiceState s = getJDAMember().getVoiceState();
+		GuildVoiceState s = getMember().getVoiceState();
 		if(s == null) return false;
 		return s.isMuted();
 	}
 
 	public void unmute() {
-		getJDAMember().mute(false).queue();
+		getMember().mute(false).queue();
 	}
 
 	public EnumSet<Permission> getPermissions(GraphiteGuildChannel channel) {
-		return getJDAMember().getPermissions(channel.getJDAChannel());
+		return getMember().getPermissions(channel.getJDAChannel());
 	}
 
 	@Override

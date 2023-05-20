@@ -2,7 +2,6 @@ package me.eglp.gv2.user;
 
 import me.eglp.gv2.main.Graphite;
 import me.eglp.gv2.util.base.GraphiteMessageChannel;
-import me.eglp.gv2.util.jdaobject.JDAObject;
 import net.dv8tion.jda.api.entities.MessageEmbed;
 import net.dv8tion.jda.api.entities.channel.concrete.PrivateChannel;
 import net.dv8tion.jda.api.utils.messages.MessageCreateData;
@@ -10,20 +9,16 @@ import net.dv8tion.jda.api.utils.messages.MessageCreateData;
 public class GraphitePrivateChannel implements GraphiteMessageChannel<GraphiteUser> {
 
 	private GraphiteUser user;
-	private JDAObject<PrivateChannel> jdaChannel;
+	private PrivateChannel channel;
 
 	public GraphitePrivateChannel(PrivateChannel jdaChannel) {
 		this.user = Graphite.getUser(jdaChannel.getUser());
-		this.jdaChannel = new JDAObject<>(jda -> !user.isAvailable() ? null : user.getJDAUser().openPrivateChannel().complete(), o -> user.getJDAUserObject().isSameObject(o.getUser()));
-	}
-
-	public JDAObject<PrivateChannel> getJDAChannelObject() {
-		return jdaChannel;
+		this.channel = user.getJDAUser().openPrivateChannel().complete();
 	}
 
 	@Override
 	public PrivateChannel getJDAChannel() {
-		return jdaChannel.get();
+		return channel;
 	}
 
 	public GraphiteUser getUser() {

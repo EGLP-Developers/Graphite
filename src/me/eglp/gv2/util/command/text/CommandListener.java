@@ -42,8 +42,8 @@ public class CommandListener implements AnnotationEventHandler {
 				}
 			}
 		}else if(event.isFromType(ChannelType.PRIVATE)) {
-			if(event.getMessage().getContentRaw().startsWith(Graphite.getMainBotInfo().getDefaultPrefix())) {
-				prefix = Graphite.getMainBotInfo().getDefaultPrefix();
+			if(event.getMessage().getContentRaw().startsWith(Graphite.getBotInfo().getDefaultPrefix())) {
+				prefix = Graphite.getBotInfo().getDefaultPrefix();
 			}else {
 				SearchResult sr = MentionFinder.findFirstMention(null, event.getMessage().getContentRaw());
 				boolean selfUserMentioned = sr != null

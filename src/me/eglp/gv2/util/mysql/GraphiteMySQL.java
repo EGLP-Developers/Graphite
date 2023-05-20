@@ -39,7 +39,7 @@ public class GraphiteMySQL {
 	}
 	
 	public GraphiteMySQL() {
-		MySQLSettings s = Graphite.getMainBotInfo().getMySQL();
+		MySQLSettings s = Graphite.getBotInfo().getMySQL();
 		
 		dataSource = new BasicDataSource();
 		dataSource.setUrl(s.getURL());

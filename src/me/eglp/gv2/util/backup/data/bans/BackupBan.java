@@ -41,7 +41,7 @@ public class BackupBan implements JSONConvertible {
 	}
 
 	public void restore(GraphiteGuild guild) {
-		if(guild.getMember(userID) != null) guild.getJDAGuild().ban(guild.getMember(userID).getJDAMember(), 0, TimeUnit.SECONDS).reason(reason).queue();
+		if(guild.getMember(userID) != null) guild.getJDAGuild().ban(guild.getMember(userID).getMember(), 0, TimeUnit.SECONDS).reason(reason).queue();
 	}
 
 }

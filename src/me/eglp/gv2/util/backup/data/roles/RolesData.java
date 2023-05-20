@@ -63,7 +63,7 @@ public class RolesData implements JSONConvertible, WebinterfaceObject {
 	}
 
 	public void restore(GraphiteGuild guild, boolean restoreAssignments, IDMappings mappings) {
-		Member selfMember = guild.getSelfMember().getJDAMember();
+		Member selfMember = guild.getSelfMember().getMember();
 		guild.getJDAGuild().getRoles().forEach(r -> {
 			if(r.isManaged() || r.isPublicRole() || !selfMember.canInteract(r)) return;
 			r.delete().complete();
@@ -93,7 +93,7 @@ public class RolesData implements JSONConvertible, WebinterfaceObject {
 			membersToRoles.forEach((user, roles) -> {
 				GraphiteMember m = guild.getMember(user);
 				if(m == null) return;
-				Member mem = m.getJDAMember();
+				Member mem = m.getMember();
 				if(mem == null) return;
 				roles.removeIf(r -> !selfMember.canInteract(r));
 				mem.getRoles().stream().filter(r -> !selfMember.canInteract(r) || r.isManaged()).forEach(roles::add);

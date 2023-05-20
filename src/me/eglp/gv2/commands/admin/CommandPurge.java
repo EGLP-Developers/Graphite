@@ -42,7 +42,7 @@ public class CommandPurge extends Command {
 		ButtonInput<Integer> inp = new ButtonInput<Integer>(event.getAuthor(), ev -> {
 			if(ev.getItem() == -1) {
 				GraphiteQueue q = Graphite.getQueue();
-				if(q.isHeavyBusy()) DefaultMessage.OTHER_HEAVY_BUSY.reply(event, "patreon", Graphite.getMainBotInfo().getLinks().getPatreon());
+				if(q.isHeavyBusy()) DefaultMessage.OTHER_HEAVY_BUSY.reply(event, "patreon", Graphite.getBotInfo().getLinks().getPatreon());
 				q.queueHeavy(event.getGuild(), new GraphiteTaskInfo(PURGE_TASK_ID, "Purging guild (purge)"), () -> {
 					if(what.equalsIgnoreCase("channels")) {
 						g.getChannels().forEach(ch -> {

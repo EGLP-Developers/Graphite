@@ -13,7 +13,7 @@ public class GuildTempVoiceMute extends GuildTemporaryAction {
 	public void remove(GraphiteMember moderator, String reason) {
 		GraphiteMember mem = getGuild().getMember(getUserID());
 		if(mem == null) return;
-		if(mem.getCurrentAudioChannel() != null) getGuild().getJDAGuild().mute(mem.getJDAMember(), false).complete();
+		if(mem.getCurrentAudioChannel() != null) getGuild().getJDAGuild().mute(mem.getMember(), false).complete();
 		getGuild().getTemporaryActionsConfig().removeTempMute(this, moderator, reason);
 	}
 

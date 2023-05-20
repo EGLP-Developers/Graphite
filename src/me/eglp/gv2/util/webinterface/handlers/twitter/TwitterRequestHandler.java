@@ -6,8 +6,8 @@ import java.util.stream.Collectors;
 import me.eglp.gv2.guild.GraphiteGuild;
 import me.eglp.gv2.guild.GraphiteGuildMessageChannel;
 import me.eglp.gv2.main.Graphite;
-import me.eglp.gv2.multiplex.GraphiteFeature;
 import me.eglp.gv2.util.apis.twitter.GraphiteTwitterUser;
+import me.eglp.gv2.util.permission.DefaultPermissions;
 import me.eglp.gv2.util.webinterface.WebinterfaceHandler;
 import me.eglp.gv2.util.webinterface.base.WebinterfaceRequestEvent;
 import me.eglp.gv2.util.webinterface.base.WebinterfaceResponse;
@@ -18,7 +18,7 @@ import me.mrletsplay.mrcore.json.JSONObject;
 
 public class TwitterRequestHandler {
 
-	@WebinterfaceHandler(requestMethod = "getTwitterUsers", requireGuild = true, requireFeatures = GraphiteFeature.TWITTER)
+	@WebinterfaceHandler(requestMethod = "getTwitterUsers", requireGuild = true, requirePermissions = DefaultPermissions.WEBINTERFACE_TWITTER)
 	public static WebinterfaceResponse getTwitterUsers(WebinterfaceRequestEvent event) {
 		GraphiteGuild g = event.getSelectedGuild();
 		List<GraphiteTwitterUser> users = g.getTwitterConfig().getTwitterUsers();
@@ -27,7 +27,7 @@ public class TwitterRequestHandler {
 		return WebinterfaceResponse.success(o);
 	}
 
-	@WebinterfaceHandler(requestMethod = "addTwitterUser", requireGuild = true, requireFeatures = GraphiteFeature.TWITTER)
+	@WebinterfaceHandler(requestMethod = "addTwitterUser", requireGuild = true, requirePermissions = DefaultPermissions.WEBINTERFACE_TWITTER)
 	public static WebinterfaceResponse addTwitterUser(WebinterfaceRequestEvent event) {
 		GraphiteGuild g = event.getSelectedGuild();
 		String user = event.getRequestData().getString("user");
@@ -55,7 +55,7 @@ public class TwitterRequestHandler {
 		return WebinterfaceResponse.success(o);
 	}
 
-	@WebinterfaceHandler(requestMethod = "removeTwitterUser", requireGuild = true, requireFeatures = GraphiteFeature.TWITTER)
+	@WebinterfaceHandler(requestMethod = "removeTwitterUser", requireGuild = true, requirePermissions = DefaultPermissions.WEBINTERFACE_TWITTER)
 	public static WebinterfaceResponse removeTwitterUser(WebinterfaceRequestEvent event) {
 		GraphiteGuild g = event.getSelectedGuild();
 		String id = event.getRequestData().getString("user_id");
@@ -67,7 +67,7 @@ public class TwitterRequestHandler {
 		return WebinterfaceResponse.success();
 	}
 
-	@WebinterfaceHandler(requestMethod = "updateTwitterUser", requireGuild = true, requireFeatures = GraphiteFeature.TWITTER)
+	@WebinterfaceHandler(requestMethod = "updateTwitterUser", requireGuild = true, requirePermissions = DefaultPermissions.WEBINTERFACE_TWITTER)
 	public static WebinterfaceResponse updateTwitterUser(WebinterfaceRequestEvent event) {
 		GraphiteGuild g = event.getSelectedGuild();
 		JSONObject o = event.getRequestData().getJSONObject("object");

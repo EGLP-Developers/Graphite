@@ -99,7 +99,6 @@ public class GuildReportsConfig {
 						long timestamp = s.getLong("Timestamp");
 
 						GuildReport r = new GuildReport(id, reporter, reported, reason, timestamp);
-						if(!r.isValid()) continue;
 						reports.add(r);
 					}
 					return reports;

@@ -13,8 +13,6 @@ import me.eglp.gv2.guild.GraphiteGuild;
 import me.eglp.gv2.guild.GraphiteGuildMessageChannel;
 import me.eglp.gv2.guild.GraphiteTextChannel;
 import me.eglp.gv2.main.Graphite;
-import me.eglp.gv2.multiplex.ContextHandle;
-import me.eglp.gv2.multiplex.GraphiteMultiplex;
 import me.eglp.gv2.util.mysql.SQLTable;
 import me.eglp.gv2.util.stats.element.GuildStatisticsElement;
 import me.eglp.gv2.util.stats.element.StatisticsElementSettings;
@@ -111,7 +109,6 @@ public class GuildStatisticsConfig implements IGuildConfig {
 	}
 
 	public void updateMessageIfExists(String elementID, Supplier<String> newContent) {
-		ContextHandle handle = GraphiteMultiplex.handle();
 		Graphite.getMySQL().run(con -> {
 			try(PreparedStatement s = con.prepareStatement("SELECT ChannelId, MessageId FROM guilds_statistics_elements WHERE `Id` = ?")) {
 				s.setString(1, elementID);
@@ -123,7 +120,6 @@ public class GuildStatisticsConfig implements IGuildConfig {
 						removeStatisticsElement(elementID);
 						return;
 					}
-					handle.reset();
 					GraphiteTextChannel ch = guild.getTextChannelByID(channelID);
 					if(ch == null) {
 						removeStatisticsElement(elementID);
@@ -138,7 +134,6 @@ public class GuildStatisticsConfig implements IGuildConfig {
 	}
 
 	public void deleteOldMessage(String elementID) {
-		ContextHandle handle = GraphiteMultiplex.handle();
 		Graphite.getMySQL().run(con -> {
 			try(PreparedStatement s = con.prepareStatement("SELECT ChannelId, MessageId FROM guilds_statistics_elements WHERE `Id` = ?")) {
 				s.setString(1, elementID);
@@ -147,7 +142,6 @@ public class GuildStatisticsConfig implements IGuildConfig {
 					String channelID = r.getString("ChannelId");
 					String messageID = r.getString("MessageId");
 					if(channelID == null || messageID == null) return;
-					handle.reset();
 					TextChannel tc = guild.getTextChannelByID(channelID).getJDAChannel();
 					tc.deleteMessageById(messageID).queue(null, new ErrorHandler()
 							.handle(Arrays.asList(ErrorResponse.UNKNOWN_MESSAGE, ErrorResponse.UNKNOWN_CHANNEL), e -> removeStatisticsElement(elementID)));

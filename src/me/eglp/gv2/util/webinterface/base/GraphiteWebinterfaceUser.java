@@ -16,13 +16,13 @@ public class GraphiteWebinterfaceUser {
 
 	public GraphiteWebinterfaceUser(GraphiteWebinterface webinterface, String id, boolean admin) {
 		this.webinterface = webinterface;
-		this.discordUser = Graphite.getGlobalUser(id);
+		this.discordUser = Graphite.getUser(id);
 		this.admin = admin;
 		this.guilds = new ArrayList<>();
 	}
 
 	public boolean isKnown() {
-		return discordUser != null && discordUser.isAvailable();
+		return discordUser != null;
 	}
 
 	public void setAdmin(boolean admin) {

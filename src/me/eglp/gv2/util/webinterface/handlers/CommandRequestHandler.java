@@ -5,7 +5,7 @@ import java.util.stream.Collectors;
 
 import me.eglp.gv2.guild.GraphiteGuild;
 import me.eglp.gv2.guild.customcommand.GraphiteCustomCommand;
-import me.eglp.gv2.multiplex.GraphiteFeature;
+import me.eglp.gv2.util.permission.DefaultPermissions;
 import me.eglp.gv2.util.webinterface.WebinterfaceHandler;
 import me.eglp.gv2.util.webinterface.base.WebinterfaceRequestEvent;
 import me.eglp.gv2.util.webinterface.base.WebinterfaceResponse;
@@ -15,7 +15,7 @@ import me.mrletsplay.mrcore.json.JSONObject;
 
 public class CommandRequestHandler {
 
-	@WebinterfaceHandler(requestMethod = "getCustomCommands", requireGuild = true, requireFeatures = GraphiteFeature.CUSTOM_COMMANDS)
+	@WebinterfaceHandler(requestMethod = "getCustomCommands", requireGuild = true, requirePermissions = DefaultPermissions.WEBINTERFACE_CUSTOM_COMMANDS)
 	public static WebinterfaceResponse getCustomCommands(WebinterfaceRequestEvent event) {
 		JSONObject obj = new JSONObject();
 		List<GraphiteCustomCommand> commands = event.getSelectedGuild().getCustomCommandsConfig().getCustomCommands();
@@ -23,7 +23,7 @@ public class CommandRequestHandler {
 		return WebinterfaceResponse.success(obj);
 	}
 
-	@WebinterfaceHandler(requestMethod = "getCustomCommandByName", requireGuild = true, requireFeatures = GraphiteFeature.CUSTOM_COMMANDS)
+	@WebinterfaceHandler(requestMethod = "getCustomCommandByName", requireGuild = true, requirePermissions = DefaultPermissions.WEBINTERFACE_CUSTOM_COMMANDS)
 	public static WebinterfaceResponse getCustomCommandByName(WebinterfaceRequestEvent event) {
 		String name = event.getRequestData().getString("name");
 
@@ -34,7 +34,7 @@ public class CommandRequestHandler {
 		return WebinterfaceResponse.success(obj);
 	}
 
-	@WebinterfaceHandler(requestMethod = "createCustomCommand", requireGuild = true, requireFeatures = GraphiteFeature.CUSTOM_COMMANDS)
+	@WebinterfaceHandler(requestMethod = "createCustomCommand", requireGuild = true, requirePermissions = DefaultPermissions.WEBINTERFACE_CUSTOM_COMMANDS)
 	public static WebinterfaceResponse createCustomCommand(WebinterfaceRequestEvent event) {
 		GraphiteGuild g = event.getSelectedGuild();
 
@@ -56,7 +56,7 @@ public class CommandRequestHandler {
 		return WebinterfaceResponse.success(obj);
 	}
 
-	@WebinterfaceHandler(requestMethod = "updateCustomCommand", requireGuild = true, requireFeatures = GraphiteFeature.CUSTOM_COMMANDS)
+	@WebinterfaceHandler(requestMethod = "updateCustomCommand", requireGuild = true, requirePermissions = DefaultPermissions.WEBINTERFACE_CUSTOM_COMMANDS)
 	public static WebinterfaceResponse updateCustomCommand(WebinterfaceRequestEvent event) {
 		JSONObject obj = event.getRequestData().getJSONObject("command");
 
@@ -77,7 +77,7 @@ public class CommandRequestHandler {
 		return WebinterfaceResponse.success();
 	}
 
-	@WebinterfaceHandler(requestMethod = "deleteCustomCommand", requireGuild = true, requireFeatures = GraphiteFeature.CUSTOM_COMMANDS)
+	@WebinterfaceHandler(requestMethod = "deleteCustomCommand", requireGuild = true, requirePermissions = DefaultPermissions.WEBINTERFACE_CUSTOM_COMMANDS)
 	public static WebinterfaceResponse deleteCustomCommand(WebinterfaceRequestEvent event) {
 		String name = event.getRequestData().getString("name");
 
@@ -92,7 +92,7 @@ public class CommandRequestHandler {
 		return WebinterfaceResponse.success();
 	}
 
-	@WebinterfaceHandler(requestMethod = "deleteAllCustomCommands", requireGuild = true, requireFeatures = GraphiteFeature.CUSTOM_COMMANDS)
+	@WebinterfaceHandler(requestMethod = "deleteAllCustomCommands", requireGuild = true, requirePermissions = DefaultPermissions.WEBINTERFACE_CUSTOM_COMMANDS)
 	public static WebinterfaceResponse deleteAllCustomCommands(WebinterfaceRequestEvent event) {
 		GraphiteGuild g =  event.getSelectedGuild();
 		g.getCustomCommandsConfig().removeAllCustomCommands();

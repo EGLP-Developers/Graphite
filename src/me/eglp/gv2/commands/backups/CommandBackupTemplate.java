@@ -105,7 +105,7 @@ public class CommandBackupTemplate extends ParentCommand {
 
 				if(!b.getAuthor().equals(event.getMember())) {
 					eb.setAuthor(DefaultLocaleString.COMMAND_BACKUP_TEMPLATE_CANT_DELETE_TITLE.getFor(event.getSender()), null, GraphiteIcon.ERROR.getPath());
-					eb.setDescription(DefaultLocaleString.COMMAND_BACKUP_TEMPLATE_CANT_DELETE_VALUE.getFor(event.getSender(), "discord", Graphite.getMainBotInfo().getLinks().getDiscord()));
+					eb.setDescription(DefaultLocaleString.COMMAND_BACKUP_TEMPLATE_CANT_DELETE_VALUE.getFor(event.getSender(), "discord", Graphite.getBotInfo().getLinks().getDiscord()));
 					event.reply(eb.build());
 					return;
 				}
@@ -152,12 +152,12 @@ public class CommandBackupTemplate extends ParentCommand {
 					}
 
 					GraphiteQueue q = Graphite.getQueue();
-					if(q.isHeavyBusy()) DefaultMessage.OTHER_HEAVY_BUSY.reply(event, "patreon", Graphite.getMainBotInfo().getLinks().getPatreon());
+					if(q.isHeavyBusy()) DefaultMessage.OTHER_HEAVY_BUSY.reply(event, "patreon", Graphite.getBotInfo().getLinks().getPatreon());
 					QueueTask<Long> tm = q.queueHeavy(event.getGuild(), new GraphiteTaskInfo(GuildBackup.TASK_ID,  "Load template backup (backup template)"), () -> b.restore(event.getGuild(), params));
 					tm.thenAccept(t -> {
 						if(t == -1) {
 							eb.setAuthor(DefaultLocaleString.COMMAND_BACKUP_TEMPLATE_LOAD_FAILED_TITLE.getFor(event.getSender()), null, GraphiteIcon.ERROR.getPath());
-							eb.setDescription(DefaultLocaleString.ERROR_TRY_AGAIN.getFor(event.getSender(), "discord", Graphite.getMainBotInfo().getLinks().getDiscord()));
+							eb.setDescription(DefaultLocaleString.ERROR_TRY_AGAIN.getFor(event.getSender(), "discord", Graphite.getBotInfo().getLinks().getDiscord()));
 							r.editOriginal(eb.build());
 							return;
 						}

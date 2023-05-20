@@ -41,7 +41,7 @@ public class GraphiteAmongUs {
 	private AmongUsWebSocketServer server;
 
 	public GraphiteAmongUs() {
-		this.server = new AmongUsWebSocketServer(Graphite.getMainBotInfo().getAmongUs().getPort());
+		this.server = new AmongUsWebSocketServer(Graphite.getBotInfo().getAmongUs().getPort());
 		server.start();
 
 		server.setListener(new AmongUsListener() {
@@ -149,7 +149,6 @@ public class GraphiteAmongUs {
 				.filter(c -> {
 					if(c.getData("discord") == null) return false;
 					GraphiteMember mem = (GraphiteMember) c.getData("discord");
-					if(!mem.isAvailable()) return false;
 					return channel.equals(mem.getCurrentAudioChannel());
 				})
 				.findFirst().orElse(null);

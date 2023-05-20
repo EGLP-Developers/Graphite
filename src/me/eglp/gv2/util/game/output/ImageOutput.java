@@ -70,7 +70,7 @@ public class ImageOutput implements GameOutput { // TODO: broken
 	public void update(BufferedImage image, boolean resend) {
 		String id = UUID.randomUUID().toString();
 		IMAGES.put(id, image);
-		update(Graphite.getMainBotInfo().getWebsite().getBaseURL() + "/msg-image.php?id=" + id, resend);
+		update(Graphite.getBotInfo().getWebsite().getBaseURL() + "/msg-image.php?id=" + id, resend);
 	}
 	
 	public void update(BufferedImage image) {

@@ -102,7 +102,7 @@ public class GraphiteCommonListeners {
 				GuildAutoChannel ac = channelsConfig.getAutoChannelByID(channelJoined.getID());
 				if(ac != null) {
 					ac.createAutoChannel().thenAccept(c -> {
-						Member m = member.getJDAMember();
+						Member m = member.getMember();
 						if(!m.getVoiceState().inAudioChannel()) {
 							c.getJDAChannel().delete().queue(null, e -> {
 								GraphiteDebug.log(DebugCategory.MISCELLANEOUS, "Failed to create channel", e);

@@ -2,9 +2,7 @@ package me.eglp.gv2.guild.config;
 
 import java.time.ZoneId;
 import java.util.EnumSet;
-import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
 import java.util.regex.Pattern;
@@ -22,9 +20,8 @@ import me.mrletsplay.mrcore.misc.FriendlyException;
 	name = "guilds_prefixes",
 	columns = {
 		"GuildId varchar(255) NOT NULL",
-		"BotIdentifier varchar(255) NOT NULL",
 		"Prefix varchar(255) DEFAULT NULL",
-		"PRIMARY KEY (GuildId, BotIdentifier)"
+		"PRIMARY KEY (GuildId)"
 	},
 	guildReference = "GuildId"
 )
@@ -55,11 +52,11 @@ public class GuildConfig {
 	}
 
 	public void setPrefix(String prefix) {
-		Graphite.getMySQL().query("INSERT INTO guilds_prefixes(GuildId, BotIdentifier, Prefix) VALUES(?, ?, ?) ON DUPLICATE KEY UPDATE Prefix = VALUES(Prefix)", guild.getID(), prefix);
+		Graphite.getMySQL().query("INSERT INTO guilds_prefixes(GuildId, Prefix) VALUES(?, ?, ?) ON DUPLICATE KEY UPDATE Prefix = VALUES(Prefix)", guild.getID(), prefix);
 	}
 
-	private String getPrefix() {
-		String prefix = Graphite.getMySQL().query(String.class, null, "SELECT Prefix from guilds_prefixes WHERE GuildId = ? AND BotIdentifier = ?", guild.getID())
+	public String getPrefix() {
+		String prefix = Graphite.getMySQL().query(String.class, null, "SELECT Prefix from guilds_prefixes WHERE GuildId = ?", guild.getID())
 				.orElseThrowOther(e -> new FriendlyException("Failed to load prefix from MySQL", e));
 		if(prefix == null) prefix = Graphite.getBotInfo().getDefaultPrefix();
 		return prefix;
@@ -110,7 +107,7 @@ public class GuildConfig {
 		Graphite.getMySQL().query("INSERT INTO guilds_settings(GuildId, Locale) VALUES(?, ?) ON DUPLICATE KEY UPDATE Locale = VALUES(Locale)", guild.getID(), localeShort);
 	}
 
-	private String getLocale() {
+	public String getLocale() {
 		String locale = Graphite.getMySQL().query(String.class, GraphiteLocale.DEFAULT_LOCALE_KEY, "SELECT Locale FROM guilds_settings WHERE GuildId = ?", guild.getID())
 				.orElseThrowOther(e -> new FriendlyException("Failed to load locale from MySQL", e));
 		if(locale == null) locale = GraphiteLocale.DEFAULT_LOCALE_KEY;
@@ -131,7 +128,7 @@ public class GuildConfig {
 		Graphite.getMySQL().query("INSERT INTO guilds_settings(GuildId, TextCommands) VALUES(?, ?) ON DUPLICATE KEY UPDATE TextCommands = VALUES(TextCommands)", guild.getID(), textCommands);
 	}
 
-	private boolean hasTextCommands() {
+	public boolean hasTextCommands() {
 		boolean textCommands = Graphite.getMySQL().query(Boolean.class, false, "SELECT TextCommands FROM guilds_settings WHERE GuildId = ?", guild.getID())
 				.orElseThrowOther(e -> new FriendlyException("Failed to load text commands from MySQL", e));
 		return textCommands;

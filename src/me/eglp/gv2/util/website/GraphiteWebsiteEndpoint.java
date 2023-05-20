@@ -23,6 +23,7 @@ import me.eglp.gv2.main.task.GraphiteAlwaysRepeatingTask;
 import me.eglp.gv2.util.command.Command;
 import me.eglp.gv2.util.command.CommandCategory;
 import me.eglp.gv2.util.command.text.CommandHandler;
+import me.eglp.gv2.util.settings.BotInfo;
 import me.eglp.gv2.util.voting.GraphiteVoteSource;
 import me.eglp.gv2.util.voting.InvalidVoteException;
 import me.mrletsplay.mrcore.json.JSONArray;
@@ -47,7 +48,7 @@ public class GraphiteWebsiteEndpoint {
 	}
 
 	private void start() throws IOException {
-		serverSocket = new ServerSocket(Graphite.getMainBotInfo().getWebsite().getWebsiteEndpointPort());
+		serverSocket = new ServerSocket(Graphite.getBotInfo().getWebsite().getWebsiteEndpointPort());
 		serverSocket.setSoTimeout(1000);
 
 		receiveTask = Graphite.getScheduler().scheduleAlwaysRepeating("website-endpoint/receive", () -> {
@@ -88,7 +89,7 @@ public class GraphiteWebsiteEndpoint {
 		DataOutputStream out = new DataOutputStream(s.getOutputStream());
 
 		String k = WebsiteUtils.readString(in);
-		if(!k.equals(Graphite.getMainBotInfo().getWebsite().getWebsiteEndpointKey())) {
+		if(!k.equals(Graphite.getBotInfo().getWebsite().getWebsiteEndpointKey())) {
 			s.close();
 			return;
 		}
@@ -115,11 +116,6 @@ public class GraphiteWebsiteEndpoint {
 				commands(rData, response);
 				break;
 			}
-			case "multiplex":
-			{
-				multiplex(rData, response);
-				break;
-			}
 			case "image":
 			{
 				image(rData, response);
@@ -134,6 +130,8 @@ public class GraphiteWebsiteEndpoint {
 		JSONObject botO = new JSONObject();
 		JSONArray shs = new JSONArray();
 
+		BotInfo info = Graphite.getBotInfo();
+
 		for(GraphiteShard shard : Graphite.getShards()) {
 			JSONObject sh = new JSONObject();
 			sh.put("id", shard.getID());
@@ -142,10 +140,10 @@ public class GraphiteWebsiteEndpoint {
 			shs.add(sh);
 		}
 
-		botO.put("name", bot.getBotInfo().getName());
+		botO.put("name", info.getName());
 		botO.put("shards", shs);
 
-		response.put(bot.getIdentifier(), botO);
+		response.put(info.getIdentifier(), botO);
 	}
 
 	private void vote(JSONObject requestData, JSONObject response) {
@@ -153,15 +151,12 @@ public class GraphiteWebsiteEndpoint {
 			return;
 		}
 
-		MultiplexBot bot = GraphiteMultiplex.getBotByIdentifier(requestData.getString("bot"));
-		if(bot == null) return;
-
 		String vsId = requestData.getString("vote_source");
-		GraphiteVoteSource vs = Graphite.getVoting().getVoteSource(bot, vsId);
+		GraphiteVoteSource vs = Graphite.getVoting().getVoteSource(vsId);
 		if(vs == null) return;
 
 		try {
-			Graphite.withBot(bot, () -> vs.onVote(requestData));
+			vs.onVote(requestData);
 		}catch(InvalidVoteException e) {
 		}catch(Exception e) {
 			GraphiteDebug.log(DebugCategory.WEBINTERFACE, e);
@@ -170,7 +165,7 @@ public class GraphiteWebsiteEndpoint {
 
 	private void commands(JSONObject requestData, JSONObject response) {
 		Map<CommandCategory, List<Command>> commands = new HashMap<>();
-		for(Command c : CommandHandler.getAllCommands()) CommandHandler.addCommands(c, commands);
+		for(Command c : CommandHandler.getCommands()) CommandHandler.addCommands(c, commands);
 		List<Map.Entry<CommandCategory, List<Command>>> cs = new ArrayList<>(commands.entrySet());
 		Collections.sort(cs, (o1, o2) -> o2.getValue().size()-o1.getValue().size());
 		cs.forEach(en -> {
@@ -189,13 +184,6 @@ public class GraphiteWebsiteEndpoint {
 			response.put(en.getKey().getName().getFallback(), arr2);
 		});
 
-		JSONObject obj = new JSONObject();
-		obj.put("data", response);
-	}
-
-	private void multiplex(JSONObject requestData, JSONObject response) {
-		List<MultiplexBot> bots = Graphite.getMultiplexBots();
-		response.put("bots", new JSONArray(bots.stream().map(b -> b.toWebinterfaceObject()).collect(Collectors.toList())));
 		JSONObject obj = new JSONObject();
 		obj.put("data", response);
 	}

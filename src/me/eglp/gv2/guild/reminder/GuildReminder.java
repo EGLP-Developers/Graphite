@@ -107,29 +107,27 @@ public class GuildReminder {
 	}
 
 	private void sendMessage() {
-		Graphite.withBot(Graphite.getGraphiteBot(), () -> {
-			GraphiteGuildMessageChannel messageChannel = guild.getGuildMessageChannelByID(channelID);
-			if (messageChannel == null) {
-				remove();
-				return;
-			}
+		GraphiteGuildMessageChannel messageChannel = guild.getGuildMessageChannelByID(channelID);
+		if (messageChannel == null) {
+			remove();
+			return;
+		}
 
-			EmbedBuilder b = new EmbedBuilder();
-			b.setTitle(DefaultLocaleString.COMMAND_REMINDER_MESSAGE_TITLE.getFor(guild));
-			b.setTimestamp(nextReminderDate.atZone(guild.getConfig().getTimezone()).toInstant());
+		EmbedBuilder b = new EmbedBuilder();
+		b.setTitle(DefaultLocaleString.COMMAND_REMINDER_MESSAGE_TITLE.getFor(guild));
+		b.setTimestamp(nextReminderDate.atZone(guild.getConfig().getTimezone()).toInstant());
 
-			if (repeat != null) {
-				b.setDescription(DefaultLocaleString.COMMAND_REMINDER_MESSAGE_REPEATING.getFor(guild,
-					"repeat", repeat.getFriendlyName(),
-					"message", message));
-				b.setFooter(DefaultLocaleString.COMMAND_REMINDER_MESSAGE_REPEATING_FOOTER.getFor(guild, "reminder_id", getID()));
-			} else {
-				b.setDescription(DefaultLocaleString.COMMAND_REMINDER_MESSAGE_ONE_TIME.getFor(guild,
-					"message", message));
-			}
+		if (repeat != null) {
+			b.setDescription(DefaultLocaleString.COMMAND_REMINDER_MESSAGE_REPEATING.getFor(guild,
+				"repeat", repeat.getFriendlyName(),
+				"message", message));
+			b.setFooter(DefaultLocaleString.COMMAND_REMINDER_MESSAGE_REPEATING_FOOTER.getFor(guild, "reminder_id", getID()));
+		} else {
+			b.setDescription(DefaultLocaleString.COMMAND_REMINDER_MESSAGE_ONE_TIME.getFor(guild,
+				"message", message));
+		}
 
-			messageChannel.sendMessage(b.build());
-		});
+		messageChannel.sendMessage(b.build());
 	}
 
 	private boolean calculateNextReminderDate() {

@@ -1,7 +1,5 @@
 package me.eglp.gv2.user;
 
-import me.eglp.gv2.main.Graphite;
-
 public enum EasterEgg {
 
 	SMILE("Because I'm happy", "Change your nickname to 'Smile'"),

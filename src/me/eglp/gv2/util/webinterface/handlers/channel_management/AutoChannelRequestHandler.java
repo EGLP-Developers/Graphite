@@ -8,7 +8,7 @@ import me.eglp.gv2.guild.GraphiteGuild;
 import me.eglp.gv2.guild.GraphiteVoiceChannel;
 import me.eglp.gv2.guild.GuildAutoChannel;
 import me.eglp.gv2.guild.config.GuildChannelsConfig;
-import me.eglp.gv2.multiplex.GraphiteFeature;
+import me.eglp.gv2.util.permission.DefaultPermissions;
 import me.eglp.gv2.util.webinterface.WebinterfaceHandler;
 import me.eglp.gv2.util.webinterface.base.WebinterfaceRequestEvent;
 import me.eglp.gv2.util.webinterface.base.WebinterfaceResponse;
@@ -17,7 +17,7 @@ import me.mrletsplay.mrcore.json.JSONObject;
 
 public class AutoChannelRequestHandler {
 
-	@WebinterfaceHandler(requestMethod = "getAutoChannels", requireGuild = true, requireFeatures = GraphiteFeature.CHANNEL_MANAGEMENT)
+	@WebinterfaceHandler(requestMethod = "getAutoChannels", requireGuild = true, requirePermissions = DefaultPermissions.WEBINTERFACE_CHANNEL_MANAGEMENT)
 	public static WebinterfaceResponse getAutoChannels(WebinterfaceRequestEvent event) {
 		GraphiteGuild g = event.getSelectedGuild();
 		List<GuildAutoChannel> ac = g.getChannelsConfig().getAutoChannels();
@@ -27,7 +27,7 @@ public class AutoChannelRequestHandler {
 		return WebinterfaceResponse.success(channel);
 	}
 
-	@WebinterfaceHandler(requestMethod = "addAutoChannel", requireGuild = true, requireFeatures = GraphiteFeature.CHANNEL_MANAGEMENT)
+	@WebinterfaceHandler(requestMethod = "addAutoChannel", requireGuild = true, requirePermissions = DefaultPermissions.WEBINTERFACE_CHANNEL_MANAGEMENT)
 	public static WebinterfaceResponse addAutoChannel(WebinterfaceRequestEvent event) {
 		GraphiteGuild g = event.getSelectedGuild();
 
@@ -50,7 +50,7 @@ public class AutoChannelRequestHandler {
 		return WebinterfaceResponse.success(o);
 	}
 
-	@WebinterfaceHandler(requestMethod = "removeAutoChannel", requireGuild = true, requireFeatures = GraphiteFeature.CHANNEL_MANAGEMENT)
+	@WebinterfaceHandler(requestMethod = "removeAutoChannel", requireGuild = true, requirePermissions = DefaultPermissions.WEBINTERFACE_CHANNEL_MANAGEMENT)
 	public static WebinterfaceResponse removeAutoChannel(WebinterfaceRequestEvent event) {
 		GraphiteGuild g = event.getSelectedGuild();
 
@@ -66,7 +66,7 @@ public class AutoChannelRequestHandler {
 		return WebinterfaceResponse.success();
 	}
 
-	@WebinterfaceHandler(requestMethod = "setAutoChannelCategory", requireGuild = true, requireFeatures = GraphiteFeature.CHANNEL_MANAGEMENT)
+	@WebinterfaceHandler(requestMethod = "setAutoChannelCategory", requireGuild = true, requirePermissions = DefaultPermissions.WEBINTERFACE_CHANNEL_MANAGEMENT)
 	public static WebinterfaceResponse setAutoChannelCategory(WebinterfaceRequestEvent event) {
 		GraphiteGuild g = event.getSelectedGuild();
 		GuildChannelsConfig cfg = g.getChannelsConfig();

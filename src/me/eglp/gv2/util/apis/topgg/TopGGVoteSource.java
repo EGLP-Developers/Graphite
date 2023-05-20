@@ -20,7 +20,7 @@ public class TopGGVoteSource implements GraphiteVoteSource {
 		String userID = requestData.getString("userID");
 		boolean isWeekend = requestData.getBoolean("isWeekend");
 		boolean isReal = requestData.getBoolean("real");
-		GraphiteUser user = Graphite.getGlobalUser(userID); // because premium features are available for Multiplex bots as well
+		GraphiteUser user = Graphite.getUser(userID);
 		if(user == null) throw new InvalidVoteException("Invalid user");
 
 		if(isReal) {

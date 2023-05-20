@@ -14,7 +14,7 @@ import javax.imageio.ImageIO;
 
 import me.eglp.gv2.guild.GraphiteGuild;
 import me.eglp.gv2.guild.GraphiteTextChannel;
-import me.eglp.gv2.multiplex.GraphiteFeature;
+import me.eglp.gv2.util.permission.DefaultPermissions;
 import me.eglp.gv2.util.selfcheck.SpecialSelfcheck;
 import me.eglp.gv2.util.stats.element.GuildStatisticsElement;
 import me.eglp.gv2.util.stats.element.StatisticsElementSettings;
@@ -42,7 +42,7 @@ public class StatisticsRequestHandler {
 		return WebinterfaceResponse.success(o);
 	}
 
-	@WebinterfaceHandler(requestMethod = "createStatisticsElement", requireGuild = true, requireFeatures = GraphiteFeature.STATISTICS)
+	@WebinterfaceHandler(requestMethod = "createStatisticsElement", requireGuild = true, requirePermissions = DefaultPermissions.WEBINTERFACE_STATISTICS)
 	public static WebinterfaceResponse createStatisticsElement(WebinterfaceRequestEvent event) {
 		GraphiteGuild g = event.getSelectedGuild();
 		StatisticsElementType type = (StatisticsElementType) ObjectSerializer.deserialize(event.getRequestData().getJSONObject("type"));
@@ -65,7 +65,7 @@ public class StatisticsRequestHandler {
 		return WebinterfaceResponse.success(o);
 	}
 
-	@WebinterfaceHandler(requestMethod = "updateStatisticsElementSettings", requireGuild = true, requireFeatures = GraphiteFeature.STATISTICS)
+	@WebinterfaceHandler(requestMethod = "updateStatisticsElementSettings", requireGuild = true, requirePermissions = DefaultPermissions.WEBINTERFACE_STATISTICS)
 	public static WebinterfaceResponse updateStatisticsElementSettings(WebinterfaceRequestEvent event) {
 		GraphiteGuild g = event.getSelectedGuild();
 		String elementID = event.getRequestData().getString("element_id");
@@ -93,7 +93,7 @@ public class StatisticsRequestHandler {
 		return WebinterfaceResponse.success();
 	}
 
-	@WebinterfaceHandler(requestMethod = "generateStatisticsPreview", requireGuild = true, requireFeatures = GraphiteFeature.STATISTICS)
+	@WebinterfaceHandler(requestMethod = "generateStatisticsPreview", requireGuild = true, requirePermissions = DefaultPermissions.WEBINTERFACE_STATISTICS)
 	public static WebinterfaceResponse generateStatisticsPreview(WebinterfaceRequestEvent event) {
 		StatisticsElementType type = (StatisticsElementType) ObjectSerializer.deserialize(event.getRequestData().getJSONObject("type"));
 		StatisticsElementSettings settings = (StatisticsElementSettings) ObjectSerializer.deserialize(event.getRequestData().getJSONObject("settings"));
@@ -125,7 +125,7 @@ public class StatisticsRequestHandler {
 		return WebinterfaceResponse.success(imgO);
 	}
 
-	@WebinterfaceHandler(requestMethod = "getStatisticElements", requireGuild = true, requireFeatures = GraphiteFeature.STATISTICS)
+	@WebinterfaceHandler(requestMethod = "getStatisticElements", requireGuild = true, requirePermissions = DefaultPermissions.WEBINTERFACE_STATISTICS)
 	public static WebinterfaceResponse getStatisticElements(WebinterfaceRequestEvent event) {
 		GraphiteGuild g = event.getSelectedGuild();
 		List<GuildStatisticsElement> elements = g.getStatisticsConfig().getStatisticsElements();
@@ -136,7 +136,7 @@ public class StatisticsRequestHandler {
 		return WebinterfaceResponse.success(o);
 	}
 
-	@WebinterfaceHandler(requestMethod = "removeStatisticElement", requireGuild = true, requireFeatures = GraphiteFeature.STATISTICS)
+	@WebinterfaceHandler(requestMethod = "removeStatisticElement", requireGuild = true, requirePermissions = DefaultPermissions.WEBINTERFACE_STATISTICS)
 	public static WebinterfaceResponse removeStatisticElement(WebinterfaceRequestEvent event) {
 		GraphiteGuild g = event.getSelectedGuild();
 		String elementID = event.getRequestData().getString("element_id");

@@ -273,7 +273,7 @@ public class GuildChannelsConfig implements IGuildConfig {
 		}
 
 		GraphiteVoiceChannel vc = guild.getVoiceChannel((VoiceChannel) guild.getJDAGuild().createVoiceChannel(owner.getName() + "'s channel").setParent(cat.getJDACategory()).complete());
-		vc.getJDAChannel().upsertPermissionOverride(owner.getJDAMember()).complete().getManager().grant(Permission.ALL_CHANNEL_PERMISSIONS).queue();
+		vc.getJDAChannel().upsertPermissionOverride(owner.getMember()).complete().getManager().grant(Permission.ALL_CHANNEL_PERMISSIONS).queue();
 		GuildUserChannel uc = new GuildUserChannel(guild, owner, vc);
 		addUserChannel(uc);
 		return uc;

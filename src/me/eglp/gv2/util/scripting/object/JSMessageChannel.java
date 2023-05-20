@@ -17,8 +17,8 @@ import net.dv8tion.jda.api.entities.channel.ChannelType;
 public abstract class JSMessageChannel {
 
 	private static final String
-		BLOCK_URL = Graphite.getMainBotInfo().getWebsite().getBaseURL() + "/block_scripts?guild=%s",
-		UNBLOCK_URL = Graphite.getMainBotInfo().getWebsite().getBaseURL() + "/unblock_scripts";
+		BLOCK_URL = Graphite.getBotInfo().getWebsite().getBaseURL() + "/block_scripts?guild=%s",
+		UNBLOCK_URL = Graphite.getBotInfo().getWebsite().getBaseURL() + "/unblock_scripts";
 
 	private static final Supplier<String> MESSAGE_APPENDIX = () -> {
 			Context cx = Context.getCurrentContext();

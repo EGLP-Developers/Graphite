@@ -12,14 +12,14 @@ public class GraphiteVoting {
 	private GraphiteTextChannel voteChannel;
 
 	public GraphiteVoting() {
-		MiscellaneousSettings misc = Graphite.getMainBotInfo().getMiscellaneous();
+		MiscellaneousSettings misc = Graphite.getBotInfo().getMiscellaneous();
 		if(misc.getUpvotesChannelID() != null) {
 			voteChannel = Graphite.getGuild(misc.getMessageServerID()).getTextChannelByID(misc.getUpvotesChannelID());
 		}
 	}
 
 	public void addVotes(GraphiteVoteSource source, GraphiteUser user, int votes) {
-		if(voteChannel != null && user.isAvailable()) {
+		if(voteChannel != null) {
 			voteChannel.sendMessage(new EmbedBuilder()
 					.setDescription(String.format("%s has upvoted the bot on [%s](%s)" + JDAEmote.DOLLARONEN.getUnicode(),
 							user.getName(),
@@ -31,7 +31,7 @@ public class GraphiteVoting {
 	}
 
 	public GraphiteVoteSource getVoteSource(String id) {
-		return getVoteSources().stream()
+		return Graphite.getVoteSources().stream()
 				.filter(vs -> vs.getIdentifier().equals(id))
 				.findFirst().orElse(null);
 	}

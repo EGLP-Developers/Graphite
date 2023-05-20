@@ -38,7 +38,7 @@ public class MemberPermissions implements DiscardablePermissible {
 
 	@Override
 	public boolean hasPermission(Permission permission) {
-		return member.isOwner() || member.getJDAMember().hasPermission(net.dv8tion.jda.api.Permission.ADMINISTRATOR) || DiscardablePermissible.super.hasPermission(permission);
+		return member.isOwner() || member.getMember().hasPermission(net.dv8tion.jda.api.Permission.ADMINISTRATOR) || DiscardablePermissible.super.hasPermission(permission);
 	}
 
 	@Override

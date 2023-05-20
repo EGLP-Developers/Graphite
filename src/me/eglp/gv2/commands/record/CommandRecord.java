@@ -59,7 +59,7 @@ public class CommandRecord extends ParentCommand {
 					return;
 				}
 
-				Member selfMember = event.getGuild().getSelfMember().getJDAMember();
+				Member selfMember = event.getGuild().getSelfMember().getMember();
 				if(selfMember.getVoiceState() != null
 						&& selfMember.getVoiceState().getChannel() != null
 						&& selfMember.getVoiceState().isDeafened()) {
@@ -93,14 +93,14 @@ public class CommandRecord extends ParentCommand {
 
 				GraphiteQueue q = Graphite.getQueue();
 				if(q.isHeavyBusy()) {
-					DefaultMessage.OTHER_HEAVY_BUSY.reply(event, "patreon", Graphite.getMainBotInfo().getLinks().getPatreon());
+					DefaultMessage.OTHER_HEAVY_BUSY.reply(event, "patreon", Graphite.getBotInfo().getLinks().getPatreon());
 				}
 
 				DeferredReply reply = event.deferReply(DefaultLocaleString.COMMAND_RECORD_SAVING_RECORDING.getFor(event.getSender()));
 
 				QueueTask<GuildAudioRecording> tm = q.queueHeavy(event.getGuild(), new GraphiteTaskInfo(RECORD_STOP_TASK_ID, "Processing recording (record stop)"), () -> rec.stop());
 				tm.thenAccept(r -> {
-					reply.editOriginal(DefaultMessage.COMMAND_RECORD_STOPPED_RECORDING.createEmbed(event.getSender(), "name", r.getName(), "webinterface", Graphite.getMainBotInfo().getWebsite().getWebinterfaceURL()));
+					reply.editOriginal(DefaultMessage.COMMAND_RECORD_STOPPED_RECORDING.createEmbed(event.getSender(), "name", r.getName(), "webinterface", Graphite.getBotInfo().getWebsite().getWebinterfaceURL()));
 				}).exceptionally(e -> {
 					if(tm.isCancelled()) return null;
 					DefaultMessage.ERROR_EXCEPTION.reply(event, "error_message", e.getMessage());
@@ -134,7 +134,7 @@ public class CommandRecord extends ParentCommand {
 				}
 
 				if(r.getSize() > 8388608) {
-					DefaultMessage.COMMAND_RECORD_RECORDING_TOO_LARGE.reply(event, "webinterface", Graphite.getMainBotInfo().getWebsite().getWebinterfaceURL());
+					DefaultMessage.COMMAND_RECORD_RECORDING_TOO_LARGE.reply(event, "webinterface", Graphite.getBotInfo().getWebsite().getWebinterfaceURL());
 					return;
 				}
 

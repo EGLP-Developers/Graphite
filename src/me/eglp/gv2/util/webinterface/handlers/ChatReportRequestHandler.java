@@ -9,8 +9,8 @@ import me.eglp.gv2.guild.GraphiteGuild;
 import me.eglp.gv2.guild.chatreport.GuildChatReport;
 import me.eglp.gv2.guild.chatreport.GuildChatReportMessage;
 import me.eglp.gv2.guild.config.GuildReportsConfig;
-import me.eglp.gv2.multiplex.GraphiteFeature;
 import me.eglp.gv2.util.crypto.GraphiteCrypto;
+import me.eglp.gv2.util.permission.DefaultPermissions;
 import me.eglp.gv2.util.webinterface.WebinterfaceHandler;
 import me.eglp.gv2.util.webinterface.base.WebinterfaceRequestEvent;
 import me.eglp.gv2.util.webinterface.base.WebinterfaceResponse;
@@ -20,7 +20,7 @@ import me.mrletsplay.mrcore.json.JSONType;
 
 public class ChatReportRequestHandler {
 
-	@WebinterfaceHandler(requestMethod = "chatReportsEnabled", requireGuild = true, requireFeatures = GraphiteFeature.MODERATION)
+	@WebinterfaceHandler(requestMethod = "chatReportsEnabled", requireGuild = true, requirePermissions = DefaultPermissions.WEBINTERFACE_MODERATION)
 	public static WebinterfaceResponse chatReportsEnabled(WebinterfaceRequestEvent event) {
 		JSONObject o = new JSONObject();
 		o.put("is-enabled", event.getSelectedGuild().getReportsConfig().getChatReportKey() != null);
@@ -28,7 +28,7 @@ public class ChatReportRequestHandler {
 		return WebinterfaceResponse.success(o);
 	}
 
-	@WebinterfaceHandler(requestMethod = "enableChatReports", requireGuild = true, requireFeatures = GraphiteFeature.MODERATION)
+	@WebinterfaceHandler(requestMethod = "enableChatReports", requireGuild = true, requirePermissions = DefaultPermissions.WEBINTERFACE_MODERATION)
 	public static WebinterfaceResponse enableChatReports(WebinterfaceRequestEvent event) {
 		KeyPair key = GraphiteCrypto.generateKeyPair();
 
@@ -40,13 +40,13 @@ public class ChatReportRequestHandler {
 		return WebinterfaceResponse.success(o);
 	}
 
-	@WebinterfaceHandler(requestMethod = "disableChatReports", requireGuild = true, requireFeatures = GraphiteFeature.MODERATION)
+	@WebinterfaceHandler(requestMethod = "disableChatReports", requireGuild = true, requirePermissions = DefaultPermissions.WEBINTERFACE_MODERATION)
 	public static WebinterfaceResponse disableChatReports(WebinterfaceRequestEvent event) {
 		event.getSelectedGuild().getReportsConfig().unsetChatReportKey();
 		return WebinterfaceResponse.success();
 	}
 
-	@WebinterfaceHandler(requestMethod = "getChatReports", requireGuild = true, requireFeatures = GraphiteFeature.MODERATION)
+	@WebinterfaceHandler(requestMethod = "getChatReports", requireGuild = true, requirePermissions = DefaultPermissions.WEBINTERFACE_MODERATION)
 	public static WebinterfaceResponse getChatReports(WebinterfaceRequestEvent event) {
 		GraphiteGuild g = event.getSelectedGuild();
 		List<GuildChatReport> reports = g.getReportsConfig().getChatReports();
@@ -60,7 +60,7 @@ public class ChatReportRequestHandler {
 		return WebinterfaceResponse.success(o);
 	}
 
-	@WebinterfaceHandler(requestMethod = "getChatReportHistory", requireGuild = true, requireFeatures = GraphiteFeature.MODERATION)
+	@WebinterfaceHandler(requestMethod = "getChatReportHistory", requireGuild = true, requirePermissions = DefaultPermissions.WEBINTERFACE_MODERATION)
 	public static WebinterfaceResponse getChatReportHistory(WebinterfaceRequestEvent event) {
 		GraphiteGuild g = event.getSelectedGuild();
 
@@ -94,7 +94,7 @@ public class ChatReportRequestHandler {
 		return WebinterfaceResponse.success(o);
 	}
 
-	@WebinterfaceHandler(requestMethod = "deleteChatReport", requireGuild = true, requireFeatures = GraphiteFeature.MODERATION)
+	@WebinterfaceHandler(requestMethod = "deleteChatReport", requireGuild = true, requirePermissions = DefaultPermissions.WEBINTERFACE_MODERATION)
 	public static WebinterfaceResponse deleteChatReport(WebinterfaceRequestEvent event) {
 		GraphiteGuild g = event.getSelectedGuild();
 		GuildReportsConfig c = g.getReportsConfig();

@@ -3,7 +3,7 @@ package me.eglp.gv2.util.webinterface.handlers;
 import me.eglp.gv2.guild.GraphiteGuild;
 import me.eglp.gv2.guild.GraphiteVoiceChannel;
 import me.eglp.gv2.guild.config.GuildChannelsConfig;
-import me.eglp.gv2.multiplex.GraphiteFeature;
+import me.eglp.gv2.util.permission.DefaultPermissions;
 import me.eglp.gv2.util.webinterface.WebinterfaceHandler;
 import me.eglp.gv2.util.webinterface.base.WebinterfaceRequestEvent;
 import me.eglp.gv2.util.webinterface.base.WebinterfaceResponse;
@@ -11,7 +11,7 @@ import me.mrletsplay.mrcore.json.JSONObject;
 
 public class SupportRequestHandler {
 
-	@WebinterfaceHandler(requestMethod = "getSupportQueue", requireGuild = true, requireFeatures = GraphiteFeature.MODERATION)
+	@WebinterfaceHandler(requestMethod = "getSupportQueue", requireGuild = true, requirePermissions = DefaultPermissions.WEBINTERFACE_MODERATION)
 	public static WebinterfaceResponse getSupportQueue(WebinterfaceRequestEvent event) {
 		GraphiteGuild g = event.getSelectedGuild();
 		GuildChannelsConfig c = g.getChannelsConfig();
@@ -21,7 +21,7 @@ public class SupportRequestHandler {
 		return WebinterfaceResponse.success(o);
 	}
 
-	@WebinterfaceHandler(requestMethod = "setSupportQueue", requireGuild = true, requireFeatures = GraphiteFeature.MODERATION)
+	@WebinterfaceHandler(requestMethod = "setSupportQueue", requireGuild = true, requirePermissions = DefaultPermissions.WEBINTERFACE_MODERATION)
 	public static WebinterfaceResponse setSupportQueue(WebinterfaceRequestEvent event) {
 		GraphiteGuild g = event.getSelectedGuild();
 		GuildChannelsConfig c = g.getChannelsConfig();
@@ -34,7 +34,7 @@ public class SupportRequestHandler {
 		return WebinterfaceResponse.success();
 	}
 
-	@WebinterfaceHandler(requestMethod = "unsetSupportQueue", requireGuild = true, requireFeatures = GraphiteFeature.MODERATION)
+	@WebinterfaceHandler(requestMethod = "unsetSupportQueue", requireGuild = true, requirePermissions = DefaultPermissions.WEBINTERFACE_MODERATION)
 	public static WebinterfaceResponse unsetSupportQueue(WebinterfaceRequestEvent event) {
 		GraphiteGuild g = event.getSelectedGuild();
 		GuildChannelsConfig c = g.getChannelsConfig();

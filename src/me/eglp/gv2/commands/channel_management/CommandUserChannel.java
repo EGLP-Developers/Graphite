@@ -40,7 +40,7 @@ public class CommandUserChannel extends ParentCommand{
 				}
 
 				GuildUserChannel usr = c.createUserChannel(event.getMember());
-				event.getGuild().getJDAGuild().moveVoiceMember(event.getMember().getJDAMember(), usr.getChannel().getJDAChannel()).queue();
+				event.getGuild().getJDAGuild().moveVoiceMember(event.getMember().getMember(), usr.getChannel().getJDAChannel()).queue();
 				DefaultMessage.COMMAND_USERCHANNEL_CREATED.reply(event);
 			}
 

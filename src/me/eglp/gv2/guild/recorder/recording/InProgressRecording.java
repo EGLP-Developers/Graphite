@@ -12,8 +12,6 @@ import java.util.stream.Collectors;
 import me.eglp.gv2.guild.GraphiteAudioChannel;
 import me.eglp.gv2.main.DebugCategory;
 import me.eglp.gv2.main.GraphiteDebug;
-import me.eglp.gv2.multiplex.ContextHandle;
-import me.eglp.gv2.multiplex.GraphiteMultiplex;
 import me.mrletsplay.mrcore.misc.FriendlyException;
 import net.dv8tion.jda.api.audio.CombinedAudio;
 import net.dv8tion.jda.api.entities.Member;
@@ -30,13 +28,11 @@ public class InProgressRecording {
 	private Thread transferThread;
 	private int frame;
 	private boolean isDone;
-	private ContextHandle handle;
 	private long startedAt;
 
 	public InProgressRecording(GraphiteAudioChannel channel) {
 		this.channel = channel;
 		this.events = new ArrayList<>();
-		this.handle = GraphiteMultiplex.handle();
 		try {
 			this.lameProcess = new ProcessBuilder("lame", // Lame: convert from 48KHz 16bit stereo signed BigEndian PCM to MP3
 					"-r",
@@ -52,7 +48,6 @@ public class InProgressRecording {
 					lameProcess.getInputStream().transferTo(mp3Out);
 				} catch (IOException e) {
 					// TODO: msg?
-					handle.reset();
 					channel.getGuild().getRecorder().stop();
 					GraphiteDebug.log(DebugCategory.RECORD, e);
 				}
@@ -72,7 +67,6 @@ public class InProgressRecording {
 			return;
 		}
 
-		handle.reset();
 		lameProcess.getOutputStream().write(audio.getAudioData(1));
 		lameProcess.getOutputStream().flush();
 
@@ -108,7 +102,6 @@ public class InProgressRecording {
 				}
 			} catch (InterruptedException e) {
 				// TODO: msg?
-				handle.reset();
 				channel.getGuild().getRecorder().stop();
 				GraphiteDebug.log(DebugCategory.RECORD, e);
 			}

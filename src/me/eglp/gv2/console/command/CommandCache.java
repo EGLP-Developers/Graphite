@@ -1,7 +1,5 @@
 package me.eglp.gv2.console.command;
 
-import java.util.List;
-
 import me.eglp.gv2.console.AbstractConsoleCommand;
 import me.eglp.gv2.main.Graphite;
 import me.eglp.gv2.main.GraphiteShard;
@@ -17,7 +15,7 @@ public class CommandCache extends AbstractConsoleCommand {
 	@Override
 	public void action(CommandInvokedEvent event) {
 		event.getSender().sendMessage("--- Bot Graphite ---");
-		for(GraphiteShard s : b.getShards()) {
+		for(GraphiteShard s : Graphite.getShards()) {
 			event.getSender().sendMessage("+ Shard " + s.getID());
 			JDA jda = s.getJDA();
 			event.getSender().sendMessage("Users            = " + jda.getUserCache().size());

@@ -7,13 +7,11 @@ import java.util.stream.Collectors;
 import me.eglp.gv2.guild.GraphiteGuild;
 import me.eglp.gv2.guild.GraphiteTextChannel;
 import me.eglp.gv2.main.Graphite;
-import me.eglp.gv2.multiplex.GraphiteFeature;
-import me.eglp.gv2.multiplex.GraphiteMultiplex;
-import me.eglp.gv2.multiplex.bot.GlobalBot;
 import me.eglp.gv2.util.backup.GuildBackup;
 import me.eglp.gv2.util.backup.RestoreSelector;
 import me.eglp.gv2.util.backup.TemplateBackup;
 import me.eglp.gv2.util.lang.LocalizedTimeUnit;
+import me.eglp.gv2.util.permission.DefaultPermissions;
 import me.eglp.gv2.util.queue.GraphiteTaskInfo;
 import me.eglp.gv2.util.settings.MiscellaneousSettings;
 import me.eglp.gv2.util.webinterface.WebinterfaceHandler;
@@ -26,7 +24,7 @@ import net.dv8tion.jda.api.EmbedBuilder;
 
 public class TemplateRequestHandler {
 
-	@WebinterfaceHandler(requestMethod = "getTempBackups", requireGuild = true, requireFeatures = GraphiteFeature.BACKUPS)
+	@WebinterfaceHandler(requestMethod = "getTempBackups", requireGuild = true, requirePermissions = DefaultPermissions.WEBINTERFACE_BACKUPS)
 	public static WebinterfaceResponse getTempBackups(WebinterfaceRequestEvent event) {
 		List<TemplateBackup> templates = TemplateBackup.getTemplateBackups();
 
@@ -41,7 +39,7 @@ public class TemplateRequestHandler {
 		return WebinterfaceResponse.success(o);
 	}
 
-	@WebinterfaceHandler(requestMethod = "createTemplateBackup", requireGuild = true, requireFeatures = GraphiteFeature.BACKUPS)
+	@WebinterfaceHandler(requestMethod = "createTemplateBackup", requireGuild = true, requirePermissions = DefaultPermissions.WEBINTERFACE_BACKUPS)
 	public static WebinterfaceResponse createTemplateBackup(WebinterfaceRequestEvent event) {
 		GraphiteGuild g = event.getSelectedGuild();
 
@@ -76,7 +74,7 @@ public class TemplateRequestHandler {
 		return WebinterfaceResponse.success(o);
 	}
 
-	@WebinterfaceHandler(requestMethod = "deleteTemplateBackup", requireGuild = true, requireFeatures = GraphiteFeature.BACKUPS)
+	@WebinterfaceHandler(requestMethod = "deleteTemplateBackup", requireGuild = true, requirePermissions = DefaultPermissions.WEBINTERFACE_BACKUPS)
 	public static WebinterfaceResponse deleteTemplateBackup(WebinterfaceRequestEvent event) {
 		String id = event.getRequestData().getString("backup_id");
 		TemplateBackup t = TemplateBackup.getTemplateByID(id);
@@ -94,7 +92,7 @@ public class TemplateRequestHandler {
 		return WebinterfaceResponse.success();
 	}
 
-	@WebinterfaceHandler(requestMethod = "loadTemplateBackup", requireGuild = true, requireFeatures = GraphiteFeature.BACKUPS)
+	@WebinterfaceHandler(requestMethod = "loadTemplateBackup", requireGuild = true, requirePermissions = DefaultPermissions.WEBINTERFACE_BACKUPS)
 	public static WebinterfaceResponse loadTemplateBackup(WebinterfaceRequestEvent event) {
 		GraphiteGuild g = event.getSelectedGuild();
 
@@ -113,13 +111,13 @@ public class TemplateRequestHandler {
 		List<String> params = Complex.castList(event.getRequestData().getJSONArray("params"), String.class).get();
 
 		g.getResponsibleQueue().queueHeavy(g, new GraphiteTaskInfo(GuildBackup.TASK_ID, "Load template backup (webinterface)"), () -> {
-			Graphite.withBot(GraphiteMultiplex.getHighestRelativeHierarchy(g, GraphiteFeature.BACKUPS), () -> t.restore(g, params.stream().map(p -> RestoreSelector.valueOf(p)).collect(Collectors.toCollection(() -> EnumSet.noneOf(RestoreSelector.class)))));
+			t.restore(g, params.stream().map(p -> RestoreSelector.valueOf(p)).collect(Collectors.toCollection(() -> EnumSet.noneOf(RestoreSelector.class))));
 		});
 
 		return WebinterfaceResponse.success();
 	}
 
-	@WebinterfaceHandler(requestMethod = "reportTemplateBackupByID", requireGuild = false, requireFeatures = GraphiteFeature.BACKUPS)
+	@WebinterfaceHandler(requestMethod = "reportTemplateBackupByID", requireGuild = false, requirePermissions = DefaultPermissions.WEBINTERFACE_BACKUPS)
 	public static WebinterfaceResponse reportTemplateBackupByID(WebinterfaceRequestEvent event) {
 		String templateID = event.getRequestData().getString("id");
 		String reason = event.getRequestData().getString("reason");
@@ -129,8 +127,8 @@ public class TemplateRequestHandler {
 			return WebinterfaceResponse.error("Template doesn't exist");
 		}
 
-		MiscellaneousSettings misc = Graphite.getMainBotInfo().getMiscellaneous();
-		GraphiteTextChannel tc = Graphite.withBot(GlobalBot.INSTANCE, () -> Graphite.getGuild(misc.getMessageServerID()).getTextChannelByID(misc.getReportedTemplatesChannelID()));
+		MiscellaneousSettings misc = Graphite.getBotInfo().getMiscellaneous();
+		GraphiteTextChannel tc = Graphite.getGuild(misc.getMessageServerID()).getTextChannelByID(misc.getReportedTemplatesChannelID());
 
 		EmbedBuilder eb = new EmbedBuilder();
 		eb.setTitle("Reported Template: " + tb.getName());
@@ -143,7 +141,7 @@ public class TemplateRequestHandler {
 		return WebinterfaceResponse.success();
 	}
 
-	@WebinterfaceHandler(requestMethod = "getTemplateBackupChannelsData", requireGuild = true, requireFeatures = GraphiteFeature.BACKUPS)
+	@WebinterfaceHandler(requestMethod = "getTemplateBackupChannelsData", requireGuild = true, requirePermissions = DefaultPermissions.WEBINTERFACE_BACKUPS)
 	public static WebinterfaceResponse getTemplateBackupChannelsData(WebinterfaceRequestEvent event) {
 		String id = event.getRequestData().getString("backup_id");
 
@@ -159,7 +157,7 @@ public class TemplateRequestHandler {
 		return WebinterfaceResponse.success(o);
 	}
 
-	@WebinterfaceHandler(requestMethod = "getTemplateBackupRolesData", requireGuild = true, requireFeatures = GraphiteFeature.BACKUPS)
+	@WebinterfaceHandler(requestMethod = "getTemplateBackupRolesData", requireGuild = true, requirePermissions = DefaultPermissions.WEBINTERFACE_BACKUPS)
 	public static WebinterfaceResponse getTemplateBackupRolesData(WebinterfaceRequestEvent event) {
 		String id = event.getRequestData().getString("backup_id");
 
@@ -175,7 +173,7 @@ public class TemplateRequestHandler {
 		return WebinterfaceResponse.success(o);
 	}
 
-	@WebinterfaceHandler(requestMethod = "upvoteTemplateBackupByID", requireGuild = false, requireFeatures = GraphiteFeature.BACKUPS)
+	@WebinterfaceHandler(requestMethod = "upvoteTemplateBackupByID", requireGuild = false, requirePermissions = DefaultPermissions.WEBINTERFACE_BACKUPS)
 	public static WebinterfaceResponse upvoteTemplateBackupByID(WebinterfaceRequestEvent event) {
 		String backupID = event.getRequestData().getString("id");
 
@@ -196,7 +194,7 @@ public class TemplateRequestHandler {
 		return WebinterfaceResponse.success();
 	}
 
-	@WebinterfaceHandler(requestMethod = "hasUpvotedTemplateByID", requireGuild = false, requireFeatures = GraphiteFeature.BACKUPS)
+	@WebinterfaceHandler(requestMethod = "hasUpvotedTemplateByID", requireGuild = false, requirePermissions = DefaultPermissions.WEBINTERFACE_BACKUPS)
 	public static WebinterfaceResponse hasUpvotedTemplateByID(WebinterfaceRequestEvent event) {
 		String backupID = event.getRequestData().getString("id");
 		String userID = event.getRequestData().getString("user_id");

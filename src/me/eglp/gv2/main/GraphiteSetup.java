@@ -16,8 +16,8 @@ public class GraphiteSetup {
 
 	public static void run() {
 		// Load and create emojis on emoji guilds
-		List<GraphiteGuild> guilds = Graphite.getMainBotInfo().getMiscellaneous().getEmojiServerIDs().stream()
-			.map(Graphite::getGlobalGuild)
+		List<GraphiteGuild> guilds = Graphite.getBotInfo().getMiscellaneous().getEmojiServerIDs().stream()
+			.map(Graphite::getGuild)
 			.collect(Collectors.toList());
 
 		if(guilds.stream().anyMatch(g -> g == null)) {

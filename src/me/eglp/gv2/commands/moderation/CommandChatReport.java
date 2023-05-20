@@ -30,7 +30,7 @@ public class CommandChatReport extends Command {
 		GraphiteGuild g = event.getGuild();
 		GuildReportsConfig c = g.getReportsConfig();
 		if(c.getChatReportKey() == null) {
-			DefaultMessage.COMMAND_CHATREPORT_NOT_ENABLED.reply(event, "webinterface", Graphite.getMainBotInfo().getWebsite().getWebinterfaceURL());
+			DefaultMessage.COMMAND_CHATREPORT_NOT_ENABLED.reply(event, "webinterface", Graphite.getBotInfo().getWebsite().getWebinterfaceURL());
 			return;
 		}
 
@@ -39,7 +39,7 @@ public class CommandChatReport extends Command {
 
 		c.createChatReport(event.getAuthor().getID(), event.getChannel().getJDAChannel(), messages);
 
-		DefaultMessage.COMMAND_CHATREPORT_SUCCESS.reply(event, "webinterface", Graphite.getMainBotInfo().getWebsite().getWebinterfaceURL());
+		DefaultMessage.COMMAND_CHATREPORT_SUCCESS.reply(event, "webinterface", Graphite.getBotInfo().getWebsite().getWebinterfaceURL());
 	}
 
 	@Override

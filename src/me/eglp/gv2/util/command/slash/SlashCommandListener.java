@@ -133,7 +133,7 @@ public class SlashCommandListener implements AnnotationEventHandler {
 				final Command c2 = cmd;
 				Graphite.getScheduler().execute(() -> c2.action(e));
 				if(!event.isAcknowledged()) {
-					DefaultMessage.ERROR_NO_SLASH_COMMAND_REPLY.reply(e, "discord_url", Graphite.getMainBotInfo().getLinks().getDiscord());
+					DefaultMessage.ERROR_NO_SLASH_COMMAND_REPLY.reply(e, "discord_url", Graphite.getBotInfo().getLinks().getDiscord());
 				}
 				return;
 			}
@@ -146,7 +146,7 @@ public class SlashCommandListener implements AnnotationEventHandler {
 			QueueTask<?> t = guild.getResponsibleQueue().queue(guild, () -> {
 				cmd.action(e);
 				if(!event.isAcknowledged()) {
-					DefaultMessage.ERROR_NO_SLASH_COMMAND_REPLY.reply(e, "discord_url", Graphite.getMainBotInfo().getLinks().getDiscord());
+					DefaultMessage.ERROR_NO_SLASH_COMMAND_REPLY.reply(e, "discord_url", Graphite.getBotInfo().getLinks().getDiscord());
 				}
 			});
 

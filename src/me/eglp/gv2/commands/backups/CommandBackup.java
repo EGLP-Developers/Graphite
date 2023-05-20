@@ -69,7 +69,7 @@ public class CommandBackup extends ParentCommand {
 				EmbedBuilder eb = new EmbedBuilder();
 				if(!event.getGuild().canCreateBackup()) {
 					eb.setAuthor(DefaultLocaleString.COMMAND_BACKUP_LIMIT_REACHED_TITLE.getFor(event.getSender()), null, GraphiteIcon.ERROR.getPath());
-					eb.setDescription(DefaultLocaleString.COMMAND_BACKUP_LIMIT_REACHED_VALUE.getFor(event.getSender(), "patreon", Graphite.getMainBotInfo().getLinks().getPatreon()));
+					eb.setDescription(DefaultLocaleString.COMMAND_BACKUP_LIMIT_REACHED_VALUE.getFor(event.getSender(), "patreon", Graphite.getBotInfo().getLinks().getPatreon()));
 					event.reply(eb.build());
 					return;
 				}
@@ -101,7 +101,7 @@ public class CommandBackup extends ParentCommand {
 					byte[] privateKeyData = kp.getPrivate().getEncoded();
 
 					MessageEmbed embed = new EmbedBuilder()
-							.setDescription(DefaultLocaleString.COMMAND_BACKUP_CREATE_KEY_DESCRIPTION.getFor(event.getSender(), "faq", Graphite.getMainBotInfo().getWebsite().getFAQURL()))
+							.setDescription(DefaultLocaleString.COMMAND_BACKUP_CREATE_KEY_DESCRIPTION.getFor(event.getSender(), "faq", Graphite.getBotInfo().getWebsite().getFAQURL()))
 							.setColor(Color.ORANGE)
 							.build();
 
@@ -124,7 +124,7 @@ public class CommandBackup extends ParentCommand {
 						GraphiteIcon.CHECKMARK.getPath());
 				eb2.setDescription(DefaultLocaleString.COMMAND_BACKUP_CREATED_VALUE.getFor(event.getSender(), "backup_name", b.getName()));
 				eb2.addField(DefaultLocaleString.COMMAND_BACKUP_CREATED_FIELD_1_TITLE.getFor(event.getSender()),
-						DefaultLocaleString.COMMAND_BACKUP_CREATED_FIELD_1_VALUE.getFor(event.getSender(), "prefix", event.getPrefixUsed(), "webinterface", Graphite.getMainBotInfo().getWebsite().getWebinterfaceURL()), false);
+						DefaultLocaleString.COMMAND_BACKUP_CREATED_FIELD_1_VALUE.getFor(event.getSender(), "prefix", event.getPrefixUsed(), "webinterface", Graphite.getBotInfo().getWebsite().getWebinterfaceURL()), false);
 				d.editOriginal(eb2.build());
 			}
 
@@ -228,13 +228,13 @@ public class CommandBackup extends ParentCommand {
 					}
 
 					GraphiteQueue q = Graphite.getQueue();
-					if(q.isHeavyBusy()) DefaultMessage.OTHER_HEAVY_BUSY.reply(event, "patreon", Graphite.getMainBotInfo().getLinks().getPatreon());
+					if(q.isHeavyBusy()) DefaultMessage.OTHER_HEAVY_BUSY.reply(event, "patreon", Graphite.getBotInfo().getLinks().getPatreon());
 					QueueTask<Long> tm = q.queueHeavy(event.getGuild(), new GraphiteTaskInfo(GuildBackup.TASK_ID,  "Restoring backup (backup restore)"), () -> b.restore(event.getGuild(), decryptionKey, params));
 					tm.thenAccept(t -> {
 						if(t == -1) {
 							EmbedBuilder eb = new EmbedBuilder();
 							eb.setAuthor(DefaultLocaleString.COMMAND_BACKUP_RESTORING_FAILED_TITLE.getFor(event.getSender()), null, GraphiteIcon.ERROR.getPath());
-							eb.setDescription(DefaultLocaleString.ERROR_TRY_AGAIN.getFor(event.getSender(), "discord", Graphite.getMainBotInfo().getLinks().getDiscord()));
+							eb.setDescription(DefaultLocaleString.ERROR_TRY_AGAIN.getFor(event.getSender(), "discord", Graphite.getBotInfo().getLinks().getDiscord()));
 							event.reply(eb.build());
 							return;
 						}
@@ -341,7 +341,7 @@ public class CommandBackup extends ParentCommand {
 					byte[] privateKeyData = kp.getPrivate().getEncoded();
 
 					MessageEmbed embed = new EmbedBuilder()
-							.setDescription(DefaultLocaleString.COMMAND_BACKUP_CREATE_KEY_DESCRIPTION.getFor(event.getSender(), "faq", Graphite.getMainBotInfo().getWebsite().getFAQURL()))
+							.setDescription(DefaultLocaleString.COMMAND_BACKUP_CREATE_KEY_DESCRIPTION.getFor(event.getSender(), "faq", Graphite.getBotInfo().getWebsite().getFAQURL()))
 							.setColor(Color.ORANGE)
 							.build();
 
@@ -364,7 +364,7 @@ public class CommandBackup extends ParentCommand {
 						GraphiteIcon.CHECKMARK.getPath());
 				eb2.setDescription(DefaultLocaleString.COMMAND_BACKUP_CREATED_VALUE.getFor(event.getSender(), "backup_name", copy.getName()));
 				eb2.addField(DefaultLocaleString.COMMAND_BACKUP_CREATED_FIELD_1_TITLE.getFor(event.getSender()),
-						DefaultLocaleString.COMMAND_BACKUP_CREATED_FIELD_1_VALUE.getFor(event.getSender(), "prefix", event.getPrefixUsed(), "webinterface", Graphite.getMainBotInfo().getWebsite().getWebinterfaceURL()), false);
+						DefaultLocaleString.COMMAND_BACKUP_CREATED_FIELD_1_VALUE.getFor(event.getSender(), "prefix", event.getPrefixUsed(), "webinterface", Graphite.getBotInfo().getWebsite().getWebinterfaceURL()), false);
 				d.editOriginal(eb2.build());
 			}
 

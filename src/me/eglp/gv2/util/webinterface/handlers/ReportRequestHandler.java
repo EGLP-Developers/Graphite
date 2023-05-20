@@ -6,7 +6,7 @@ import java.util.stream.Collectors;
 import me.eglp.gv2.guild.GraphiteGuild;
 import me.eglp.gv2.guild.GuildReport;
 import me.eglp.gv2.guild.config.GuildReportsConfig;
-import me.eglp.gv2.multiplex.GraphiteFeature;
+import me.eglp.gv2.util.permission.DefaultPermissions;
 import me.eglp.gv2.util.webinterface.WebinterfaceHandler;
 import me.eglp.gv2.util.webinterface.base.WebinterfaceRequestEvent;
 import me.eglp.gv2.util.webinterface.base.WebinterfaceResponse;
@@ -15,7 +15,7 @@ import me.mrletsplay.mrcore.json.JSONObject;
 
 public class ReportRequestHandler {
 
-	@WebinterfaceHandler(requestMethod = "getReports", requireGuild = true, requireFeatures = GraphiteFeature.MODERATION)
+	@WebinterfaceHandler(requestMethod = "getReports", requireGuild = true, requirePermissions = DefaultPermissions.WEBINTERFACE_MODERATION)
 	public static WebinterfaceResponse getReports(WebinterfaceRequestEvent event) {
 		GraphiteGuild g = event.getSelectedGuild();
 		List<GuildReport> reports = g.getReportsConfig().getReports();
@@ -24,7 +24,7 @@ public class ReportRequestHandler {
 		return WebinterfaceResponse.success(o);
 	}
 
-	@WebinterfaceHandler(requestMethod = "deleteReport", requireGuild = true, requireFeatures = GraphiteFeature.MODERATION)
+	@WebinterfaceHandler(requestMethod = "deleteReport", requireGuild = true, requirePermissions = DefaultPermissions.WEBINTERFACE_MODERATION)
 	public static WebinterfaceResponse deleteReport(WebinterfaceRequestEvent event) {
 		GraphiteGuild g = event.getSelectedGuild();
 		GuildReportsConfig c = g.getReportsConfig();

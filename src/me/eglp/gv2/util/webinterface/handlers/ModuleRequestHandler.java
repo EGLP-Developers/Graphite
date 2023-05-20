@@ -5,7 +5,6 @@ import java.util.stream.Collectors;
 import me.eglp.gv2.guild.GraphiteGuild;
 import me.eglp.gv2.guild.GraphiteModule;
 import me.eglp.gv2.guild.config.GuildConfig;
-import me.eglp.gv2.multiplex.GraphiteFeature;
 import me.eglp.gv2.util.command.SpecialHelp;
 import me.eglp.gv2.util.command.text.CommandHandler;
 import me.eglp.gv2.util.selfcheck.SpecialSelfcheck;
@@ -24,12 +23,12 @@ public class ModuleRequestHandler {
 		JSONArray modules = new JSONArray();
 		GraphiteGuild g = event.getSelectedGuild();
 		for(GraphiteModule m : GraphiteModule.values()) {
-			String avCmds = CommandHandler.getAllCommands().stream().filter(c -> {
+			String avCmds = CommandHandler.getCommands().stream().filter(c -> {
 				SpecialHelp h = c.getAnnotation(SpecialHelp.class);
 				boolean hH = h!= null && h.hideSelf() && (h.hideSubCommands() || c.getSubCommands().isEmpty());
 				return !hH && c.getModule() != null && c.getModule().equals(m);
 			}).map(c -> c.getName()).collect(Collectors.joining(", "));
-			modules.add(new Module(m.name(), m.getName(), avCmds, !g.hasFeaturesAvailable(GraphiteFeature.MODULES) || g.getConfig().hasModuleEnabled(m)).toWebinterfaceObject());
+			modules.add(new Module(m.name(), m.getName(), avCmds, g.getConfig().hasModuleEnabled(m)).toWebinterfaceObject());
 		}
 		JSONObject res = new JSONObject();
 		res.put("modules", modules);

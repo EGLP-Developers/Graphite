@@ -16,9 +16,6 @@ import me.eglp.gv2.guild.GraphiteTextChannel;
 import me.eglp.gv2.guild.GraphiteVoiceChannel;
 import me.eglp.gv2.guild.config.GuildChannelsConfig;
 import me.eglp.gv2.main.Graphite;
-import me.eglp.gv2.multiplex.GraphiteFeature;
-import me.eglp.gv2.multiplex.GraphiteMultiplex;
-import me.eglp.gv2.multiplex.bot.MultiplexBot;
 import me.eglp.gv2.user.GraphiteUser;
 import me.eglp.gv2.util.selfcheck.SpecialSelfcheck;
 import me.eglp.gv2.util.webinterface.WebinterfaceHandler;
@@ -40,7 +37,7 @@ public class BaseRequestHandler {
 	@WebinterfaceHandler(requestMethod = "isOnServer")
 	public static WebinterfaceResponse isOnServer(WebinterfaceRequestEvent req) {
 		JSONObject o = new JSONObject();
-		o.put("isOnServer", Graphite.getGlobalGuild(req.getRequestData().getString("guild")) != null);
+		o.put("isOnServer", Graphite.getGuild(req.getRequestData().getString("guild")) != null);
 
 		return WebinterfaceResponse.success(o);
 	}
@@ -62,7 +59,7 @@ public class BaseRequestHandler {
 		GraphiteWebinterfaceUser usr = event.getUser();
 		GraphiteUser u = usr.getDiscordUser();
 
-		if(u == null || !u.isAvailable()) {
+		if(u == null) {
 			return WebinterfaceResponse.error("Unknown self user");
 		}
 
@@ -80,7 +77,7 @@ public class BaseRequestHandler {
 		GraphiteWebinterfaceUser usr = Graphite.getWebinterfaceUser(id);
 		GraphiteUser u = usr.getDiscordUser();
 
-		if(u == null || !u.isAvailable()) {
+		if(u == null) {
 			return WebinterfaceResponse.error("Unknown user");
 		}
 
@@ -97,12 +94,12 @@ public class BaseRequestHandler {
 		GraphiteUser u = usr.getDiscordUser();
 		GraphiteGuild g = event.getSelectedGuild();
 
-		if(u == null || !u.isAvailable() || g.getMember(u) == null) {
+		if(u == null || g.getMember(u) == null) {
 			return WebinterfaceResponse.error("Unknown self user");
 		}
 
 		JSONObject obj = new JSONObject();
-		obj.put("isAdmin", g.getMember(u).getJDAMember().hasPermission(Permission.ADMINISTRATOR));
+		obj.put("isAdmin", g.getMember(u).getMember().hasPermission(Permission.ADMINISTRATOR));
 
 		return WebinterfaceResponse.success(obj);
 	}
@@ -114,12 +111,12 @@ public class BaseRequestHandler {
 		GraphiteUser u = usr.getDiscordUser();
 		GraphiteGuild g = event.getSelectedGuild();
 
-		if(u == null || !u.isAvailable() || g.getMember(u) == null) {
+		if(u == null || g.getMember(u) == null) {
 			return WebinterfaceResponse.error("Unknown self user");
 		}
 
 		JSONObject obj = new JSONObject();
-		obj.put("isOwner", g.getMember(u).getJDAMember().isOwner());
+		obj.put("isOwner", g.getMember(u).getMember().isOwner());
 
 		return WebinterfaceResponse.success(obj);
 	}
@@ -178,7 +175,7 @@ public class BaseRequestHandler {
 		JSONObject o = new JSONObject();
 		o.put("guilds", new JSONArray(permittedGuilds.stream()
 				.filter(g -> g.isGraphiteGuild())
-				.filter(g -> Arrays.stream(GraphiteFeature.values()).anyMatch(f -> f.getWebinterfacePermission() != null && g.getGraphiteGuild().getPermissionManager().hasPermission(g.getGraphiteGuild().getMember(event.getUser().getDiscordUser()), f.getWebinterfacePermission())))
+				.filter(g -> Arrays.stream(me.eglp.gv2.main.GraphiteFeature.values()).anyMatch(f -> f.getWebinterfacePermission() != null && g.getGraphiteGuild().getPermissionManager().hasPermission(g.getGraphiteGuild().getMember(event.getUser().getDiscordUser()), f.getWebinterfacePermission())))
 				.map(g -> g.toWebinterfaceObject())
 				.collect(Collectors.toList())));
 
@@ -244,17 +241,6 @@ public class BaseRequestHandler {
 
 		JSONObject o = new JSONObject();
 		o.put("stagechannels", new JSONArray(channels.stream().map(gtc -> gtc.toWebinterfaceObject()).collect(Collectors.toList())));
-
-		return WebinterfaceResponse.success(o);
-	}
-
-	@SpecialSelfcheck(ignoreAccessibleToEveryone = true)
-	@WebinterfaceHandler(requestMethod = "getAvailableBots", requireGuild = true)
-	public static WebinterfaceResponse getAvailableBots(WebinterfaceRequestEvent event) {
-		List<MultiplexBot> bots = GraphiteMultiplex.getAvailableBots(event.getSelectedGuild());
-
-		JSONObject o = new JSONObject();
-		o.put("bots", new JSONArray(bots.stream().map(b -> b.toWebinterfaceObject()).collect(Collectors.toList())));
 
 		return WebinterfaceResponse.success(o);
 	}

@@ -16,6 +16,7 @@ import me.eglp.gv2.guild.modlog.ModLogEntry;
 import me.eglp.gv2.guild.modlog.ModLogEntryType;
 import me.eglp.gv2.main.Graphite;
 import me.eglp.gv2.util.mysql.SQLTable;
+import me.eglp.gv2.util.permission.DefaultPermissions;
 import me.mrletsplay.mrcore.json.JSONObject;
 import me.mrletsplay.mrcore.misc.FriendlyException;
 
@@ -247,7 +248,7 @@ public class GuildModerationConfig implements IGuildConfig {
 
 		JSONObject o = new JSONObject();
 		o.put("modlogEntry", entry.toWebinterfaceObject());
-		Graphite.getWebinterface().sendRequestToGuildUsers("updateModLogEntries", o, guild.getID(), GraphiteFeature.MODERATION);
+		Graphite.getWebinterface().sendRequestToGuildUsers("updateModLogEntries", o, guild.getID(), DefaultPermissions.WEBINTERFACE_MODERATION);
 	}
 
 	private void deleteOldModLogEntries() {

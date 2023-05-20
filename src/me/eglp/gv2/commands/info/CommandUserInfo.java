@@ -36,14 +36,14 @@ public class CommandUserInfo extends Command{
 		GraphiteGuild g = event.getGuild();
 		GraphiteMember gMem = g.getMember(usr);
 		User u = usr.getJDAUser();
-		Member m = gMem.getJDAMember();
+		Member m = gMem.getMember();
 		GuildModerationConfig c = g.getModerationConfig();
 
 		EmbedBuilder eb = new EmbedBuilder();
 
 		eb.setColor(Color.DARK_GRAY);
 		eb.setTitle(DefaultLocaleString.COMMAND_USERINFO_TITLE.getFor(event.getSender(), "user", u.getName()));
-		eb.setThumbnail(usr.getJDAUser().getAvatarUrl());
+		eb.setThumbnail(u.getAvatarUrl());
 		eb.addField(DefaultLocaleString.COMMAND_USERINFO_NAME_TITLE.getFor(event.getSender()), u.getName(), false);
 		eb.addField(DefaultLocaleString.COMMAND_USERINFO_NICKNAME_TITLE.getFor(event.getSender()), m.getNickname() == null ? DefaultLocaleString.COMMAND_USERINFO_NICKNAME_NO_NICKNAME.getFor(event.getSender()) : m.getNickname(), false);
 		eb.addField(DefaultLocaleString.COMMAND_USERINFO_DISCRIMINATOR_TITLE.getFor(event.getSender()), u.getDiscriminator(), false);

@@ -97,7 +97,7 @@ public class GraphiteTwitterUser implements WebinterfaceObject, JSONConvertible 
 
 	public Message sendNotificationMessage(GraphiteGuild guild, Tweet tweet) {
 		GraphiteGuildMessageChannel notChannel = getNotificationChannel(guild);
-		if(notChannel != null && notChannel.existsJDA() && notChannel.canWrite()) {
+		if(notChannel != null && notChannel.canWrite()) {
 			MessageCreateBuilder b = new MessageCreateBuilder();
 			EmbedBuilder eb = new EmbedBuilder();
 			eb.setColor(color);

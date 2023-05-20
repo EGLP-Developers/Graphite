@@ -224,7 +224,7 @@ public class GraphiteCustomCommand implements WebinterfaceObject, JSONConvertibl
 			argDescs.add(nameAndType.getValue().stream().collect(Collectors.joining("/", "<", ">")));
 		}
 
-		return (it.isUser() ? Graphite.getMainBotInfo().getDefaultPrefix() : it.asGuild().getConfig().getPrefix()) + getName() + argDescs.stream()
+		return (it.isUser() ? Graphite.getBotInfo().getDefaultPrefix() : it.asGuild().getConfig().getPrefix()) + getName() + argDescs.stream()
 					.collect(Collectors.joining(" ", " ", " "))
 				+ "[...]";
 	}

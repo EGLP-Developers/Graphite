@@ -1,7 +1,6 @@
 package me.eglp.gv2.guild;
 
 import me.eglp.gv2.main.Graphite;
-import me.eglp.gv2.multiplex.bot.GlobalBot;
 import me.eglp.gv2.util.base.GraphiteIdentifiable;
 import me.eglp.gv2.util.permission.RolePermissions;
 import me.eglp.gv2.util.webinterface.js.JavaScriptClass;
@@ -68,11 +67,6 @@ public class GraphiteRole implements GraphiteIdentifiable, WebinterfaceObject {
 	public boolean equals(Object o) {
 		if(!(o instanceof GraphiteRole)) return false;
 		return id.equals(((GraphiteRole)o).getID());
-	}
-
-	@Override
-	public boolean existsJDA() {
-		return Graphite.withBot(GlobalBot.INSTANCE, () -> getJDARole() != null);
 	}
 
 	@Override

@@ -7,8 +7,6 @@ import java.util.ArrayList;
 import me.eglp.gv2.guild.GraphiteGuild;
 import me.eglp.gv2.guild.config.GuildConfig;
 import me.eglp.gv2.main.Graphite;
-import me.eglp.gv2.multiplex.GraphiteMultiplex;
-import me.eglp.gv2.multiplex.bot.MultiplexBot;
 import me.eglp.gv2.util.selfcheck.SpecialSelfcheck;
 import me.eglp.gv2.util.webinterface.WebinterfaceHandler;
 import me.eglp.gv2.util.webinterface.base.WebinterfaceRequestEvent;
@@ -19,54 +17,44 @@ import me.mrletsplay.mrcore.json.JSONObject;
 
 public class SettingsRequestHandler {
 
-	@WebinterfaceHandler(requestMethod = "getSettings", requireGuild = true, requireBot = true, requireGuildAdmin = true)
+	@WebinterfaceHandler(requestMethod = "getSettings", requireGuild = true, requireGuildAdmin = true)
 	public static WebinterfaceResponse getSettings(WebinterfaceRequestEvent event) {
 		GraphiteGuild g = event.getSelectedGuild();
-		MultiplexBot b = GraphiteMultiplex.getCurrentBot();
-		if(b == null) return WebinterfaceResponse.error("Invalid bot");
 		JSONObject o = new JSONObject();
-		Graphite.withBot(b, () -> {
-			String nickname = g.getSelfMember().getJDAMember().getNickname();
-			o.put("settings", new Settings(GraphiteMultiplex.getCurrentBot(), g.getConfig().getPrefix(), g.getConfig().getLocale(), nickname==null?"-":nickname, new ArrayList<>(g.getLocale().getAvailableLocales()), g.getConfig().hasTextCommands()).toWebinterfaceObject());
-		});
+		String nickname = g.getSelfMember().getMember().getNickname();
+		o.put("settings", new Settings(g.getConfig().getPrefix(), g.getConfig().getLocale(), nickname==null?"-":nickname, new ArrayList<>(g.getLocale().getAvailableLocales()), g.getConfig().hasTextCommands()).toWebinterfaceObject());
 		return WebinterfaceResponse.success(o);
 	}
 
-	@WebinterfaceHandler(requestMethod = "setPrefix", requireGuild = true, requireBot = true, requireGuildAdmin = true)
+	@WebinterfaceHandler(requestMethod = "setPrefix", requireGuild = true, requireGuildAdmin = true)
 	public static WebinterfaceResponse setPrefix(WebinterfaceRequestEvent event) {
 		GraphiteGuild g = event.getSelectedGuild();
 		if(!event.getRequestData().has("prefix")) {
 			return WebinterfaceResponse.error("You must enter a prefix");
 		}
-		MultiplexBot b = GraphiteMultiplex.getCurrentBot();
-		if(b == null) return WebinterfaceResponse.error("Invalid bot");
 		String prefix = event.getRequestData().getString("prefix");
 		if(prefix == null || !GuildConfig.PREFIX_PATTERN.matcher(prefix).matches()) {
 			return WebinterfaceResponse.error("The prefix you entered is invalid (up to 16 alphanumeric characters, _-~.! allowed)");
 		}
-		Graphite.withBot(b, () -> g.getConfig().setPrefix(prefix));
+		g.getConfig().setPrefix(prefix);
 		return WebinterfaceResponse.success();
 	}
 
-	@WebinterfaceHandler(requestMethod = "setLocale", requireGuild = true, requireBot = true, requireGuildAdmin = true)
+	@WebinterfaceHandler(requestMethod = "setLocale", requireGuild = true, requireGuildAdmin = true)
 	public static WebinterfaceResponse setLocale(WebinterfaceRequestEvent event) {
 		GraphiteGuild g = event.getSelectedGuild();
-		MultiplexBot b = GraphiteMultiplex.getCurrentBot();
-		if(b == null) return WebinterfaceResponse.error("Invalid bot");
 		String locale = event.getRequestData().getString("locale");
-		Graphite.withBot(b, () -> g.getConfig().setLocale(locale));
+		g.getConfig().setLocale(locale);
 		return WebinterfaceResponse.success();
 	}
 
-	@WebinterfaceHandler(requestMethod = "setNickname", requireGuild = true, requireBot = true, requireGuildAdmin = true)
+	@WebinterfaceHandler(requestMethod = "setNickname", requireGuild = true, requireGuildAdmin = true)
 	public static WebinterfaceResponse setNickname(WebinterfaceRequestEvent event) {
 		if(!event.getRequestData().has("nickname")) {
 			return WebinterfaceResponse.error("You must enter a nickname");
 		}
-		MultiplexBot b = GraphiteMultiplex.getCurrentBot();
-		if(b == null) return WebinterfaceResponse.error("Invalid bot");
 		String nickname = event.getRequestData().getString("nickname");
-		Graphite.withBot(b, () -> event.getSelectedGuild().getJDAGuild().modifyNickname(event.getSelectedGuild().getSelfMember().getJDAMember(), nickname).complete());
+		event.getSelectedGuild().getJDAGuild().modifyNickname(event.getSelectedGuild().getSelfMember().getMember(), nickname).complete();
 		return WebinterfaceResponse.success();
 	}
 

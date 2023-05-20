@@ -60,7 +60,7 @@ public class JSMember {
 	 * @param role The role to remove
 	 */
 	public void removeRole(JSRole role) {
-		member.getGuild().getJDAGuild().removeRoleFromMember(member.getJDAMember(), role.role.getJDARole());
+		member.getGuild().getJDAGuild().removeRoleFromMember(member.getMember(), role.role.getJDARole());
 	}
 
 	@Override

@@ -50,10 +50,10 @@ public class CommandHelp extends Command {
 			b.setDescription(DefaultLocaleString.COMMAND_HELP_MESSAGE_GENERAL_INFO.getFor(event.getSender(),
 					"prefix", event.getSender().getPrefix(),
 					"invite", Graphite.getInviteUrl(),
-					"discord", Graphite.getMainBotInfo().getLinks().getDiscord(),
-					"webinterface", Graphite.getMainBotInfo().getWebsite().getWebinterfaceURL(),
-					"website", Graphite.getMainBotInfo().getWebsite().getBaseURL(),
-					"patreon", Graphite.getMainBotInfo().getLinks().getPatreon(),
+					"discord", Graphite.getBotInfo().getLinks().getDiscord(),
+					"webinterface", Graphite.getBotInfo().getWebsite().getWebinterfaceURL(),
+					"website", Graphite.getBotInfo().getWebsite().getBaseURL(),
+					"patreon", Graphite.getBotInfo().getLinks().getPatreon(),
 					"bot", Graphite.getBotInfo().getName()));
 
 			Map<String, List<String>> helpCategories = new HashMap<>();

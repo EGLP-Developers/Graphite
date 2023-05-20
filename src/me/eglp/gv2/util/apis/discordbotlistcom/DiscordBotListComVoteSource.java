@@ -33,7 +33,7 @@ public class DiscordBotListComVoteSource implements GraphiteVoteSource {
 	public void onVote(JSONObject requestData) {
 		if(!requestData.getString("vote_secret").equals(voteSecret)) throw new InvalidVoteException("Invalid vote");
 		String userID = requestData.getString("userID");
-		GraphiteUser user = Graphite.getGlobalUser(userID); // because premium features are available for Multiplex bots as well
+		GraphiteUser user = Graphite.getUser(userID);
 		if(user == null) throw new InvalidVoteException("Invalid user");
 
 		Graphite.getVoting().addVotes(this, user, 2);

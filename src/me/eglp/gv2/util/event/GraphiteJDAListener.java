@@ -19,8 +19,6 @@ public class GraphiteJDAListener extends GraphiteListener implements EventListen
 		}
 
 		Graphite.getScheduler().execute(() -> fire(event));
-
-		JDAObject.clearCurrentCache();
 	}
 
 	private boolean shouldHandleGuildEvents(String id) {

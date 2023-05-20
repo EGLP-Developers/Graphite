@@ -10,7 +10,7 @@ import me.eglp.gv2.guild.GraphiteMember;
 import me.eglp.gv2.guild.config.GuildRecordingsConfig;
 import me.eglp.gv2.guild.recorder.GuildRecorder;
 import me.eglp.gv2.guild.recorder.recording.GuildAudioRecording;
-import me.eglp.gv2.multiplex.GraphiteFeature;
+import me.eglp.gv2.util.permission.DefaultPermissions;
 import me.eglp.gv2.util.webinterface.WebinterfaceHandler;
 import me.eglp.gv2.util.webinterface.base.WebinterfaceRequestEvent;
 import me.eglp.gv2.util.webinterface.base.WebinterfaceResponse;
@@ -20,7 +20,7 @@ import net.dv8tion.jda.api.entities.Member;
 
 public class RecordRequestHandler {
 
-	@WebinterfaceHandler(requestMethod = "getRecording", requireGuild = true, requireBot = true, requireFeatures = GraphiteFeature.RECORD)
+	@WebinterfaceHandler(requestMethod = "getRecording", requireGuild = true, requirePermissions = DefaultPermissions.WEBINTERFACE_RECORD)
 	public static WebinterfaceResponse getRecording(WebinterfaceRequestEvent event) {
 		GraphiteGuild g = event.getSelectedGuild();
 		GuildRecordingsConfig c = g.getRecordingsConfig();
@@ -34,7 +34,7 @@ public class RecordRequestHandler {
 		return WebinterfaceResponse.success(res);
 	}
 
-	@WebinterfaceHandler(requestMethod = "getRecordingAudio", requireGuild = true, requireBot = true, requireFeatures = GraphiteFeature.RECORD)
+	@WebinterfaceHandler(requestMethod = "getRecordingAudio", requireGuild = true, requirePermissions = DefaultPermissions.WEBINTERFACE_RECORD)
 	public static WebinterfaceResponse getRecordingAudio(WebinterfaceRequestEvent event) {
 		GraphiteGuild g = event.getSelectedGuild();
 		GuildRecordingsConfig c = g.getRecordingsConfig();
@@ -48,7 +48,7 @@ public class RecordRequestHandler {
 		return WebinterfaceResponse.success(res);
 	}
 
-	@WebinterfaceHandler(requestMethod = "getRecordings", requireGuild = true, requireBot = true, requireFeatures = GraphiteFeature.RECORD)
+	@WebinterfaceHandler(requestMethod = "getRecordings", requireGuild = true, requirePermissions = DefaultPermissions.WEBINTERFACE_RECORD)
 	public static WebinterfaceResponse getRecordings(WebinterfaceRequestEvent event) {
 		List<GuildAudioRecording> r = event.getSelectedGuild().getRecordingsConfig().getRecordings();
 		JSONObject rec = new JSONObject();
@@ -58,7 +58,7 @@ public class RecordRequestHandler {
 		return WebinterfaceResponse.success(rec);
 	}
 
-	@WebinterfaceHandler(requestMethod = "startRecording", requireGuild = true, requireBot = true, requireFeatures = GraphiteFeature.RECORD)
+	@WebinterfaceHandler(requestMethod = "startRecording", requireGuild = true, requirePermissions = DefaultPermissions.WEBINTERFACE_RECORD)
 	public static WebinterfaceResponse startRecording(WebinterfaceRequestEvent event) {
 		GraphiteGuild g = event.getSelectedGuild();
 		GraphiteMember m = g.getMember(event.getUser().getDiscordUser());
@@ -72,7 +72,7 @@ public class RecordRequestHandler {
 			return WebinterfaceResponse.success();
 		}
 
-		Member selfMember = g.getSelfMember().getJDAMember();
+		Member selfMember = g.getSelfMember().getMember();
 		if(selfMember.getVoiceState() != null
 				&& selfMember.getVoiceState().getChannel() != null
 				&& selfMember.getVoiceState().isDeafened()) {
@@ -85,7 +85,7 @@ public class RecordRequestHandler {
 		return WebinterfaceResponse.success();
 	}
 
-	@WebinterfaceHandler(requestMethod = "isRecording", requireGuild = true, requireBot = true, requireFeatures = GraphiteFeature.RECORD)
+	@WebinterfaceHandler(requestMethod = "isRecording", requireGuild = true, requirePermissions = DefaultPermissions.WEBINTERFACE_RECORD)
 	public static WebinterfaceResponse isRecording(WebinterfaceRequestEvent event) {
 		GraphiteGuild g = event.getSelectedGuild();
 		GuildRecorder rec = g.getRecorder();
@@ -96,7 +96,7 @@ public class RecordRequestHandler {
 		return WebinterfaceResponse.success(obj);
 	}
 
-	@WebinterfaceHandler(requestMethod = "stopRecording", requireGuild = true, requireBot = true, requireFeatures = GraphiteFeature.RECORD)
+	@WebinterfaceHandler(requestMethod = "stopRecording", requireGuild = true, requirePermissions = DefaultPermissions.WEBINTERFACE_RECORD)
 	public static WebinterfaceResponse stopRecording(WebinterfaceRequestEvent event) {
 		GraphiteGuild g = event.getSelectedGuild();
 		GuildRecorder rec = g.getRecorder();
@@ -107,7 +107,7 @@ public class RecordRequestHandler {
 		return WebinterfaceResponse.success();
 	}
 
-	@WebinterfaceHandler(requestMethod = "deleteRecording", requireGuild = true, requireBot = true, requireFeatures = GraphiteFeature.RECORD)
+	@WebinterfaceHandler(requestMethod = "deleteRecording", requireGuild = true, requirePermissions = DefaultPermissions.WEBINTERFACE_RECORD)
 	public static WebinterfaceResponse deleteRecording(WebinterfaceRequestEvent event) {
 		String name = event.getRequestData().getString("recording_name");
 		GuildAudioRecording r = event.getSelectedGuild().getRecordingsConfig().getRecording(name);
@@ -116,14 +116,14 @@ public class RecordRequestHandler {
 		return WebinterfaceResponse.success();
 	}
 
-	@WebinterfaceHandler(requestMethod = "deleteAllRecordings", requireGuild = true, requireBot = true, requireFeatures = GraphiteFeature.RECORD)
+	@WebinterfaceHandler(requestMethod = "deleteAllRecordings", requireGuild = true, requirePermissions = DefaultPermissions.WEBINTERFACE_RECORD)
 	public static WebinterfaceResponse deleteAllRecordings(WebinterfaceRequestEvent event) {
 		List<GuildAudioRecording> r = event.getSelectedGuild().getRecordingsConfig().getRecordings();
 		r.forEach(rec -> rec.remove());
 		return WebinterfaceResponse.success();
 	}
 
-	@WebinterfaceHandler(requestMethod = "renameRecording", requireGuild = true, requireBot = true, requireFeatures = GraphiteFeature.RECORD)
+	@WebinterfaceHandler(requestMethod = "renameRecording", requireGuild = true, requirePermissions = DefaultPermissions.WEBINTERFACE_RECORD)
 	public static WebinterfaceResponse renameRecording(WebinterfaceRequestEvent event) {
 		String name = event.getRequestData().getString("name");
 		String newName = event.getRequestData().getString("new_name");

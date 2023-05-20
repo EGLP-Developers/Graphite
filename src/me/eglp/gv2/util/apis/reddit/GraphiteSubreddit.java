@@ -86,7 +86,7 @@ public class GraphiteSubreddit implements WebinterfaceObject, JSONConvertible {
 
 	public void sendNotificationMessage(GraphiteGuild guild, Link s) {
 		GraphiteGuildMessageChannel notChannel = getNotificationChannel(guild);
-		if(notChannel != null && notChannel.existsJDA() && notChannel.canWrite()) {
+		if(notChannel != null && notChannel.canWrite()) {
 			EmbedBuilder eb = new EmbedBuilder();
 
 			eb.setColor(color);

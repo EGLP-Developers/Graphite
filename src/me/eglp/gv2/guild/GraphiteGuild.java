@@ -29,16 +29,12 @@ import me.eglp.gv2.guild.music.GuildMusic;
 import me.eglp.gv2.guild.recorder.GuildRecorder;
 import me.eglp.gv2.guild.scripting.GuildScripts;
 import me.eglp.gv2.main.Graphite;
-import me.eglp.gv2.multiplex.GraphiteFeature;
-import me.eglp.gv2.multiplex.GraphiteMultiplex;
-import me.eglp.gv2.multiplex.bot.MultiplexBot;
 import me.eglp.gv2.user.GraphiteUser;
 import me.eglp.gv2.util.backup.GuildBackup;
 import me.eglp.gv2.util.base.GraphiteLocalizable;
 import me.eglp.gv2.util.base.GraphiteMusical;
 import me.eglp.gv2.util.base.GraphiteOwning;
 import me.eglp.gv2.util.command.CommandSender;
-import me.eglp.gv2.util.jdaobject.JDAObject;
 import me.eglp.gv2.util.lang.GuildLocale;
 import me.eglp.gv2.util.permission.GuildPermissionManager;
 import me.eglp.gv2.util.queue.GraphiteQueue;
@@ -80,7 +76,7 @@ public class GraphiteGuild implements GraphiteLocalizable, CommandSender, Graphi
 	private GuildRemindersConfig remindersConfig;
 
 	private String guildID;
-	private JDAObject<Guild> jdaGuild;
+	private Guild jdaGuild;
 	private GuildLocale locale;
 	private GuildPermissionManager permissionManager;
 	private GuildMusic music;
@@ -97,7 +93,7 @@ public class GraphiteGuild implements GraphiteLocalizable, CommandSender, Graphi
 
 	public GraphiteGuild(Guild guild) {
 		guildID = guild.getId();
-		this.jdaGuild = new JDAObject<>(jda -> jda.getGuildById(guildID), o -> o.getId().equals(guildID));
+		this.jdaGuild = guild;
 
 		this.cachedMembers = Collections.synchronizedList(new ArrayList<>());
 		this.cachedRoles = Collections.synchronizedList(new ArrayList<>());
@@ -148,19 +144,6 @@ public class GraphiteGuild implements GraphiteLocalizable, CommandSender, Graphi
 		return cachedChannels;
 	}
 
-	public boolean isAvailable() {
-		return jdaGuild.isAvailable();
-	}
-
-	public boolean hasFeaturesAvailable(List<GraphiteFeature> features) {
-		List<MultiplexBot> bots = GraphiteMultiplex.getAvailableBots(this);
-		return features.stream().allMatch(f -> bots.stream().anyMatch(b -> b.getBotInfo().isFeatureEnabled(f)));
-	}
-
-	public boolean hasFeaturesAvailable(GraphiteFeature... features) {
-		return hasFeaturesAvailable(Arrays.asList(features));
-	}
-
 	public boolean hasPermissions(Permission... permissions) {
 		return getJDAGuild().getSelfMember().hasPermission(permissions);
 	}
@@ -169,12 +152,8 @@ public class GraphiteGuild implements GraphiteLocalizable, CommandSender, Graphi
 		return getJDAGuild().getSelfMember().hasPermission(permissions);
 	}
 
-	public JDAObject<Guild> getJDAGuildObject() {
-		return jdaGuild;
-	}
-
 	public Guild getJDAGuild() {
-		return jdaGuild.get();
+		return jdaGuild;
 	}
 
 	@JavaScriptGetter(name = "getName", returning = "name")
@@ -195,13 +174,13 @@ public class GraphiteGuild implements GraphiteLocalizable, CommandSender, Graphi
 	private synchronized GraphiteMember getMemberRaw(Member member) {
 		if(member == null) return null;
 		return new ArrayList<>(cachedMembers).stream()
-				.filter(c -> c.getJDAMemberObject().isSameObject(member))
+				.filter(c -> c.getMember().equals(member))
 				.findFirst().orElse(null);
 	}
 
 	public GraphiteMember getMember(Member member) {
 		if(member == null) return null;
-		if(!jdaGuild.isSameObject(member.getGuild())) return null;
+		if(!jdaGuild.equals(member.getGuild())) return null;
 		GraphiteMember m = getMemberRaw(member);
 		if(m == null) {
 			m = new GraphiteMember(member, this);
@@ -230,7 +209,7 @@ public class GraphiteGuild implements GraphiteLocalizable, CommandSender, Graphi
 	public void updateMember(GraphiteMember member, boolean mute, boolean deafen) {
 		DataObject body = DataObject.empty().put("deaf", deafen).put("mute", mute);
 		Route.CompiledRoute route = Route.Guilds.MODIFY_MEMBER.compile(getID(), member.getID());
-		new AuditableRestActionImpl<>(member.getJDAMember().getJDA(), route, body).queue();
+		new AuditableRestActionImpl<>(member.getMember().getJDA(), route, body).queue();
 	}
 
 	public GraphiteRole getRoleByID(String id) {
@@ -489,11 +468,11 @@ public class GraphiteGuild implements GraphiteLocalizable, CommandSender, Graphi
 	}
 
 	public void addRoleToMember(GraphiteMember member, GraphiteRole role) {
-		getJDAGuild().addRoleToMember(member.getJDAMember(), role.getJDARole()).queue();
+		getJDAGuild().addRoleToMember(member.getMember(), role.getJDARole()).queue();
 	}
 
 	public void removeRoleFromMember(GraphiteMember member, GraphiteRole role) {
-		getJDAGuild().removeRoleFromMember(member.getJDAMember(), role.getJDARole()).queue();
+		getJDAGuild().removeRoleFromMember(member.getMember(), role.getJDARole()).queue();
 	}
 
 	@Override
@@ -512,7 +491,6 @@ public class GraphiteGuild implements GraphiteLocalizable, CommandSender, Graphi
 	@Override
 	public boolean equals(Object o) {
 		if(!(o instanceof GraphiteGuild)) return false;
-		if(!isAvailable()) return false;
 		return getID().equals(((GraphiteGuild)o).getID());
 	}
 

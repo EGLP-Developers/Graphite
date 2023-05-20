@@ -6,7 +6,7 @@ import java.util.stream.Collectors;
 import me.eglp.gv2.guild.GraphiteGuild;
 import me.eglp.gv2.guild.GraphiteRole;
 import me.eglp.gv2.guild.config.GuildRolesConfig;
-import me.eglp.gv2.multiplex.GraphiteFeature;
+import me.eglp.gv2.util.permission.DefaultPermissions;
 import me.eglp.gv2.util.webinterface.WebinterfaceHandler;
 import me.eglp.gv2.util.webinterface.base.WebinterfaceRequestEvent;
 import me.eglp.gv2.util.webinterface.base.WebinterfaceResponse;
@@ -15,7 +15,7 @@ import me.mrletsplay.mrcore.json.JSONObject;
 
 public class AccessroleRequestHandler {
 
-	@WebinterfaceHandler(requestMethod = "addAccessrole", requireGuild = true, requireFeatures = GraphiteFeature.ROLE_MANAGEMENT)
+	@WebinterfaceHandler(requestMethod = "addAccessrole", requireGuild = true, requirePermissions = DefaultPermissions.WEBINTERFACE_ROLE_MANAGEMENT)
 	public static WebinterfaceResponse addAccessrole(WebinterfaceRequestEvent event) {
 		GraphiteGuild g = event.getSelectedGuild();
 		String id = event.getRequestData().getString("id");
@@ -33,7 +33,7 @@ public class AccessroleRequestHandler {
 		return WebinterfaceResponse.success(o);
 	}
 
-	@WebinterfaceHandler(requestMethod = "removeAccessrole", requireGuild = true, requireFeatures = GraphiteFeature.ROLE_MANAGEMENT)
+	@WebinterfaceHandler(requestMethod = "removeAccessrole", requireGuild = true, requirePermissions = DefaultPermissions.WEBINTERFACE_ROLE_MANAGEMENT)
 	public static WebinterfaceResponse removeAccessrole(WebinterfaceRequestEvent event) {
 		GraphiteGuild g = event.getSelectedGuild();
 		String id = event.getRequestData().getString("id");
@@ -46,7 +46,7 @@ public class AccessroleRequestHandler {
 		return WebinterfaceResponse.success();
 	}
 
-	@WebinterfaceHandler(requestMethod = "getAccessroles", requireGuild = true, requireFeatures = GraphiteFeature.ROLE_MANAGEMENT)
+	@WebinterfaceHandler(requestMethod = "getAccessroles", requireGuild = true, requirePermissions = DefaultPermissions.WEBINTERFACE_ROLE_MANAGEMENT)
 	public static WebinterfaceResponse getAccessroles(WebinterfaceRequestEvent event) {
 		GraphiteGuild g = event.getSelectedGuild();
 		List<GraphiteRole> roles = g.getRolesConfig().getAccessibleRoles();

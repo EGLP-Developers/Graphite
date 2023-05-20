@@ -12,7 +12,7 @@ public class GraphiteReddit {
 	private RedditAPI reddit;
 	
 	public GraphiteReddit() {
-		RedditSettings r = Graphite.getMainBotInfo().getReddit();
+		RedditSettings r = Graphite.getBotInfo().getReddit();
 		RedditUserAgent u = r.getUserAgent();
 		
 		try {

@@ -3,9 +3,10 @@ package me.eglp.gv2.util.settings;
 import java.util.List;
 
 import me.mrletsplay.mrcore.json.converter.JSONConstructor;
+import me.mrletsplay.mrcore.json.converter.JSONConvertible;
 import me.mrletsplay.mrcore.json.converter.JSONValue;
 
-public class BotInfo {
+public class BotInfo implements JSONConvertible {
 
 	@JSONValue
 	private String
@@ -88,12 +89,44 @@ public class BotInfo {
 		this.miscellaneous = miscellaneous;
 	}
 
+	public String getIdentifier() {
+		return identifier;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public String getDefaultPrefix() {
+		return defaultPrefix;
+	}
+
+	public String getToken() {
+		return token;
+	}
+
+	public String getClientSecret() {
+		return clientSecret;
+	}
+
 	public String getFileLocation() {
 		return fileLocation;
 	}
 
+	public int getShardCount() {
+		return shardCount;
+	}
+
 	public boolean isBeta() {
 		return isBeta;
+	}
+
+	public StatisticsSettings getStatisticsSettings() {
+		return statisticsSettings;
+	}
+
+	public VoteSettings getVoteSettings() {
+		return voteSettings;
 	}
 
 	public MySQLSettings getMySQL() {

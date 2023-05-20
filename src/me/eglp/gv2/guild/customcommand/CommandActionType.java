@@ -251,7 +251,7 @@ public enum CommandActionType implements WebinterfaceObject, JSONPrimitiveString
 				GraphiteMember m = event.getGuild().getMember((GraphiteUser) event.getParameter("member"));
 				if(m.isBot()) return;
 				GraphiteRole r = (GraphiteRole) event.getParameter("role");
-				event.getGuild().getJDAGuild().addRoleToMember(m.getJDAMember(), r.getJDARole()).queue();
+				event.getGuild().getJDAGuild().addRoleToMember(m.getMember(), r.getJDARole()).queue();
 			},
 			new CommandActionProperty("member", "Member", CommandParameterType.USER),
 			new CommandActionProperty("role", "Role", CommandParameterType.ROLE)
@@ -262,7 +262,7 @@ public enum CommandActionType implements WebinterfaceObject, JSONPrimitiveString
 				GraphiteMember m = event.getGuild().getMember((GraphiteUser) event.getParameter("member"));
 				if(m.isBot()) return;
 				GraphiteRole r = (GraphiteRole) event.getParameter("role");
-				event.getGuild().getJDAGuild().removeRoleFromMember(m.getJDAMember(), r.getJDARole()).queue();
+				event.getGuild().getJDAGuild().removeRoleFromMember(m.getMember(), r.getJDARole()).queue();
 			},
 			new CommandActionProperty("member", "Member", CommandParameterType.USER),
 			new CommandActionProperty("role", "Role", CommandParameterType.ROLE)

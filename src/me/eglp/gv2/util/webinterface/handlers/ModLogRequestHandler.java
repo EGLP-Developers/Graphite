@@ -5,7 +5,7 @@ import java.util.stream.Collectors;
 
 import me.eglp.gv2.guild.GraphiteGuild;
 import me.eglp.gv2.guild.modlog.ModLogEntry;
-import me.eglp.gv2.multiplex.GraphiteFeature;
+import me.eglp.gv2.util.permission.DefaultPermissions;
 import me.eglp.gv2.util.webinterface.WebinterfaceHandler;
 import me.eglp.gv2.util.webinterface.base.WebinterfaceRequestEvent;
 import me.eglp.gv2.util.webinterface.base.WebinterfaceResponse;
@@ -14,7 +14,7 @@ import me.mrletsplay.mrcore.json.JSONObject;
 
 public class ModLogRequestHandler {
 
-	@WebinterfaceHandler(requestMethod = "getModLogEntries", requireGuild = true, requireFeatures = GraphiteFeature.MODERATION)
+	@WebinterfaceHandler(requestMethod = "getModLogEntries", requireGuild = true, requirePermissions = DefaultPermissions.WEBINTERFACE_MODERATION)
 	public static WebinterfaceResponse getModLogEntries(WebinterfaceRequestEvent event) {
 		GraphiteGuild g = event.getSelectedGuild();
 		List<ModLogEntry> mle = g.getModerationConfig().getModLogEntries();

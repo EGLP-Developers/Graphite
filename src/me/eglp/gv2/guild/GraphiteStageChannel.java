@@ -1,7 +1,6 @@
 package me.eglp.gv2.guild;
 
 import me.eglp.gv2.main.Graphite;
-import me.eglp.gv2.multiplex.bot.GlobalBot;
 import me.eglp.gv2.util.base.GraphiteIdentifiable;
 import me.eglp.gv2.util.webinterface.js.JavaScriptClass;
 import me.eglp.gv2.util.webinterface.js.JavaScriptFunction;
@@ -56,11 +55,6 @@ public class GraphiteStageChannel implements GraphiteIdentifiable, WebinterfaceO
 	public boolean equals(Object o) {
 		if(!(o instanceof GraphiteStageChannel)) return false;
 		return id.equals(((GraphiteStageChannel)o).getID());
-	}
-
-	@Override
-	public boolean existsJDA() {
-		return Graphite.withBot(GlobalBot.INSTANCE, () -> getJDAChannel() != null);
 	}
 
 	@Override

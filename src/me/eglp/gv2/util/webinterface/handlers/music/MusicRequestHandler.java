@@ -9,10 +9,10 @@ import me.eglp.gv2.guild.GraphiteGuild;
 import me.eglp.gv2.guild.GraphiteMember;
 import me.eglp.gv2.guild.music.GuildMusic;
 import me.eglp.gv2.guild.music.GuildTrackManager;
-import me.eglp.gv2.multiplex.GraphiteFeature;
 import me.eglp.gv2.user.EasterEgg;
 import me.eglp.gv2.util.music.GraphitePlaylist;
 import me.eglp.gv2.util.music.GraphiteTrack;
+import me.eglp.gv2.util.permission.DefaultPermissions;
 import me.eglp.gv2.util.webinterface.WebinterfaceHandler;
 import me.eglp.gv2.util.webinterface.base.WebinterfaceRequestEvent;
 import me.eglp.gv2.util.webinterface.base.WebinterfaceResponse;
@@ -24,7 +24,7 @@ import me.mrletsplay.mrcore.json.JSONObject;
 
 public class MusicRequestHandler {
 
-	@WebinterfaceHandler(requestMethod = "playTrack", requireBot = true, requireGuild = true, requireFeatures = GraphiteFeature.MUSIC)
+	@WebinterfaceHandler(requestMethod = "playTrack", requireGuild = true, requirePermissions = DefaultPermissions.WEBINTERFACE_MUSIC)
 	public static WebinterfaceResponse playTrack(WebinterfaceRequestEvent event) {
 		GraphiteGuild g = event.getSelectedGuild();
 		GraphiteMember m = g.getMember(event.getUser().getDiscordUser());
@@ -50,7 +50,7 @@ public class MusicRequestHandler {
 		return WebinterfaceResponse.success();
 	}
 
-	@WebinterfaceHandler(requestMethod = "stopPlaying", requireBot = true, requireGuild = true, requireFeatures = GraphiteFeature.MUSIC)
+	@WebinterfaceHandler(requestMethod = "stopPlaying", requireGuild = true, requirePermissions = DefaultPermissions.WEBINTERFACE_MUSIC)
 	public static WebinterfaceResponse stopPlaying(WebinterfaceRequestEvent event) {
 		GraphiteGuild g = event.getSelectedGuild();
 		if(!g.getMusic().isPlaying()) {
@@ -60,7 +60,7 @@ public class MusicRequestHandler {
 		return WebinterfaceResponse.success();
 	}
 
-	@WebinterfaceHandler(requestMethod = "jumpTo", requireBot = true, requireGuild = true, requireFeatures = GraphiteFeature.MUSIC)
+	@WebinterfaceHandler(requestMethod = "jumpTo", requireGuild = true, requirePermissions = DefaultPermissions.WEBINTERFACE_MUSIC)
 	public static WebinterfaceResponse jumpTo(WebinterfaceRequestEvent event) {
 		GraphiteGuild g = event.getSelectedGuild();
 		if(!g.getMusic().isPlaying()) {
@@ -71,7 +71,7 @@ public class MusicRequestHandler {
 		return WebinterfaceResponse.success();
 	}
 
-	@WebinterfaceHandler(requestMethod = "removeTrack", requireBot = true, requireGuild = true, requireFeatures = GraphiteFeature.MUSIC)
+	@WebinterfaceHandler(requestMethod = "removeTrack", requireGuild = true, requirePermissions = DefaultPermissions.WEBINTERFACE_MUSIC)
 	public static WebinterfaceResponse removeTrack(WebinterfaceRequestEvent event) {
 		GraphiteGuild g = event.getSelectedGuild();
 		if(!g.getMusic().isPlaying()) {
@@ -82,7 +82,7 @@ public class MusicRequestHandler {
 		return WebinterfaceResponse.success();
 	}
 
-	@WebinterfaceHandler(requestMethod = "getCurrentPlayerState", requireBot = true, requireGuild = true, requireFeatures = GraphiteFeature.MUSIC)
+	@WebinterfaceHandler(requestMethod = "getCurrentPlayerState", requireGuild = true, requirePermissions = DefaultPermissions.WEBINTERFACE_MUSIC)
 	public static WebinterfaceResponse getCurrentPlayerState(WebinterfaceRequestEvent event) {
 		GraphiteGuild g = event.getSelectedGuild();
 
@@ -91,7 +91,7 @@ public class MusicRequestHandler {
 		return WebinterfaceResponse.success(o);
 	}
 
-	@WebinterfaceHandler(requestMethod = "getCurrentPlayingTrack", requireBot = true, requireGuild = true, requireFeatures = GraphiteFeature.MUSIC)
+	@WebinterfaceHandler(requestMethod = "getCurrentPlayingTrack", requireGuild = true, requirePermissions = DefaultPermissions.WEBINTERFACE_MUSIC)
 	public static WebinterfaceResponse getCurrentPlayingTrack(WebinterfaceRequestEvent event) {
 		GraphiteGuild g = event.getSelectedGuild();
 
@@ -100,7 +100,7 @@ public class MusicRequestHandler {
 		return WebinterfaceResponse.success(o);
 	}
 
-	@WebinterfaceHandler(requestMethod = "getFullQueue", requireBot = true, requireGuild = true, requireFeatures = GraphiteFeature.MUSIC)
+	@WebinterfaceHandler(requestMethod = "getFullQueue", requireGuild = true, requirePermissions = DefaultPermissions.WEBINTERFACE_MUSIC)
 	public static WebinterfaceResponse getFullQueue(WebinterfaceRequestEvent event) {
 		GraphiteGuild g = event.getSelectedGuild();
 		List<GraphiteTrack> queue = new ArrayList<>(g.getMusic().getQueue().getFullQueue());
@@ -111,7 +111,7 @@ public class MusicRequestHandler {
 		return WebinterfaceResponse.success(o);
 	}
 
-	@WebinterfaceHandler(requestMethod = "shuffleQueue", requireBot = true, requireGuild = true, requireFeatures = GraphiteFeature.MUSIC)
+	@WebinterfaceHandler(requestMethod = "shuffleQueue", requireGuild = true, requirePermissions = DefaultPermissions.WEBINTERFACE_MUSIC)
 	public static WebinterfaceResponse shuffleQueue(WebinterfaceRequestEvent event) {
 		GraphiteGuild g = event.getSelectedGuild();
 		if(!g.getMusic().isPlaying()) {
@@ -121,7 +121,7 @@ public class MusicRequestHandler {
 		return WebinterfaceResponse.success();
 	}
 
-	@WebinterfaceHandler(requestMethod = "getPlaylists", requireBot = true, requireGuild = true, requireFeatures = GraphiteFeature.MUSIC)
+	@WebinterfaceHandler(requestMethod = "getPlaylists", requireGuild = true, requirePermissions = DefaultPermissions.WEBINTERFACE_MUSIC)
 	public static WebinterfaceResponse getPlaylists(WebinterfaceRequestEvent event) {
 		GraphiteGuild g = event.getSelectedGuild();
 		List<GraphitePlaylist> pl = g.getMusic().getPlaylists();
@@ -139,7 +139,7 @@ public class MusicRequestHandler {
 		return WebinterfaceResponse.success(o);
 	}
 
-	@WebinterfaceHandler(requestMethod = "playPlaylist", requireBot = true, requireGuild = true, requireFeatures = GraphiteFeature.MUSIC)
+	@WebinterfaceHandler(requestMethod = "playPlaylist", requireGuild = true, requirePermissions = DefaultPermissions.WEBINTERFACE_MUSIC)
 	public static WebinterfaceResponse playPlaylist(WebinterfaceRequestEvent event) {
 		GraphiteGuild g = event.getSelectedGuild();
 		GraphiteMember m = g.getMember(event.getUser().getDiscordUser());
@@ -158,7 +158,7 @@ public class MusicRequestHandler {
 		return WebinterfaceResponse.success();
 	}
 
-	@WebinterfaceHandler(requestMethod = "deletePlaylist", requireBot = true, requireGuild = true, requireFeatures = GraphiteFeature.MUSIC)
+	@WebinterfaceHandler(requestMethod = "deletePlaylist", requireGuild = true, requirePermissions = DefaultPermissions.WEBINTERFACE_MUSIC)
 	public static WebinterfaceResponse deletePlaylist(WebinterfaceRequestEvent event) {
 		GraphiteGuild g = event.getSelectedGuild();
 		String name = event.getRequestData().getString("playlist_name");
@@ -170,7 +170,7 @@ public class MusicRequestHandler {
 		return WebinterfaceResponse.success();
 	}
 
-	@WebinterfaceHandler(requestMethod = "setVolume", requireBot = true, requireGuild = true, requireFeatures = GraphiteFeature.MUSIC)
+	@WebinterfaceHandler(requestMethod = "setVolume", requireGuild = true, requirePermissions = DefaultPermissions.WEBINTERFACE_MUSIC)
 	public static WebinterfaceResponse setVolume(WebinterfaceRequestEvent event) {
 		GraphiteGuild g = event.getSelectedGuild();
 		if(!g.getMusic().isPlaying()) {
@@ -188,7 +188,7 @@ public class MusicRequestHandler {
 		return WebinterfaceResponse.success();
 	}
 
-	@WebinterfaceHandler(requestMethod = "setBassBoostLevel", requireBot = true, requireGuild = true, requireFeatures = GraphiteFeature.MUSIC)
+	@WebinterfaceHandler(requestMethod = "setBassBoostLevel", requireGuild = true, requirePermissions = DefaultPermissions.WEBINTERFACE_MUSIC)
 	public static WebinterfaceResponse setBassBoostLevel(WebinterfaceRequestEvent event) {
 		GraphiteGuild g = event.getSelectedGuild();
 		if(!g.getMusic().isPlaying()) {
@@ -204,7 +204,7 @@ public class MusicRequestHandler {
 		return WebinterfaceResponse.success();
 	}
 
-	@WebinterfaceHandler(requestMethod = "setPitch", requireBot = true, requireGuild = true, requireFeatures = GraphiteFeature.MUSIC)
+	@WebinterfaceHandler(requestMethod = "setPitch", requireGuild = true, requirePermissions = DefaultPermissions.WEBINTERFACE_MUSIC)
 	public static WebinterfaceResponse setPitch(WebinterfaceRequestEvent event) {
 		GraphiteGuild g = event.getSelectedGuild();
 		if(!g.getMusic().isPlaying()) {
@@ -220,7 +220,7 @@ public class MusicRequestHandler {
 		return WebinterfaceResponse.success();
 	}
 
-	@WebinterfaceHandler(requestMethod = "setSpeed", requireBot = true, requireGuild = true, requireFeatures = GraphiteFeature.MUSIC)
+	@WebinterfaceHandler(requestMethod = "setSpeed", requireGuild = true, requirePermissions = DefaultPermissions.WEBINTERFACE_MUSIC)
 	public static WebinterfaceResponse setSpeed(WebinterfaceRequestEvent event) {
 		GraphiteGuild g = event.getSelectedGuild();
 		if(!g.getMusic().isPlaying()) {
@@ -236,7 +236,7 @@ public class MusicRequestHandler {
 		return WebinterfaceResponse.success();
 	}
 
-	@WebinterfaceHandler(requestMethod = "enableNightcore", requireBot = true, requireGuild = true, requireFeatures = GraphiteFeature.MUSIC)
+	@WebinterfaceHandler(requestMethod = "enableNightcore", requireGuild = true, requirePermissions = DefaultPermissions.WEBINTERFACE_MUSIC)
 	public static WebinterfaceResponse enableNightcore(WebinterfaceRequestEvent event) {
 		GraphiteGuild g = event.getSelectedGuild();
 		if(!g.getMusic().isPlaying()) {
@@ -247,7 +247,7 @@ public class MusicRequestHandler {
 		return WebinterfaceResponse.success();
 	}
 
-	@WebinterfaceHandler(requestMethod = "resetPlaybackSettings", requireBot = true, requireGuild = true, requireFeatures = GraphiteFeature.MUSIC)
+	@WebinterfaceHandler(requestMethod = "resetPlaybackSettings", requireGuild = true, requirePermissions = DefaultPermissions.WEBINTERFACE_MUSIC)
 	public static WebinterfaceResponse resetPlaybackSettings(WebinterfaceRequestEvent event) {
 		GraphiteGuild g = event.getSelectedGuild();
 		if(!g.getMusic().isPlaying()) {
@@ -258,7 +258,7 @@ public class MusicRequestHandler {
 		return WebinterfaceResponse.success();
 	}
 
-	@WebinterfaceHandler(requestMethod = "seek", requireBot = true, requireGuild = true, requireFeatures = GraphiteFeature.MUSIC)
+	@WebinterfaceHandler(requestMethod = "seek", requireGuild = true, requirePermissions = DefaultPermissions.WEBINTERFACE_MUSIC)
 	public static WebinterfaceResponse seek(WebinterfaceRequestEvent event) {
 		GraphiteGuild g = event.getSelectedGuild();
 		if(!g.getMusic().isPlaying()) {
@@ -270,7 +270,7 @@ public class MusicRequestHandler {
 		return WebinterfaceResponse.success();
 	}
 
-	@WebinterfaceHandler(requestMethod = "setPaused", requireBot = true, requireGuild = true, requireFeatures = GraphiteFeature.MUSIC)
+	@WebinterfaceHandler(requestMethod = "setPaused", requireGuild = true, requirePermissions = DefaultPermissions.WEBINTERFACE_MUSIC)
 	public static WebinterfaceResponse setPaused(WebinterfaceRequestEvent event) {
 		GraphiteGuild g = event.getSelectedGuild();
 		if(!g.getMusic().isPlaying()) {
@@ -283,7 +283,7 @@ public class MusicRequestHandler {
 		return WebinterfaceResponse.success();
 	}
 
-	@WebinterfaceHandler(requestMethod = "setLooping", requireBot = true, requireGuild = true, requireFeatures = GraphiteFeature.MUSIC)
+	@WebinterfaceHandler(requestMethod = "setLooping", requireGuild = true, requirePermissions = DefaultPermissions.WEBINTERFACE_MUSIC)
 	public static WebinterfaceResponse setLooping(WebinterfaceRequestEvent event) {
 		GraphiteGuild g = event.getSelectedGuild();
 		if(!g.getMusic().isPlaying()) {
@@ -296,7 +296,7 @@ public class MusicRequestHandler {
 		return WebinterfaceResponse.success();
 	}
 
-	@WebinterfaceHandler(requestMethod = "setEndless", requireBot = true, requireGuild = true, requireFeatures = GraphiteFeature.MUSIC)
+	@WebinterfaceHandler(requestMethod = "setEndless", requireGuild = true, requirePermissions = DefaultPermissions.WEBINTERFACE_MUSIC)
 	public static WebinterfaceResponse setEndless(WebinterfaceRequestEvent event) {
 		GraphiteGuild g = event.getSelectedGuild();
 		if(!g.getMusic().isPlaying()) {
@@ -308,7 +308,7 @@ public class MusicRequestHandler {
 		return WebinterfaceResponse.success();
 	}
 
-	@WebinterfaceHandler(requestMethod = "createPlaylist", requireBot = true, requireGuild = true, requireFeatures = GraphiteFeature.MUSIC)
+	@WebinterfaceHandler(requestMethod = "createPlaylist", requireGuild = true, requirePermissions = DefaultPermissions.WEBINTERFACE_MUSIC)
 	public static WebinterfaceResponse createPlaylist(WebinterfaceRequestEvent event) {
 		GraphiteGuild g = event.getSelectedGuild();
 
@@ -333,7 +333,7 @@ public class MusicRequestHandler {
 		return WebinterfaceResponse.success(o);
 	}
 
-	@WebinterfaceHandler(requestMethod = "renamePlaylist", requireBot = true, requireGuild = true, requireFeatures = GraphiteFeature.MUSIC)
+	@WebinterfaceHandler(requestMethod = "renamePlaylist", requireGuild = true, requirePermissions = DefaultPermissions.WEBINTERFACE_MUSIC)
 	public static WebinterfaceResponse renamePlaylist(WebinterfaceRequestEvent event) {
 		GraphiteGuild g = event.getSelectedGuild();
 

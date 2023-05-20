@@ -100,7 +100,7 @@ public class TemplateBackup implements WebinterfaceObject {
 	}
 
 	public GraphiteUser getAuthor() {
-		return Graphite.getGlobalUser(authorID);
+		return Graphite.getUser(authorID);
 	}
 
 	public long getTimestamp() {

@@ -112,7 +112,7 @@ public abstract class AbstractAutoModSettings implements JSONConvertible {
 
 	public void sendWarningMessage(GraphiteMessageChannel<?> channel, GraphiteMember member) {
 		EmbedBuilder eb = new EmbedBuilder();
-		eb.setAuthor(member.getName() + "#" + member.getDiscriminator(), null, member.getJDAUser().getAvatarUrl());
+		eb.setAuthor(member.getName() + "#" + member.getDiscriminator(), null, member.getMember().getAvatarUrl());
 		eb.setDescription("Warned! Reason: **" + getWarnReason() + "**");
 		channel.sendMessage(eb.build());
 
@@ -146,11 +146,11 @@ public abstract class AbstractAutoModSettings implements JSONConvertible {
 			if(!guild.getSelfMember().canInteract(member)) return; // Don't punish members the bot can't interact with
 			switch(punishment) {
 				case BAN:
-					guild.getJDAGuild().ban(member.getJDAMember(), 0, TimeUnit.SECONDS).queue();
+					guild.getJDAGuild().ban(member.getMember(), 0, TimeUnit.SECONDS).queue();
 					guild.getModerationConfig().addModLogEntry(new ModLogEntry(ModLogEntryType.BAN, -1, member.getID(), guild.getSelfMember().getID(), "Automod"));
 					break;
 				case KICK:
-					guild.getJDAGuild().kick(member.getJDAMember()).queue();
+					guild.getJDAGuild().kick(member.getMember()).queue();
 					guild.getModerationConfig().addModLogEntry(new ModLogEntry(ModLogEntryType.KICK, -1, member.getID(), guild.getSelfMember().getID(), "Automod"));
 					break;
 				case CHATMUTE:

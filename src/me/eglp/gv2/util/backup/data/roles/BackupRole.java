@@ -121,7 +121,7 @@ public class BackupRole implements JSONConvertible, WebinterfaceObject {
 	public boolean restore(GraphiteGuild guild, IDMappings mappings) {
 		if(isPublic) {
 			Role r = guild.getJDAGuild().getPublicRole();
-			if(!guild.getSelfMember().getJDAMember().canInteract(r)) return true;
+			if(!guild.getSelfMember().getMember().canInteract(r)) return true;
 			RoleManager m = r.getManager();
 			m.setName(name);
 			m.setHoisted(hoisted);

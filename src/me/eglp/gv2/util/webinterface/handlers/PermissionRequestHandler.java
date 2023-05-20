@@ -34,7 +34,7 @@ public class PermissionRequestHandler {
 		Map<String, List<JSPermission>> perms = new HashMap<>();
 
 		for(String permission : DefaultPermissions.getPermissions()) {
-			addPermission(perms, permission, findCommands(CommandHandler.getAllCommands(), permission).stream()
+			addPermission(perms, permission, findCommands(CommandHandler.getCommands(), permission).stream()
 					.map(c -> c.getFullName())
 					.collect(Collectors.toList()));
 		}

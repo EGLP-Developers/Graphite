@@ -77,7 +77,7 @@ public class GuildTemporaryActionsConfig {
 
 	public GuildTempBan tempBanMember(GraphiteMember member, long durationMs, GraphiteMember moderator, String reason) {
 		if(guild.isBanned(member.getID())) throw new IllegalStateException("Member already temp-/banned");
-		guild.getJDAGuild().ban(member.getJDAMember(), 0, TimeUnit.SECONDS).reason(reason).complete();
+		guild.getJDAGuild().ban(member.getMember(), 0, TimeUnit.SECONDS).reason(reason).complete();
 		GuildTempBan ban = new GuildTempBan(guild, member.getID(), System.currentTimeMillis() + durationMs);
 		addTempBan(ban, durationMs, moderator, reason);
 		return ban;
@@ -140,7 +140,7 @@ public class GuildTemporaryActionsConfig {
 
 	public GuildTempVoiceMute tempMuteMember(GraphiteMember member, long durationMs, GraphiteMember moderator, String reason) {
 		if(isTempMuted(member)) throw new IllegalStateException("Member already temp-/muted");
-		guild.getJDAGuild().mute(member.getJDAMember(), true).complete();
+		guild.getJDAGuild().mute(member.getMember(), true).complete();
 		GuildTempVoiceMute mute = new GuildTempVoiceMute(guild, member.getID(), System.currentTimeMillis() + durationMs);
 		addTempMute(mute, durationMs, moderator, reason);
 		return mute;

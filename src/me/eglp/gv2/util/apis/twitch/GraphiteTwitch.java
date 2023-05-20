@@ -11,7 +11,7 @@ public class GraphiteTwitch implements WebinterfaceObject{
 	private TwitchAPI twitch;
 	
 	public GraphiteTwitch() {
-		TwitchSettings t = Graphite.getMainBotInfo().getTwitch();
+		TwitchSettings t = Graphite.getBotInfo().getTwitch();
 		
 		try {
 			twitch = new TwitchAPI(t.getClientID(), t.getClientSecret());

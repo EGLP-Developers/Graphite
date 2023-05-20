@@ -7,7 +7,7 @@ import me.eglp.gv2.main.Graphite;
 import net.dv8tion.jda.api.entities.emoji.Emoji;
 
 public enum JDAEmote {
-	
+
 	// TODO: possibly remove emoji ids
 
 	ONE_HUNDRED("\uD83D\uDCAF"),
@@ -206,32 +206,32 @@ public enum JDAEmote {
 	LOUD_SOUND("\uD83D\uDD0A"),
 	MICROPHONE("\uD83C\uDFA4"),
 	;
-	
+
 	private static final JDAEmote[] KEYCAP_NUMS = {ZERO, ONE, TWO, THREE, FOUR, FIVE, SIX, SEVEN, EIGHT, NINE, TEN, ELEVEN, TWELVE, THIRTEEN, FOURTEEN, FIFTEEN, SIXTEEN, SEVENTEEN, NINETEEN, TWENTY};
 	private static final JDAEmote[] BLACK_KEYCAP_NUMS = {null, BLACK_ONE, BLACK_TWO, BLACK_THREE, BLACK_FOUR, BLACK_FIVE, BLACK_SIX};
 	private static final JDAEmote[] DICE_NUMS = {DICE_ONE, DICE_TWO, DICE_THREE, DICE_FOUR, DICE_FIVE, DICE_SIX};
-	
+
 	private String emojiName;
 	private Emoji emoji;
 	private long id; // Used for lazy loading of custom emoji
-	
+
 	private JDAEmote(String unicode) {
 		this.emoji = Emoji.fromUnicode(unicode);
 	}
-	
+
 	private JDAEmote(String emojiName, long discordId) {
 		this.emojiName = emojiName;
 		this.id =  discordId;
 	}
-	
+
 	public String getCustomEmojiName() {
 		return emojiName;
 	}
-	
+
 	public boolean isCustomEmoji() {
 		return id != 0;
 	}
-	
+
 	/**
 	 * Attempts to load the default emoji from one of the official Graphite resource guilds.
 	 * @return {@code true} if the emoji was loaded successfully, {@code false} otherwise
@@ -239,45 +239,45 @@ public enum JDAEmote {
 	public boolean loadDefault() {
 		if(!isCustomEmoji()) return true;
 		if(emoji != null) return true;
-		this.emoji = Graphite.getGlobalJDAEmote(id);
+		this.emoji = Graphite.getJDAEmote(id);
 		return emoji != null;
 	}
-	
+
 	public void load(Emoji emoji) {
 		this.emoji = emoji;
 	}
-	
+
 	public String getEncoded() {
 		return emoji.getFormatted();
 	}
-	
+
 	public String getUnicode() {
 		return emoji.getFormatted();
 	}
-	
+
 	public Emoji getEmoji() {
 		return emoji;
 	}
-	
+
 	public boolean equalsEmoji(Emoji e) {
 		return emoji.equals(e);
 	}
-	
+
 	public static JDAEmote getKeycapNumber(int num) {
 		if(num < 0 || num >= KEYCAP_NUMS.length) return null;
 		return KEYCAP_NUMS[num];
 	}
-	
+
 	public static JDAEmote getBlackKeycapNumber(int num) {
 		if(num < 0 || num >= BLACK_KEYCAP_NUMS.length) return null;
 		return BLACK_KEYCAP_NUMS[num];
 	}
-	
+
 	public static JDAEmote getDiceNumber(int num) {
 		if(num < 1 || num > DICE_NUMS.length) return null;
 		return DICE_NUMS[num - 1];
 	}
-	
+
 	public static JDAEmote getByEmoji(Emoji emoji) {
 		return Arrays.stream(values()).filter(e -> e.emoji.equals(emoji)).findFirst().orElse(null);
 	}
@@ -285,13 +285,13 @@ public enum JDAEmote {
 	public static JDAEmote getById(long id) {
 		return Arrays.stream(values()).filter(e -> e.id != 0 && e.id == id).findFirst().orElse(null);
 	}
-	
+
 	public static JDAEmote getCrewmateEmote(PlayerColor color) {
 		return valueOf("AMONG_US_" + color.name());
 	}
-	
+
 	public static JDAEmote getDeadCrewmateEmote(PlayerColor color) {
 		return valueOf("AMONG_US_" + color.name() + "_DEAD");
 	}
-	
+
 }

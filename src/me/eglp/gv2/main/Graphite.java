@@ -9,11 +9,11 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
+import java.util.Objects;
 import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicReference;
-import java.util.function.Supplier;
 import java.util.regex.Matcher;
 import java.util.stream.Collectors;
 
@@ -48,11 +48,6 @@ import me.eglp.gv2.guild.automod.external_links.ExternalLinks;
 import me.eglp.gv2.guild.automod.repeated_text.RepeatedText;
 import me.eglp.gv2.guild.automod.zalgo.Zalgo;
 import me.eglp.gv2.guild.config.GuildGreeterConfig;
-import me.eglp.gv2.multiplex.ContextHandle;
-import me.eglp.gv2.multiplex.GraphiteFeature;
-import me.eglp.gv2.multiplex.GraphiteMultiplex;
-import me.eglp.gv2.multiplex.bot.GlobalBot;
-import me.eglp.gv2.multiplex.bot.MultiplexBot;
 import me.eglp.gv2.user.GraphitePrivateChannel;
 import me.eglp.gv2.user.GraphiteUser;
 import me.eglp.gv2.util.FileManager;
@@ -86,11 +81,10 @@ import me.eglp.gv2.util.scripting.GraphiteContextFactory;
 import me.eglp.gv2.util.selfcheck.Selfcheck;
 import me.eglp.gv2.util.settings.BotInfo;
 import me.eglp.gv2.util.settings.GraphiteSettings;
-import me.eglp.gv2.util.settings.MainBotInfo;
-import me.eglp.gv2.util.settings.MultiplexBotInfo;
 import me.eglp.gv2.util.stats.GraphiteStatistic;
 import me.eglp.gv2.util.stats.GraphiteStatistics;
 import me.eglp.gv2.util.stats.element.GuildStatisticsElement;
+import me.eglp.gv2.util.voting.GraphiteVoteSource;
 import me.eglp.gv2.util.voting.GraphiteVoting;
 import me.eglp.gv2.util.webinterface.GraphiteWebinterface;
 import me.eglp.gv2.util.webinterface.base.GraphiteWebinterfaceUser;
@@ -127,7 +121,6 @@ import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.api.events.message.react.MessageReactionAddEvent;
 import net.dv8tion.jda.api.events.message.react.MessageReactionRemoveEvent;
 import net.dv8tion.jda.api.events.role.RoleDeleteEvent;
-import net.dv8tion.jda.api.exceptions.ErrorResponseException;
 import net.dv8tion.jda.api.interactions.commands.DefaultMemberPermissions;
 import net.dv8tion.jda.api.interactions.commands.build.Commands;
 import net.dv8tion.jda.api.interactions.commands.build.SlashCommandData;
@@ -242,24 +235,12 @@ public class Graphite {
 
 		log("Initializing main bot...");
 
-		for(GraphiteFeature ft : botInfo.getFeatures()) {
+		for(GraphiteFeature ft : GraphiteFeature.values()) {
 			ft.getCommands().forEach(CommandHandler::registerCommand);
 		}
 
-		multiplexBots.add(graphiteBot);
-
 		log("Initializing Multiplex bots...");
-		for(MultiplexBotInfo bi : botInfo.getMultiplexBots()) {
-			MultiplexBot bot = new MultiplexBot(bi);
-
-			GraphiteMultiplex.setCurrentBot(bot);
-
-			for(GraphiteFeature ft : bi.getFeatures()) {
-				ft.getCommands().forEach(CommandHandler::registerCommand);
-			}
-			multiplexBots.add(bot);
-		}
-		GraphiteMultiplex.setCurrentBot(GlobalBot.INSTANCE);
+		GraphiteBot.start(botInfo);
 
 		start(sw.stop().elapsed(TimeUnit.MILLISECONDS));
 	}
@@ -285,60 +266,56 @@ public class Graphite {
 		log("Waiting for all bots to come online");
 		long initTime = sw.elapsed(TimeUnit.MILLISECONDS);
 		sw.reset().start();
-		for(MultiplexBot b : multiplexBots) {
-			b.awaitLoad();
-		}
+		GraphiteBot.awaitLoad();
 
 		long connectTime = sw.elapsed(TimeUnit.MILLISECONDS);
 		sw.reset().start();
 
-		for(MultiplexBot bot : getMultiplexBots()) {
-			bot.getShards().forEach(s -> {
-				CommandListUpdateAction a;
-				if(!botInfo.isBeta()) {
-					a = s.getJDA().updateCommands();
-				}else {
-//					s.getJDA().updateCommands().queue();
-					Guild g = s.getJDA().getGuildById(getMainBotInfo().getMiscellaneous().getTestingServerID());
-					if(g == null) {
-						Graphite.log(bot.getName() + ": Unknown testing server");
-						return;
-					}
-					Graphite.log(bot.getName() + ": Testing server is " + g.getName());
-					a = g.updateCommands();
+		GraphiteBot.shards.forEach(s -> {
+			CommandListUpdateAction a;
+			if(!botInfo.isBeta()) {
+				a = s.getJDA().updateCommands();
+			}else {
+//				s.getJDA().updateCommands().queue();
+				Guild g = s.getJDA().getGuildById(botInfo.getMiscellaneous().getTestingServerID());
+				if(g == null) {
+					Graphite.log(botInfo.getName() + ": Unknown testing server");
+					return;
 				}
-				for(GraphiteFeature ft : bot.getBotInfo().getFeatures()) {
-					ft.getCommands().forEach(c -> {
-						if(c.isBeta() && !Graphite.getMainBotInfo().isBeta()) return;
+				Graphite.log(botInfo.getName() + ": Testing server is " + g.getName());
+				a = g.updateCommands();
+			}
+			for(GraphiteFeature ft : GraphiteFeature.values()) {
+				ft.getCommands().forEach(c -> {
+					if(c.isBeta() && !botInfo.isBeta()) return;
 
-						SlashCommandData d = Commands.slash(c.getName(), c.getDescription().getFallback());
-						d.setDefaultPermissions(c.getPermission() == null ? DefaultMemberPermissions.ENABLED : DefaultMemberPermissions.DISABLED);
-						if(!c.getOptions().isEmpty()) d.addOptions(c.getOptions());
-						SlashCommandListener.registerSlashCommand(c.getName(), c);
+					SlashCommandData d = Commands.slash(c.getName(), c.getDescription().getFallback());
+					d.setDefaultPermissions(c.getPermission() == null ? DefaultMemberPermissions.ENABLED : DefaultMemberPermissions.DISABLED);
+					if(!c.getOptions().isEmpty()) d.addOptions(c.getOptions());
+					SlashCommandListener.registerSlashCommand(c.getName(), c);
 
-						if(!c.getSubCommands().isEmpty()) {
-							for(Command sc : c.getSubCommands()) {
-								if(!sc.getSubCommands().isEmpty()) {
-									SubcommandGroupData grp = new SubcommandGroupData(sc.getName(), sc.getDescription().getFallback());
-									for(Command ssc : sc.getSubCommands()) {
-										grp.addSubcommands(new SubcommandData(ssc.getName(), ssc.getDescription().getFallback()).addOptions(ssc.getOptions()));
-										SlashCommandListener.registerSlashCommand(c.getName() + " " + sc.getName() + " " + ssc.getName(), ssc);
-									}
-									d.addSubcommandGroups(grp);
-								}else {
-									d.addSubcommands(new SubcommandData(sc.getName(), sc.getDescription().getFallback()).addOptions(sc.getOptions()));
-									SlashCommandListener.registerSlashCommand(c.getName() + " " + sc.getName(), sc);
+					if(!c.getSubCommands().isEmpty()) {
+						for(Command sc : c.getSubCommands()) {
+							if(!sc.getSubCommands().isEmpty()) {
+								SubcommandGroupData grp = new SubcommandGroupData(sc.getName(), sc.getDescription().getFallback());
+								for(Command ssc : sc.getSubCommands()) {
+									grp.addSubcommands(new SubcommandData(ssc.getName(), ssc.getDescription().getFallback()).addOptions(ssc.getOptions()));
+									SlashCommandListener.registerSlashCommand(c.getName() + " " + sc.getName() + " " + ssc.getName(), ssc);
 								}
+								d.addSubcommandGroups(grp);
+							}else {
+								d.addSubcommands(new SubcommandData(sc.getName(), sc.getDescription().getFallback()).addOptions(sc.getOptions()));
+								SlashCommandListener.registerSlashCommand(c.getName() + " " + sc.getName(), sc);
 							}
 						}
+					}
 
-						a.addCommands(d);
-					});
-				}
+					a.addCommands(d);
+				});
+			}
 
-				a.queue();
-			});
-		}
+			a.queue();
+		});
 
 		mysql = new GraphiteMySQL();
 		dataManager = new GraphiteDataManager();
@@ -373,7 +350,7 @@ public class Graphite {
 		AtomicInteger num = new AtomicInteger(0);
 		AtomicReference<String> currentGuild = new AtomicReference<>("none");
 
-		List<String> allGuildIds = Graphite.getGlobalShards().stream()
+		List<String> allGuildIds = GraphiteBot.shards.stream()
 				.flatMap(s -> s.getJDA().getGuilds().stream())
 				.map(g -> g.getId())
 				.distinct()
@@ -383,7 +360,7 @@ public class Graphite {
 
 		for(String gID : allGuildIds) {
 			currentGuild.set(gID);
-			getGlobalGuild(gID);
+			getGuild(gID);
 			num.incrementAndGet();
 		}
 
@@ -430,39 +407,16 @@ public class Graphite {
 			GraphiteMessageChannel<?> ch = m.openPrivateChannel();
 			if(ch == null) ch = Graphite.getGuild(event.getGuild()).getTextChannels().get(0);
 
-			if(event.getJDA().getSelfUser().getId().equals(Graphite.getGraphiteBot().getID())) { // Bot is Graphite
-				boolean replacedMultiplex = false;
-				ContextHandle handle = GraphiteMultiplex.handle();
-				for(MultiplexBotInfo bot : Graphite.getMainBotInfo().getMultiplexBots()) {
-					GraphiteMultiplex.setCurrentBot(Graphite.getMultiplexBot(bot));
-					if(Graphite.isOnGuild(event.getGuild().getId())) {
-						replacedMultiplex = true;
-					}
-				}
-				handle.reset();
-				if(replacedMultiplex) {
-					DefaultMessage.OTHER_MULTIPLEX_DISABLED.sendMessage(ch);
-				}
-			}else {
-				try {
-					event.getGuild().retrieveMemberById(Graphite.getGraphiteBot().getID()).complete();
-					DefaultMessage.ERROR_GRAPHITE_ADDED.sendMessage(ch);
-					return;
-				}catch(ErrorResponseException e) {
-					if(e.getErrorResponse() != ErrorResponse.UNKNOWN_MEMBER) e.printStackTrace();
-				}
-			}
-
-			String prefix = Graphite.getMainBotInfo().getDefaultPrefix();
+			String prefix = botInfo.getDefaultPrefix();
 
 			EmbedBuilder eb = new EmbedBuilder();
 
 			eb.setColor(Color.WHITE);
 			eb.setTitle(DefaultLocaleString.EVENT_SERVER_JOIN_TITLE.getFor(m, "user", m.getName()));
-			eb.setDescription(DefaultLocaleString.EVENT_SERVER_JOIN_DESCRIPTION.getFor(m, "discord", Graphite.getMainBotInfo().getLinks().getDiscord(), "website", Graphite.getMainBotInfo().getWebsite().getBaseURL(), "faq", Graphite.getMainBotInfo().getWebsite().getFAQURL()));
+			eb.setDescription(DefaultLocaleString.EVENT_SERVER_JOIN_DESCRIPTION.getFor(m, "discord", botInfo.getLinks().getDiscord(), "website", botInfo.getWebsite().getBaseURL(), "faq", botInfo.getWebsite().getFAQURL()));
 			eb.addBlankField(false);
 			eb.addField(DefaultLocaleString.EVENT_SERVER_JOIN_FIELD_1_TITLE.getFor(m),
-					DefaultLocaleString.EVENT_SERVER_JOIN_FIELD_1_CONTENT.getFor(m, "prefix", prefix, "webinterface", Graphite.getMainBotInfo().getWebsite().getWebinterfaceURL()), false);
+					DefaultLocaleString.EVENT_SERVER_JOIN_FIELD_1_CONTENT.getFor(m, "prefix", prefix, "webinterface", botInfo.getWebsite().getWebinterfaceURL()), false);
 			eb.addBlankField(false);
 			eb.addField(DefaultLocaleString.EVENT_SERVER_JOIN_FIELD_2_TITLE.getFor(m),
 					DefaultLocaleString.EVENT_SERVER_JOIN_FIELD_2_CONTENT.getFor(m, "prefix", prefix), false);
@@ -471,10 +425,10 @@ public class Graphite {
 					DefaultLocaleString.EVENT_SERVER_JOIN_FIELD_3_CONTENT.getFor(m, "prefix", prefix), false);
 			eb.addBlankField(false);
 			eb.addField(DefaultLocaleString.EVENT_SERVER_JOIN_FIELD_4_TITLE.getFor(m),
-					DefaultLocaleString.EVENT_SERVER_JOIN_FIELD_4_CONTENT.getFor(m, "webinterface", Graphite.getMainBotInfo().getWebsite().getWebinterfaceURL()), false);
+					DefaultLocaleString.EVENT_SERVER_JOIN_FIELD_4_CONTENT.getFor(m, "webinterface", botInfo.getWebsite().getWebinterfaceURL()), false);
 			eb.addBlankField(false);
 			eb.addField(DefaultLocaleString.EVENT_SERVER_JOIN_FIELD_5_TITLE.getFor(m),
-					DefaultLocaleString.EVENT_SERVER_JOIN_FIELD_5_CONTENT.getFor(m, "discord", Graphite.getMainBotInfo().getLinks().getDiscord()), false);
+					DefaultLocaleString.EVENT_SERVER_JOIN_FIELD_5_CONTENT.getFor(m, "discord", botInfo.getLinks().getDiscord()), false);
 			ch.sendMessage(eb.build());
 		}));
 
@@ -614,9 +568,7 @@ public class Graphite {
 			return;
 		}
 
-		for(MultiplexBot b : multiplexBots) {
-			b.startStatisticsCollectors();
-		}
+		GraphiteBot.startStatisticsCollectors();
 
 		Selfcheck.startPeriodicCheck();
 
@@ -680,13 +632,7 @@ public class Graphite {
 	}
 
 	public static List<GraphiteShard> getShards() {
-		return GraphiteMultiplex.getCurrentBot().getShards();
-	}
-
-	public static List<GraphiteShard> getGlobalShards() {
-		List<GraphiteShard> s = new ArrayList<>();
-		multiplexBots.forEach(b -> s.addAll(b.getShards()));
-		return s;
+		return GraphiteBot.shards;
 	}
 
 	public static boolean isOnGuild(String guildID) {
@@ -714,8 +660,12 @@ public class Graphite {
 		return getApplicationInfo().getIconUrl();
 	}
 
-	public static MainBotInfo getMainBotInfo() {
+	public static BotInfo getBotInfo() {
 		return botInfo;
+	}
+
+	public static List<GraphiteVoteSource> getVoteSources() {
+		return botInfo.getVoteSettings().getVoteSources();
 	}
 
 	public static FileManager getFileManager() {
@@ -827,11 +777,6 @@ public class Graphite {
 		return getShards().stream().map(s -> s.getJDA().getGuildById(id)).filter(g -> g != null).findFirst().orElse(null);
 	}
 
-	public static Guild getGlobalJDAGuild(String id) {
-		if(!isValidSnowflake(id)) return null;
-		return getGlobalShards().stream().map(s -> s.getJDA().getGuildById(id)).filter(g -> g != null).findFirst().orElse(null);
-	}
-
 	public static boolean isValidSnowflake(String flake) {
 		try {
 			Long.parseLong(flake);
@@ -845,10 +790,6 @@ public class Graphite {
 		return getGuild(getJDAGuild(id));
 	}
 
-	public static GraphiteGuild getGlobalGuild(String id) {
-		return getGuild(getGlobalJDAGuild(id));
-	}
-
 	public static GraphiteGuild getGuildRaw(Guild guild) {
 		return cachedGuilds.lookup(guild.getId());
 	}
@@ -859,7 +800,7 @@ public class Graphite {
 		if(g == null) {
 			g = new GraphiteGuild(guild);
 			cachedGuilds.add(g);
-			final GraphiteGuild fG = g;
+			g.load();
 		}
 		return g;
 	}
@@ -870,20 +811,14 @@ public class Graphite {
 	}
 
 	public static User getJDAUser(String id) {
-		MultiplexBot b = GraphiteMultiplex.getCurrentBot();
-		if(b == null) throw new IllegalStateException("No bot");
-		return b.getCache().getJDAUser(id);
-	}
-
-	public static User getGlobalJDAUser(String id) {
-		if(!isValidSnowflake(id)) return null;
-		return getGlobalShards().stream().map(s -> s.getJDA().retrieveUserById(id).complete()).filter(g -> g != null).findFirst().orElse(null);
+		return getShards().stream()
+			.map(s -> s.getJDA().retrieveUserById(id).onErrorMap(ErrorResponse.UNKNOWN_USER::test, e -> null).complete())
+			.filter(Objects::nonNull)
+			.findFirst().orElse(null);
 	}
 
 	public static GraphiteUser getUser(String id) {
-		MultiplexBot b = GraphiteMultiplex.getCurrentBot();
-		if(b == null) throw new IllegalStateException("No bot");
-		return b.getCache().getUser(id);
+		return getUser(getJDAUser(id));
 	}
 
 	public static User getJDAUser(String name, String hash) {
@@ -907,11 +842,6 @@ public class Graphite {
 		return getUsers(getJDAUsersByName(name));
 	}
 
-	public static GraphiteUser getGlobalUser(String id) {
-		if(id == null) return null;
-		return getUser(getGlobalJDAUser(id));
-	}
-
 	public static List<GraphiteUser> getUsers(List<User> users) {
 		return users.stream()
 				.map(u -> getUser(u))
@@ -919,9 +849,7 @@ public class Graphite {
 	}
 
 	public static GraphiteUser getUser(User user) {
-		MultiplexBot b = GraphiteMultiplex.getCurrentBot();
-		if(b == null) throw new IllegalStateException("No bot");
-		return b.getCache().getUser(user);
+		return new GraphiteUser(user); // TODO: check if works
 	}
 
 	public static GraphiteWebinterfaceUser getWebinterfaceUser(String id) {
@@ -979,14 +907,6 @@ public class Graphite {
 
 	public static GraphiteCategory getCategory(Category category) {
 		return getGuild(category.getGuild()).getCategory(category);
-	}
-
-	public static RichCustomEmoji getGlobalJDAEmote(long id) {
-		return getGlobalShards().stream().map(s -> s.getJDA().getEmojiById(id)).filter(g -> g != null).findFirst().orElse(null);
-	}
-
-	public static RichCustomEmoji getGlobalJDAEmote(String id) {
-		return getGlobalShards().stream().map(s -> s.getJDA().getEmojiById(id)).filter(g -> g != null).findFirst().orElse(null);
 	}
 
 	public static RichCustomEmoji getJDAEmote(long id) {

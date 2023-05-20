@@ -206,7 +206,7 @@ public class CommandHandler {
 	}
 
 	public static void registerCommand(Command command) {
-		if(command.isBeta() && !Graphite.getMainBotInfo().isBeta()) return;
+		if(command.isBeta() && !Graphite.getBotInfo().isBeta()) return;
 		List<Command> c = getCommands();
 		c.add(command);
 	}

@@ -23,15 +23,15 @@ public class FileManager {
 	}
 
 	public File getLogFile() {
-		return new File(Graphite.getMainBotInfo().getFileLocation(), "logs/" + LOG_FILE_FORMAT.format(Instant.now().atZone(ZoneOffset.systemDefault())) + ".log");
+		return new File(Graphite.getBotInfo().getFileLocation(), "logs/" + LOG_FILE_FORMAT.format(Instant.now().atZone(ZoneOffset.systemDefault())) + ".log");
 	}
 	
 	public File getDebugLogFile(DebugCategory category) {
-		return new File(Graphite.getMainBotInfo().getFileLocation(), "logs/debug/" + category.toString().toLowerCase() + ".log");
+		return new File(Graphite.getBotInfo().getFileLocation(), "logs/debug/" + category.toString().toLowerCase() + ".log");
 	}
 	
 	public File getEmojiFolder() {
-		return new File(Graphite.getMainBotInfo().getFileLocation(), "emoji/");
+		return new File(Graphite.getBotInfo().getFileLocation(), "emoji/");
 	}
 	
 }

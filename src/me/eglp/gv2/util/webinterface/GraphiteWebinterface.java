@@ -17,9 +17,6 @@ import me.eglp.gv2.guild.GraphiteMember;
 import me.eglp.gv2.main.DebugCategory;
 import me.eglp.gv2.main.Graphite;
 import me.eglp.gv2.main.GraphiteDebug;
-import me.eglp.gv2.multiplex.GraphiteFeature;
-import me.eglp.gv2.multiplex.GraphiteMultiplex;
-import me.eglp.gv2.multiplex.bot.MultiplexBot;
 import me.eglp.gv2.util.webinterface.base.GraphiteWebinterfaceUser;
 import me.eglp.gv2.util.webinterface.base.WebinterfaceRequest;
 import me.eglp.gv2.util.webinterface.base.WebinterfaceRequestEvent;
@@ -48,7 +45,7 @@ public class GraphiteWebinterface {
 		accountManager = new GraphiteMySQLAccountManager(this);
 		sessionStorage = new GraphiteMySQLSessionStorage();
 
-		webSocketServer = new WebinterfaceWebSocketServer(Graphite.getMainBotInfo().getWebsite().getWebsocketPort());
+		webSocketServer = new WebinterfaceWebSocketServer(Graphite.getBotInfo().getWebsite().getWebsocketPort());
 		webSocketServer.start();
 	}
 
@@ -100,7 +97,7 @@ public class GraphiteWebinterface {
 		}
 	}
 
-	public void sendRequestToGuildUsers(String requestMethod, JSONObject requestData, String guildID) {
+	public void sendRequestToGuildUsers(String requestMethod, JSONObject requestData, String guildID, String permission) {
 		for(WebSocket socket : webSocketServer.getConnections()) {
 			WebinterfaceSession sess = socket.getAttachment();
 			if(sess == null) continue;
@@ -108,7 +105,7 @@ public class GraphiteWebinterface {
 					&& sess.getData().getString("lastKnownGuildID").equals(guildID)) {
 				GraphiteGuild guild = Graphite.getGuild(guildID);
 				if(guild == null) continue;
-				if(!Arrays.stream(requiredFeatures).allMatch(f -> guild.getPermissionManager().hasPermission(sess.getUser().getDiscordUser(), f.getWebinterfacePermission()))) continue;
+				if(!guild.getPermissionManager().hasPermission(sess.getUser().getDiscordUser(), permission)) continue;
 				socket.send(WebinterfacePacket.of(requestMethod, requestData).toJSON().toString());
 			}
 		}
@@ -119,14 +116,9 @@ public class GraphiteWebinterface {
 			WebinterfaceSession session = webSocket.getAttachment();
 			GraphiteWebinterfaceUser user = session.getUser();
 
-			MultiplexBot bot = null;
-			if(packet.getBotIdentifier() != null) {
-				bot = Graphite.getMultiplexBot(packet.getBotIdentifier());
-			}
-
 			GraphiteGuild guild = null;
 			if(packet.getGuildID() != null) {
-				guild = Graphite.getGlobalGuild(packet.getGuildID());
+				guild = Graphite.getGuild(packet.getGuildID());
 			}
 
 			if(guild != null) {
@@ -135,24 +127,18 @@ public class GraphiteWebinterface {
 				}
 			}
 
-			WebinterfaceRequest req = new WebinterfaceRequest(user, bot, guild, packet);
+			WebinterfaceRequest req = new WebinterfaceRequest(user, guild, packet);
 			WebinterfaceRequestEvent e = new WebinterfaceRequestEvent(req);
 			for(Method m : HANDLER_METHODS) {
 				if(m.isAnnotationPresent(WebinterfaceHandler.class)) {
 					WebinterfaceHandler wh = m.getAnnotation(WebinterfaceHandler.class);
 					if(wh.requestMethod().equals(req.getRequestMethod()) &&
-							(!wh.requireGuild() || (guild != null)) &&
-							(!wh.requireBot() || (bot != null && bot.getBotInfo().hasFeaturesAvailable(wh.requireFeatures()))) &&
-							(guild == null || guild.hasFeaturesAvailable(wh.requireFeatures()))) {
+							(!wh.requireGuild() || (guild != null))) {
 						if(!Modifier.isStatic(m.getModifiers()) ||
 								!Arrays.equals(m.getParameterTypes(), new Class[] {WebinterfaceRequestEvent.class}) ||
 								!m.getReturnType().equals(WebinterfaceResponse.class)) {
 							webSocket.close();
 							throw new UnsupportedOperationException("Illegal request handler @ " + m);
-						}
-
-						if(wh.requireBot()) {
-							GraphiteMultiplex.setCurrentBot(bot);
 						}
 
 						if(wh.requireGuildAdmin()) {
@@ -161,7 +147,7 @@ public class GraphiteWebinterface {
 							}
 
 							GraphiteMember mem = guild.getMember(user.getDiscordUser());
-							if(mem == null || !mem.getJDAMember().hasPermission(Permission.ADMINISTRATOR)) {
+							if(mem == null || !mem.getMember().hasPermission(Permission.ADMINISTRATOR)) {
 								return WebinterfacePacket.error(packet.getID(), "No permission");
 							}
 						}
@@ -169,7 +155,7 @@ public class GraphiteWebinterface {
 						if(guild != null) {
 							final GraphiteGuild fGuild = guild;
 							GraphiteMember mem = guild.getMember(user.getDiscordUser());
-							if(mem == null || !Arrays.stream(wh.requireFeatures()).allMatch(f -> f.getWebinterfacePermission() == null || fGuild.getPermissionManager().hasPermission(mem, f.getWebinterfacePermission()) || mem.getJDAMember().hasPermission(Permission.ADMINISTRATOR))) {
+							if(mem == null || !Arrays.stream(wh.requirePermissions()).allMatch(p -> fGuild.getPermissionManager().hasPermission(mem, p) || mem.getMember().hasPermission(Permission.ADMINISTRATOR))) {
 								return WebinterfacePacket.error(packet.getID(), "No permission");
 							}
 						}

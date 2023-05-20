@@ -7,7 +7,7 @@ import me.eglp.gv2.util.base.GraphiteOwning;
 public interface CommandSender extends GraphiteOwning, GraphiteLocalizable {
 
 	public default String getPrefix() {
-		return isGuild() ? asGuild().getConfig().getPrefix() : Graphite.getMainBotInfo().getDefaultPrefix();
+		return isGuild() ? asGuild().getConfig().getPrefix() : Graphite.getBotInfo().getDefaultPrefix();
 	}
 	
 }

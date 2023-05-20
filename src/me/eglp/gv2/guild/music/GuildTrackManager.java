@@ -25,9 +25,8 @@ import me.eglp.gv2.guild.GraphiteGuild;
 import me.eglp.gv2.main.DebugCategory;
 import me.eglp.gv2.main.Graphite;
 import me.eglp.gv2.main.GraphiteDebug;
-import me.eglp.gv2.multiplex.GraphiteFeature;
-import me.eglp.gv2.multiplex.bot.MultiplexBot;
 import me.eglp.gv2.util.music.GraphiteTrack;
+import me.eglp.gv2.util.permission.DefaultPermissions;
 import me.eglp.gv2.util.webinterface.js.JavaScriptGetter;
 import me.eglp.gv2.util.webinterface.js.WebinterfaceObject;
 import net.dv8tion.jda.api.managers.AudioManager;
@@ -50,7 +49,6 @@ public class GuildTrackManager extends AudioEventAdapter implements Webinterface
 		MIN_PITCH = 0.25d,
 		MAX_PITCH = 5d;
 
-	private MultiplexBot bot;
 	private GraphiteGuild guild;
 	private AudioPlayer player;
 	private AudioManager audioManager;
@@ -64,8 +62,7 @@ public class GuildTrackManager extends AudioEventAdapter implements Webinterface
 	private double speed;
 	private double pitch;
 
-	public GuildTrackManager(MultiplexBot bot, GraphiteGuild guild) {
-		this.bot = bot;
+	public GuildTrackManager(GraphiteGuild guild) {
 		this.guild = guild;
 		this.speed = 1.0d;
 		this.pitch = 1.0d;
@@ -90,7 +87,7 @@ public class GuildTrackManager extends AudioEventAdapter implements Webinterface
 	public void queueTrack(GraphiteTrack track) {
 		queue.add(track);
 
-		Graphite.getWebinterface().sendRequestToGuildUsers("updateQueue", null, guild.getID(), GraphiteFeature.MUSIC);
+		Graphite.getWebinterface().sendRequestToGuildUsers("updateQueue", null, guild.getID(), DefaultPermissions.WEBINTERFACE_MUSIC);
 	}
 
 	public void skip(int amount) {
@@ -105,7 +102,7 @@ public class GuildTrackManager extends AudioEventAdapter implements Webinterface
 		stopCurrentTrack();
 		playTrack(track);
 
-		Graphite.getWebinterface().sendRequestToGuildUsers("updatePlayingTrack", null, guild.getID(), GraphiteFeature.MUSIC);
+		Graphite.getWebinterface().sendRequestToGuildUsers("updatePlayingTrack", null, guild.getID(), DefaultPermissions.WEBINTERFACE_MUSIC);
 	}
 
 	public GraphiteTrack removeRelative(int idx) {
@@ -123,14 +120,12 @@ public class GuildTrackManager extends AudioEventAdapter implements Webinterface
 		if(queue.hasReachedEnd()) return;
 		if(playingTrack != null) return;
 
-		Graphite.withBot(bot, () -> {
-			audioManager = guild.getJDAGuild().getAudioManager();
-			if(!audioManager.isConnected()) audioManager.setSelfDeafened(true);
-			audioManager.openAudioConnection(channel.getJDAChannel());
-			playTrack(queue.next());
-		});
+		audioManager = guild.getJDAGuild().getAudioManager();
+		if(!audioManager.isConnected()) audioManager.setSelfDeafened(true);
+		audioManager.openAudioConnection(channel.getJDAChannel());
+		playTrack(queue.next());
 
-		Graphite.getWebinterface().sendRequestToGuildUsers("updatePlayingTrack", null, guild.getID(), GraphiteFeature.MUSIC);
+		Graphite.getWebinterface().sendRequestToGuildUsers("updatePlayingTrack", null, guild.getID(), DefaultPermissions.WEBINTERFACE_MUSIC);
 	}
 
 	public void stopCurrentTrack() {
@@ -141,9 +136,7 @@ public class GuildTrackManager extends AudioEventAdapter implements Webinterface
 	public void stop() {
 		stopCurrentTrack();
 
-		Graphite.withBot(bot, () -> {
-			if(audioManager != null && !guild.getRecorder().isRecording()) audioManager.closeAudioConnection();
-		});
+		if(audioManager != null && !guild.getRecorder().isRecording()) audioManager.closeAudioConnection();
 
 		audioManager = null;
 		channel = null;
@@ -156,7 +149,7 @@ public class GuildTrackManager extends AudioEventAdapter implements Webinterface
 		if(player.getVolume() > 100) player.setVolume(100);
 		queue.clear();
 
-		Graphite.getWebinterface().sendRequestToGuildUsers("stopMusic", null, guild.getID(), GraphiteFeature.MUSIC);
+		Graphite.getWebinterface().sendRequestToGuildUsers("stopMusic", null, guild.getID(), DefaultPermissions.WEBINTERFACE_MUSIC);
 	}
 
 	public GraphiteTrack getPlayingTrack() {
@@ -166,7 +159,7 @@ public class GuildTrackManager extends AudioEventAdapter implements Webinterface
 	public void setLooping(boolean looping) {
 		this.looping = looping;
 
-		Graphite.getWebinterface().sendRequestToGuildUsers("updatePlayerState", null, guild.getID(), GraphiteFeature.MUSIC);
+		Graphite.getWebinterface().sendRequestToGuildUsers("updatePlayerState", null, guild.getID(), DefaultPermissions.WEBINTERFACE_MUSIC);
 	}
 
 	@JavaScriptGetter(name = "isLooping", returning = "looping")
@@ -177,7 +170,7 @@ public class GuildTrackManager extends AudioEventAdapter implements Webinterface
 	public void setEndless(boolean endless) {
 		this.endless = endless;
 
-		Graphite.getWebinterface().sendRequestToGuildUsers("updatePlayerState", null, guild.getID(), GraphiteFeature.MUSIC);
+		Graphite.getWebinterface().sendRequestToGuildUsers("updatePlayerState", null, guild.getID(), DefaultPermissions.WEBINTERFACE_MUSIC);
 	}
 
 	@JavaScriptGetter(name = "isEndless", returning = "endless")
@@ -199,7 +192,7 @@ public class GuildTrackManager extends AudioEventAdapter implements Webinterface
 		updateAudioFilters();
 		player.setFrameBufferDuration(null);
 
-		Graphite.getWebinterface().sendRequestToGuildUsers("updatePlayerState", null, guild.getID(), GraphiteFeature.MUSIC);
+		Graphite.getWebinterface().sendRequestToGuildUsers("updatePlayerState", null, guild.getID(), DefaultPermissions.WEBINTERFACE_MUSIC);
 	}
 
 	@JavaScriptGetter(name = "getBassBoostLevel", returning = "bassBoostLevel")
@@ -212,7 +205,7 @@ public class GuildTrackManager extends AudioEventAdapter implements Webinterface
 		this.speed = speed;
 		updateAudioFilters();
 
-		Graphite.getWebinterface().sendRequestToGuildUsers("updatePlayerState", null, guild.getID(), GraphiteFeature.MUSIC);
+		Graphite.getWebinterface().sendRequestToGuildUsers("updatePlayerState", null, guild.getID(), DefaultPermissions.WEBINTERFACE_MUSIC);
 	}
 
 	public double getSpeed() {
@@ -224,7 +217,7 @@ public class GuildTrackManager extends AudioEventAdapter implements Webinterface
 		this.pitch = pitch;
 		updateAudioFilters();
 
-		Graphite.getWebinterface().sendRequestToGuildUsers("updatePlayerState", null, guild.getID(), GraphiteFeature.MUSIC);
+		Graphite.getWebinterface().sendRequestToGuildUsers("updatePlayerState", null, guild.getID(), DefaultPermissions.WEBINTERFACE_MUSIC);
 	}
 
 	public void setSpeedAndPitch(double speed, double pitch) {
@@ -234,7 +227,7 @@ public class GuildTrackManager extends AudioEventAdapter implements Webinterface
 		this.pitch = pitch;
 		updateAudioFilters();
 
-		Graphite.getWebinterface().sendRequestToGuildUsers("updatePlayerState", null, guild.getID(), GraphiteFeature.MUSIC);
+		Graphite.getWebinterface().sendRequestToGuildUsers("updatePlayerState", null, guild.getID(), DefaultPermissions.WEBINTERFACE_MUSIC);
 	}
 
 	public void reset() {
@@ -244,7 +237,7 @@ public class GuildTrackManager extends AudioEventAdapter implements Webinterface
 		player.setVolume(100);
 		updateAudioFilters();
 
-		Graphite.getWebinterface().sendRequestToGuildUsers("updatePlayerState", null, guild.getID(), GraphiteFeature.MUSIC);
+		Graphite.getWebinterface().sendRequestToGuildUsers("updatePlayerState", null, guild.getID(), DefaultPermissions.WEBINTERFACE_MUSIC);
 	}
 
 	public double getPitch() {
@@ -264,9 +257,9 @@ public class GuildTrackManager extends AudioEventAdapter implements Webinterface
 					if(bassBoostLevel != 0) {
 						for(int i = Equalizer.BAND_COUNT; i > 0; i--) {
 							if(i > Equalizer.BAND_COUNT / 4) {
-								eq.setGain(i, (float) -BASS_BOOST_LEVELS[bassBoostLevel - 1]);
+								eq.setGain(i, -BASS_BOOST_LEVELS[bassBoostLevel - 1]);
 							}else {
-								eq.setGain(i, (float) BASS_BOOST_LEVELS[bassBoostLevel - 1]);
+								eq.setGain(i, BASS_BOOST_LEVELS[bassBoostLevel - 1]);
 							}
 						}
 					}
@@ -332,13 +325,13 @@ public class GuildTrackManager extends AudioEventAdapter implements Webinterface
 
 			GraphiteTrack next = next(1);
 			if(next == null) {
-				Graphite.getWebinterface().sendRequestToGuildUsers("stopMusic", null, guild.getID(), GraphiteFeature.MUSIC);
+				Graphite.getWebinterface().sendRequestToGuildUsers("stopMusic", null, guild.getID(), DefaultPermissions.WEBINTERFACE_MUSIC);
 				return;
 			}
 
 			playTrack(next);
 
-			Graphite.getWebinterface().sendRequestToGuildUsers("updatePlayingTrack", null, guild.getID(), GraphiteFeature.MUSIC);
+			Graphite.getWebinterface().sendRequestToGuildUsers("updatePlayingTrack", null, guild.getID(), DefaultPermissions.WEBINTERFACE_MUSIC);
 		});
 	}
 
@@ -354,7 +347,7 @@ public class GuildTrackManager extends AudioEventAdapter implements Webinterface
 			}
 		}
 
-		Graphite.getWebinterface().sendRequestToGuildUsers("updatePlayingTrack", null, guild.getID(), GraphiteFeature.MUSIC);
+		Graphite.getWebinterface().sendRequestToGuildUsers("updatePlayingTrack", null, guild.getID(), DefaultPermissions.WEBINTERFACE_MUSIC);
 		return next;
 	}
 

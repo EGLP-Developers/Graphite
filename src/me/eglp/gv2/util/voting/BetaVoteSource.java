@@ -20,13 +20,13 @@ public class BetaVoteSource implements GraphiteVoteSource {
 
 	@Override
 	public String getUpvoteURL() {
-		return "http://" + Graphite.getMainBotInfo().getWebsite().getBaseURL() + "/api/vote/beta?bot=" + getIdentifier() + "&user=";
+		return "http://" + Graphite.getBotInfo().getWebsite().getBaseURL() + "/api/vote/beta?bot=" + getIdentifier() + "&user=";
 	}
 
 	@Override
 	public void onVote(JSONObject requestData) {
 		String userID = requestData.getString("userID");
-		GraphiteUser user = Graphite.getGlobalUser(userID); // because premium features are available for Multiplex bots as well
+		GraphiteUser user = Graphite.getUser(userID);
 		if(user == null) throw new InvalidVoteException("Invalid user");
 
 		Graphite.getVoting().addVotes(this, user, 0);

@@ -58,11 +58,6 @@ public class GraphiteVoiceChannel implements GraphiteIdentifiable, WebinterfaceO
 	}
 
 	@Override
-	public boolean existsJDA() {
-		return getJDAChannel() != null;
-	}
-
-	@Override
 	public void preSerializeWI(JSONObject object) {
 		object.put("id", getID());
 		object.put("name", getName());

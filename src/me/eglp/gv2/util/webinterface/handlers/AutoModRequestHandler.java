@@ -11,7 +11,7 @@ import me.eglp.gv2.guild.automod.excessive_spoilers.ExcessiveSpoilersSettings;
 import me.eglp.gv2.guild.automod.external_links.ExternalLinksSettings;
 import me.eglp.gv2.guild.automod.repeated_text.RepeatedTextSettings;
 import me.eglp.gv2.guild.automod.zalgo.ZalgoSettings;
-import me.eglp.gv2.multiplex.GraphiteFeature;
+import me.eglp.gv2.util.permission.DefaultPermissions;
 import me.eglp.gv2.util.webinterface.WebinterfaceHandler;
 import me.eglp.gv2.util.webinterface.base.WebinterfaceRequestEvent;
 import me.eglp.gv2.util.webinterface.base.WebinterfaceResponse;
@@ -20,7 +20,7 @@ import me.mrletsplay.mrcore.json.JSONObject;
 
 public class AutoModRequestHandler {
 
-	@WebinterfaceHandler(requestMethod = "setAutoModSettings", requireGuild = true, requireFeatures = GraphiteFeature.MODERATION)
+	@WebinterfaceHandler(requestMethod = "setAutoModSettings", requireGuild = true, requirePermissions = DefaultPermissions.WEBINTERFACE_MODERATION)
 	public static WebinterfaceResponse setAutoModSettings(WebinterfaceRequestEvent event) {
 		GraphiteGuild g = event.getSelectedGuild();
 
@@ -31,7 +31,7 @@ public class AutoModRequestHandler {
 		return WebinterfaceResponse.success();
 	}
 
-	@WebinterfaceHandler(requestMethod = "getBadWordsSettings", requireGuild = true, requireFeatures = GraphiteFeature.MODERATION)
+	@WebinterfaceHandler(requestMethod = "getBadWordsSettings", requireGuild = true, requirePermissions = DefaultPermissions.WEBINTERFACE_MODERATION)
 	public static WebinterfaceResponse getBadWordsSettings(WebinterfaceRequestEvent event) {
 		GraphiteGuild g = event.getSelectedGuild();
 		BadWordsSettings s = g.getAutoModSettings().getBadWordsSettings();
@@ -41,7 +41,7 @@ public class AutoModRequestHandler {
 		return WebinterfaceResponse.success(obj);
 	}
 
-	@WebinterfaceHandler(requestMethod = "getExcessiveCapsSettings", requireGuild = true, requireFeatures = GraphiteFeature.MODERATION)
+	@WebinterfaceHandler(requestMethod = "getExcessiveCapsSettings", requireGuild = true, requirePermissions = DefaultPermissions.WEBINTERFACE_MODERATION)
 	public static WebinterfaceResponse getExcessiveCapsSettings(WebinterfaceRequestEvent event) {
 		GraphiteGuild g = event.getSelectedGuild();
 		ExcessiveCapsSettings s = g.getAutoModSettings().getExcessiveCapsSettings();
@@ -52,7 +52,7 @@ public class AutoModRequestHandler {
 		return WebinterfaceResponse.success(obj);
 	}
 
-	@WebinterfaceHandler(requestMethod = "getExcessiveEmojiSettings", requireGuild = true, requireFeatures = GraphiteFeature.MODERATION)
+	@WebinterfaceHandler(requestMethod = "getExcessiveEmojiSettings", requireGuild = true, requirePermissions = DefaultPermissions.WEBINTERFACE_MODERATION)
 	public static WebinterfaceResponse getExcessiveEmojiSettings(WebinterfaceRequestEvent event) {
 		GraphiteGuild g = event.getSelectedGuild();
 		ExcessiveEmojiSettings s = g.getAutoModSettings().getExcessiveEmojiSettings();
@@ -62,7 +62,7 @@ public class AutoModRequestHandler {
 		return WebinterfaceResponse.success(obj);
 	}
 
-	@WebinterfaceHandler(requestMethod = "getExcessiveMentionsSettings", requireGuild = true, requireFeatures = GraphiteFeature.MODERATION)
+	@WebinterfaceHandler(requestMethod = "getExcessiveMentionsSettings", requireGuild = true, requirePermissions = DefaultPermissions.WEBINTERFACE_MODERATION)
 	public static WebinterfaceResponse getExcessiveMentionsSettings(WebinterfaceRequestEvent event) {
 		GraphiteGuild g = event.getSelectedGuild();
 		ExcessiveMentionsSettings s = g.getAutoModSettings().getExcessiveMentionsSettings();
@@ -72,7 +72,7 @@ public class AutoModRequestHandler {
 		return WebinterfaceResponse.success(obj);
 	}
 
-	@WebinterfaceHandler(requestMethod = "getExternalLinksSettings", requireGuild = true, requireFeatures = GraphiteFeature.MODERATION)
+	@WebinterfaceHandler(requestMethod = "getExternalLinksSettings", requireGuild = true, requirePermissions = DefaultPermissions.WEBINTERFACE_MODERATION)
 	public static WebinterfaceResponse getExternalLinksSettings(WebinterfaceRequestEvent event) {
 		GraphiteGuild g = event.getSelectedGuild();
 		ExternalLinksSettings s = g.getAutoModSettings().getExternalLinksSettings();
@@ -83,7 +83,7 @@ public class AutoModRequestHandler {
 		return WebinterfaceResponse.success(obj);
 	}
 
-	@WebinterfaceHandler(requestMethod = "getExcessiveSpoilersSettings", requireGuild = true, requireFeatures = GraphiteFeature.MODERATION)
+	@WebinterfaceHandler(requestMethod = "getExcessiveSpoilersSettings", requireGuild = true, requirePermissions = DefaultPermissions.WEBINTERFACE_MODERATION)
 	public static WebinterfaceResponse getExcessiveSpoilersSettings(WebinterfaceRequestEvent event) {
 		GraphiteGuild g = event.getSelectedGuild();
 		ExcessiveSpoilersSettings s = g.getAutoModSettings().getExcessiveSpoilersSettings();
@@ -94,7 +94,7 @@ public class AutoModRequestHandler {
 		return WebinterfaceResponse.success(obj);
 	}
 
-	@WebinterfaceHandler(requestMethod = "getZalgoSettings", requireGuild = true, requireFeatures = GraphiteFeature.MODERATION)
+	@WebinterfaceHandler(requestMethod = "getZalgoSettings", requireGuild = true, requirePermissions = DefaultPermissions.WEBINTERFACE_MODERATION)
 	public static WebinterfaceResponse getZalgoSettings(WebinterfaceRequestEvent event) {
 		GraphiteGuild g = event.getSelectedGuild();
 		ZalgoSettings s = g.getAutoModSettings().getZalgoSettings();
@@ -105,7 +105,7 @@ public class AutoModRequestHandler {
 		return WebinterfaceResponse.success(obj);
 	}
 
-	@WebinterfaceHandler(requestMethod = "getRepeatedTextSettings", requireGuild = true, requireFeatures = GraphiteFeature.MODERATION)
+	@WebinterfaceHandler(requestMethod = "getRepeatedTextSettings", requireGuild = true, requirePermissions = DefaultPermissions.WEBINTERFACE_MODERATION)
 	public static WebinterfaceResponse getRepeatedTextSettings(WebinterfaceRequestEvent event) {
 		GraphiteGuild g = event.getSelectedGuild();
 		RepeatedTextSettings s = g.getAutoModSettings().getRepeatedTextSettings();
@@ -116,7 +116,7 @@ public class AutoModRequestHandler {
 		return WebinterfaceResponse.success(obj);
 	}
 
-	@WebinterfaceHandler(requestMethod = "getDiscordInvitesSettings", requireGuild = true, requireFeatures = GraphiteFeature.MODERATION)
+	@WebinterfaceHandler(requestMethod = "getDiscordInvitesSettings", requireGuild = true, requirePermissions = DefaultPermissions.WEBINTERFACE_MODERATION)
 	public static WebinterfaceResponse getDiscordInvitesSettings(WebinterfaceRequestEvent event) {
 		GraphiteGuild g = event.getSelectedGuild();
 		DiscordInvitesSettings s = g.getAutoModSettings().getDiscordInvitesSettings();

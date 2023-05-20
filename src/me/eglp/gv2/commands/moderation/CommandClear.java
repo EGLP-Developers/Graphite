@@ -43,7 +43,7 @@ public class CommandClear extends Command{
 		DeferredReply r = event.deferReply();
 		String messageID = r.getMessage().getId();
 		GraphiteQueue q = Graphite.getQueue();
-		if(q.isHeavyBusy()) r.editOriginal(DefaultMessage.OTHER_HEAVY_BUSY.createEmbed(event.getSender(), "patreon", Graphite.getMainBotInfo().getLinks().getPatreon()));
+		if(q.isHeavyBusy()) r.editOriginal(DefaultMessage.OTHER_HEAVY_BUSY.createEmbed(event.getSender(), "patreon", Graphite.getBotInfo().getLinks().getPatreon()));
 		q.queueHeavy(event.getGuild(), new GraphiteTaskInfo(CLEAR_TASK_ID, "Deleting messages (clear)"), () -> event.getTextChannel().clear((int) fAmount, messageID))
 			.thenRun(() -> r.editOriginal(DefaultMessage.COMMAND_CLEAR_SUCCESS.createEmbed(event.getSender(), "amount", ""+fAmount)));
 	}

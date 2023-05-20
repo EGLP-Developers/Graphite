@@ -62,11 +62,6 @@ public class GuildReport implements WebinterfaceObject, JSONConvertible{
 		return timestamp;
 	}
 
-	public boolean isValid() {
-		return reporter.isAvailable()
-				&& reported.isAvailable();
-	}
-
 	@Override
 	public boolean equals(Object obj) {
 		if(!(obj instanceof GuildReport)) return false;

@@ -38,7 +38,7 @@ public class CommandEasterEggs extends Command{
 		b.addField("", DefaultLocaleString.COMMAND_EASTEREGGS_MYSTERY_FOOTER.getFor(event.getSender(),
 				"amount", String.valueOf(event.getAuthor().getConfig().getFoundEasterEggs().size()),
 				"total_amount", String.valueOf(EasterEgg.values().length),
-				"multiplex_url", Graphite.getMainBotInfo().getWebsite().getMultiplexURL()),
+				"multiplex_url", Graphite.getBotInfo().getWebsite().getMultiplexURL()),
 				false);
 
 		event.reply(b.build());
