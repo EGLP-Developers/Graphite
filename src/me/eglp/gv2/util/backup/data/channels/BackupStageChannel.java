@@ -29,7 +29,7 @@ public class BackupStageChannel implements JSONConvertible, WebinterfaceObject, 
 	@JavaScriptValue(getter = "getName")
 	@JSONValue
 	private String name;
-	
+
 	@JavaScriptValue(getter = "getPosition")
 	@JSONValue
 	private int position = -1;
@@ -45,14 +45,14 @@ public class BackupStageChannel implements JSONConvertible, WebinterfaceObject, 
 	@JSONValue
 	@JSONComplexListType(BackupPermissionOverride.class)
 	private List<BackupPermissionOverride> permissionOverrides;
-	
+
 	@JSONConstructor
 	private BackupStageChannel() {}
-	
+
 	public BackupStageChannel(GraphiteStageChannel graphiteChannel) {
 		StageChannel ch = graphiteChannel.getJDAChannel();
 		if(ch == null) throw new IllegalStateException("Unknown channel or invalid context");
-		
+
 		this.id = graphiteChannel.getID();
 		this.name = ch.getName();
 		this.position = ch.getPosition();
@@ -68,7 +68,7 @@ public class BackupStageChannel implements JSONConvertible, WebinterfaceObject, 
 	public String getName() {
 		return name;
 	}
-	
+
 	@Override
 	public int getPosition() {
 		return position;
@@ -85,20 +85,20 @@ public class BackupStageChannel implements JSONConvertible, WebinterfaceObject, 
 	public List<BackupPermissionOverride> getPermissionOverrides() {
 		return permissionOverrides;
 	}
-	
+
 	@Override
 	public void restore(GraphiteGuild guild, Category parent, IDMappings mappings) {
 		Guild g = guild.getJDAGuild();
 		if(!g.getFeatures().contains("COMMUNITY")) return;
-		
+
 		ChannelAction<StageChannel> c = g.createStageChannel(name, parent);
 		if(position >= 0) c.setPosition(position);
-		c.setBitrate(bitrate);
-		
+		c.setBitrate(Math.min(g.getMaxBitrate(), bitrate));
+
 		permissionOverrides.stream()
 			.filter(o -> o.getType() == Type.MEMBER)
 			.forEach(o -> c.addMemberPermissionOverride(Long.parseLong(o.getID()), o.getAllowed(), o.getDenied()));
-	
+
 		permissionOverrides.stream()
 			.filter(o -> o.getType() == Type.ROLE)
 			.forEach(o -> {
@@ -106,14 +106,14 @@ public class BackupStageChannel implements JSONConvertible, WebinterfaceObject, 
 				if(newRoleID == null) return; // Because of the role rate limit, the role might not have been restored
 				c.addRolePermissionOverride(Long.parseLong(newRoleID), o.getAllowed(), o.getDenied());
 			});
-		
+
 		StageChannel ch = c.complete();
 		if(region != null) {
 			Region r = Region.fromKey(region);
 			if(r != Region.UNKNOWN) ch.getManager().setRegion(r).complete();
 		}
-		
+
 		mappings.put(id, ch.getId());
 	}
-	
+
 }
