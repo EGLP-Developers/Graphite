@@ -93,7 +93,7 @@ public class BackupStageChannel implements JSONConvertible, WebinterfaceObject, 
 
 		ChannelAction<StageChannel> c = g.createStageChannel(name, parent);
 		if(position >= 0) c.setPosition(position);
-		c.setBitrate(bitrate);
+		c.setBitrate(Math.min(g.getMaxBitrate(), bitrate));
 
 		permissionOverrides.stream()
 			.filter(o -> o.getType() == Type.MEMBER)

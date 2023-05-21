@@ -58,7 +58,7 @@ public class GuildAutoChannel implements WebinterfaceObject {
 		ChannelAction<VoiceChannel> vc = guild.getJDAGuild().createVoiceChannel(channel.getName() + " #" + n);
 		VoiceChannel jdaChannel = channel.getJDAChannel();
 		if(category != null) vc.setParent(category.getJDACategory());
-		vc.setBitrate(jdaChannel.getBitrate());
+		vc.setBitrate(Math.min(jdaChannel.getGuild().getMaxBitrate(), jdaChannel.getBitrate()));
 		vc.setPosition(jdaChannel.getPosition());
 		vc.setUserlimit(jdaChannel.getUserLimit());
 

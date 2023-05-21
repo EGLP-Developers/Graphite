@@ -105,7 +105,7 @@ public class BackupVoiceChannel implements JSONConvertible, WebinterfaceObject, 
 
 		ChannelAction<VoiceChannel> c = g.createVoiceChannel(name, parent);
 		if(position >= 0) c.setPosition(position);
-		c.setBitrate(bitrate);
+		c.setBitrate(Math.min(g.getMaxBitrate(), bitrate));
 		c.setUserlimit(userLimit);
 
 		permissionOverrides.stream()
