@@ -1,6 +1,5 @@
 package me.eglp.gv2.util.webinterface.handlers;
 
-import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -17,6 +16,7 @@ import me.eglp.gv2.guild.GraphiteVoiceChannel;
 import me.eglp.gv2.guild.config.GuildChannelsConfig;
 import me.eglp.gv2.main.Graphite;
 import me.eglp.gv2.user.GraphiteUser;
+import me.eglp.gv2.util.permission.DefaultPermissions;
 import me.eglp.gv2.util.selfcheck.SpecialSelfcheck;
 import me.eglp.gv2.util.webinterface.WebinterfaceHandler;
 import me.eglp.gv2.util.webinterface.base.GraphiteWebinterfaceGuild;
@@ -175,7 +175,8 @@ public class BaseRequestHandler {
 		JSONObject o = new JSONObject();
 		o.put("guilds", new JSONArray(permittedGuilds.stream()
 				.filter(g -> g.isGraphiteGuild())
-				.filter(g -> Arrays.stream(me.eglp.gv2.main.GraphiteFeature.values()).anyMatch(f -> f.getWebinterfacePermission() != null && g.getGraphiteGuild().getPermissionManager().hasPermission(g.getGraphiteGuild().getMember(event.getUser().getDiscordUser()), f.getWebinterfacePermission())))
+				.map(g -> g.getGraphiteGuild())
+				.filter(g -> DefaultPermissions.getWebinterfacePermissions().stream().anyMatch(p -> g.getPermissionManager().hasPermission(g.getMember(event.getUser().getDiscordUser()), p)))
 				.map(g -> g.toWebinterfaceObject())
 				.collect(Collectors.toList())));
 

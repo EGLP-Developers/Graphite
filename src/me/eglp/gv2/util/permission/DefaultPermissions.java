@@ -189,4 +189,18 @@ public class DefaultPermissions {
 		return p;
 	}
 
+	public static List<String> getWebinterfacePermissions() {
+		List<String> p = new ArrayList<>();
+		for(Field f : DefaultPermissions.class.getDeclaredFields()) {
+			if(!f.getName().startsWith("WEBINTERFACE_")) continue;
+			if(f.getType().equals(String.class))
+				try {
+					p.add((String) f.get(null));
+				} catch (IllegalArgumentException | IllegalAccessException e) {
+					throw new FriendlyException("yay broken", e);
+				}
+		}
+		return p;
+	}
+
 }

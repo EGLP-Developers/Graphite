@@ -233,13 +233,7 @@ public class Graphite {
 			e.printStackTrace();
 		}
 
-		log("Initializing main bot...");
-
-		for(GraphiteFeature ft : GraphiteFeature.values()) {
-			ft.getCommands().forEach(CommandHandler::registerCommand);
-		}
-
-		log("Initializing Multiplex bots...");
+		log("Initializing bot...");
 		GraphiteBot.start(botInfo);
 
 		start(sw.stop().elapsed(TimeUnit.MILLISECONDS));
@@ -285,34 +279,35 @@ public class Graphite {
 				Graphite.log(botInfo.getName() + ": Testing server is " + g.getName());
 				a = g.updateCommands();
 			}
-			for(GraphiteFeature ft : GraphiteFeature.values()) {
-				ft.getCommands().forEach(c -> {
-					if(c.isBeta() && !botInfo.isBeta()) return;
 
-					SlashCommandData d = Commands.slash(c.getName(), c.getDescription().getFallback());
-					d.setDefaultPermissions(c.getPermission() == null ? DefaultMemberPermissions.ENABLED : DefaultMemberPermissions.DISABLED);
-					if(!c.getOptions().isEmpty()) d.addOptions(c.getOptions());
-					SlashCommandListener.registerSlashCommand(c.getName(), c);
+			GraphiteBot.getConfiguredCommands().forEach(c -> {
+				CommandHandler.registerCommand(c);
 
-					if(!c.getSubCommands().isEmpty()) {
-						for(Command sc : c.getSubCommands()) {
-							if(!sc.getSubCommands().isEmpty()) {
-								SubcommandGroupData grp = new SubcommandGroupData(sc.getName(), sc.getDescription().getFallback());
-								for(Command ssc : sc.getSubCommands()) {
-									grp.addSubcommands(new SubcommandData(ssc.getName(), ssc.getDescription().getFallback()).addOptions(ssc.getOptions()));
-									SlashCommandListener.registerSlashCommand(c.getName() + " " + sc.getName() + " " + ssc.getName(), ssc);
-								}
-								d.addSubcommandGroups(grp);
-							}else {
-								d.addSubcommands(new SubcommandData(sc.getName(), sc.getDescription().getFallback()).addOptions(sc.getOptions()));
-								SlashCommandListener.registerSlashCommand(c.getName() + " " + sc.getName(), sc);
+				if(c.isBeta() && !botInfo.isBeta()) return;
+
+				SlashCommandData d = Commands.slash(c.getName(), c.getDescription().getFallback());
+				d.setDefaultPermissions(c.getPermission() == null ? DefaultMemberPermissions.ENABLED : DefaultMemberPermissions.DISABLED);
+				if(!c.getOptions().isEmpty()) d.addOptions(c.getOptions());
+				SlashCommandListener.registerSlashCommand(c.getName(), c);
+
+				if(!c.getSubCommands().isEmpty()) {
+					for(Command sc : c.getSubCommands()) {
+						if(!sc.getSubCommands().isEmpty()) {
+							SubcommandGroupData grp = new SubcommandGroupData(sc.getName(), sc.getDescription().getFallback());
+							for(Command ssc : sc.getSubCommands()) {
+								grp.addSubcommands(new SubcommandData(ssc.getName(), ssc.getDescription().getFallback()).addOptions(ssc.getOptions()));
+								SlashCommandListener.registerSlashCommand(c.getName() + " " + sc.getName() + " " + ssc.getName(), ssc);
 							}
+							d.addSubcommandGroups(grp);
+						}else {
+							d.addSubcommands(new SubcommandData(sc.getName(), sc.getDescription().getFallback()).addOptions(sc.getOptions()));
+							SlashCommandListener.registerSlashCommand(c.getName() + " " + sc.getName(), sc);
 						}
 					}
+				}
 
-					a.addCommands(d);
-				});
-			}
+				a.addCommands(d);
+			});
 
 			a.queue();
 		});

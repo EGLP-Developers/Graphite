@@ -48,7 +48,7 @@ public class CommandHelp extends Command {
 			b.setColor(Color.DARK_GRAY);
 			b.setAuthor(Graphite.getBotInfo().getName(), null, Graphite.getIconUrl());
 			b.setDescription(DefaultLocaleString.COMMAND_HELP_MESSAGE_GENERAL_INFO.getFor(event.getSender(),
-					"prefix", event.getSender().getPrefix(),
+					"prefix", event.getPrefixUsed(),
 					"invite", Graphite.getInviteUrl(),
 					"discord", Graphite.getBotInfo().getLinks().getDiscord(),
 					"webinterface", Graphite.getBotInfo().getWebsite().getWebinterfaceURL(),
