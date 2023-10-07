@@ -63,7 +63,7 @@ public class GraphiteCommonTasks {
 			}
 		}, 60 * 1000L);
 
-		Graphite.getScheduler().scheduleAtFixedRate("guilds-twitch-refresh", () -> {
+		if(Graphite.getBotInfo().getTwitch().isEnabled()) Graphite.getScheduler().scheduleAtFixedRate("guilds-twitch-refresh", () -> {
 			for(GraphiteGuild g : Graphite.getGuilds()) {
 				if(!g.getConfig().hasModuleEnabled(GraphiteModule.TWITCH)) continue;
 
@@ -112,7 +112,7 @@ public class GraphiteCommonTasks {
 			}
 		}, 5 * 60 * 1000);
 
-		Graphite.getScheduler().scheduleAtFixedRate("guilds-reddit-refresh", () -> {
+		if(Graphite.getBotInfo().getReddit().isEnabled()) Graphite.getScheduler().scheduleAtFixedRate("guilds-reddit-refresh", () -> {
 			for(GraphiteGuild g : Graphite.getGuilds()) {
 				if(!g.getConfig().hasModuleEnabled(GraphiteModule.REDDIT)) continue;
 
@@ -169,7 +169,7 @@ public class GraphiteCommonTasks {
 			}
 		}, 5 * 60 * 1000);
 
-		Graphite.getScheduler().scheduleAtFixedRate("guilds-twitter-refresh", () -> {
+		if(Graphite.getBotInfo().getTwitter().isEnabled()) Graphite.getScheduler().scheduleAtFixedRate("guilds-twitter-refresh", () -> {
 			for(GraphiteGuild g : Graphite.getGuilds()) {
 				if(!g.getConfig().hasModuleEnabled(GraphiteModule.TWITTER)) continue;
 
