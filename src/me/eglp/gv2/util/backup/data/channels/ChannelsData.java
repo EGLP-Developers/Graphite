@@ -46,6 +46,11 @@ public class ChannelsData implements JSONConvertible, WebinterfaceObject {
 	@JSONComplexListType(BackupStageChannel.class)
 	private List<BackupStageChannel> stageChannels = Collections.emptyList();
 
+	@JavaScriptValue(getter = "getForumChannels")
+	@JSONValue
+	@JSONComplexListType(BackupForumChannel.class)
+	private List<BackupForumChannel> forumChannels = Collections.emptyList();
+
 	@JavaScriptValue(getter = "getCategories")
 	@JSONValue
 	@JSONComplexListType(BackupCategory.class)
@@ -81,6 +86,11 @@ public class ChannelsData implements JSONConvertible, WebinterfaceObject {
 		this.stageChannels = new ArrayList<>(guild.getStageChannels().stream()
 				.filter(o -> o.getJDAChannel().getParentCategory() == null)
 				.map(BackupStageChannel::new)
+				.collect(Collectors.toList()));
+
+		this.forumChannels = new ArrayList<>(guild.getForumChannels().stream()
+				.filter(o -> o.getJDAChannel().getParentCategory() == null)
+				.map(BackupForumChannel::new)
 				.collect(Collectors.toList()));
 
 		this.categories = new ArrayList<>(guild.getCategories().stream()
@@ -139,6 +149,7 @@ public class ChannelsData implements JSONConvertible, WebinterfaceObject {
 		jdaGuild.getNewsChannels().forEach(t -> t.delete().queue());
 		jdaGuild.getVoiceChannels().forEach(v -> v.delete().queue());
 		jdaGuild.getStageChannels().forEach(v -> v.delete().queue());
+		jdaGuild.getForumChannels().forEach(v -> v.delete().queue());
 		jdaGuild.getCategories().forEach(c -> c.delete().queue());
 
 		List<BackupChannel> channels = new ArrayList<>();

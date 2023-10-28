@@ -142,9 +142,8 @@ public class GuildReminder {
 		}
 
 		// Calculate the next repeat date in the future
-		int i = 1;
 		while (!nextReminderDate.isAfter(now)) {
-			nextReminderDate = nextReminderDate.plus(repeat.getPeriod().multipliedBy(i++));
+			nextReminderDate = nextReminderDate.plus(repeat.getPeriod());
 		}
 
 		return true;

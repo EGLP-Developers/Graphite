@@ -28,6 +28,8 @@ public class CommandBackupTemplate extends ParentCommand {
 
 	public static final List<RestoreSelector> FORBIDDEN_PARAMETERS = Arrays.asList(
 			RestoreSelector.DISCORD_CHAT_HISTORY,
+			RestoreSelector.DISCORD_THREAD_CHAT_HISTORY,
+			RestoreSelector.DISCORD_ROLE_ASSIGNMENTS,
 			RestoreSelector.DISCORD_BANS
 		);
 

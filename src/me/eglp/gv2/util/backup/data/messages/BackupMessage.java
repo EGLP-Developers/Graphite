@@ -15,7 +15,7 @@ import me.mrletsplay.mrcore.json.converter.JSONValue;
 import net.dv8tion.jda.api.entities.Message;
 
 public class BackupMessage implements JSONConvertible {
-	
+
 	@JSONValue
 	private String
 		content,
@@ -23,23 +23,38 @@ public class BackupMessage implements JSONConvertible {
 		authorName,
 		authorAvatarUrl,
 		referencedMessageId;
-	
+
 	@JSONValue
 	@JSONComplexListType(BackupMessageEmbed.class)
 	private List<BackupMessageEmbed> embeds;
-	
+
+	@JSONValue
+	private BackupThread startedThread;
+
 	@JSONConstructor
 	private BackupMessage() {}
-	
+
 	public BackupMessage(Message jdaMessage) {
 		this.content = jdaMessage.getContentRaw();
+
 		this.authorId = jdaMessage.getAuthor().getId();
-		this.authorName = jdaMessage.getAuthor().getName();
-		this.authorAvatarUrl = jdaMessage.getAuthor().getEffectiveAvatarUrl();
+
+		if(jdaMessage.getMember() != null) {
+			this.authorName = jdaMessage.getMember().getEffectiveName();
+			this.authorAvatarUrl = jdaMessage.getMember().getEffectiveAvatarUrl();
+		}else {
+			this.authorName = jdaMessage.getAuthor().getEffectiveName();
+			this.authorAvatarUrl = jdaMessage.getAuthor().getEffectiveAvatarUrl();
+		}
+
 		this.embeds = new ArrayList<>(jdaMessage.getEmbeds().stream().map(BackupMessageEmbed::new).collect(Collectors.toList()));
-		
+
 		if(jdaMessage.getReferencedMessage() != null) {
 			this.referencedMessageId = jdaMessage.getReferencedMessage().getId();
+		}
+
+		if(jdaMessage.getStartedThread() != null) {
+			this.startedThread = new BackupThread(jdaMessage.getStartedThread());
 		}
 	}
 
@@ -62,7 +77,11 @@ public class BackupMessage implements JSONConvertible {
 	public List<BackupMessageEmbed> getEmbeds() {
 		return embeds;
 	}
-	
+
+	public BackupThread getStartedThread() {
+		return startedThread;
+	}
+
 	public WebhookMessage createMessage() {
 		WebhookMessageBuilder b = new WebhookMessageBuilder();
 		b.setContent(GraphiteUtil.truncateToLength(content, Message.MAX_CONTENT_LENGTH, true));
@@ -75,5 +94,5 @@ public class BackupMessage implements JSONConvertible {
 		if(b.isEmpty()) return null;
 		return b.build();
 	}
-	
+
 }

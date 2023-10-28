@@ -592,107 +592,103 @@ public class CommandMusic extends ParentCommand {
 		.setUsage(DefaultLocaleString.COMMAND_MUSIC_NOWPLAYING_USAGE)
 		.setPermission(DefaultPermissions.MUSIC_NOWPLAYING);
 
-		addSubCommand(new Command(this, "lyrics") {
+		if(Graphite.getBotInfo().getGenius().isEnabled()) {
+			addSubCommand(new Command(this, "lyrics") {
 
-			@Override
-			public void action(CommandInvokedEvent event) {
-				if(Graphite.getGenius() == null) {
-					// TODO: remove command if Genius is not configured
-					event.reply("Genius is currently not configured for the bot");
-					return;
-				}
+				@Override
+				public void action(CommandInvokedEvent event) {
+					List<String> translationAccounts = Arrays.asList( // To filter translations
+							"https://genius.com/artists/Genius-arabic-translations",
+							"https://genius.com/artists/Genius-azrbaycan-trcum",
+							"https://genius.com/artists/Genius-brasil-traducoes",
+							"https://genius.com/artists/Genius-nederlandse-vertalingen",
+							"https://genius.com/artists/Genius-english-translations",
+							"https://genius.com/artists/Genius-farsi-translations",
+							"https://genius.com/artists/Genius-traductions-francaises",
+							"https://genius.com/artists/Genius-deutsche-ubersetzungen",
+							"https://genius.com/artists/Genius-hebrew-translations",
+							"https://genius.com/artists/Genius-traduzioni-italiane",
+							"https://genius.com/artists/Genius-japanese-translations",
+							"https://genius.com/artists/Genius-polska-tumaczenia",
+							"https://genius.com/artists/Genius-romanizations",
+							"https://genius.com/artists/Genius-russian-translations",
+							"https://genius.com/artists/Genius-slovensky-preklad",
+							"https://genius.com/artists/Genius-south-africa-translations",
+							"https://genius.com/artists/Genius-traducciones-al-espanol",
+							"https://genius.com/artists/Genius-swedish-translations",
+							"https://genius.com/artists/Genius-thai-translations",
+							"https://genius.com/artists/Genius-turkce-ceviri"
+						);
 
-				List<String> translationAccounts = Arrays.asList( // To filter translations
-						"https://genius.com/artists/Genius-arabic-translations",
-						"https://genius.com/artists/Genius-azrbaycan-trcum",
-						"https://genius.com/artists/Genius-brasil-traducoes",
-						"https://genius.com/artists/Genius-nederlandse-vertalingen",
-						"https://genius.com/artists/Genius-english-translations",
-						"https://genius.com/artists/Genius-farsi-translations",
-						"https://genius.com/artists/Genius-traductions-francaises",
-						"https://genius.com/artists/Genius-deutsche-ubersetzungen",
-						"https://genius.com/artists/Genius-hebrew-translations",
-						"https://genius.com/artists/Genius-traduzioni-italiane",
-						"https://genius.com/artists/Genius-japanese-translations",
-						"https://genius.com/artists/Genius-polska-tumaczenia",
-						"https://genius.com/artists/Genius-romanizations",
-						"https://genius.com/artists/Genius-russian-translations",
-						"https://genius.com/artists/Genius-slovensky-preklad",
-						"https://genius.com/artists/Genius-south-africa-translations",
-						"https://genius.com/artists/Genius-traducciones-al-espanol",
-						"https://genius.com/artists/Genius-swedish-translations",
-						"https://genius.com/artists/Genius-thai-translations",
-						"https://genius.com/artists/Genius-turkce-ceviri"
-					);
+						AudioTrackInfo info;
+						String search;
+						if(!event.hasOption("query")) {
+							if(!event.getGuild().getMusic().isPlaying()) {
+								DefaultMessage.COMMAND_MUSIC_NOT_PLAYING.reply(event);
+								return;
+							}
 
-					AudioTrackInfo info;
-					String search;
-					if(!event.hasOption("query")) {
-						if(!event.getGuild().getMusic().isPlaying()) {
-							DefaultMessage.COMMAND_MUSIC_NOT_PLAYING.reply(event);
+							info = event.getGuild().getMusic().getPlayingTrack().getLavaTrack().getInfo();
+							search = info.title // Title with extra info stripped out to make search results better
+									.replaceAll("\\[.+?\\]", "")
+									.replaceAll("\\(.+?\\)", "")
+									.replaceAll("(ft\\.|feat\\.).++", "")
+									.trim();
+						}else {
+							info = null;
+							search = (String) event.getOption("query");
+						}
+
+						EmbedBuilder b2 = new EmbedBuilder();
+						b2.setDescription(DefaultLocaleString.COMMAND_MUSIC_LYRICS_AUTHOR_SEARCHING_DESCRIPTION.getFor(event.getSender(), "song", search));
+						b2.setAuthor(
+								DefaultLocaleString.COMMAND_MUSIC_LYRICS_AUTHOR_SEARCHING.getFor(event.getSender()),
+								null,
+								GraphiteIcon.LOADING_GIF.getPath());
+
+						DeferredReply reply = event.deferReply(b2.build());
+
+						List<GeniusSearchHit> hit = Graphite.getGenius().getGeniusAPI().search(search);
+
+						List<GeniusSongResult> filteredResults = hit.stream()
+								.map(h -> h.getResult())
+								.filter(r -> !translationAccounts.contains(r.getPrimaryArtist().getURL()))
+								.collect(Collectors.toList());
+
+						if(filteredResults.isEmpty()) {
+							reply.editOriginal(DefaultMessage.COMMAND_MUSIC_LYRICS_NO_RESULTS.createEmbed(event.getSender()));
 							return;
 						}
 
-						info = event.getGuild().getMusic().getPlayingTrack().getLavaTrack().getInfo();
-						search = info.title // Title with extra info stripped out to make search results better
-								.replaceAll("\\[.+?\\]", "")
-								.replaceAll("\\(.+?\\)", "")
-								.replaceAll("(ft\\.|feat\\.).++", "")
-								.trim();
-					}else {
-						info = null;
-						search = (String) event.getOption("query");
-					}
+						GeniusSongResult res = filteredResults.stream()
+								.filter(r -> Graphite.getGenius().getGeniusAPI().getSong(r.getID()).getMedia().stream()
+										.anyMatch(me -> info == null || me.getURL().contains(info.identifier)))
+								.findFirst().orElse(filteredResults.get(0));
 
-					EmbedBuilder b2 = new EmbedBuilder();
-					b2.setDescription(DefaultLocaleString.COMMAND_MUSIC_LYRICS_AUTHOR_SEARCHING_DESCRIPTION.getFor(event.getSender(), "song", search));
-					b2.setAuthor(
-							DefaultLocaleString.COMMAND_MUSIC_LYRICS_AUTHOR_SEARCHING.getFor(event.getSender()),
-							null,
-							GraphiteIcon.LOADING_GIF.getPath());
+						GeniusSongLyrics lyrics = res.retrieveLyrics();
 
-					DeferredReply reply = event.deferReply(b2.build());
+						BigEmbedBuilder b = new BigEmbedBuilder();
+						for(GeniusLyricsSection s : lyrics.getSections()) b.addField(s.getTitle(),  s.getText().isEmpty() ? EmbedBuilder.ZERO_WIDTH_SPACE : s.getText(), false);
+						b.setAuthor(res.getFullTitle(), res.getURL(), res.getSongArtImageThumbnailURL());
+						b.setFooter("Lyrics may not be accurate | Powered by Genius");
+						List<MessageEmbed> embeds = b.build(BigEmbedBuilder.SPLIT_NEWLINES);
+						reply.editOriginal(embeds.remove(0));
+						for(MessageEmbed e : embeds) {
+							event.reply(e);
+						}
+				}
 
-					List<GeniusSearchHit> hit = Graphite.getGenius().getGeniusAPI().search(search);
-
-					List<GeniusSongResult> filteredResults = hit.stream()
-							.map(h -> h.getResult())
-							.filter(r -> !translationAccounts.contains(r.getPrimaryArtist().getURL()))
-							.collect(Collectors.toList());
-
-					if(filteredResults.isEmpty()) {
-						reply.editOriginal(DefaultMessage.COMMAND_MUSIC_LYRICS_NO_RESULTS.createEmbed(event.getSender()));
-						return;
-					}
-
-					GeniusSongResult res = filteredResults.stream()
-							.filter(r -> Graphite.getGenius().getGeniusAPI().getSong(r.getID()).getMedia().stream()
-									.anyMatch(me -> info == null || me.getURL().contains(info.identifier)))
-							.findFirst().orElse(filteredResults.get(0));
-
-					GeniusSongLyrics lyrics = res.retrieveLyrics();
-
-					BigEmbedBuilder b = new BigEmbedBuilder();
-					for(GeniusLyricsSection s : lyrics.getSections()) b.addField(s.getTitle(),  s.getText().isEmpty() ? EmbedBuilder.ZERO_WIDTH_SPACE : s.getText(), false);
-					b.setAuthor(res.getFullTitle(), res.getURL(), res.getSongArtImageThumbnailURL());
-					b.setFooter("Lyrics may not be accurate | Powered by Genius");
-					List<MessageEmbed> embeds = b.build(BigEmbedBuilder.SPLIT_NEWLINES);
-					reply.editOriginal(embeds.remove(0));
-					for(MessageEmbed e : embeds) {
-						event.reply(e);
-					}
-			}
-
-			@Override
-			public List<OptionData> getOptions() {
-				return Arrays.asList(
-						new OptionData(OptionType.STRING, "query", "Search query for when you want to search for lyrics yourself")
-					);
-			}
-		})
-		.setDescription(DefaultLocaleString.COMMAND_MUSIC_LYRICS_DESCRIPTION)
-		.setUsage(DefaultLocaleString.COMMAND_MUSIC_LYRICS_USAGE)
-		.setPermission(DefaultPermissions.MUSIC_LYRICS);
+				@Override
+				public List<OptionData> getOptions() {
+					return Arrays.asList(
+							new OptionData(OptionType.STRING, "query", "Search query for when you want to search for lyrics yourself")
+						);
+				}
+			})
+			.setDescription(DefaultLocaleString.COMMAND_MUSIC_LYRICS_DESCRIPTION)
+			.setUsage(DefaultLocaleString.COMMAND_MUSIC_LYRICS_USAGE)
+			.setPermission(DefaultPermissions.MUSIC_LYRICS);
+		}
 
 		addSubCommand(new Command(this, "bassboost") {
 

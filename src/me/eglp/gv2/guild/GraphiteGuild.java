@@ -30,6 +30,7 @@ import me.eglp.gv2.guild.recorder.GuildRecorder;
 import me.eglp.gv2.guild.scripting.GuildScripts;
 import me.eglp.gv2.main.Graphite;
 import me.eglp.gv2.user.GraphiteUser;
+import me.eglp.gv2.util.LoadTimes;
 import me.eglp.gv2.util.backup.GuildBackup;
 import me.eglp.gv2.util.base.GraphiteLocalizable;
 import me.eglp.gv2.util.base.GraphiteMusical;
@@ -101,35 +102,82 @@ public class GraphiteGuild implements GraphiteLocalizable, CommandSender, Graphi
 		this.cachedCategories = Collections.synchronizedList(new ArrayList<>());
 	}
 
-	public void load() {
+	public LoadTimes load() {
+		LoadTimes times = new LoadTimes();
+		times.startTiming();
+
 		this.channelsConfig = new GuildChannelsConfig(this);
+		times.stopTimingAndRestart("channels");
+
 		this.config = new GuildConfig(this);
+		times.stopTimingAndRestart("config");
+
 		this.reportsConfig = new GuildReportsConfig(this);
+		times.stopTimingAndRestart("reports");
+
 		this.rolesConfig = new GuildRolesConfig(this);
+		times.stopTimingAndRestart("roles");
+
 		this.temporaryActionsConfig = new GuildTemporaryActionsConfig(this);
+		times.stopTimingAndRestart("temporary");
+
 		this.greeterConfig = new GuildGreeterConfig(this);
+		times.stopTimingAndRestart("greeter");
+
 		this.moderationConfig = new GuildModerationConfig(this);
+		times.stopTimingAndRestart("moderation");
+
 		this.backupConfig = new GuildBackupConfig(this);
+		times.stopTimingAndRestart("backup");
+
 		this.recordingsConfig = new GuildRecordingsConfig(this);
+		times.stopTimingAndRestart("recordings");
+
 		this.customCommandsConfig = new GuildCustomCommandsConfig(this);
+		times.stopTimingAndRestart("customCommands");
+
 		this.customCommandsConfig.updateSlashCommands();
+		times.stopTimingAndRestart("customCommands (update)");
+
 		this.statisticsConfig = new GuildStatisticsConfig(this);
+		times.stopTimingAndRestart("statistics");
 
 		this.locale = new GuildLocale(this);
+		times.stopTimingAndRestart("locale");
 
 		this.twitchConfig = new GuildTwitchConfig(this);
+		times.stopTimingAndRestart("twitch");
+
 		this.redditConfig = new GuildRedditConfig(this);
+		times.stopTimingAndRestart("reddit");
+
 		this.twitterConfig = new GuildTwitterConfig(this);
+		times.stopTimingAndRestart("twitter");
+
 		this.pollsConfig = new GuildPollsConfig(this);
 		this.pollsConfig.init();
+		times.stopTimingAndRestart("polls");
+
 		this.remindersConfig = new GuildRemindersConfig(this);
 		this.remindersConfig.init();
+		times.stopTimingAndRestart("reminders");
 
 		this.permissionManager = new GuildPermissionManager(this);
+		times.stopTimingAndRestart("permission");
+
 		this.autoModSettings = new GuildAutoModSettings(this);
+		times.stopTimingAndRestart("autoMod");
+
 		this.music = new GuildMusic(this);
+		times.stopTimingAndRestart("music");
+
 		this.recorder = new GuildRecorder(this);
+		times.stopTimingAndRestart("recorder");
+
 		this.scripts = new GuildScripts(this);
+		times.stopTimingAndRestart("scripts");
+
+		return times;
 	}
 
 	public synchronized List<GraphiteCategory> getCachedCategories() {
@@ -152,6 +200,7 @@ public class GraphiteGuild implements GraphiteLocalizable, CommandSender, Graphi
 		return getJDAGuild().getSelfMember().hasPermission(permissions);
 	}
 
+	@Override
 	public Guild getJDAGuild() {
 		return jdaGuild;
 	}
@@ -242,6 +291,7 @@ public class GraphiteGuild implements GraphiteLocalizable, CommandSender, Graphi
 		return new ArrayList<>(getCachedChannels()).stream().filter(c -> c.getID().equals(channel.getId())).findFirst().orElse(null);
 	}
 
+	@Override
 	public GraphiteGuildChannel getGuildChannel(GuildChannel channel) {
 		if(channel == null) return null;
 		GraphiteGuildChannel r = getGuildChannelRaw(channel);
@@ -261,6 +311,9 @@ public class GraphiteGuild implements GraphiteLocalizable, CommandSender, Graphi
 					break;
 				case STAGE:
 					r = new GraphiteStageChannel(this, channel.getId());
+					break;
+				case FORUM:
+					r = new GraphiteForumChannel(this, channel.getId());
 					break;
 				case GUILD_NEWS_THREAD:
 				case GUILD_PUBLIC_THREAD:

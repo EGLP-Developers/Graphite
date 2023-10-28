@@ -6,7 +6,6 @@ import java.util.ArrayList;
 
 import me.eglp.gv2.guild.GraphiteGuild;
 import me.eglp.gv2.guild.config.GuildConfig;
-import me.eglp.gv2.main.Graphite;
 import me.eglp.gv2.util.selfcheck.SpecialSelfcheck;
 import me.eglp.gv2.util.webinterface.WebinterfaceHandler;
 import me.eglp.gv2.util.webinterface.base.WebinterfaceRequestEvent;

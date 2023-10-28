@@ -4,6 +4,7 @@ import java.util.Arrays;
 
 public enum GraphiteModule {
 
+	// FIXME: hide unavailable modules when disabled in config
 	MUSIC("Music"),
 	FUN("Fun"),
 	BACKUPS("Backups"),

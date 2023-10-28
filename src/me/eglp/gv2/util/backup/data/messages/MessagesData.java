@@ -20,9 +20,10 @@ import javax.crypto.SecretKey;
 
 import club.minnced.discord.webhook.WebhookClient;
 import club.minnced.discord.webhook.WebhookClientBuilder;
+import club.minnced.discord.webhook.receive.ReadonlyMessage;
 import club.minnced.discord.webhook.send.WebhookMessage;
 import me.eglp.gv2.guild.GraphiteGuild;
-import me.eglp.gv2.guild.GraphiteTextChannel;
+import me.eglp.gv2.guild.GraphiteGuildMessageChannel;
 import me.eglp.gv2.main.DebugCategory;
 import me.eglp.gv2.main.Graphite;
 import me.eglp.gv2.main.GraphiteDebug;
@@ -37,10 +38,15 @@ import me.mrletsplay.mrcore.json.converter.SerializationOption;
 import me.mrletsplay.mrcore.misc.FriendlyException;
 import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.Webhook;
+import net.dv8tion.jda.api.entities.channel.attribute.IWebhookContainer;
+import net.dv8tion.jda.api.entities.channel.concrete.ThreadChannel;
+import net.dv8tion.jda.api.entities.channel.concrete.ThreadChannel.AutoArchiveDuration;
+import net.dv8tion.jda.api.entities.channel.middleman.GuildMessageChannel;
 
 public class MessagesData implements JSONConvertible {
 
 	private Map<String, List<BackupMessage>> messageHistory;
+//	private Map<String, List<BackupForumPost>> forumPosts;
 
 	@JSONConstructor
 	private MessagesData() {
@@ -49,12 +55,30 @@ public class MessagesData implements JSONConvertible {
 
 	public MessagesData(GraphiteGuild guild, int messageCount) {
 		this();
-		guild.getTextChannels().forEach(t -> {
-			List<BackupMessage> ms = new ArrayList<>(t.getJDAChannel().getHistory().retrievePast(messageCount).complete().stream().map(BackupMessage::new).collect(Collectors.toList()));
+
+		List<GraphiteGuildMessageChannel> channels = new ArrayList<>();
+		channels.addAll(guild.getTextChannels());
+		channels.addAll(guild.getNewsChannels());
+		channels.addAll(guild.getVoiceChannels());
+		channels.addAll(guild.getStageChannels());
+		channels.forEach(t -> {
+			List<BackupMessage> ms = retrieveHistory(t.getJDAChannel(), messageCount);
 			if(ms.isEmpty()) return;
-			Collections.reverse(ms);
 			messageHistory.put(t.getID(), ms);
 		});
+
+		guild.getJDAGuild().getThreadChannels().forEach(t -> {
+			List<BackupMessage> ms = retrieveHistory(t, messageCount);
+			if(ms.isEmpty()) return;
+			messageHistory.put(t.getId(), ms);
+		});
+	}
+
+	private List<BackupMessage> retrieveHistory(GuildMessageChannel channel, int messageCount) {
+		List<BackupMessage> ms = new ArrayList<>(channel.getHistory().retrievePast(messageCount).complete().stream().map(BackupMessage::new).toList());
+		if(ms.isEmpty()) return ms;
+		Collections.reverse(ms);
+		return ms;
 	}
 
 	public void storeMessageHistory(String channelGraphiteID, List<Message> messages) {
@@ -101,37 +125,60 @@ public class MessagesData implements JSONConvertible {
 	public void restore(GraphiteGuild guild, IDMappings mappings) {
 		List<WebhookClient> webhookClients = new ArrayList<>();
 		List<Webhook> webhooks = new ArrayList<>();
-		List<CompletableFuture<?>> futures = new ArrayList<>();
+
+		record RestoreFuture(GuildMessageChannel channel, BackupMessage message, CompletableFuture<ReadonlyMessage> future) {}
+
+		List<RestoreFuture> futures = new ArrayList<>();
 
 		messageHistory.forEach((channelID, history) -> {
 			String newChannelID = mappings.getNewID(channelID);
-			GraphiteTextChannel t = guild.getTextChannelByID(newChannelID);
-			Webhook hook = t.getJDAChannel().createWebhook("gr_" + System.currentTimeMillis())
+			if(newChannelID == null) return; // Might be a thread channel which has not been restored yet, will restore later
+
+			GuildMessageChannel t = guild.getGuildMessageChannelByID(newChannelID).getJDAChannel();
+			if(t instanceof ThreadChannel || !(t instanceof IWebhookContainer)) return; // Can't restore messages FIXME: use another method
+
+			Webhook hook = ((IWebhookContainer) t).createWebhook("gr_" + System.currentTimeMillis())
 					.reason("Restore fancy chat history")
 					.complete();
 			webhooks.add(hook);
 
 			WebhookClient cl = new WebhookClientBuilder(hook.getUrl())
-					.setWait(false)
+					.setWait(true)
 					.build();
 			webhookClients.add(cl);
 
 			for(BackupMessage m : history) {
 				WebhookMessage msg = m.createMessage();
 				if(msg == null) continue;
-				futures.add(cl.send(msg));
+				futures.add(new RestoreFuture(t, m, cl.send(msg)));
 			}
 		});
 
 		try {
-			for(CompletableFuture<?> f : futures) {
+			for(RestoreFuture f : futures) {
 				try {
 					if(QueueTask.isCurrentCancelled()) {
-						f.cancel(true);
+						f.future.cancel(true);
 						continue; // Cancel all other futures as well
 					}
 
-					f.get();
+					ReadonlyMessage msg = f.future.get();
+					if(f.message.getStartedThread() != null) {
+						Message jdaMsg = f.channel.retrieveMessageById(msg.getId()).complete();
+						BackupThread thread = f.message.getStartedThread();
+
+						ThreadChannel ch = jdaMsg.createThreadChannel(thread.getName())
+							.setAutoArchiveDuration(AutoArchiveDuration.valueOf(thread.getAutoArchiveDuration()))
+							.complete(); // Invitable is not applicable here, as this can never be a private thread
+
+						ch.getManager()
+							.setLocked(thread.isLocked())
+							.setArchived(thread.isArchived())
+							.setSlowmode(thread.getSlowmode())
+							.complete();
+
+						mappings.put(thread.getID(), ch.getId());
+					}
 				}catch(ExecutionException ignore) {}
 			}
 		}catch(InterruptedException e) {

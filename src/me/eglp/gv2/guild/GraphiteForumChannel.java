@@ -7,22 +7,22 @@ import me.eglp.gv2.util.webinterface.js.JavaScriptGetter;
 import me.eglp.gv2.util.webinterface.js.WebinterfaceObject;
 import me.mrletsplay.mrcore.json.JSONObject;
 import net.dv8tion.jda.api.entities.channel.concrete.Category;
-import net.dv8tion.jda.api.entities.channel.concrete.StageChannel;
+import net.dv8tion.jda.api.entities.channel.concrete.ForumChannel;
 
-@JavaScriptClass(name = "StageChannel")
-public class GraphiteStageChannel implements GraphiteIdentifiable, WebinterfaceObject, GraphiteAudioChannel, GraphiteGuildMessageChannel {
+@JavaScriptClass(name = "ForumChannel")
+public class GraphiteForumChannel implements GraphiteIdentifiable, GraphiteGuildChannel, WebinterfaceObject {
 
 	private String id;
 	private GraphiteGuild guild;
 
-	protected GraphiteStageChannel(GraphiteGuild guild, String id) {
+	protected GraphiteForumChannel(GraphiteGuild guild, String id) {
 		this.guild = guild;
 		this.id = id;
 	}
 
 	@Override
-	public StageChannel getJDAChannel() {
-		return guild.getJDAGuild().getStageChannelById(id);
+	public ForumChannel getJDAChannel() {
+		return guild.getJDAGuild().getForumChannelById(id);
 	}
 
 	@Override
@@ -52,8 +52,8 @@ public class GraphiteStageChannel implements GraphiteIdentifiable, WebinterfaceO
 
 	@Override
 	public boolean equals(Object o) {
-		if(!(o instanceof GraphiteStageChannel)) return false;
-		return id.equals(((GraphiteStageChannel)o).getID());
+		if(!(o instanceof GraphiteTextChannel)) return false;
+		return id.equals(((GraphiteTextChannel)o).getID());
 	}
 
 	@Override
@@ -63,7 +63,7 @@ public class GraphiteStageChannel implements GraphiteIdentifiable, WebinterfaceO
 		object.put("category", getCategory() == null ? null : getCategory().toWebinterfaceObject());
 	}
 
-	@JavaScriptFunction(calling = "getStageChannels", returning = "stagechannels", withGuild = true)
-	public static void getStageChannels() {};
+	@JavaScriptFunction(calling = "getForumChannels", returning = "forumchannels", withGuild = true)
+	public static void getNewsChannels() {};
 
 }

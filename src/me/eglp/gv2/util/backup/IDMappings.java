@@ -5,19 +5,19 @@ import java.util.Map;
 
 public class IDMappings {
 
-	private Map<String, String> channelRemappings;
+	private Map<String, String> idRemappings;
 	
 	public IDMappings() {
-		this.channelRemappings = new HashMap<>();
+		this.idRemappings = new HashMap<>();
 	}
 	
 	public void put(String oldID, String newID) {
-		channelRemappings.put(oldID, newID);
+		idRemappings.put(oldID, newID);
 	}
 	
 	public String getNewID(String oldID) {
 		if(oldID == null) return null;
-		return channelRemappings.get(oldID);
+		return idRemappings.get(oldID);
 	}
 	
 }

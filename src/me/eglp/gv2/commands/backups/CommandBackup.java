@@ -627,6 +627,7 @@ public class CommandBackup extends ParentCommand {
 			}
 
 			if(s == RestoreSelector.DISCORD_CHAT_HISTORY && !keyAttached) return;
+			if(isTemplate && CommandBackupTemplate.FORBIDDEN_PARAMETERS.contains(s)) return;
 			if(!params.remove(s)) params.add(s);
 			ev.getJDAEvent().editMessage(message.get()).queue();
 		})

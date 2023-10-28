@@ -3,6 +3,7 @@ package me.eglp.gv2.commands.admin;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.EnumSet;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -30,19 +31,25 @@ public class CommandModule extends ParentCommand {
 			@Override
 			public void action(CommandInvokedEvent event) {
 				String module = (String) event.getOption("module");
-				GraphiteModule mod = GraphiteModule.getByName(module);
-				if(mod == null) {
-					DefaultMessage.COMMAND_MODULE_INVALID_MODULE.reply(event, "modules", Arrays.stream(GraphiteModule.values()).map(m -> m.getName()).collect(Collectors.joining(", ")));
-					return;
-				}
 
-				if(event.getGuild().getConfig().hasModuleEnabled(mod)) {
-					DefaultMessage.COMMAND_MODULE_ENABLE_ALREADY_ENABLED.reply(event);
-					return;
-				}
+				if(module.equals("all")) {
+					event.getGuild().getConfig().setEnabledModules(EnumSet.allOf(GraphiteModule.class));
+					DefaultMessage.COMMAND_MODULE_ENABLE_SUCCESS_ALL.reply(event);
+				}else {
+					GraphiteModule mod = GraphiteModule.getByName(module);
+					if(mod == null) {
+						DefaultMessage.COMMAND_MODULE_INVALID_MODULE.reply(event, "modules", Arrays.stream(GraphiteModule.values()).map(m -> m.getName()).collect(Collectors.joining(", ")));
+						return;
+					}
 
-				event.getGuild().getConfig().addEnabledModule(mod);
-				DefaultMessage.COMMAND_MODULE_ENABLE_SUCCESS.reply(event, "module", mod.getName());
+					if(event.getGuild().getConfig().hasModuleEnabled(mod)) {
+						DefaultMessage.COMMAND_MODULE_ENABLE_ALREADY_ENABLED.reply(event);
+						return;
+					}
+
+					event.getGuild().getConfig().addEnabledModule(mod);
+					DefaultMessage.COMMAND_MODULE_ENABLE_SUCCESS.reply(event, "module", mod.getName());
+				}
 			}
 
 			@Override
@@ -51,6 +58,7 @@ public class CommandModule extends ParentCommand {
 				for(GraphiteModule m : GraphiteModule.values()) {
 					d.addChoice(m.getName(), m.getName());
 				}
+				d.addChoice("All", "all");
 				return Arrays.asList(d);
 			}
 		})
@@ -63,19 +71,25 @@ public class CommandModule extends ParentCommand {
 			@Override
 			public void action(CommandInvokedEvent event) {
 				String module = (String) event.getOption("module");
-				GraphiteModule mod = GraphiteModule.getByName(module);
-				if(mod == null) {
-					DefaultMessage.COMMAND_MODULE_INVALID_MODULE.reply(event, "modules", Arrays.stream(GraphiteModule.values()).map(m -> m.getName()).collect(Collectors.joining(", ")));
-					return;
-				}
 
-				if(!event.getGuild().getConfig().hasModuleEnabled(mod)) {
-					DefaultMessage.COMMAND_MODULE_DISABLE_NOT_ENABLED.reply(event);
-					return;
-				}
+				if(module.equals("all")) {
+					event.getGuild().getConfig().setEnabledModules(Collections.emptySet());
+					DefaultMessage.COMMAND_MODULE_DISABLE_SUCCESS_ALL.reply(event);
+				}else {
+					GraphiteModule mod = GraphiteModule.getByName(module);
+					if(mod == null) {
+						DefaultMessage.COMMAND_MODULE_INVALID_MODULE.reply(event, "modules", Arrays.stream(GraphiteModule.values()).map(m -> m.getName()).collect(Collectors.joining(", ")));
+						return;
+					}
 
-				event.getGuild().getConfig().removeEnabledModule(mod);
-				DefaultMessage.COMMAND_MODULE_DISABLE_SUCCESS.reply(event, "module", mod.getName());
+					if(!event.getGuild().getConfig().hasModuleEnabled(mod)) {
+						DefaultMessage.COMMAND_MODULE_DISABLE_NOT_ENABLED.reply(event);
+						return;
+					}
+
+					event.getGuild().getConfig().removeEnabledModule(mod);
+					DefaultMessage.COMMAND_MODULE_DISABLE_SUCCESS.reply(event, "module", mod.getName());
+				}
 			}
 
 			@Override
@@ -84,6 +98,7 @@ public class CommandModule extends ParentCommand {
 				for(GraphiteModule m : GraphiteModule.values()) {
 					d.addChoice(m.getName(), m.getName());
 				}
+				d.addChoice("All", "all");
 				return Arrays.asList(d);
 			}
 		})

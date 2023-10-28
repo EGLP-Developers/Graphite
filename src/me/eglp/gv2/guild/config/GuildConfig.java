@@ -76,7 +76,7 @@ public class GuildConfig {
 		setEnabledModules(mods);
 	}
 
-	private void setEnabledModules(Set<GraphiteModule> modules) {
+	public void setEnabledModules(Set<GraphiteModule> modules) {
 		String mods = new JSONArray(modules.stream().map(GraphiteModule::name).collect(Collectors.toList())).toString();
 		Graphite.getMySQL().query("INSERT INTO guilds_settings(GuildId, Modules) VALUES(?, ?) ON DUPLICATE KEY UPDATE Modules = VALUES(Modules)", guild.getID(), mods);
 	}

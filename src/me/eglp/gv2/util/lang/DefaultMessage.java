@@ -229,9 +229,11 @@ public enum DefaultMessage implements MessageIdentifier {
 	COMMAND_MODULE_INVALID_MODULE("command.module.invalid-module", Color.RED, "Invalid module name. Valid names are `{modules}`"),
 	COMMAND_MODULE_ENABLE_ALREADY_ENABLED("command.module.enable.already-enabled", Color.RED, "That module is already enabled"),
 	COMMAND_MODULE_ENABLE_SUCCESS("command.module.enable.success", Color.GREEN, "Successfully enabled the module `{module}`"),
+	COMMAND_MODULE_ENABLE_SUCCESS_ALL("command.module.enable.success-all", Color.GREEN, "Successfully enabled all modules"),
 
 	COMMAND_MODULE_DISABLE_NOT_ENABLED("command.module.disable.not-enabled", Color.RED, "That module is not enabled"),
 	COMMAND_MODULE_DISABLE_SUCCESS("command.module.disable.success", Color.GREEN, "Successfully disabled the module `{module}`"),
+	COMMAND_MODULE_DISABLE_SUCCESS_ALL("command.module.disable.success-all", Color.GREEN, "Successfully disabled all modules"),
 
 	COMMAND_MODULE_LIST_MESSAGE("command.module.list.message", Color.GRAY, "Available modules: ```\n{modules}\n```"),
 
@@ -384,6 +386,7 @@ public enum DefaultMessage implements MessageIdentifier {
 	ERROR_ARGUMENT_TYPE_INTEGER("error.argument-type.integer", Color.RED, "The value for parameter `{parameter}` must be a valid integer"),
 	ERROR_ARGUMENT_TYPE_NUMBER("error.argument-type.number", Color.RED, "The value for parameter `{parameter}` must be a valid number"),
 	ERROR_CHOICE_INVALID("error.choice-invalid", Color.RED, "The value for parameter `{parameter}` must be one of the following: `{choices}`"),
+	ERROR_MODULE_DISABLED("error.module-disabled", Color.RED, "The `{module}` module is currently disabled. To enable it, use `/module enable module:{module}`"),
 
 	OTHER_FOUND_AN_EASTEREGG("other.found-an-easteregg", Color.GREEN, "You have found an easter egg"),
 	OTHER_JOINED_SUPPORT_QUEUE("other.joined-support-queue", Color.GRAY, "Hey, `{users}` needs support."),

@@ -6,6 +6,7 @@ import java.util.stream.Collectors;
 import org.java_websocket.WebSocket;
 
 import me.eglp.gv2.guild.GraphiteCategory;
+import me.eglp.gv2.guild.GraphiteForumChannel;
 import me.eglp.gv2.guild.GraphiteGuild;
 import me.eglp.gv2.guild.GraphiteMember;
 import me.eglp.gv2.guild.GraphiteNewsChannel;
@@ -212,6 +213,17 @@ public class BaseRequestHandler {
 
 		JSONObject o = new JSONObject();
 		o.put("newschannels", new JSONArray(channels.stream().map(gtc -> gtc.toWebinterfaceObject()).collect(Collectors.toList())));
+
+		return WebinterfaceResponse.success(o);
+	}
+
+	@SpecialSelfcheck(ignoreAccessibleToEveryone = true)
+	@WebinterfaceHandler(requestMethod = "getForumChannels", requireGuild = true)
+	public static WebinterfaceResponse getForumChannels(WebinterfaceRequestEvent event) {
+		List<GraphiteForumChannel> channels = event.getSelectedGuild().getForumChannels();
+
+		JSONObject o = new JSONObject();
+		o.put("forumchannels", new JSONArray(channels.stream().map(gtc -> gtc.toWebinterfaceObject()).collect(Collectors.toList())));
 
 		return WebinterfaceResponse.success(o);
 	}

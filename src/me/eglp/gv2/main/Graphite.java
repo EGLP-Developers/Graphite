@@ -53,6 +53,7 @@ import me.eglp.gv2.user.GraphiteUser;
 import me.eglp.gv2.util.FileManager;
 import me.eglp.gv2.util.GraphiteDataManager;
 import me.eglp.gv2.util.GraphiteUtil;
+import me.eglp.gv2.util.LoadTimes;
 import me.eglp.gv2.util.amongus.GraphiteAmongUs;
 import me.eglp.gv2.util.apis.genius.GraphiteGenius;
 import me.eglp.gv2.util.apis.reddit.GraphiteReddit;
@@ -353,11 +354,16 @@ public class Graphite {
 
 		ScheduledFuture<?> f = scheduler.getExecutorService().scheduleAtFixedRate(() -> log("Guilds initialized: " + num.get() + "/" + allGuildIds.size() + " (Current guild: " + currentGuild.get() + ")"), 2, 2, TimeUnit.SECONDS);
 
+		LoadTimes totalLoadTimes = new LoadTimes();
+
 		for(String gID : allGuildIds) {
 			currentGuild.set(gID);
-			getGuild(gID);
+			GraphiteGuild g = getGuild(getJDAGuild(gID), false);
+			totalLoadTimes.add(g.load());
 			num.incrementAndGet();
 		}
+
+		totalLoadTimes.print();
 
 		f.cancel(false);
 
@@ -789,15 +795,19 @@ public class Graphite {
 		return cachedGuilds.lookup(guild.getId());
 	}
 
-	public synchronized static GraphiteGuild getGuild(Guild guild) {
+	private synchronized static GraphiteGuild getGuild(Guild guild, boolean load) {
 		if(guild == null) return null;
 		GraphiteGuild g = getGuildRaw(guild);
 		if(g == null) {
 			g = new GraphiteGuild(guild);
 			cachedGuilds.add(g);
-			g.load();
+			if(load) g.load();
 		}
 		return g;
+	}
+
+	public synchronized static GraphiteGuild getGuild(Guild guild) {
+		return getGuild(guild, true);
 	}
 
 	protected static void discardGuild(Guild guild) {

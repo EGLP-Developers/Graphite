@@ -18,10 +18,11 @@ import me.mrletsplay.mrcore.json.converter.JSONValue;
 import net.dv8tion.jda.api.entities.MessageEmbed;
 
 public class BackupMessageEmbed implements JSONConvertible {
-	
+
 	@JSONValue
 	private String
 		title,
+		url,
 		description,
 		authorName,
 		authorUrl,
@@ -30,48 +31,54 @@ public class BackupMessageEmbed implements JSONConvertible {
 		footerIconUrl,
 		imageUrl,
 		thumbnail;
-	
+
 	@JSONValue
 	private int color;
-	
+
 	@JSONValue
 	private long timestamp;
-	
+
 	@JSONValue
 	@JSONComplexListType(BackupMessageEmbedField.class)
 	private List<BackupMessageEmbedField> fields;
-	
+
 	@JSONConstructor
 	private BackupMessageEmbed() {}
 
 	public BackupMessageEmbed(MessageEmbed embed) {
 		this.title = embed.getTitle();
+		this.url = embed.getUrl();
+
 		this.description = embed.getDescription();
-		
+
 		if(embed.getAuthor() != null) {
 			this.authorName = embed.getAuthor().getName();
 			this.authorUrl = embed.getAuthor().getUrl();
-			this.authorIconUrl = embed.getAuthor().getProxyIconUrl();
+			this.authorIconUrl = embed.getAuthor().getIconUrl();
 		}
-		
+
 		if(embed.getFooter() != null) {
 			this.footerText = embed.getFooter().getText();
 			this.footerIconUrl = embed.getFooter().getIconUrl();
 		}
-		
+
 		this.color = embed.getColorRaw();
-		
+
 		if(embed.getTimestamp() != null) {
 			this.timestamp = embed.getTimestamp().toInstant().toEpochMilli();
 		}else {
 			this.timestamp = -1;
 		}
-		
+
 		this.fields = new ArrayList<>(embed.getFields().stream().map(BackupMessageEmbedField::new).collect(Collectors.toList()));
 	}
 
 	public String getTitle() {
 		return title;
+	}
+
+	public String getURL() {
+		return url;
 	}
 
 	public String getDescription() {
@@ -117,25 +124,25 @@ public class BackupMessageEmbed implements JSONConvertible {
 	public List<BackupMessageEmbedField> getFields() {
 		return fields;
 	}
-	
+
 	public WebhookEmbed createEmbed() {
 		WebhookEmbedBuilder b = new WebhookEmbedBuilder();
-		if(title != null) b.setTitle(new EmbedTitle(title, null));
+		if(title != null) b.setTitle(new EmbedTitle(title, url));
 		b.setDescription(description);
-		if(authorName != null) b.setAuthor(new EmbedAuthor(authorName, authorUrl, authorIconUrl));
+		if(authorName != null) b.setAuthor(new EmbedAuthor(authorName, authorIconUrl, authorUrl));
 		if(footerText != null) b.setFooter(new EmbedFooter(footerText, footerIconUrl));
 		b.setImageUrl(imageUrl);
 		b.setThumbnailUrl(thumbnail);
 		b.setColor(color);
 		if(timestamp != -1) b.setTimestamp(Instant.ofEpochMilli(timestamp));
-		
+
 		fields.forEach(f -> {
 			b.addField(new EmbedField(f.isInline(), f.getName(), f.getValue()));
 		});
-		
+
 		if(b.isEmpty()) return null;
-		
+
 		return b.build();
 	}
-	
+
 }

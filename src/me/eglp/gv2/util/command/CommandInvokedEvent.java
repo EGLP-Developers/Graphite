@@ -227,7 +227,7 @@ public class CommandInvokedEvent {
 	public void reply(MessageCreateData message, Consumer<Object> onSuccess) {
 		if(jdaSlashCommandEvent != null) {
 			if(jdaSlashCommandEvent.isAcknowledged()) {
-				jdaSlashCommandEvent.getChannel().sendMessage(message).queue(onSuccess);
+				jdaSlashCommandEvent.getChannel().sendMessage(message).queue(onSuccess, e -> {});
 				return;
 			}
 

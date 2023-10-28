@@ -102,7 +102,7 @@ public class SlashCommandListener implements AnnotationEventHandler {
 		}
 
 		if(guild != null && cmd.getModule() != null && !guild.getConfig().hasModuleEnabled(cmd.getModule())) {
-			event.reply("Module disabled").setEphemeral(true).queue();
+			event.reply(DefaultMessage.ERROR_MODULE_DISABLED.createMessage(guild, "module", cmd.getModule().getName())).setEphemeral(true).queue();
 			return;
 		}
 

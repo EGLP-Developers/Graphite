@@ -5,6 +5,7 @@ import java.util.stream.Collectors;
 
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.channel.concrete.Category;
+import net.dv8tion.jda.api.entities.channel.concrete.ForumChannel;
 import net.dv8tion.jda.api.entities.channel.concrete.NewsChannel;
 import net.dv8tion.jda.api.entities.channel.concrete.StageChannel;
 import net.dv8tion.jda.api.entities.channel.concrete.TextChannel;
@@ -55,8 +56,24 @@ public interface GuildChannels {
 		return getJDAGuild().getNewsChannelsByName(name, ignoreCase).stream().map(this::getNewsChannel).collect(Collectors.toList());
 	}
 
+	public default GraphiteForumChannel getForumChannel(ForumChannel channel) {
+		return (GraphiteForumChannel) getGuildChannel(channel);
+	}
+
+	public default GraphiteForumChannel getForumChannelByID(String id) {
+		return getForumChannel(getJDAGuild().getForumChannelById(id));
+	}
+
+	public default List<GraphiteForumChannel> getForumChannels() {
+		return getJDAGuild().getForumChannels().stream().map(this::getForumChannel).collect(Collectors.toList());
+	}
+
+	public default List<GraphiteForumChannel> getForumChannelsByName(String name, boolean ignoreCase) {
+		return getJDAGuild().getForumChannelsByName(name, ignoreCase).stream().map(this::getForumChannel).collect(Collectors.toList());
+	}
+
 	public default GraphiteGuildMessageChannel getGuildMessageChannel(GuildMessageChannel channel) {
-		return (GraphiteGuildMessageChannel) getGuildChannel((GuildMessageChannel) channel);
+		return (GraphiteGuildMessageChannel) getGuildChannel(channel);
 	}
 
 	public default GraphiteGuildMessageChannel getGuildMessageChannelByID(String id) {
@@ -98,7 +115,7 @@ public interface GuildChannels {
 	}
 
 	public default GraphiteAudioChannel getAudioChannel(AudioChannel channel) {
-		return (GraphiteAudioChannel) getGuildChannel((AudioChannel) channel);
+		return (GraphiteAudioChannel) getGuildChannel(channel);
 	}
 
 	public default GraphiteAudioChannel getAudioChannelByID(String id) {
