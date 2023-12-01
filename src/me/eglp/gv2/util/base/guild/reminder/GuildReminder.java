@@ -18,12 +18,12 @@ import net.dv8tion.jda.api.EmbedBuilder;
 
 /**
  * Represents a reminder on a guild, which sends a message when the reminder expires. The reminder can optionally repeat.
- * 
+ *
  * @author The Arrayser
  * @date Mon Mar 27 20:11:34 2023
  */
 public class GuildReminder {
-	
+
 	public static final DateTimeFormatter HUMAN_TIMESTAMP_FORMAT;
 
 	static {
@@ -113,11 +113,11 @@ public class GuildReminder {
 				remove();
 				return;
 			}
-			
+
 			EmbedBuilder b = new EmbedBuilder();
 			b.setTitle(DefaultLocaleString.COMMAND_REMINDER_MESSAGE_TITLE.getFor(guild));
 			b.setTimestamp(nextReminderDate.atZone(guild.getConfig().getTimezone()).toInstant());
-			
+
 			if (repeat != null) {
 				b.setDescription(DefaultLocaleString.COMMAND_REMINDER_MESSAGE_REPEATING.getFor(guild,
 					"repeat", repeat.getFriendlyName(),
@@ -127,7 +127,7 @@ public class GuildReminder {
 				b.setDescription(DefaultLocaleString.COMMAND_REMINDER_MESSAGE_ONE_TIME.getFor(guild,
 					"message", message));
 			}
-			
+
 			messageChannel.sendMessage(b.build());
 		});
 	}
@@ -136,25 +136,24 @@ public class GuildReminder {
 		// Get time at guild's timezone
 		LocalDateTime now = LocalDateTime.now(guild.getConfig().getTimezone());
 		if(nextReminderDate == null) nextReminderDate = date;
-		
+
 		// Send one-time reminders that have passed while the bot was offline
 		if(repeat == null && now.isAfter(nextReminderDate)) {
 			sendMessage();
 			return false;
 		}
-		
+
 		// Calculate the next repeat date in the future
-		int i = 1;
 		while (!nextReminderDate.isAfter(now)) {
-			nextReminderDate = nextReminderDate.plus(repeat.getPeriod().multipliedBy(i++));
+			nextReminderDate = nextReminderDate.plus(repeat.getPeriod());
 		}
-		
+
 		return true;
 	}
 
 	public void schedule() {
 		Instant nextReminder = nextReminderDate.atZone(guild.getConfig().getTimezone()).toInstant();
-		
+
 		finishFuture = Graphite.getScheduler().getExecutorService().schedule(() -> {
 			sendMessage();
 
