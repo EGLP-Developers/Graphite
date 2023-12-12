@@ -500,9 +500,7 @@ public class GraphiteGuild implements GraphiteLocalizable, CommandSender, Graphi
 	}
 
 	public GraphiteRole getSelfRole() {
-		return getRole(getJDAGuild().getSelfMember().getRoles().stream()
-				.filter(Role::isManaged)
-				.findFirst().orElse(null));
+		return getRole(getJDAGuild().getBotRole());
 	}
 
 	public boolean isAboveUserRoles() {

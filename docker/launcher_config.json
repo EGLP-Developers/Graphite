@@ -1,0 +1,11 @@
+{
+	"updateUID": true,
+	"user": "graphite",
+
+	"updateGID": true,
+	"group": "graphite",
+
+	"runBefore": [
+		[ "chown", "-R", "graphite:graphite", "/graphite" ]
+	]
+}
