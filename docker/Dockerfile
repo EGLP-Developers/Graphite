@@ -30,4 +30,4 @@ WORKDIR /graphite/data
 EXPOSE 8880
 
 ENTRYPOINT [ "docker_launcher", "--config", "/graphite/launcher_config.json", "sudo", "-u", "graphite", "--" ]
-CMD [ "java", "-jar", "/graphite/Graphite.jar" ]
+CMD [ "java", "-jar", "/graphite/Graphite.jar", "graphite.json" ]

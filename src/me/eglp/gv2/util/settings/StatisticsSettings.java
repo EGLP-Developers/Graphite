@@ -3,7 +3,6 @@ package me.eglp.gv2.util.settings;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.function.Function;
 
 import me.eglp.gv2.util.apis.GraphiteStatisticsCollector;
 import me.eglp.gv2.util.apis.discordbotlistcom.DiscordBotListComStatistics;

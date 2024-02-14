@@ -3,7 +3,6 @@ package me.eglp.gv2.guild;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import me.eglp.gv2.main.Graphite;
 import me.eglp.gv2.util.base.GraphiteIdentifiable;
 import me.eglp.gv2.util.webinterface.js.JavaScriptClass;
 import me.eglp.gv2.util.webinterface.js.JavaScriptFunction;

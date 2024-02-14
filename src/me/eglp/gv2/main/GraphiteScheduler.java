@@ -102,6 +102,7 @@ public class GraphiteScheduler {
 	public void stop(int timeoutSeconds) {
 		try {
 			Graphite.log("Shutting down scheduler");
+			tasks.forEach(t -> t.stop(false));
 			executorService.shutdown();
 			executorService.awaitTermination(timeoutSeconds, TimeUnit.SECONDS);
 		}catch(InterruptedException e) {

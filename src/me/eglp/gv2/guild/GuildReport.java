@@ -73,8 +73,8 @@ public class GuildReport implements WebinterfaceObject, JSONConvertible{
 
 	@Override
 	public void preSerializeWI(JSONObject object) {
-		object.put("reporter", reporter.getName() + "#" + reporter.getDiscriminator());
-		object.put("reported", reported.getName() + "#" + reported.getDiscriminator());
+		object.put("reporter", reporter.getFullName());
+		object.put("reported", reported.getFullName());
 	}
 
 	@JavaScriptFunction(calling = "getReports", returning = "reports", withGuild = true)

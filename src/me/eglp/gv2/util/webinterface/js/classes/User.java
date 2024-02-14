@@ -19,6 +19,7 @@ public class User implements WebinterfaceObject {
 	private String fullName;
 
 	@JavaScriptValue(getter = "getDiscriminator")
+	@Deprecated
 	private String discriminator;
 
 	@JavaScriptValue(getter = "getAvatarURL")
@@ -44,12 +45,13 @@ public class User implements WebinterfaceObject {
 		this.owner = owner;
 	}
 
+	@SuppressWarnings("deprecation")
 	public User(GraphiteWebinterfaceUser u) {
 		GraphiteUser usr = u.getDiscordUser();
 
 		this.id = usr.getID();
 		this.name = usr.getName();
-		this.fullName = usr.getName() + "#" + usr.getDiscriminator();
+		this.fullName = usr.getFullName();
 		this.discriminator = usr.getDiscriminator();
 		this.avatarUrl = usr.getJDAUser().getEffectiveAvatarUrl();
 		this.avatarID = usr.getJDAUser().getAvatarId();

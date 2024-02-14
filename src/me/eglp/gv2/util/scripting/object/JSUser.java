@@ -30,6 +30,7 @@ public class JSUser {
 	 * Returns this user's discriminator (the part behind the username, e.g. MrLetsplay#<b>6865</b>
 	 * @return Thus user's discriminator
 	 */
+	@Deprecated
 	public String getDiscriminator() {
 		return user.getDiscriminator();
 	}

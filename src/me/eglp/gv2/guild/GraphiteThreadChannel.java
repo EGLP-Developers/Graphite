@@ -1,6 +1,5 @@
 package me.eglp.gv2.guild;
 
-import me.eglp.gv2.main.Graphite;
 import me.eglp.gv2.util.base.GraphiteIdentifiable;
 import me.eglp.gv2.util.webinterface.js.JavaScriptClass;
 import me.eglp.gv2.util.webinterface.js.JavaScriptFunction;

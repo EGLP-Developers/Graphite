@@ -5,7 +5,9 @@ import java.util.List;
 import java.util.Random;
 import java.util.stream.Collectors;
 
+import me.eglp.gv2.guild.GraphiteMember;
 import me.eglp.gv2.guild.GraphiteModule;
+import me.eglp.gv2.main.Graphite;
 import me.eglp.gv2.util.command.Command;
 import me.eglp.gv2.util.command.CommandCategory;
 import me.eglp.gv2.util.command.CommandInvokedEvent;
@@ -31,7 +33,8 @@ public class CommandTCRandom extends Command{
 				.collect(Collectors.toList());
 		int i = new Random().nextInt(members.size());
 		Member m = members.get(i);
-		DefaultMessage.COMMAND_TCRANDOM_PICKED.reply(event, "member_nick", m.getEffectiveName(), "member_full", m.getUser().getName() + "#" + m.getUser().getDiscriminator());
+		GraphiteMember gM = Graphite.getMember(m);
+		DefaultMessage.COMMAND_TCRANDOM_PICKED.reply(event, "member_nick", m.getEffectiveName(), "member_full", gM.getFullName());
 	}
 
 	@Override

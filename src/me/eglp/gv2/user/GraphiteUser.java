@@ -30,10 +30,21 @@ public class GraphiteUser implements CommandSender, GraphiteOwning, GraphiteLoca
 		return config;
 	}
 
+	/**
+	 * Returns the user's username, or if the discriminator is not <code>0000</code>, the username with the discriminator appended to it (e.g. <code>user#1234</code>)
+	 * @return The user's full username
+	 */
+	public String getFullName() {
+		String disc = getDiscriminator();
+		if(disc.equals("0000")) return getName();
+		return getName() + "#" + disc;
+	}
+
 	public String getName() {
 		return getJDAUser().getName();
 	}
 
+	@Deprecated
 	public String getDiscriminator() {
 		return getJDAUser().getDiscriminator();
 	}

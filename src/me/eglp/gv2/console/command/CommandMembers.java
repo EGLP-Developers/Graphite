@@ -2,6 +2,7 @@ package me.eglp.gv2.console.command;
 
 import me.eglp.gv2.console.AbstractConsoleCommand;
 import me.eglp.gv2.guild.GraphiteGuild;
+import me.eglp.gv2.guild.GraphiteMember;
 import me.eglp.gv2.main.Graphite;
 import me.mrletsplay.mrcore.command.event.CommandInvokedEvent;
 import me.mrletsplay.mrcore.command.option.impl.DefaultCommandOption;
@@ -38,7 +39,8 @@ public class CommandMembers extends AbstractConsoleCommand {
 		}
 
 		for(Member m : guild.getJDAGuild().loadMembers().get()) {
-			event.getSender().sendMessage(m.getUser().getName() + "#" + m.getUser().getDiscriminator() + ": " + m.getUser().getId());
+			GraphiteMember gM = Graphite.getMember(m);
+			event.getSender().sendMessage(gM.getFullName() + ": " + m.getUser().getId());
 		}
 	}
 

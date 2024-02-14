@@ -112,7 +112,7 @@ public abstract class AbstractAutoModSettings implements JSONConvertible {
 
 	public void sendWarningMessage(GraphiteMessageChannel<?> channel, GraphiteMember member) {
 		EmbedBuilder eb = new EmbedBuilder();
-		eb.setAuthor(member.getName() + "#" + member.getDiscriminator(), null, member.getMember().getAvatarUrl());
+		eb.setAuthor(member.getFullName(), null, member.getMember().getAvatarUrl());
 		eb.setDescription("Warned! Reason: **" + getWarnReason() + "**");
 		channel.sendMessage(eb.build());
 

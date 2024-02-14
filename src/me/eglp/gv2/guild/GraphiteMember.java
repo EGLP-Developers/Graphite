@@ -12,11 +12,9 @@ import me.eglp.gv2.util.webinterface.js.JavaScriptFunction;
 import me.eglp.gv2.util.webinterface.js.JavaScriptGetter;
 import me.eglp.gv2.util.webinterface.js.WebinterfaceObject;
 import me.mrletsplay.mrcore.json.JSONObject;
-import me.mrletsplay.mrcore.misc.FriendlyException;
 import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.GuildVoiceState;
 import net.dv8tion.jda.api.entities.Member;
-import net.dv8tion.jda.api.entities.User;
 import net.dv8tion.jda.api.entities.UserSnowflake;
 
 @JavaScriptClass(name = "Member")
@@ -45,16 +43,20 @@ public class GraphiteMember extends GraphiteUser implements WebinterfaceObject {
 		return guild;
 	}
 
+	@Override
 	@JavaScriptGetter(name = "getID", returning = "memberID")
 	public String getID() {
 		return memberID;
 	}
 
+	@Override
 	@JavaScriptGetter(name = "getName", returning = "memberName")
 	public String getName() {
 		return getJDAUser().getName();
 	}
 
+	@Override
+	@Deprecated
 	@JavaScriptGetter(name = "getDiscriminator", returning = "memberDiscriminator")
 	public String getDiscriminator() {
 		return getJDAUser().getDiscriminator();

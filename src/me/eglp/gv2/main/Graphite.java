@@ -826,6 +826,7 @@ public class Graphite {
 		return getUser(getJDAUser(id));
 	}
 
+	@Deprecated
 	public static User getJDAUser(String name, String hash) {
 		return getShards()
 				.stream().map(s -> s.getJDA().getUsersByName(name, true).stream()
@@ -833,6 +834,7 @@ public class Graphite {
 				.filter(u -> u != null).findFirst().orElse(null);
 	}
 
+	@Deprecated
 	public static GraphiteUser getUser(String name, String hash) {
 		return getUser(getJDAUser(name, hash));
 	}

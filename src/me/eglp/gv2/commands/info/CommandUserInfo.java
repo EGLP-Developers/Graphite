@@ -44,9 +44,8 @@ public class CommandUserInfo extends Command{
 		eb.setColor(Color.DARK_GRAY);
 		eb.setTitle(DefaultLocaleString.COMMAND_USERINFO_TITLE.getFor(event.getSender(), "user", u.getName()));
 		eb.setThumbnail(u.getAvatarUrl());
-		eb.addField(DefaultLocaleString.COMMAND_USERINFO_NAME_TITLE.getFor(event.getSender()), u.getName(), false);
+		eb.addField(DefaultLocaleString.COMMAND_USERINFO_NAME_TITLE.getFor(event.getSender()), usr.getFullName(), false);
 		eb.addField(DefaultLocaleString.COMMAND_USERINFO_NICKNAME_TITLE.getFor(event.getSender()), m.getNickname() == null ? DefaultLocaleString.COMMAND_USERINFO_NICKNAME_NO_NICKNAME.getFor(event.getSender()) : m.getNickname(), false);
-		eb.addField(DefaultLocaleString.COMMAND_USERINFO_DISCRIMINATOR_TITLE.getFor(event.getSender()), u.getDiscriminator(), false);
 		eb.addField(DefaultLocaleString.COMMAND_USERINFO_ID_TITLE.getFor(event.getSender()), u.getId(), true);
 		eb.addField(DefaultLocaleString.COMMAND_USERINFO_JOINED_TITLE.getFor(event.getSender()), m.getTimeJoined().format(DateTimeFormatter.RFC_1123_DATE_TIME), false);
 		eb.addField(DefaultLocaleString.COMMAND_USERINFO_CURRENTLY_IN_AUDIOCHANNEL_TITLE.getFor(event.getSender()), !m.getVoiceState().inAudioChannel() ? DefaultLocaleString.COMMAND_USERINFO_CURRENTLY_IN_AUDIOCHANNEL_NONE.getFor(event.getSender()) : m.getVoiceState().getChannel().getName(), false);

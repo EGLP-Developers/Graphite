@@ -3,7 +3,7 @@ package me.eglp.gv2.util.lang;
 import java.util.Arrays;
 
 public enum DefaultLocaleString implements LocalizedString {
-	
+
 	COMMAND_CATEGORY_ADMIN_NAME("command-category.admin.name", "Admin"),
 	COMMAND_CATEGORY_MUSIC_NAME("command-category.music.name", "Music"),
 	COMMAND_CATEGORY_BACKUPS_NAME("command-category.backups.name", "Backups"),
@@ -20,9 +20,9 @@ public enum DefaultLocaleString implements LocalizedString {
 	COMMAND_CATEGORY_SCRIPTING_NAME("command-category.scripting.name", "Scripting"),
 	COMMAND_CATEGORY_RECORD_NAME("command-category.record.name", "Record"),
 	COMMAND_CATEGORY_CHANNEL_MANAGEMENT_NAME("command-category.channel-management.name", "Channel Management"),
-	
+
 	COMMAND_PERMISSION_DESCRIPTION("command.permission.description", "Manage permissions for a role or user"),
-	
+
 	/*BACKUP&TEMPLATE MESSAGES*/
 	COMMAND_BACKUP_CREATE_DESCRIPTION("command.backup.create.description", "Create a backup"),
 	COMMAND_BACKUP_CREATE_USAGE("command.backup.create.usage", "{prefix}backup create [amount of messages to save]"),
@@ -109,7 +109,7 @@ public enum DefaultLocaleString implements LocalizedString {
 		+ "\n"
 		+ "If you're unsure about what you're doing, make sure to first try this on a testing server! If you experience any issues, feel free to contact us on our Discord server. We will help you to the best of our ability, but take no responsibility for broken or incomplete backups!"),
 	/*BACKUP&TEMPLATE MESSAGES*/
-	
+
 	/*HELP MESSAGES*/
 	COMMAND_HELP_MESSAGE_USAGE("command.help.message.usage", "Usage"),
 	COMMAND_HELP_MESSAGE_COMMAND("command.help.message.command", "Command"),
@@ -121,7 +121,7 @@ public enum DefaultLocaleString implements LocalizedString {
 	COMMAND_HELP_MESSAGE_MISSING_USAGE("command.help.message.missing-usage", ":interrobang: This shouldn't be here. Please report this as a bug"),
 	COMMAND_HELP_MESSAGE_GENERAL_INFO("command.help.message.general-info", "It's me, {bot}! :wave: Let's see what I can do for you :ok_hand:\n\n**You need support? [Join our Discord]({discord})**\n**[Invite]({invite}) the bot to your own server**\n\nHelp us out by donating on [Patreon]({patreon})\n\n**Note:** For detailed command help use `{prefix}help <command>`. A list of all commands with description and there permission nodes can be found on [our website]({website})"),
 	/*HELP MESSAGES*/
-	
+
 	/*FUN MESSAGES*/
 	COMMAND_COINFLIP_DESCRIPTION("command.coinflip.description", "Let's flip a coin"),
 	COMMAND_COINFLIP_USAGE("command.coinflip.usage", "{prefix}coinflip"),
@@ -152,7 +152,7 @@ public enum DefaultLocaleString implements LocalizedString {
 	COMMAND_POLL_LIST_LIST("command.poll.list.list", "```Currently running polls:\n\n{polls}```"),
 	COMMAND_POLL_STOP_DESCRIPTION("command.poll.stop.description", "Stops a poll"),
 	COMMAND_POLL_STOP_USAGE("command.poll.stop.usage", "{prefix}poll stop"),
-	
+
 	COMMAND_REMINDER_DESCRIPTION("command.reminder.description", "Create reminders so you don't miss important events"),
 	COMMAND_REMINDER_CREATE_DESCRIPTION("command.reminder.create.description", "Create a new reminder"),
 	COMMAND_REMINDER_CREATE_USAGE("command.reminder.create.usage", "{prefix}reminder create <date_and_time (year-month-day hour:minute e.g.: 2001-01-02 15:01)> <reminder message> [repeat] [channel]"),
@@ -175,7 +175,7 @@ public enum DefaultLocaleString implements LocalizedString {
 	COMMAND_REMINDER_INFO_REPEAT_NEVER("command.reminder.info.repeat.never", "Never"),
 	COMMAND_REMINDER_INFO_CHANNEL_TITLE("command.reminder.info.channel.title", "Channel"),
 	/*FUN MESSAGES*/
-	
+
 	/*INFO MESSAGES*/
 	COMMAND_ABOUT_DESCRIPTION("command.about.description", "Shows some information about me"),
 	COMMAND_ABOUT_USAGE("command.about.usage", "{prefix}about"),
@@ -194,16 +194,16 @@ public enum DefaultLocaleString implements LocalizedString {
 	COMMAND_HELP_DESCRIPTION("command.help.description", "It's only a help message. Why would you need help for that? You are weird!"),
 	COMMAND_HELP_USAGE("command.help.usage", "{prefix}help"),
 	/*INFO MESSAGES*/
-	
+
 	COMMAND_REPORT_DESCRIPTION("command.report.description", "Report bad people for bad things"),
 	COMMAND_REPORT_USAGE("command.report.usage", "{prefix}report <@Member> <reason>"),
-	
+
 	COMMAND_CHATREPORT_DESCRIPTION("command.chatreport.description", "Report a chat snippet of 100 messages"),
 	COMMAND_CHATREPORT_USAGE("command.chatreport.usage", "{prefix}chatreport"),
-	
+
 	COMMAND_GETROLE_DESCRIPTION("command.getrole.description", "Get an accessible role"),
 	COMMAND_GETROLE_USAGE("command.getrole.usage", "{prefix}getrole <@Role>"),
-	
+
 	COMMAND_USERCHANNEL_DESCRIPTION("command.userchannel.description", "Create a truly unique channel that you are the boss of"),
 	COMMAND_USERCHANNEL_CREATE_DESCRIPTION("command.userchannel.create.description", "Create a truly unique channel that you are the boss of"),
 	COMMAND_USERCHANNEL_CREATE_USAGE("command.userchannel.create.usage", "{prefix}userchannel create <Name>"),
@@ -217,15 +217,15 @@ public enum DefaultLocaleString implements LocalizedString {
 	COMMAND_MODROLE_REMOVE_USAGE("command.modrole.remove.usage", "{prefix}modrole remove <@Role>"),
 	COMMAND_MODROLE_LIST_DESCRIPTION("command.modrole.list.description", "Lists all modroles"),
 	COMMAND_MODROLE_LIST_USAGE("command.modrole.list.usage", "{prefix}modrole list"),
-	
+
 	COMMAND_SUPPORT_DESCRIPTION("command.support.description", "Support your doodly doods with doodly doodles from [Google Doodles](https://www.google.com/doodles)"),
 	COMMAND_SUPPORT_QUEUE_DESCRIPTION("command.support.queue.description", "Set the support queue"),
 	COMMAND_SUPPORT_QUEUE_USAGE("command.support.queue.usage", "{prefix}support queue <#!channel>"),
 	COMMAND_SUPPORT_UNSETQUEUE_DESCRIPTION("command.support.unsetqueue.description", "Unset the support queue"),
 	COMMAND_SUPPORT_UNSETQUEUE_USAGE("command.support.unsetqueue.usage", "{prefix}support unsetqueue"),
-	
+
 	COMMAND_BACKUP_DESCRIPTION("command.backup.description", "Create some nice backups"),
-	
+
 	COMMAND_ACCESSROLE_DESCRIPTION("command.accessrole.description", "Make roles accessible for all users"),
 	COMMAND_ACCESSROLE_ADD_DESCRIPTION("command.accessrole.add.description", "Make a role accessible for all users (e.g. something like no-nsfw)"),
 	COMMAND_ACCESSROLE_ADD_USAGE("command.accessrole.add.usage", "{prefix}accessrole add <@Role>"),
@@ -234,9 +234,9 @@ public enum DefaultLocaleString implements LocalizedString {
 	COMMAND_ACCESSROLE_LIST_DESCRIPTION("command.accessrole.list.description", "Shows all accessible roles"),
 	COMMAND_ACCESSROLE_LIST_USAGE("command.accessrole.list.usage", "{prefix}accessrole list"),
 	COMMAND_ACCESSROLE_LIST_FIELD_TITLE("command.accessrole.list.field-title", "Accessible roles"),
-	
+
 	COMMAND_MUSIC_DESCRIPTION("command.music.description", "Feel the melody in your veins"),
-	
+
 	COMMAND_AUTOROLE_DESCRIPTION("command.autorole.description", "Add automatic roles that users will get when joining the server"),
 	COMMAND_AUTOROLE_ADD_DESCRIPTION("command.autorole.add.description", "Add an autorole"),
 	COMMAND_AUTOROLE_ADD_USAGE("command.autorole.add.usage", "{prefix}autorole add <@Role>"),
@@ -245,7 +245,7 @@ public enum DefaultLocaleString implements LocalizedString {
 	COMMAND_AUTOROLE_LIST_DESCRIPTION("command.autorole.list.description", "Shows all autoroles"),
 	COMMAND_AUTOROLE_LIST_USAGE("command.autorole.list.usage", "{prefix}autorole list"),
 	COMMAND_AUTOROLE_LIST_TITLE("command.autorole.list-title", "A list of all roles that will be given automatically when a user joins your server"),
-	
+
 	COMMAND_BOTROLE_DESCRIPTION("command.botrole.description", "Add automatic roles that bots will get when joining the server"),
 	COMMAND_BOTROLE_ADD_DESCRIPTION("command.botrole.add.description", "Add an botrole"),
 	COMMAND_BOTROLE_ADD_USAGE("command.botrole.add.usage", "{prefix}botrole add <@Role>"),
@@ -254,7 +254,7 @@ public enum DefaultLocaleString implements LocalizedString {
 	COMMAND_BOTROLE_LIST_DESCRIPTION("command.botrole.list.description", "Shows all botroles"),
 	COMMAND_BOTROLE_LIST_USAGE("command.botrole.list.usage", "{prefix}botrole list"),
 	COMMAND_BOTROLE_LIST_TITLE("command.botrole.list-title", "A list of all roles that will be given automatically when a bot joins your server"),
-	
+
 	/*MINIGAMES MESSAGES*/
 	COMMAND_MINIGAME_DESCRIPTION("command.minigame.description", "Play some games with your friends"),
 	COMMAND_MINIGAME_PLAY_DESCRIPTION("command.minigame.play.description", "Play a game"),
@@ -285,7 +285,7 @@ public enum DefaultLocaleString implements LocalizedString {
 	COMMAND_AMONGUS_LINK_USAGE("command.amongus.link.usage", "{prefix}amongus link <@User> <color | name>"),
 	COMMAND_AMONGUS_STOP_DESCRIPTION("command.amongus.stop.description", "Stop your current Among Us game"),
 	COMMAND_AMONGUS_STOP_USAGE("command.amongus.stop.usage", "{prefix}amongus stop"),
-	
+
 	CUSTOMCOMMAND_ARG_TYPE_STRING("customcommand.arg-type.string", "String"),
 	CUSTOMCOMMAND_ARG_TYPE_INTEGER("customcommand.arg-type.integer", "Integer"),
 	CUSTOMCOMMAND_ARG_TYPE_BOOLEAN("customcommand.arg-type.boolean", "Boolean"),
@@ -294,7 +294,7 @@ public enum DefaultLocaleString implements LocalizedString {
 	CUSTOMCOMMAND_ARG_TYPE_VOICE_CHANNEL("customcommand.arg-type.voice-channel", "Voice Channel"),
 	CUSTOMCOMMAND_ARG_TYPE_ROLE("customcommand.arg-type.role", "Role"),
 	CUSTOMCOMMAND_ARG_TYPE_COLOR("customcommand.arg-type.color", "Color"),
-	
+
 	EVENT_SERVER_JOIN_TITLE("event.server-join.title", "Welcome to the Graphite community, {user}"),
 	EVENT_SERVER_JOIN_DESCRIPTION("event.server-join.description", "If you have any questions about our bot, feel free to join our [Discord]({discord}) server or take a look at our [Website]({website}) and our [FAQ]({faq}). **If you happen to find a bug, please report it on our Discord. We want to eliminate all bugs with your help**"),
 	EVENT_SERVER_JOIN_FIELD_1_TITLE("event.server-join.field.1.title", ":warning: Important"),
@@ -307,7 +307,7 @@ public enum DefaultLocaleString implements LocalizedString {
 	EVENT_SERVER_JOIN_FIELD_4_CONTENT("event.server-join.field.4.content", "Graphite has a lot of features that can be used via commands but it's easier to manage everything via our [Webinterface]({webinterface})"),
 	EVENT_SERVER_JOIN_FIELD_5_TITLE("event.server-join.field.5.title", ":cry: You miss a feature?"),
 	EVENT_SERVER_JOIN_FIELD_5_CONTENT("event.server-join.field.5.content", "We are open to add new features to Graphite. You can suggest new features by joining our [Discord]({discord}) and sending your suggestion in the #suggestions channel."),
-	
+
 	PREMIUM_KEY_TYPE_PATREON_FRIENDLY_NAME("premium-key.type.patreon.friendly-name", "Patreon Key"),
 	PREMIUM_KEY_TYPE_PATREON_DESCRIPTION("premium-key.type.patreon.description", "Granted by being one of our awesome Patrons :heart:"),
 	PREMIUM_KEY_TYPE_PATREON_EXPIRES("premium-key.type.patreon.expires", "Never (unless you decide to quit paying. Please don't. We're poor.)"),
@@ -316,10 +316,10 @@ public enum DefaultLocaleString implements LocalizedString {
 	PREMIUM_KEY_TYPE_PERMANENT_FRIENDLY_NAME("premium-key.type.permanent.friendly-name", "Permanent Key"),
 	PREMIUM_KEY_TYPE_PERMANENT_DESCRIPTION("premium-key.type.permanent.description", "Granted by the bot owners on special occasions"),
 	PREMIUM_KEY_TYPE_PERMANENT_EXPIRES("premium-key.type.permanent.expires", "Never"),
-	
+
 	COMMAND_CLEAR_DESCRIPTION("command.clear.description", "Polish your chat history squeaky clean :put_litter_in_its_place:"),
 	COMMAND_CLEAR_USAGE("command.clear.usage", "{prefix}clear <amount>"),
-	
+
 	COMMAND_GREETING_DESCRIPTION("command.greeting.description", "Give new server members a sweet welcome"),
 	COMMAND_GREETING_CHANNEL_DESCRIPTION("command.greeting.channel.description", "Specify the channel where the greeting messages will be send"),
 	COMMAND_GREETING_CHANNEL_USAGE("command.greeting.channel.usage", "{prefix}greeting channel <#text-channel | user>"),
@@ -330,7 +330,7 @@ public enum DefaultLocaleString implements LocalizedString {
 	COMMAND_GREETING_DISABLE_DESCRIPTION("command.greeting.disable.description", "Disable greeting messages for your server"),
 	COMMAND_GREETING_DISABLE_USAGE("command.greeting.disable.usage", "{prefix}greeting disable"),
 	COMMAND_GREETING_DEFAULT_MESSAGE("command.greeting.default-message", "Welcome {mention} to {server}"),
-	
+
 	COMMAND_FAREWELL_DESCRIPTION("command.farewell.description", "Give leaving users a sad farewell"),
 	COMMAND_FAREWELL_CHANNEL_DESCRIPTION("command.farewell.channel.description", "Specify the channel where the farewell messages will be send"),
 	COMMAND_FAREWELL_CHANNEL_USAGE("command.farewell.channel.usage", "{prefix}farewell channel <#text-channel>"),
@@ -341,20 +341,20 @@ public enum DefaultLocaleString implements LocalizedString {
 	COMMAND_FAREWELL_DISABLE_DESCRIPTION("command.farewell.disable.description", "Disable farewell messages for your server"),
 	COMMAND_FAREWELL_DISABLE_USAGE("command.farewell.disable.usage", "{prefix}farewell disable"),
 	COMMAND_FAREWELL_DEFAULT_MESSAGE("command.farewell.default-message", "And I'll tell you all about it when I see you again {user}"),
-	
+
 	COMMAND_PURGE_DESCRIPTION("command.purge.description", "Delete all channels/categories or roles"),
 	COMMAND_PURGE_USAGE("command.purge.usage", "{prefix}purge <channels | roles>"),
 	COMMAND_PURGE_WARNING("command.purge.warning", "All {what} (that can be deleted) will be deleted. Are you sure?"),
-	
+
 	COMMAND_CLEARALL_DESCRIPTION("command.clearall.description", "Bulk deletes all messages (max. 1000 messages at once)"),
 	COMMAND_CLEARALL_USAGE("command.clearall.usage", "{prefix}clearall"),
 
 	COMMAND_JAIL_DESCRIPTION("command.jail.description", "Trap someone inside their voice channel :lock:"),
 	COMMAND_JAIL_USAGE("command.jail.usage", "{prefix}jail <@Member> [#!channel] [Reason]"),
-	
+
 	COMMAND_KEYS_DESCRIPTION("command.keys.description", "Look at all your fancy keys :key:"),
 	COMMAND_KEYS_USAGE("command.keys.usage", "{prefix}keys"),
-	
+
 	COMMAND_PERMISSION_ADD_DESCRIPTION("command.permission.add.description", "So the admins can do what they have to do"),
 	COMMAND_PERMISSION_ADD_USAGE("command.permission.add.usage", "{prefix}permission add <@Role | @User | everyone> <permission>"),
 	COMMAND_PERMISSION_REMOVE_DESCRIPTION("command.permission.remove.description", "So the admins can't do what they have to do"),
@@ -363,42 +363,42 @@ public enum DefaultLocaleString implements LocalizedString {
 	COMMAND_PERMISSION_LIST_USAGE("command.permission.list.usage", "{prefix}permission list <@Role | @User | everyone>"),
 	COMMAND_PERMISSION_CHECK_DESCRIPTION("command.permission.check.description", "Check for a specified permission"),
 	COMMAND_PERMISSION_CHECK_USAGE("command.permission.check.usage", "{prefix}permission check <@Role | @User | everyone> <permission>"),
-	
+
 	COMMAND_PERMISSION_LIST_SELF_TITLE("command.permission.list.self.title", "Permissions specific to {entity}"),
 	COMMAND_PERMISSION_LIST_INHERITED_TITLE("command.permission.list.inherited.title", "Permissions inherited from {entity}"),
-	
+
 	COMMAND_PREFIX_DESCRIPTION("command.prefix.description", "Change the prefix (must be a one word string without spaces)"),
 	COMMAND_PREFIX_USAGE("command.prefix.usage", "{prefix}prefix <prefix>"),
-	
+
 	COMMAND_PREMIUM_REDEEM_DESCRIPTION("command.premium.redeem.description", "Ooh, shiny! :key: :star2:"),
 	COMMAND_PREMIUM_REDEEM_USAGE("command.premium.redeem.usage", "{prefix}redeem <key>"),
-	
+
 	COMMAND_PREMIUM_ADDKEY_DESCRIPTION("command.premium.addkey.description", "Claim a currently unowned key"),
 	COMMAND_PREMIUM_ADDKEY_USAGE("command.premium.addkey.usage", "{prefix}premium addkey <key>"),
-	
+
 	COMMAND_DONATORS_DESCRIPTION("command.donators.description", "Shows a list of our donators"),
 	COMMAND_DONATORS_USAGE("command.donators.usage", "{prefix}donators"),
-	
+
 	COMMAND_PREMIUM_LEVEL_DESCRIPTION("command.premium.level.description", "Shows the premium level of your server"),
 	COMMAND_PREMIUM_LEVEL_USAGE("command.premium.level.usage", "{prefix}premium level"),
-	
+
 	COMMAND_DONATORS_TITLE("command.donators.title", "Thanks for your support :heart:"),
-	
+
 	COMMAND_TEMPBAN_DESCRIPTION("command.tempban.description", "It does what it says"),
 	COMMAND_TEMPBAN_USAGE("command.tempban.usage", "{prefix}tempban <@Member> <duration (1d2h)> [reason]"),
-	
+
 	COMMAND_TEMPJAIL_DESCRIPTION("command.tempjail.description", "You can't just give them a lifetime sentence every time"),
 	COMMAND_TEMPJAIL_USAGE("command.tempjail.usage", "{prefix}tempjail <@Member> <duration (1d2h)> [reason]"),
-	
+
 	COMMAND_TEMPVOICEMUTE_DESCRIPTION("command.tempvoicemute.description", "Temporarily voicemute a specified member"),
 	COMMAND_TEMPVOICEMUTE_USAGE("command.tempvoicemute.usage", "{prefix}tempvoicemute <@Member> <duration (1d2h)> [reason]"),
-	
+
 	COMMAND_TEMPCHATMUTE_DESCRIPTION("command.tempchatmute.description", ":mute: + :clock2: = :speaker:"),
 	COMMAND_TEMPCHATMUTE_USAGE("command.tempchatmute.usage", "{prefix}tempchatmute <@Member> <duration (1d2h)> [reason]"),
-	
+
 	COMMAND_CHATMUTE_DESCRIPTION("command.chatmute.description", ":mute:"),
 	COMMAND_CHATMUTE_USAGE("command.chatmute.usage", "{prefix}chatmute <@Member> [reason]"),
-	
+
 	COMMAND_TWITCH_DESCRIPTION("command.twitch.description", "Not sponsered by Twitch"),
 	COMMAND_TWITCH_MESSAGE_DESCRIPTION("command.twitch.message.description", "Set your own message that will be sent when the specified streamer goes live"),
 	COMMAND_TWITCH_MESSAGE_USAGE("command.twitch.message.usage", "{prefix}twitch message <streamer> <message>"),
@@ -408,7 +408,7 @@ public enum DefaultLocaleString implements LocalizedString {
 	COMMAND_TWITCH_ADD_USAGE("command.twitch.add.usage", "{prefix}twitch add <streamer> <#text-channel>"),
 	COMMAND_TWITCH_REMOVE_DESCRIPTION("command.twitch.remove.description", "Remove a streamer"),
 	COMMAND_TWITCH_REMOVE_USAGE("command.twitch.remove.usage", "{prefix}twitch remove <streamer>"),
-	
+
 	COMMAND_TWITTER_DESCRIPTION("command.twitter.description", "Not sponsered by Twitter"),
 	COMMAND_TWITTER_CHANNEL_DESCRIPTION("command.twitter.channel.description", "Set the channel where the bot will send the notification messages"),
 	COMMAND_TWITTER_CHANNEL_USAGE("command.twitter.channel.usage", "{prefix}twitter channel <user> <#text-channel>"),
@@ -416,7 +416,7 @@ public enum DefaultLocaleString implements LocalizedString {
 	COMMAND_TWITTER_ADD_USAGE("command.twitter.add.usage", "{prefix}twitter add <user> <#text-channel>"),
 	COMMAND_TWITTER_REMOVE_DESCRIPTION("command.twitter.remove.description", "Remove a Twitter user"),
 	COMMAND_TWITTER_REMOVE_USAGE("command.twitter.remove.usage", "{prefix}twitter remove <user>"),
-	
+
 	COMMAND_REDDIT_DESCRIPTION("command.reddit.description", "Not sponsered by Reddit"),
 	COMMAND_REDDIT_CHANNEL_DESCRIPTION("command.reddit.channel.description", "Set the channel where the bot will send the subreddits"),
 	COMMAND_REDDIT_CHANNEL_USAGE("command.reddit.channel.usage", "{prefix}reddit channel <subreddit> <#text-channel>"),
@@ -424,27 +424,27 @@ public enum DefaultLocaleString implements LocalizedString {
 	COMMAND_REDDIT_ADD_USAGE("command.reddit.add.usage", "{prefix}reddit add <subreddit> <#text-channel>"),
 	COMMAND_REDDIT_REMOVE_DESCRIPTION("command.reddit.remove.description", "Remove a subreddit"),
 	COMMAND_REDDIT_REMOVE_USAGE("command.reddit.remove.usage", "{prefix}reddit remove <subreddit>"),
-	
+
 	COMMAND_UNJAIL_DESCRIPTION("command.unjail.description", "Unjail the specified member"),
 	COMMAND_UNJAIL_USAGE("command.unjail.usage", "{prefix}unjail <@Member> [reason]"),
-	
+
 	COMMAND_UNBAN_DESCRIPTION("command.unban.description", "Unban the specified member"),
 	COMMAND_UNBAN_USAGE("command.unban.usage", "{prefix}unban <@Member> [reason]"),
-	
+
 	COMMAND_VOICEUNMUTE_DESCRIPTION("command.voiceunmute.description", "Voiceunmute the specified member"),
 	COMMAND_VOICEUNMUTE_USAGE("command.voiceunmute.usage", "{prefix}voiceunmute <@Member> [reason]"),
-	
+
 	COMMAND_CHATUNMUTE_DESCRIPTION("command.chatunmute.description", "Chatunmute the specified member"),
 	COMMAND_CHATUNMUTE_USAGE("command.chatunmute.usage", "{prefix}chatunmute <@Member> [reason]"),
 
 	COMMAND_CHATREPORTS_DESCRIPTION("command.chatreports.description", "Manage your chatreports"),
 	COMMAND_CHATREPORTS_LIST_DESCRIPTION("command.chatreports.list.description", "Lists all currently existing chatreports"),
 	COMMAND_CHATREPORTS_LIST_USAGE("command.chatreports.list.usage", "{prefix}chatreports list"),
-	
+
 	COMMAND_REPORTS_DESCRIPTION("command.reports.description", "Manage your reports"),
 	COMMAND_REPORTS_LIST_DESCRIPTION("command.reports.list.description", "Lists all currently existing reports"),
 	COMMAND_REPORTS_LIST_USAGE("command.reports.list.usage", "{prefix}reports list"),
-	
+
 	COMMAND_MUSIC_PLAY_DESCRIPTION("command.music.play.description", "Play some music"),
 	COMMAND_MUSIC_PLAY_USAGE("command.music.play.usage", "{prefix}music play <link or title>"),
 	COMMAND_MUSIC_PAUSE_DESCRIPTION("command.music.pause.description", "Pause the song that's currently playing"),
@@ -519,30 +519,30 @@ public enum DefaultLocaleString implements LocalizedString {
 	COMMAND_MUSIC_NIGHTCORE_USAGE("command.music.nightcore.usage", "{prefix}music nightcore"),
 	COMMAND_MUSIC_RESET_DESCRIPTION("command.music.reset.description", "Reset all playback settings"),
 	COMMAND_MUSIC_RESET_USAGE("command.music.reset.usage", "{prefix}music reset"),
-	
+
 	COMMAND_KEYS_FIELD_HEAD("command.keys.field.head", "Key: `{key}`"),
-	COMMAND_KEYS_FIELD_VALUES("command.keys.field.values", 
+	COMMAND_KEYS_FIELD_VALUES("command.keys.field.values",
 			  "Type: `{type}`\n"
 			+ "Premium Level: `{level}`\n"
 			+ "Description: `{description}`\n"
 			+ "Expires in: `{time}`\n"
 			+ "Used by: `{user}`"),
-	
+
 	COMMAND_CHATREPORTS_LIST_FIELD_HEAD("command.chatreports.list.field.head", "**[#{index}]** Chatreport by `{reporter}`\n"),
 	COMMAND_CHATREPORTS_LIST_FIELD_FOOTER("command.chatreports.list.field.footer", "Currently there are {chatreports} chatreport(s)"),
-	
+
 	COMMAND_CHATREPORTS_REMOVE_USAGE("command.chatreports-remove.usage", "{prefix}chatreports remove <index>"),
 	COMMAND_CHATREPORTS_REMOVE_DESCRIPTION("command.chatreports-remove.description", "Removes the chatreport at the specified index"),
-	
+
 	COMMAND_REPORTS_FIELD_HEAD("command.reports.field.head", "**[#{index}]** `{reporter}` has reported `{reported}`"),
 	COMMAND_REPORTS_FIELD_VALUES("command.reports.field.values", "Reason: `{reason}`"),
 	COMMAND_REPORTS_FIELD_FOOTER("command.reports.field.footer", "Currently there are {reports} report(s)"),
-	
+
 	COMMAND_REPORTS_REMOVE_USAGE("command.reports-remove.usage", "{prefix}reports remove <index>"),
 	COMMAND_REPORTS_REMOVE_DESCRIPTION("command.reports-remove.description", "Removes the report at the specified index"),
-	
+
 	COMMAND_PREMIUM_DESCRIPTION("command.premium.description", "All about premium stuff"),
-	
+
 	COMMAND_EASTEREGGS_DESCRIPTION("command.eastereggs.description", "Show your eastereggs"),
 	COMMAND_EASTEREGGS_USAGE("command.eastereggs.usage", "{prefix}eastereggs"),
 	COMMAND_EASTEREGGS_MYSTERY_TITLE("command.eastereggs.mystery.title", "???"),
@@ -550,14 +550,14 @@ public enum DefaultLocaleString implements LocalizedString {
 	COMMAND_EASTEREGGS_MYSTERY_FOOTER("command.eastereggs.mystery.footer", "You have found {amount} of {total_amount} easter eggs\nNote: Some easter eggs may only be available when using [Graphite]({multiplex_url})"),
 
 	COMMAND_LOCALE_DESCRIPTION("command.locale.description", "Manage your server locales"),
-	
+
 	COMMAND_LOCALE_LIST_DESCRIPTION("command.locale.list.description", "Lists all available locales"),
 	COMMAND_LOCALE_LIST_USAGE("command.locale.list.usage", "{prefix}locale list"),
 	COMMAND_LOCALE_SET_DESCRIPTION("command.locale.set.description", "Set the locale for your server"),
 	COMMAND_LOCALE_SET_USAGE("command.locale.set.usage", "{prefix}locale set <locale>"),
-	
+
 	COMMAND_LOCALE_DOWNLOAD_TITLE("command.locale.download.title", "How to create your own server locale"),
-	COMMAND_LOCALE_DOWNLOAD_VALUES("command.locale.download.values", 
+	COMMAND_LOCALE_DOWNLOAD_VALUES("command.locale.download.values",
 			  "Step 1: Use `{prefix}locale download [locale]`\n"
 			+ "Step 2: Change the messages you want to change\n"
 			+ "Step 3: Drag&Drop the file into the discord chat and use `{prefix}locale upload <locale>` as comment at the top\n"
@@ -570,7 +570,7 @@ public enum DefaultLocaleString implements LocalizedString {
 	COMMAND_LOCALE_UPLOAD_ALREADY_EXISTS("command.locale.upload.already-exists", "A locale with that short already exists. Do you want to overwrite it?"),
 	COMMAND_LOCALE_DELETE_DESCRIPTION("command.locale.delete.description", "Delete a custom locale"),
 	COMMAND_LOCALE_DELETE_USAGE("command.locale.delete.usage", "{prefix}locale delete <locale>"),
-	
+
 	COMMAND_ABOUT_TITLE("command.about.title", "Some information about myself"),
 	COMMAND_ABOUT_NAME_TITLE("command.about.name.title", "Name"),
 	COMMAND_ABOUT_DEVELOPERS_TITLE("command.about.developers.title", "Developed by"),
@@ -582,7 +582,7 @@ public enum DefaultLocaleString implements LocalizedString {
 	COMMAND_ABOUT_PATREON_TITLE("command.about.patreon.title", "Patreon"),
 	COMMAND_ABOUT_TWITTER_TITLE("command.about.twitter.title", "Twitter"),
 	COMMAND_ABOUT_CONTRIBUTORS_TITLE("command.about.contributors.title", "With help from our awesome contributors"),
-	
+
 	COMMAND_USERINFO_TITLE("command.userinfo.title", "Some information about {user}"),
 	COMMAND_USERINFO_NAME_TITLE("command.userinfo.name.title", "Name"),
 	COMMAND_USERINFO_ID_TITLE("command.userinfo.id.title", "ID"),
@@ -590,7 +590,6 @@ public enum DefaultLocaleString implements LocalizedString {
 	COMMAND_USERINFO_NICKNAME_NO_NICKNAME("command.userinfo.nickname.no-nickname", "No nickname set"),
 	COMMAND_USERINFO_SERVER_DEAFENED_TITLE("command.userinfo.server-deafened.title", "Server deafened?"),
 	COMMAND_USERINFO_SERVER_MUTED_TITLE("command.userinfo.server-muted.title", "Server muted?"),
-	COMMAND_USERINFO_DISCRIMINATOR_TITLE("command.userinfo.discriminator.title", "Discriminator"),
 	COMMAND_USERINFO_JOINED_TITLE("command.userinfo.joined.title", "Joined"),
 	COMMAND_USERINFO_CURRENTLY_IN_AUDIOCHANNEL_TITLE("command.userinfo.currently-in-audiochannel.title", "Currently in audio channel?"),
 	COMMAND_USERINFO_CURRENTLY_IN_AUDIOCHANNEL_NONE("command.userinfo.currently-in-audiochannel.none", "Currently not in audio channel"),
@@ -599,7 +598,7 @@ public enum DefaultLocaleString implements LocalizedString {
 	COMMAND_USERINFO_TEMP_BANNED_TITLE("command.userinfo.temp-banned.title", "Temp banned?"),
 	COMMAND_USERINFO_TEMP_MUTED_TITLE("command.userinfo.temp-muted.title", "Temp muted?"),
 	COMMAND_USERINFO_TEMP_JAILED_TITLE("command.userinfo.temp-jailed.title", "Temp jailed?"),
-	
+
 	COMMAND_CHANNELINFO_TITLE("command.channelinfo.title", "Information you need to know about {channel}"),
 	COMMAND_CHANNELINFO_NAME_TITLE("command.channelinfo.name.title", "Name"),
 	COMMAND_CHANNELINFO_ID_TITLE("command.channelinfo.id.title", "ID"),
@@ -613,18 +612,18 @@ public enum DefaultLocaleString implements LocalizedString {
 	COMMAND_CHANNELINFO_TOPIC_NO_TOPIC("command.channelinfo.topic.no-topic", "None"),
 	COMMAND_CHANNELINFO_SLOWMODE_TITLE("command.channelinfo.slowmode.title", "Slowmode"),
 	COMMAND_CHANNELINFO_SLOWMODE_OFF("command.channelinfo.slowmode.off", "Off"),
-	
+
 	COMMAND_MODULE_DESCRIPTION("command.module.description", "Manage your modules"),
-	
+
 	COMMAND_MODULE_ENABLE_DESCRIPTION("command.module.enable.description", "Be able to feel more of Graphite's power"),
 	COMMAND_MODULE_ENABLE_USAGE("command.module.enable.usage", "{prefix}module enable <module>"),
-	
+
 	COMMAND_MODULE_DISABLE_DESCRIPTION("command.module.disable.description", "Why would you do that? :cry:"),
 	COMMAND_MODULE_DISABLE_USAGE("command.module.disable.usage", "{prefix}module disable <module>"),
-	
+
 	COMMAND_MODULE_LIST_DESCRIPTION("command.module.list.description", "Shows the max level of power you can enable"),
 	COMMAND_MODULE_LIST_USAGE("command.module.list.usage", "{prefix}module list"),
-	
+
 	COMMAND_SCRIPT_DESCRIPTION("command.script.description", "Take the power of Graphite in your own hands"),
 	COMMAND_SCRIPT_UPLOAD_DESCRIPTION("command.script.upload.description", "Upload a script"),
 	COMMAND_SCRIPT_UPLOAD_USAGE("command.script.upload.usage", "{prefix}script upload <script name> [override] (+ attached script file)"),
@@ -641,7 +640,7 @@ public enum DefaultLocaleString implements LocalizedString {
 
 	COMMAND_CATEGORYCOPY_DESCRIPTION("command.categorycopy.description", "Copy/Paste the settings of one category to another one"),
 	COMMAND_CATEGORYCOPY_USAGE("command.categorycopy.usage", "{prefix}categorycopy :<category> :<category>"),
-	
+
 	COMMAND_RECORD_DESCRIPTION("command.record.description", "Record your sweet voice"),
 	COMMAND_RECORD_START_DESCRIPTION("command.record.start.description", "Let me slide into your voicechannel and record your sweet voice"),
 	COMMAND_RECORD_START_USAGE("command.record.start.usage", "{prefix}record start"),
@@ -660,26 +659,26 @@ public enum DefaultLocaleString implements LocalizedString {
 
 	COMMAND_UPVOTE_DESCRIPTION("command.upvote.description", "Be a nice user and upvote the bot"),
 	COMMAND_UPVOTE_USAGE("command.upvote.usage", "{prefix}upvote"),
-	
+
 	COMMAND_UPVOTE_TITLE("command.upvote.title", "Upvote the bot"),
 	COMMAND_UPVOTE_FIELD_TITLE("command.upvote.field.title", "**{site_name}**"),
 	COMMAND_UPVOTE_FIELD_DESCRIPTION("command.upvote.field.description", "[Upvote]({upvote_url}) on {site_name}"),
-	
+
 	COMMAND_MONEY_DESCRIPTION("command.money.description", "How much is the fish?"),
 	COMMAND_MONEY_USAGE("command.money.usage", "{prefix}money"),
-	
+
 	COMMAND_TEXTCOMMANDS_DESCRIPTION("command.textcommands.description", "Enable or disable text-based commands"),
 	COMMAND_TEXTCOMMANDS_ENABLE_DESCRIPTION("command.textcommands.enable.description", "Enable text-based commands"),
 	COMMAND_TEXTCOMMANDS_ENABLE_USAGE("command.textcommands.enable.usage", "{prefix}textcommands enable"),
 	COMMAND_TEXTCOMMANDS_DISABLE_DESCRIPTION("command.textcommands.disable.description", "Disable text-based commands"),
 	COMMAND_TEXTCOMMANDS_DISABLE_USAGE("command.textcommands.disable.usage", "{prefix}textcommands disable"),
-	
+
 	COMMAND_UPDATESLASHCOMMANDS_DESCRIPTION("command.updateslashcommands.description", "Update slash commands on your server. Useful if e.g. a CustomCommand doesn't automatically appear"),
 	COMMAND_UPDATESLASHCOMMANDS_USAGE("command.updateslashcommands.usage", "{prefix}updateslashcommands"),
-	
+
 	COMMAND_TIMEZONE_DESCRIPTION("command.timezone.description", "Change your server's timezone"),
 	COMMAND_TIMEZONE_USAGE("command.timezone.usage", "{prefix}timezone <timezone>"),
-	
+
 	MINIGAME_MINESWEEPER_NAME("minigame.minesweeper.name", "Minesweeper"),
 	MINIGAME_CONNECT_FOUR_NAME("minigame.connect-four.name", "Connect Four"),
 	MINIGAME_TICTACTOE_NAME("minigame.tictactoe.name", "TicTacToe"),
@@ -693,35 +692,35 @@ public enum DefaultLocaleString implements LocalizedString {
 	TWITCH_NOTIFICATION_STREAMER("twitch-notification.streamer", "Streamer"),
 	TWITCH_NOTIFICATION_GAME("twitch-notification.game", "Game"),
 	TWITCH_NOTIFICATION_GAME_NONE("twitch-notification.game-none", "Unknown"),
-	
+
 	TIME_UNIT_MONTHS("time-unit.months", "month(s)"),
 	TIME_UNIT_WEEKS("time-unit.weeks", "week(s)"),
 	TIME_UNIT_DAYS("time-unit.days", "day(s)"),
 	TIME_UNIT_HOURS("time-unit.hours", "hour(s)"),
 	TIME_UNIT_MINUTES("time-unit.minutes", "minute(s)"),
 	TIME_UNIT_SECONDS("time-unit.seconds", "second(s)"),
-	
+
 	PREMIUM_LEVEL_NONE("premium-level.none", "None"),
 	PREMIUM_LEVEL_DONATOR("premium-level.donator", "Donator"),
-	
+
 	ERROR_SCRIPT_INVALID_ARG_TYPE("error.script-invalid-arg-type", "Argument #{index} needs to be of type {type}"),
 	ERROR_HIT_ROLE_RATELIMIT_TITLE("error.hit-role-ratelimit.title", "Discord role creation rate limit hit"),
 	ERROR_HIT_ROLE_RATELIMIT_CONTENT("error.hit-role-ratelimit.content", "Sorry, but you have reached the rate limit of `250 roles per 24h`. All other settings will be restored (as best as possible). If you want to restore all of your roles as well, please restore the backup again in about 24 hours."),
 	ERROR_HIT_ROLE_RATELIMIT_FOOTER("error.hit-role-ratelimit.footer", "This rate limit is set by Discord and we can't do anything about it. If you want to have this limit removed, consider upvoting [this post on Discord's feedback page](https://support.discord.com/hc/en-us/community/posts/360050533812-Extreme-rate-limits-on-the-role-create-endpoint)"),
 	ERROR_TRY_AGAIN("error.try-again", "Please try again or report this issue to our [Discord]({discord})"),
-	
+
 	OTHER_YES("other.yes", "yes,true"),
 	OTHER_NO("other.no", "no,false"),
 	OTHER_POLL_SUCCESS("other.poll.success", "Successfully voted for {option}"),
 	OTHER_POLL_ALREADY_VOTED("other.poll.already-voted", "You have already voted on this poll"),
 	OTHER_POLL_ALREADY_VOTED_OPTION("other.poll.already-voted-option", "You have already voted for that option on this poll"),
-	
+
 	MINIGAME_BLACKJACK_BET("minigame.blackjack.bet", "Please enter the amount of money you want to bet"),
 	MINIGAME_BLACKJACK_INVALID_BET("minigame.blackjack.invalid-bet", "Please enter a valid amount of money to bet"),
 	MINIGAME_BLACKJACK_SPLIT("minigame.blackjack.split", "You can split your pair into two hands\nYou will play one hand first and when you're finished, you can play the second hand before the dealer plays."),
-	
+
 	MINIGAME_ROCK_PAPER_SCISSORS_SELECT("minigame.rock-paper-scissors.select", "Choose your weapon wisely | Current score: You `{score_self}` : `{score_other}` Other"),
-	
+
 	STATISTIC_HUMANS_NAME("statistic.humans.name", "Humans"),
 	STATISTIC_BOTS_NAME("statistic.bots.name", "Bots"),
 	STATISTIC_TOTAL_MEMBERS_NAME("statistic.total-members.name", "Total Members"),
@@ -739,12 +738,12 @@ public enum DefaultLocaleString implements LocalizedString {
 	;
 
 	private final String messagePath, fallback;
-	
+
 	private DefaultLocaleString(String messagePath, String fallback) {
 		this.messagePath = messagePath;
 		this.fallback = fallback;
 	}
-	
+
 	@Override
 	public String getMessagePath() {
 		return messagePath;
@@ -754,7 +753,7 @@ public enum DefaultLocaleString implements LocalizedString {
 	public String getFallback() {
 		return fallback;
 	}
-	
+
 	public static DefaultLocaleString getByPath(String path) {
 		return Arrays.stream(values())
 				.filter(v -> v.getMessagePath().equals(path))

@@ -9,24 +9,24 @@ import me.mrletsplay.mrcore.command.event.CommandInvokedEvent;
 import me.mrletsplay.mrcore.command.option.impl.DefaultCommandOption;
 
 public class CommandWIList extends AbstractConsoleCommand {
-	
+
 	public CommandWIList() {
 		super("wilist");
 		setDescription("List all users currently logged in on the webinterface");
 		addOption(DefaultCommandOption.HELP);
 	}
-	
+
 	@Override
 	public void action(CommandInvokedEvent event) {
 		if(event.getParsedCommand().isOptionPresent(DefaultCommandOption.HELP)) {
 			sendCommandInfo(event.getSender());
 			return;
 		}
-		
+
 		for(WebSocket w : Graphite.getWebinterface().getWebSocketServer().getConnections()) {
 			WebinterfaceSession s = w.getAttachment();
-			event.getSender().sendMessage("User " + s.getUserID() + " (" + s.getUser().getDiscordUser().getName() + "#" + s.getUser().getDiscordUser().getDiscriminator() + ") with session id: " + s.getID());
+			event.getSender().sendMessage("User " + s.getUserID() + " (" + s.getUser().getDiscordUser().getFullName() + ") with session id: " + s.getID());
 		}
 	}
-	
+
 }

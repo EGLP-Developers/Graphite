@@ -2,19 +2,19 @@ package me.eglp.gv2.console.command;
 
 import me.eglp.gv2.console.AbstractConsoleCommand;
 import me.eglp.gv2.main.Graphite;
+import me.eglp.gv2.user.GraphiteUser;
 import me.mrletsplay.mrcore.command.event.CommandInvokedEvent;
 import me.mrletsplay.mrcore.command.option.impl.DefaultCommandOption;
 import net.dv8tion.jda.api.entities.Guild;
-import net.dv8tion.jda.api.entities.User;
 
 public class CommandWhoIs extends AbstractConsoleCommand {
-	
+
 	public CommandWhoIs() {
 		super("whois");
 		setDescription("Shows the username/guild name by its id");
 		addOption(DefaultCommandOption.HELP);
 	}
-	
+
 	@Override
 	public void action(CommandInvokedEvent event) {
 		if(event.getParsedCommand().isOptionPresent(DefaultCommandOption.HELP)) {
@@ -27,9 +27,9 @@ public class CommandWhoIs extends AbstractConsoleCommand {
 			return;
 		}
 		if(args[0].equalsIgnoreCase("user")) {
-			User u = Graphite.getJDAUser(args[1]);
+			GraphiteUser u = Graphite.getUser(args[1]);
 			if(u!=null) {
-				event.getSender().sendMessage("Tag: "+u.getName()+"#"+u.getDiscriminator());
+				event.getSender().sendMessage("Tag: " +  u.getFullName());
 			}else {
 				event.getSender().sendMessage("User not found");
 			}
