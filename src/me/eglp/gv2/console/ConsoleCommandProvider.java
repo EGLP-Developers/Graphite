@@ -10,6 +10,7 @@ import me.eglp.gv2.console.command.CommandDelTemplate;
 import me.eglp.gv2.console.command.CommandGuilds;
 import me.eglp.gv2.console.command.CommandHelp;
 import me.eglp.gv2.console.command.CommandMembers;
+import me.eglp.gv2.console.command.CommandMoney;
 import me.eglp.gv2.console.command.CommandShutdown;
 import me.eglp.gv2.console.command.CommandStats;
 import me.eglp.gv2.console.command.CommandTask;
@@ -48,6 +49,7 @@ public class ConsoleCommandProvider implements CommandProvider {
 		commands.add(new CommandWIList());
 		commands.add(new CommandBroadcast());
 		commands.add(new CommandCache());
+		commands.add(new CommandMoney());
 	}
 
 	@Override

@@ -48,6 +48,7 @@ public class UserConfig {
 			DefaultMessage.OTHER_FOUND_AN_EASTEREGG.sendMessage(ch);
 		}
 
+		Graphite.getEconomy().addMoney(user, easterEgg.getMoney());
 		Graphite.getMySQL().query("INSERT INTO users_eastereggs(UserId, EasterEgg) VALUES(?, ?)", user.getID(), easterEgg.name());
 	}
 

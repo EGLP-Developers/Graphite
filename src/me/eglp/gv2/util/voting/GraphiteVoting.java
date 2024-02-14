@@ -3,7 +3,6 @@ package me.eglp.gv2.util.voting;
 import me.eglp.gv2.guild.GraphiteTextChannel;
 import me.eglp.gv2.main.Graphite;
 import me.eglp.gv2.user.GraphiteUser;
-import me.eglp.gv2.util.emote.JDAEmote;
 import me.eglp.gv2.util.settings.MiscellaneousSettings;
 import net.dv8tion.jda.api.EmbedBuilder;
 
@@ -19,9 +18,12 @@ public class GraphiteVoting {
 	}
 
 	public void addVotes(GraphiteVoteSource source, GraphiteUser user, int votes) {
+		int money = votes * 5;
+		Graphite.getEconomy().addMoney(user, money);
+
 		if(voteChannel != null) {
 			voteChannel.sendMessage(new EmbedBuilder()
-					.setDescription(String.format("%s has upvoted the bot on [%s](%s)" + JDAEmote.DOLLARONEN.getUnicode(),
+					.setDescription(String.format("%s has upvoted the bot on [%s](%s)",
 							user.getName(),
 							source.getName(),
 							source.getUpvoteURL()))

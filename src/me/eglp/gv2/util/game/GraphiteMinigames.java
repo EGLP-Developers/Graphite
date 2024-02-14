@@ -27,13 +27,13 @@ public class GraphiteMinigames {
 
 	public void setGame(GraphiteUser user, MinigameInstance game) {
 		if(game == null) {
-			MinigameInstance i = getGame(user);
-			games.remove(user);
+			MinigameInstance i = games.remove(user);
 			if(i != null) {
 				i.onUserLeave(user);
 			}
 			return;
 		}
+
 		games.put(user, game);
 	}
 

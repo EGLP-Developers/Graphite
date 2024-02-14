@@ -2,11 +2,12 @@ package me.eglp.gv2.main;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ScheduledFuture;
+import java.util.concurrent.ScheduledThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import me.eglp.gv2.main.task.GraphiteAlwaysRepeatingTask;
 import me.eglp.gv2.main.task.GraphiteFixedDelayTask;
@@ -19,7 +20,12 @@ public class GraphiteScheduler {
 	private List<GraphiteTask> tasks;
 
 	public GraphiteScheduler() {
-		executorService = Executors.newScheduledThreadPool(20);
+		AtomicInteger threadNumber = new AtomicInteger(0);
+
+		ScheduledThreadPoolExecutor executor = new ScheduledThreadPoolExecutor(20, run -> new Thread(run, "Scheduler-" + threadNumber.getAndIncrement()));
+		executor.setExecuteExistingDelayedTasksAfterShutdownPolicy(false);
+		executorService = executor;
+
 		tasks = new ArrayList<>();
 		Graphite.log("Scheduler started");
 	}
@@ -102,7 +108,6 @@ public class GraphiteScheduler {
 	public void stop(int timeoutSeconds) {
 		try {
 			Graphite.log("Shutting down scheduler");
-			tasks.forEach(t -> t.stop(false));
 			executorService.shutdown();
 			executorService.awaitTermination(timeoutSeconds, TimeUnit.SECONDS);
 		}catch(InterruptedException e) {

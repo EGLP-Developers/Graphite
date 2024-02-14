@@ -69,6 +69,12 @@ public class Blackjack implements SinglePlayerMinigameInstance {
 					return;
 				}
 
+				if(amount > Graphite.getEconomy().getMoney(user)) {
+					DefaultMessage.MINIGAME_BLACKJACK_NOT_ENOUGH_MONEY.sendMessage(user.openPrivateChannel());
+					stop();
+					return;
+				}
+
 				bet = amount;
 			}catch(NumberFormatException e) {
 				betOutput.update(DefaultLocaleString.MINIGAME_BLACKJACK_INVALID_BET.getFor(user));
@@ -201,6 +207,7 @@ public class Blackjack implements SinglePlayerMinigameInstance {
 				DefaultMessage.MINIGAME_BLACKJACK_FIRST_HAND_WON.sendMessage(user.openPrivateChannel(), "money", ""+win);
 				break;
 			case STATE_LOSS:
+				Graphite.getEconomy().withdrawMoney(user, bet);
 				userLost(getPlayingUser(), "Blackjack");
 				DefaultMessage.MINIGAME_BLACKJACK_FIRST_HAND_LOST.sendMessage(user.openPrivateChannel(), "money", ""+bet);
 				break;
@@ -219,6 +226,7 @@ public class Blackjack implements SinglePlayerMinigameInstance {
 					DefaultMessage.MINIGAME_BLACKJACK_SECOND_HAND_WON.sendMessage(user.openPrivateChannel(), "money", ""+win);
 					break;
 				case STATE_LOSS:
+					Graphite.getEconomy().withdrawMoney(user, bet);
 					userLost(getPlayingUser(), "Blackjack");
 					DefaultMessage.MINIGAME_BLACKJACK_SECOND_HAND_LOST.sendMessage(user.openPrivateChannel(), "money", ""+bet);
 					break;

@@ -38,6 +38,7 @@ import me.eglp.gv2.commands.info.CommandEmoteInfo;
 import me.eglp.gv2.commands.info.CommandFAQ;
 import me.eglp.gv2.commands.info.CommandHelp;
 import me.eglp.gv2.commands.info.CommandInvite;
+import me.eglp.gv2.commands.info.CommandMoney;
 import me.eglp.gv2.commands.info.CommandUpvote;
 import me.eglp.gv2.commands.info.CommandUserInfo;
 import me.eglp.gv2.commands.info.CommandWhatAreYouDoing;
@@ -165,6 +166,7 @@ public class GraphiteBot {
 			new CommandAbout(),
 			new CommandPermission(),
 			new CommandInvite(),
+			new CommandMoney(),
 			new CommandPrefix(),
 			new CommandLocale(),
 			new CommandUpvote(),

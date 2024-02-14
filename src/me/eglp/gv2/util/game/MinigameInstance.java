@@ -28,6 +28,7 @@ public interface MinigameInstance {
 
 	public default void userWon(GraphiteUser user, String subCategory, int winnerMoney) {
 		Graphite.getMinigames().getStats().addUserWin(getGame(), user);
+		Graphite.getEconomy().addMoney(user, winnerMoney);
 	}
 
 	public default void userLost(GraphiteUser user, String subCategory) {

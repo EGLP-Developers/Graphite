@@ -1,5 +1,7 @@
 package me.eglp.gv2.user;
 
+import java.util.Objects;
+
 import me.eglp.gv2.main.DebugCategory;
 import me.eglp.gv2.main.GraphiteDebug;
 import me.eglp.gv2.util.base.GraphiteLocalizable;
@@ -77,9 +79,20 @@ public class GraphiteUser implements CommandSender, GraphiteOwning, GraphiteLoca
 	}
 
 	@Override
-	public boolean equals(Object o) {
-		if(!(o instanceof GraphiteUser)) return false;
-		return getID().equals(((GraphiteUser) o).getID());
+	public int hashCode() {
+		return Objects.hash(userID);
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		GraphiteUser other = (GraphiteUser) obj;
+		return Objects.equals(userID, other.userID);
 	}
 
 	@Override

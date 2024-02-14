@@ -67,6 +67,7 @@ import me.eglp.gv2.util.command.slash.CommandCompleteListener;
 import me.eglp.gv2.util.command.slash.SlashCommandListener;
 import me.eglp.gv2.util.command.text.CommandHandler;
 import me.eglp.gv2.util.command.text.CommandListener;
+import me.eglp.gv2.util.economy.GraphiteEconomy;
 import me.eglp.gv2.util.event.GraphiteJDAListener;
 import me.eglp.gv2.util.event.GraphiteListener;
 import me.eglp.gv2.util.event.SingleEventHandler;
@@ -152,6 +153,7 @@ public class Graphite {
 	protected static GraphiteMySQL mysql;
 	protected static GraphiteReddit reddit;
 	protected static GraphiteMinigames minigames;
+	protected static GraphiteEconomy economy;
 	protected static GraphiteGenius genius;
 	protected static GraphiteVoting voting;
 	protected static GraphiteSpotify spotify;
@@ -333,6 +335,7 @@ public class Graphite {
 			amongUs = new GraphiteAmongUs();
 		}
 
+		economy = new GraphiteEconomy();
 		statistics = new GraphiteStatistics();
 
 		webinterface = new GraphiteWebinterface();
@@ -747,6 +750,10 @@ public class Graphite {
 
 	public static GraphiteSpotify getSpotify() {
 		return spotify;
+	}
+
+	public static GraphiteEconomy getEconomy() {
+		return economy;
 	}
 
 	public static GraphiteGenius getGenius() {
