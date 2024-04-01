@@ -260,7 +260,7 @@ public class Graphite {
 		audioPlayerManager.setFrameBufferDuration(10000);
 		AudioSourceManagers.registerRemoteSources(audioPlayerManager);
 
-		log("Waiting for all bots to come online");
+		log("Waiting for all shards to come online");
 		long initTime = sw.elapsed(TimeUnit.MILLISECONDS);
 		sw.reset().start();
 		GraphiteBot.awaitLoad();

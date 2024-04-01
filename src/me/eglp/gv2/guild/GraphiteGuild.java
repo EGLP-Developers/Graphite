@@ -334,6 +334,11 @@ public class GraphiteGuild implements GraphiteLocalizable, CommandSender, Graphi
 		return guildID;
 	}
 
+	@JavaScriptGetter(name = "getIconURL", returning = "iconURL")
+	public String getIconURL() {
+		return getJDAGuild().getIconUrl();
+	}
+
 	@Override
 	public GuildLocale getLocale() {
 		return locale;
@@ -549,6 +554,7 @@ public class GraphiteGuild implements GraphiteLocalizable, CommandSender, Graphi
 	public void preSerializeWI(JSONObject object) {
 		object.put("id", getID());
 		object.put("name", getName());
+		object.put("iconURL", getIconURL());
 	}
 
 	@JavaScriptFunction(calling = "getSelectedGuild", returning = "guild", withGuild = true)

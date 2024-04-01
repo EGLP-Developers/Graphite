@@ -39,7 +39,7 @@ import me.mrletsplay.mrcore.json.JSONObject;
 public class WebinterfaceWebSocketServer extends WebSocketServer {
 
 	public WebinterfaceWebSocketServer(int port) {
-		super(new InetSocketAddress("127.0.0.1", port));
+		super(new InetSocketAddress(port));
 		setReuseAddr(true);
 		setTcpNoDelay(true);
 	}

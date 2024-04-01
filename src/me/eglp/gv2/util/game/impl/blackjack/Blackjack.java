@@ -13,11 +13,13 @@ import me.eglp.gv2.util.game.SinglePlayerMinigameInstance;
 import me.eglp.gv2.util.game.output.GameOutput;
 import me.eglp.gv2.util.game.output.MessageOutput;
 import me.eglp.gv2.util.game.output.renderer.MessageGraphics;
+import me.eglp.gv2.util.input.ButtonInput;
 import me.eglp.gv2.util.input.GraphiteInput;
 import me.eglp.gv2.util.input.MessageInput;
-import me.eglp.gv2.util.input.SelectInput;
 import me.eglp.gv2.util.lang.DefaultLocaleString;
 import me.eglp.gv2.util.lang.DefaultMessage;
+import net.dv8tion.jda.api.interactions.components.buttons.ButtonStyle;
+import net.dv8tion.jda.api.utils.messages.MessageEditBuilder;
 
 public class Blackjack implements SinglePlayerMinigameInstance {
 
@@ -35,9 +37,9 @@ public class Blackjack implements SinglePlayerMinigameInstance {
 	private GraphiteUser user;
 	private MessageInput betInput;
 	private MessageOutput betOutput;
-	private SelectInput<Integer> moveInput;
+	private ButtonInput<Integer> moveInput;
 	private MessageOutput msg;
-	private SelectInput<Integer> splitInput;
+	private ButtonInput<Integer> splitInput;
 	private MessageOutput splitMsg;
 	private int bet;
 
@@ -103,14 +105,16 @@ public class Blackjack implements SinglePlayerMinigameInstance {
 
 			if(firstHand.get(0).getRank() == firstHand.get(1).getRank()) {
 				splitMsg = new MessageOutput(user.openPrivateChannel());
-				splitMsg.update(DefaultLocaleString.MINIGAME_BLACKJACK_SPLIT.getFor(user));
-				splitInput = new SelectInput<Integer>(Collections.singletonList(user), it -> {
+
+				MessageEditBuilder edit = new MessageEditBuilder();
+				edit.setContent(DefaultLocaleString.MINIGAME_BLACKJACK_SPLIT.getFor(user));
+				splitInput = new ButtonInput<Integer>(Collections.singletonList(user), it -> {
 					splitMsg.remove();
 
 					splitInput = null;
 					splitMsg = null;
 
-					if(it != 0) return;
+					if(it.getItem() != 0) return;
 
 					secondHand = new ArrayList<>();
 					secondHand.add(firstHand.remove(0));
@@ -119,13 +123,15 @@ public class Blackjack implements SinglePlayerMinigameInstance {
 					secondHand.add(cards.remove(0));
 
 					sendState(false);
+					it.acknowledge();
 				})
 				.autoRemove(true)
 				.removeMessage(false);
 
-				splitInput.addOption(JDAEmote.LEFT_RIGHT_ARROW, 0);
-				splitInput.addOption(JDAEmote.X, 1);
-				splitInput.apply(splitMsg.getMessage());
+				splitInput.addOption(ButtonStyle.PRIMARY, JDAEmote.LEFT_RIGHT_ARROW, 0);
+				splitInput.addOption(ButtonStyle.PRIMARY, JDAEmote.X, 1);
+				splitInput.apply(edit);
+				splitMsg.update(edit);
 			}
 		});
 
@@ -134,10 +140,12 @@ public class Blackjack implements SinglePlayerMinigameInstance {
 
 	private void step() {
 		sendState(false);
-		SelectInput<Integer> s = new SelectInput<Integer>(Collections.singletonList(user), it ->  {
+		ButtonInput<Integer> s = new ButtonInput<Integer>(Collections.singletonList(user), it ->  {
+			it.acknowledge();
+
 			if(splitInput != null) splitInput.remove();
 			if(splitMsg != null) splitMsg.remove();
-			switch(it) {
+			switch(it.getItem()) {
 				case 0: // hit
 				{
 					playingHand.add(cards.remove(0));
@@ -184,9 +192,9 @@ public class Blackjack implements SinglePlayerMinigameInstance {
 		.autoRemove(true)
 		.removeMessage(false);
 
-		s.addOption(JDAEmote.OK, 0);
-		s.addOption(JDAEmote.X, 1);
-		if(!gameOver) s.apply(msg.getMessage());
+		s.addOption(ButtonStyle.PRIMARY, JDAEmote.OK, 0);
+		s.addOption(ButtonStyle.PRIMARY, JDAEmote.X, 1);
+		// if(!gameOver) s.apply(msg.getMessage()); FIXME broken minigame
 		moveInput = s;
 	}
 
