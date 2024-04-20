@@ -6,9 +6,6 @@ import me.eglp.gv2.util.webinterface.js.WebinterfaceObject;
 
 public class Bot implements WebinterfaceObject {
 	
-	@JavaScriptFunction(calling = "getAvailableBots", returning = "bots", withGuild = true)
-	public static void getAvailableBots() {};
-	
 	@JavaScriptFunction(calling = "restart", withGuild = true)
 	public static void restart() {};
 	

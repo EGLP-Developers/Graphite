@@ -33,16 +33,16 @@ public class Settings implements WebinterfaceObject{
 	}
 
 	@JavaScriptFunction(calling = "setPrefix", withGuild = true)
-	public static void setPrefix(@JavaScriptParameter(name = "bot") String bot, @JavaScriptParameter(name = "prefix") String prefix) {};
+	public static void setPrefix(@JavaScriptParameter(name = "prefix") String prefix) {};
 
 	@JavaScriptFunction(calling = "setLocale", withGuild = true)
-	public static void setLocale(@JavaScriptParameter(name = "bot") String bot, @JavaScriptParameter(name = "locale") String locale) {};
+	public static void setLocale(@JavaScriptParameter(name = "locale") String locale) {};
 
 	@JavaScriptFunction(calling = "setNickname", withGuild = true)
-	public static void setNickname(@JavaScriptParameter(name = "bot") String bot, @JavaScriptParameter(name = "nickname") String nickname) {};
+	public static void setNickname(@JavaScriptParameter(name = "nickname") String nickname) {};
 
 	@JavaScriptFunction(calling = "getSettings", returning = "settings", withGuild = true)
-	public static void getSettings(@JavaScriptParameter(name = "bot") String bot) {};
+	public static void getSettings() {};
 
 	@JavaScriptFunction(calling = "getAvailableZoneIds", returning = "zoneIds", withGuild = false)
 	public static void getAvailableZoneIds() {};
