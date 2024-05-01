@@ -45,7 +45,7 @@ public class LineChartSettings extends StatisticsElementSettings implements Webi
 	@JSONValue
 	@JavaScriptValue(getter = "isStackLines", setter = "setStackLines")
 	private boolean stackLines;
-	
+
 	@JSONConstructor
 	public LineChartSettings() {
 		this.colors = new LinkedHashMap<>();
@@ -53,56 +53,56 @@ public class LineChartSettings extends StatisticsElementSettings implements Webi
 		this.pointFrequency = StatisticsElementPointFrequency.DAILY;
 		this.fillBelowCurve = false;
 	}
-	
+
 	public void addStatistics(GraphiteStatistic... statistic) {
 		statistics.addAll(Arrays.asList(statistic));
 	}
-	
+
 	public void removeStatistic(GraphiteStatistic statistic) {
 		statistics.remove(statistic);
 	}
-	
+
 	public void setTimeframe(StatisticsElementTimeframe timeframe) {
 		this.timeframe = timeframe;
 	}
-	
+
 	public StatisticsElementTimeframe getTimeframe() {
 		return timeframe;
 	}
-	
+
 	public void setPointFrequency(StatisticsElementPointFrequency pointFrequency) {
 		this.pointFrequency = pointFrequency;
 	}
-	
+
 	public StatisticsElementPointFrequency getPointFrequency() {
 		return pointFrequency;
 	}
-	
+
 	public void putColor(GraphiteStatistic statistic, Color color) {
 		colors.put(statistic, color);
 	}
-	
+
 	public Color getColor(GraphiteStatistic statistic) {
 		return colors.getOrDefault(statistic, Color.decode("0x38bf77"));
 	}
-	
+
 	@JavaScriptGetter(name = "getColors", returning = "colors")
 	public Map<GraphiteStatistic, Color> getColors() {
 		return colors;
 	}
-	
+
 	public void setFillBelowCurve(boolean fillBelowCurve) {
 		this.fillBelowCurve = fillBelowCurve;
 	}
-	
+
 	public boolean isFillBelowCurve() {
 		return fillBelowCurve;
 	}
-	
+
 	public void setStackLines(boolean stackLines) {
 		this.stackLines = stackLines;
 	}
-	
+
 	public boolean isStackLines() {
 		return stackLines;
 	}
@@ -117,7 +117,7 @@ public class LineChartSettings extends StatisticsElementSettings implements Webi
 			&& pointFrequency.getRawTimeframe() <= timeframe.getRawTimeframe()
 			&& timeframe.getRawTimeframe() / pointFrequency.getRawTimeframe() < 50;
 	}
-	
+
 	@Override
 	public void preSerialize(JSONObject object) {
 		super.preSerialize(object);
@@ -125,16 +125,16 @@ public class LineChartSettings extends StatisticsElementSettings implements Webi
 		colors.entrySet().forEach(en -> o.put(en.getKey().name(), en.getValue().getRGB()));
 		object.put("colors", o);
 	}
-	
+
 	@Override
 	public void preDeserialize(JSONObject object) {
 		super.preDeserialize(object);
 		JSONObject o = object.getJSONObject("colors");
-		for(String k : o.keySet()) {
+		for(String k : o.keys()) {
 			colors.put(GraphiteStatistic.valueOf(k), new Color(o.getInt(k)));
 		}
 	}
-	
+
 	@Override
 	public void preSerializeWI(JSONObject object) {
 		super.preSerializeWI(object);
@@ -142,13 +142,13 @@ public class LineChartSettings extends StatisticsElementSettings implements Webi
 		colors.entrySet().forEach(en -> o.put(en.getKey().name(), en.getValue().getRGB()));
 		object.put("colors", o);
 	}
-	
+
 	@Override
 	public void preDeserializeWI(JSONObject object) {
 		super.preDeserializeWI(object);
 		statistics = object.getJSONArray("statistics").stream().map(s -> (GraphiteStatistic) ObjectSerializer.deserialize(s)).collect(Collectors.toList());
 		JSONObject o = object.getJSONObject("colors");
-		for(String k : o.keySet()) {
+		for(String k : o.keys()) {
 			colors.put(GraphiteStatistic.valueOf(k), new Color(o.getInt(k)));
 		}
 		insertMissingColors(statistics, colors);

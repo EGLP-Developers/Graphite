@@ -102,8 +102,8 @@ public class MessagesData implements JSONConvertible {
 
 	@Override
 	public void preDeserialize(JSONObject object) {
-		object.forEach((id, history) -> {
-			messageHistory.put(id, ((JSONArray) history).stream().map(o -> JSONConverter.decodeObject((JSONObject) o, BackupMessage.class)).collect(Collectors.toList()));
+		object.keys().forEach(id -> {
+			messageHistory.put(id, object.getJSONArray(id).stream().map(o -> JSONConverter.decodeObject((JSONObject) o, BackupMessage.class)).collect(Collectors.toList()));
 		});
 	}
 

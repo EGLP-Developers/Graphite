@@ -220,7 +220,7 @@ public class GuildPoll implements WebinterfaceObject{
 		object.put("channelID", getChannelID());
 		object.put("pollAllowMultipleVotes", isAllowMultipleVotes());
 		object.put("pollExpiresAt", getExpiresAt());
-		object.put("pollOptions", getOptions().stream().map(o -> o.toWebinterfaceObject()).collect(Collectors.toCollection(JSONArray::new)));
+		object.put("pollOptions", new JSONArray(getOptions().stream().map(o -> o.toWebinterfaceObject()).toList()));
 	}
 
 	@JavaScriptFunction(calling = "getPolls", returning = "polls", withGuild = true)

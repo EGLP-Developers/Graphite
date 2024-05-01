@@ -24,14 +24,14 @@ import me.mrletsplay.mrcore.json.JSONType;
 import me.mrletsplay.mrcore.misc.FriendlyException;
 
 public class ObjectSerializer {
-	
+
 	private static final Reflections REFLECTIONS = new Reflections("me.eglp.gv2", Scanners.SubTypes);
 	private static final Set<Class<? extends WebinterfaceObject>> JS_CLASSES = getJSClasses();
 
 	private static Set<Class<? extends WebinterfaceObject>> getJSClasses() {
 		return REFLECTIONS.getSubTypesOf(WebinterfaceObject.class);
 	}
-	
+
 	public static List<JSONObject> generateClassDescriptors() {
 		List<JSONObject> l = new ArrayList<>();
 		for(Class<? extends WebinterfaceObject> cls : JS_CLASSES) {
@@ -75,7 +75,7 @@ public class ObjectSerializer {
 	public static Object deserialize(Object obj) {
 		return deserialize(obj, null);
 	}
-	
+
 	public static Object deserialize(Object obj, Class<?> clazz) {
 		if(obj instanceof JSONArray) {
 			List<Object> l = new ArrayList<>();
@@ -122,13 +122,13 @@ public class ObjectSerializer {
 			}
 		}else if(clazz != null) {
 			try {
-				return JSONType.castJSONValueTo(obj, clazz, false);
+				return JSONType.castJSONValueTo(obj, clazz);
 			}catch(Exception e) {
 				return obj;
 			}
 		}else return obj;
 	}
-	
+
 	public static String getClassName(Class<? extends WebinterfaceObject> clazz) {
 		JavaScriptClass cls = clazz.getAnnotation(JavaScriptClass.class);
 		if(cls != null && !cls.name().isEmpty()) {
@@ -137,7 +137,7 @@ public class ObjectSerializer {
 			return clazz.getSimpleName();
 		}
 	}
-	
+
 	public static JSONObject generateClassDescriptor(Class<? extends WebinterfaceObject> clazz) {
 		JSONObject desc = new JSONObject();
 		desc.put("name", getClassName(clazz));
@@ -201,7 +201,7 @@ public class ObjectSerializer {
 					staticMethods.put(fName, o);
 				}
 			}
-			
+
 			JavaScriptGetter g = m.getAnnotation(JavaScriptGetter.class);
 			if(g != null) {
 				JSONObject o = new JSONObject();
@@ -209,7 +209,7 @@ public class ObjectSerializer {
 				o.put("value", g.returning());
 				instanceMethods.put(g.name().isEmpty() ? m.getName() : g.name(), o);
 			}
-			
+
 			JavaScriptSetter s = m.getAnnotation(JavaScriptSetter.class);
 			if(s != null) {
 				JSONObject o = new JSONObject();
@@ -222,7 +222,7 @@ public class ObjectSerializer {
 		desc.put("static_methods", staticMethods);
 		return desc;
 	}
-	
+
 	private static Set<Field> getFields(Class<?> clz) {
 		if(!WebinterfaceObject.class.isAssignableFrom(clz)) return Collections.emptySet();
 		Set<Field> fs = new HashSet<>();
@@ -234,7 +234,7 @@ public class ObjectSerializer {
 		}
 		return fs;
 	}
-	
+
 	private static Set<Method> getMethods(Class<?> clz) {
 		if(!WebinterfaceObject.class.isAssignableFrom(clz)) return Collections.emptySet();
 		Set<Method> fs = new HashSet<>();
@@ -247,5 +247,5 @@ public class ObjectSerializer {
 		}
 		return fs;
 	}
-	
+
 }

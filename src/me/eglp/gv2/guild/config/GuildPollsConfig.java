@@ -59,9 +59,9 @@ public class GuildPollsConfig {
 	}
 
 	public void savePoll(GuildPoll poll) {
-		JSONArray options = poll.getOptions().stream()
+		JSONArray options = new JSONArray(poll.getOptions().stream()
 				.map(o -> o.toJSON(SerializationOption.DONT_INCLUDE_CLASS))
-				.collect(Collectors.toCollection(JSONArray::new));
+				.toList());
 		Graphite.getMySQL().query("INSERT INTO guilds_polls(GuildId, `Id`, ChannelId, MessageId, Question, ExpiresAt, AllowMultipleVotes, Options) VALUES(?, ?, ?, ?, ?, ?, ?, ?)",
 				guild.getID(),
 				poll.getID(),

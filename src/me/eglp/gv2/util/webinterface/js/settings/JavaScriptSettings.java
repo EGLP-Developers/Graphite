@@ -15,7 +15,7 @@ import me.mrletsplay.mrcore.misc.ClassUtils;
 import me.mrletsplay.mrcore.misc.FriendlyException;
 
 public interface JavaScriptSettings extends WebinterfaceObject {
-	
+
 	public static List<JavaScriptSettingDescriptor> getSettingDescriptors(Class<? extends JavaScriptSettings> settingsClass) {
 		List<JavaScriptSettingDescriptor> descriptors = new ArrayList<>();
 		for(Field f : ClassUtils.getFields(settingsClass)) {
@@ -23,7 +23,7 @@ public interface JavaScriptSettings extends WebinterfaceObject {
 			if(s == null) continue;
 			JavaScriptSettingType type = JavaScriptSettingType.getByJavaType(f.getType());
 			if(type == null) throw new FriendlyException("Invalid type for field " + f.getName() + " in class " + settingsClass.getName());
-			
+
 			switch(type) {
 				case LIST:
 				{
@@ -52,7 +52,7 @@ public interface JavaScriptSettings extends WebinterfaceObject {
 					}else {
 						keyDesc = JavaScriptSettingDescriptor.ofValue(keyType, null, ls.keyFriendlyName(), 0);
 					}
-					
+
 					JavaScriptSettingType valueType = JavaScriptSettingType.getByJavaType(ls.valueType());
 					if(valueType == JavaScriptSettingType.LIST || valueType == JavaScriptSettingType.MAP) throw new FriendlyException("Bruder, viel zu komplex. Chill mal");
 					JavaScriptSettingDescriptor valueDesc;
@@ -61,7 +61,7 @@ public interface JavaScriptSettings extends WebinterfaceObject {
 					}else {
 						valueDesc = JavaScriptSettingDescriptor.ofValue(valueType, null, ls.valueFriendlyName(), 0);
 					}
-					
+
 					descriptors.add(JavaScriptSettingDescriptor.ofMap(s.name(), s.friendlyName(), keyDesc, valueDesc, s.order()));
 					break;
 				}
@@ -77,20 +77,20 @@ public interface JavaScriptSettings extends WebinterfaceObject {
 				}
 			}
 		}
-		
+
 		return descriptors.stream()
 				.sorted(Comparator.comparingInt(d -> d.getOrder()))
 				.collect(Collectors.toList());
 	}
-	
+
 	@JavaScriptGetter(name = "getSettingDescriptors", returning = "descriptors")
 	public default void getSettingDescriptors() {};
-	
+
 	@Override
 	default void preSerializeWI(JSONObject object) {
-		object.put("descriptors", getSettingDescriptors(getClass()).stream()
+		object.put("descriptors", new JSONArray(getSettingDescriptors(getClass()).stream()
 				.map(d -> d.toWebinterfaceObject())
-				.collect(Collectors.toCollection(JSONArray::new)));
+				.toList()));
 	}
 
 }

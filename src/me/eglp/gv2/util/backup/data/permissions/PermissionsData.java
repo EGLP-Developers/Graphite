@@ -139,8 +139,11 @@ public class PermissionsData implements JSONConvertible {
 
 	@Override
 	public void preDeserialize(JSONObject object) {
-		object.getJSONObject("members").forEach((k, v) -> memberPermissions.put(k, new ArrayList<>(Complex.castList((JSONArray) v, String.class).get())));
-		object.getJSONObject("roles").forEach((k, v) -> rolePermissions.put(k, new ArrayList<>(Complex.castList((JSONArray) v, String.class).get())));
+		JSONObject members = object.getJSONObject("members");
+		members.keys().forEach(k -> memberPermissions.put(k, new ArrayList<>(Complex.castList(members.getJSONArray(k).toList(), String.class).get())));
+
+		JSONObject roles = object.getJSONObject("roles");
+		roles.keys().forEach(k -> rolePermissions.put(k, new ArrayList<>(Complex.castList(roles.getJSONArray(k).toList(), String.class).get())));
 	}
 
 	public static PermissionsData load(String json) {

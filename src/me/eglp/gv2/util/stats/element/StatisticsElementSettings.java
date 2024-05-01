@@ -17,39 +17,39 @@ import me.mrletsplay.mrcore.json.JSONObject;
 import me.mrletsplay.mrcore.json.converter.JSONConvertible;
 
 public abstract class StatisticsElementSettings implements JSONConvertible, JavaScriptSettings {
-	
+
 	@JavaScriptSetting(name = "statistics", friendlyName = "Statistics")
 	@JavaScriptListSetting(value = GraphiteStatistic.class, valueFriendlyName = "Statistic")
 	@JavaScriptValue(getter = "getStatistics")
 	protected List<GraphiteStatistic> statistics;
-	
+
 	protected StatisticsElementSettings() {
 		this.statistics = new ArrayList<>();
 	}
-	
+
 	public List<GraphiteStatistic> getStatistics() {
 		return statistics;
 	}
-	
+
 	@Override
 	public void preSerialize(JSONObject object) {
-		object.put("statistics", statistics.stream()
+		object.put("statistics", new JSONArray(statistics.stream()
 				.map(o -> o.name())
-				.collect(Collectors.toCollection(JSONArray::new)));
+				.toList()));
 	}
-	
+
 	@Override
 	public void preDeserialize(JSONObject object) {
 		statistics = object.getJSONArray("statistics").stream()
 				.map(o -> GraphiteStatistic.valueOf((String) o))
 				.collect(Collectors.toList());
 	}
-	
+
 	public boolean isValid() {
 		return statistics != null
 			&& statistics.size() >= 1;
 	}
-	
+
 	public static void insertMissingColors(List<GraphiteStatistic> statistics, Map<GraphiteStatistic, Color> colors) {
 		int i = 0;
 		for(GraphiteStatistic s : statistics) {
@@ -57,12 +57,12 @@ public abstract class StatisticsElementSettings implements JSONConvertible, Java
 			colors.put(s, GraphiteUtil.getDistinctColor(i++));
 		}
 	}
-	
+
 	public static Color getUnassignedColor(Map<GraphiteStatistic, Color> colors, int colorIndex) {
 		return GraphiteUtil.getDistinctColors().stream()
 				.filter(c -> !colors.containsValue(c))
 				.skip(colorIndex)
 				.findFirst().orElse(GraphiteUtil.getDistinctColor(colorIndex));
 	}
-	
+
 }

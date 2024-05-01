@@ -57,7 +57,7 @@ public class CustomCommandsConfigData implements JSONConvertible {
 	public void preDeserialize(JSONObject object) {
 		JSONObject aliasesObj = object.getJSONObject("commandAliases");
 		commandAliases = new HashMap<>();
-		aliasesObj.keySet().forEach(k -> commandAliases.put(k, aliasesObj.getString(k)));
+		aliasesObj.keys().forEach(k -> commandAliases.put(k, aliasesObj.getString(k)));
 	}
 
 }

@@ -304,8 +304,8 @@ public enum CommandActionType implements WebinterfaceObject, JSONPrimitiveString
 		return name();
 	}
 
-	public static CommandActionType decodePrimitive(Object  value) {
-		return valueOf((String) value);
+	public static CommandActionType decodePrimitive(String value) {
+		return valueOf(value);
 	}
 
 	@SuppressWarnings("unchecked")

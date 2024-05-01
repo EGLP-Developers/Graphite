@@ -188,7 +188,7 @@
 		<dependency>
 			<groupId>me.eglp</groupId>
 			<artifactId>Twitch4Graphite</artifactId>
-			<version>1.6.1</version>
+			<version>1.7</version>
 			<exclusions>
 				<exclusion>
 					<groupId>me.mrletsplay</groupId>
@@ -232,7 +232,7 @@
 		<dependency>
 			<groupId>me.eglp</groupId>
 			<artifactId>Reddit4Graphite</artifactId>
-			<version>1.5</version>
+			<version>1.6</version>
 			<exclusions>
 				<exclusion>
 					<groupId>me.mrletsplay</groupId>
@@ -253,7 +253,7 @@
 		<dependency>
 			<groupId>me.mrletsplay</groupId>
 			<artifactId>MrCore</artifactId>
-			<version>4.2</version>
+			<version>4.5</version>
 		</dependency>
 		<dependency>
 			<groupId>org.mozilla</groupId>

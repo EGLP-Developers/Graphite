@@ -40,40 +40,40 @@ public class DonutChartSettings extends StatisticsElementSettings implements JSO
 		this.cutoutRatio = 0.5d;
 		this.spacing = 10f;
 	}
-	
+
 	public void addStatistics(GraphiteStatistic... statistic) {
 		statistics.addAll(Arrays.asList(statistic));
 	}
-	
+
 	public void removeStatistic(GraphiteStatistic statistic) {
 		statistics.remove(statistic);
 	}
-	
+
 	public void putColor(GraphiteStatistic statistic, Color color) {
 		colors.put(statistic, color);
 	}
-	
+
 	public Color getColor(GraphiteStatistic statistic) {
 		return colors.getOrDefault(statistic, Color.decode("0x38bf77"));
 	}
-	
+
 	@JavaScriptGetter(name = "getColors", returning = "colors")
 	public Map<GraphiteStatistic, Color> getColors() {
 		return colors;
 	}
-	
+
 	public void setCutoutRatio(double cutoutRatio) {
 		this.cutoutRatio = cutoutRatio;
 	}
-	
+
 	public double getCutoutRatio() {
 		return cutoutRatio;
 	}
-	
+
 	public void setSpacing(float spacing) {
 		this.spacing = spacing;
 	}
-	
+
 	public double getSpacing() {
 		return spacing;
 	}
@@ -89,7 +89,7 @@ public class DonutChartSettings extends StatisticsElementSettings implements JSO
 			&& statistics.stream().allMatch(s -> s.hasCategories() || colors.containsKey(s))
 			&& statistics.stream().noneMatch(s -> s.isCumulative());
 	}
-	
+
 	@Override
 	public void preSerialize(JSONObject object) {
 		super.preSerialize(object);
@@ -98,17 +98,17 @@ public class DonutChartSettings extends StatisticsElementSettings implements JSO
 		colors.entrySet().forEach(en -> o.put(en.getKey().name(), en.getValue().getRGB()));
 		object.put("colors", o);
 	}
-	
+
 	@Override
 	public void preDeserialize(JSONObject object) {
 		super.preDeserialize(object);
-		spacing = (float) object.getDouble("spacing");
+		spacing = object.getFloat("spacing");
 		JSONObject o = object.getJSONObject("colors");
-		for(String k : o.keySet()) {
+		for(String k : o.keys()) {
 			colors.put(GraphiteStatistic.valueOf(k), new Color(o.getInt(k)));
 		}
 	}
-	
+
 	@Override
 	public void preSerializeWI(JSONObject object) {
 		super.preSerializeWI(object);
@@ -116,16 +116,16 @@ public class DonutChartSettings extends StatisticsElementSettings implements JSO
 		colors.entrySet().forEach(en -> o.put(en.getKey().name(), en.getValue().getRGB()));
 		object.put("colors", o);
 	}
-	
+
 	@Override
 	public void preDeserializeWI(JSONObject object) {
 		super.preDeserializeWI(object);
 		statistics = object.getJSONArray("statistics").stream().map(s -> (GraphiteStatistic) ObjectSerializer.deserialize(s)).collect(Collectors.toList());
 		JSONObject o = object.getJSONObject("colors");
-		for(String k : o.keySet()) {
+		for(String k : o.keys()) {
 			colors.put(GraphiteStatistic.valueOf(k), new Color(o.getInt(k)));
 		}
 		insertMissingColors(statistics, colors);
 	}
-	
+
 }

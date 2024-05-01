@@ -67,9 +67,9 @@ public enum RestoreSelector implements WebinterfaceObject {
 
 	@Override
 	public void preSerializeWI(JSONObject object) {
-		object.put("requires", Arrays.stream(requires)
+		object.put("requires", new JSONArray(Arrays.stream(requires)
 				.map(r -> r.toWebinterfaceObject())
-				.collect(Collectors.toCollection(JSONArray::new)));
+				.toList()));
 	}
 
 	public boolean appliesTo(EnumSet<RestoreSelector> selectors) {

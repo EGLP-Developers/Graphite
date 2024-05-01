@@ -14,7 +14,7 @@ import me.mrletsplay.mrcore.json.converter.JSONConvertible;
 import me.mrletsplay.mrcore.json.converter.JSONValue;
 
 public class RPGNPC implements JSONConvertible {
-	
+
 	public static final String[]
 			FIRST_NAMES = {
 						"Adam", "Geoffrey", "Gilbert", "Henry", "Hugh", "John", "Nicholas", "Peter", "Ralf", "Richard", "Robert", "Roger", "Simon","Thomas", "Walter", "William",
@@ -26,18 +26,18 @@ public class RPGNPC implements JSONConvertible {
 
 	@JSONValue
 	private RPGNPCType type;
-	
+
 	@JSONValue
 	private int x, y;
 
 	@JSONValue
 	private String name;
-	
+
 	private Map<String, RPGQuest> quests;
-	
+
 	@JSONConstructor
 	private RPGNPC() {}
-	
+
 	public RPGNPC(RPGNPCType type, int x, int y) {
 		this.type = type;
 		this.x = x;
@@ -46,39 +46,39 @@ public class RPGNPC implements JSONConvertible {
 		this.name = FIRST_NAMES[r.nextInt(FIRST_NAMES.length)] + " " + LAST_NAMES[r.nextInt(LAST_NAMES.length)];
 		this.quests = new HashMap<>();
 	}
-	
+
 	public RPGNPCType getType() {
 		return type;
 	}
-	
+
 	public int getX() {
 		return x;
 	}
-	
+
 	public int getY() {
 		return y;
 	}
-	
+
 	public String getName() {
 		return name + " the " + type.getTitle();
 	}
-	
+
 	public void setQuest(RPGPlayer player, RPGQuest quest) {
 		quests.put(player.getUserID(), quest);
 	}
-	
+
 	public void removeQuest(RPGPlayer player) {
 		quests.remove(player.getUserID());
 	}
-	
+
 	public RPGQuest getQuest(RPGPlayer player) {
 		return quests.get(player.getUserID());
 	}
-	
+
 	public void onInteract(RPGPlayer player) {
 		type.onInteract(this, player);
 	}
-	
+
 	@Override
 	public void preSerialize(JSONObject object) {
 		JSONObject qs = new JSONObject();
@@ -87,12 +87,12 @@ public class RPGNPC implements JSONConvertible {
 		}
 		object.put("quests", qs);
 	}
-	
+
 	@Override
 	public void preDeserialize(JSONObject object) {
 		this.quests = new HashMap<>();
 		JSONObject qs = object.getJSONObject("quests");
-		for(String k : qs.keySet()) {
+		for(String k : qs.keys()) {
 			RPGQuest q = JSONConverter.decodeObject(qs.getJSONObject(k), RPGQuest.class);
 			q.setNPC(this);
 			quests.put(k, q);
@@ -102,5 +102,5 @@ public class RPGNPC implements JSONConvertible {
 	public RPGQuest generateNewQuest(RPGPlayer rpgPlayer) {
 		return type.generateNewQuest(this, rpgPlayer);
 	}
-	
+
 }

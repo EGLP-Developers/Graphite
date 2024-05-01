@@ -184,7 +184,7 @@ public class GraphiteTwitchUser implements WebinterfaceObject, JSONConvertible {
 
 	@Override
 	public void preSerialize(JSONObject object) {
-		object.put("parameters", parameters.stream().map(p -> p.toJSONPrimitive()).collect(Collectors.toCollection(JSONArray::new)));
+		object.put("parameters", new JSONArray(parameters.stream().map(p -> p.toJSONPrimitive()).toList()));
 	}
 
 	@Override

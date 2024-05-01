@@ -74,9 +74,9 @@ public class GuildCustomCommandsConfig {
 					s.setString(1, guild.getID());
 					s.setString(2, c.getName());
 					s.setString(3, c.getPermission());
-					s.setString(4, c.getActions().stream()
+					s.setString(4, new JSONArray(c.getActions().stream()
 							.map(a -> a.toJSON(SerializationOption.DONT_INCLUDE_CLASS))
-							.collect(Collectors.toCollection(JSONArray::new)).toString());
+							.toList()).toString());
 					s.setString(5, c.getSlashCommandID());
 					s.addBatch();
 				}
@@ -109,9 +109,9 @@ public class GuildCustomCommandsConfig {
 
 	public void addOrUpdateCustomCommand(GraphiteCustomCommand command) {
 		command.createOrUpdateSlashCommand(guild);
-		Graphite.getMySQL().query("INSERT INTO guilds_customcommands(GuildId, CommandName, Permission, Actions, SlashCommandId) VALUES(?, ?, ?, ?, ?) ON DUPLICATE KEY UPDATE Permission = VALUES(Permission), Actions = VALUES(Actions), SlashCommandId = VALUES(SlashCommandId)", guild.getID(), command.getName(), command.getPermission(), command.getActions().stream()
+		Graphite.getMySQL().query("INSERT INTO guilds_customcommands(GuildId, CommandName, Permission, Actions, SlashCommandId) VALUES(?, ?, ?, ?, ?) ON DUPLICATE KEY UPDATE Permission = VALUES(Permission), Actions = VALUES(Actions), SlashCommandId = VALUES(SlashCommandId)", guild.getID(), command.getName(), command.getPermission(), new JSONArray(command.getActions().stream()
 				.map(a -> a.toJSON(SerializationOption.DONT_INCLUDE_CLASS))
-				.collect(Collectors.toCollection(JSONArray::new)).toString(),
+				.toList()).toString(),
 				command.getSlashCommandID());
 	}
 

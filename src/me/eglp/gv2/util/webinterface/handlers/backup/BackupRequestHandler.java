@@ -129,7 +129,7 @@ public class BackupRequestHandler {
 			return WebinterfaceResponse.error("Backup doesn't exist");
 		}
 
-		List<String> params = Complex.castList(event.getRequestData().getJSONArray("params"), String.class).get();
+		List<String> params = Complex.castList(event.getRequestData().getJSONArray("params").toList(), String.class).get();
 
 		PrivateKey k = null;
 

@@ -112,7 +112,7 @@ public class GuildTwitchConfig implements IGuildConfig {
 		Graphite.getMySQL().query("UPDATE guilds_twitch_users SET NotificationChannel = ?, NotificationMessage = ?, Parameters = ?, Color = ? WHERE GuildId = ? AND TwitchUserId = ?",
 				twitchUser.getNotificationChannelID(),
 				twitchUser.getNotificationMessage(),
-				twitchUser.getParameters().stream().map(TwitchAnnouncementParameter::name).collect(Collectors.toCollection(JSONArray::new)).toString(),
+				new JSONArray(twitchUser.getParameters().stream().map(TwitchAnnouncementParameter::name).toList()).toString(),
 				twitchUser.getColor(),
 				guild.getID(),
 				twitchUser.getTwitchUser().getID());

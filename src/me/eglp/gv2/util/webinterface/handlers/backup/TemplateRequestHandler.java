@@ -108,7 +108,7 @@ public class TemplateRequestHandler {
 			return WebinterfaceResponse.error("Template doesn't exist");
 		}
 
-		List<String> params = Complex.castList(event.getRequestData().getJSONArray("params"), String.class).get();
+		List<String> params = Complex.castList(event.getRequestData().getJSONArray("params").toList(), String.class).get();
 
 		g.getResponsibleQueue().queueHeavy(g, new GraphiteTaskInfo(GuildBackup.TASK_ID, "Load template backup (webinterface)"), () -> {
 			t.restore(g, params.stream().map(p -> RestoreSelector.valueOf(p)).collect(Collectors.toCollection(() -> EnumSet.noneOf(RestoreSelector.class))));
