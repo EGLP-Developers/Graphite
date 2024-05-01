@@ -80,6 +80,16 @@
 			<name>m2-dv8tion</name>
 			<url>https://m2.dv8tion.net/releases</url>
 		</repository>
+		<repository>
+			<id>arbjergDev-releases</id>
+			<name>Lavalink Repository</name>
+			<url>https://maven.lavalink.dev/releases</url>
+		</repository>
+		<repository>
+			<id>arbjergDev-snapshots</id>
+			<name>Lavalink Repository</name>
+			<url>https://maven.lavalink.dev/snapshots</url>
+		</repository>
 	</repositories>
 
 	<dependencies>
@@ -89,9 +99,9 @@
 			<version>1.18.30</version>
 		</dependency>
 		<dependency>
-			<groupId>com.github.sedmelluq</groupId>
+			<groupId>dev.arbjerg</groupId>
 			<artifactId>lavaplayer</artifactId>
-			<version>1.3.78</version>
+			<version>0eaeee195f0315b2617587aa3537fa202df07ddc-SNAPSHOT</version>
 			<exclusions>
 				<exclusion>
 					<groupId>org.slf4j</groupId>
@@ -293,20 +303,9 @@
 			<version>0.10.2</version>
 		</dependency>
 		<dependency>
-			<groupId>com.github.natanbc</groupId>
+			<groupId>dev.arbjerg</groupId>
 			<artifactId>lavadsp</artifactId>
 			<version>0.7.8</version>
-			<exclusions>
-				<exclusion>
-					<groupId>com.github.natanbc</groupId>
-					<artifactId>native-loader</artifactId>
-				</exclusion>
-			</exclusions>
-		</dependency>
-		<dependency>
-			<groupId>com.github.natanbc</groupId>
-			<artifactId>native-loader</artifactId>
-			<version>0.7.1</version>
 		</dependency>
 	</dependencies>
 </project>
