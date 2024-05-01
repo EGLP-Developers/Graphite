@@ -257,7 +257,6 @@ public class Graphite {
 		scheduler = new GraphiteScheduler();
 		audioPlayerManager = new DefaultAudioPlayerManager();
 		audioPlayerManager.getConfiguration().setFilterHotSwapEnabled(true);
-		audioPlayerManager.setFrameBufferDuration(10000);
 		AudioSourceManagers.registerRemoteSources(audioPlayerManager);
 
 		log("Waiting for all shards to come online");
