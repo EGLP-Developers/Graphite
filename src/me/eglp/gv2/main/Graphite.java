@@ -398,7 +398,7 @@ public class Graphite {
 		statistics = new GraphiteStatistics();
 
 		if(!botInfo.isBeta() && botInfo.getPatreon().isEnabled()) {
-			patreon = new GraphitePatreon();
+			// patreon = new GraphitePatreon(); FIXME: disabled in backport
 		}
 
 		premium = new GraphitePremium();
