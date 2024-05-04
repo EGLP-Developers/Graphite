@@ -427,6 +427,7 @@ public class Graphite {
 		ScheduledFuture<?> f = scheduler.getExecutorService().scheduleAtFixedRate(() -> log("Guilds initialized: " + num.get() + "/" + allGuildIds.size() + " (Current guild: " + currentGuild.get() + ")"), 2, 2, TimeUnit.SECONDS);
 
 		for(String gID : allGuildIds) {
+			System.out.println("Guild = " + gID);
 			currentGuild.set(gID);
 			getGlobalGuild(gID);
 			num.incrementAndGet();

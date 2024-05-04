@@ -16,16 +16,16 @@ import me.eglp.gv2.multiplex.ContextHandle;
 import me.eglp.gv2.multiplex.GraphiteMultiplex;
 
 public class GraphiteScheduler {
-	
+
 	private ScheduledExecutorService executorService;
 	private List<GraphiteTask> tasks;
-	
+
 	public GraphiteScheduler() {
-		executorService = Executors.newScheduledThreadPool(20);
+		executorService = Executors.newScheduledThreadPool(40);
 		tasks = new ArrayList<>();
 		Graphite.log("Scheduler started");
 	}
-	
+
 	public void execute(Runnable run) {
 		executorService.execute(() -> {
 			try {
@@ -35,49 +35,49 @@ public class GraphiteScheduler {
 			}
 		});
 	}
-	
+
 	public GraphiteFixedRateTask scheduleAtFixedRate(String name, Runnable run, long period) {
 		GraphiteFixedRateTask task = new GraphiteFixedRateTask(name, run, period);
 		scheduleTask(task);
 		tasks.add(task);
 		return task;
 	}
-	
+
 	public GraphiteFixedDelayTask scheduleWithFixedDelay(String name, Runnable run, long delay) {
 		GraphiteFixedDelayTask task = new GraphiteFixedDelayTask(name, run, delay);
 		scheduleTask(task);
 		tasks.add(task);
 		return task;
 	}
-	
+
 	public GraphiteAlwaysRepeatingTask scheduleAlwaysRepeating(String name, Runnable run) {
 		GraphiteAlwaysRepeatingTask task = new GraphiteAlwaysRepeatingTask(name, run);
 		scheduleTask(task);
 		tasks.add(task);
 		return task;
 	}
-	
+
 	public synchronized void scheduleTask(GraphiteFixedRateTask task) {
 		if(Graphite.isShutdown) return;
 		ContextHandle h = GraphiteMultiplex.handle();
 		ScheduledFuture<?> f = executorService.scheduleAtFixedRate(() -> executeTask(h, task), 10, task.getPeriod(), TimeUnit.MILLISECONDS);
 		task.setTask(f);
 	}
-	
+
 	public synchronized void scheduleTask(GraphiteFixedDelayTask task) {
 		if(Graphite.isShutdown) return;
 		ContextHandle h = GraphiteMultiplex.handle();
 		ScheduledFuture<?> f = executorService.scheduleWithFixedDelay(() -> executeTask(h, task), 10, task.getDelay(), TimeUnit.MILLISECONDS);
 		task.setTask(f);
 	}
-	
+
 	public synchronized void scheduleTask(GraphiteAlwaysRepeatingTask task) {
 		if(Graphite.isShutdown) return;
 		ContextHandle h = GraphiteMultiplex.handle();
 		Future<?> f = executorService.submit(() -> executeTask(h, task));
 		task.setTask(f);
 	}
-	
+
 	private void executeTask(ContextHandle handle, GraphiteTask task) {
 		try {
 			handle.reset();
@@ -88,23 +88,23 @@ public class GraphiteScheduler {
 			task.stop(false);
 		}
 	}
-	
+
 	public ScheduledExecutorService getExecutorService() {
 		return executorService;
 	}
-	
+
 	public synchronized List<GraphiteTask> getTasks() {
 		return tasks;
 	}
-	
+
 	public GraphiteTask getTaskByName(String name) {
 		return tasks.stream().filter(t -> t.getName().equals(name)).findFirst().orElse(null);
 	}
-	
+
 	public boolean isShutdown() {
 		return executorService.isShutdown() || executorService.isTerminated();
 	}
-	
+
 	public void stop(int timeoutSeconds) {
 		try {
 			Graphite.log("Shutting down scheduler");
