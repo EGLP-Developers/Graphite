@@ -306,6 +306,7 @@ public class Graphite {
 		long connectTime = sw.elapsed(TimeUnit.MILLISECONDS);
 		sw.reset().start();
 
+		log("Updating commands");
 		for(MultiplexBot bot : getMultiplexBots()) {
 			bot.getShards().forEach(s -> {
 				CommandListUpdateAction a;
@@ -350,20 +351,23 @@ public class Graphite {
 					});
 				}
 
-				a.queue();
+				// a.queue(); FIXME Disabled for backport right now
 			});
 		}
 
+		log("Init db");
 		mysql = new GraphiteMySQL();
 		dataManager = new GraphiteDataManager();
 		mysql.createTables();
 
+		log("Run setup");
 		GraphiteSetup.run();
 
 		commandListener = new CommandListener();
 
 		voting = new GraphiteVoting();
 
+		log("Load features");
 		if(needsFeature(GraphiteFeature.FUN)) {
 			minigames = new GraphiteMinigames();
 		}
@@ -389,6 +393,7 @@ public class Graphite {
 			amongUs = new GraphiteAmongUs();
 		}
 
+		log("Economy & stats");
 		economy = new GraphiteEconomy();
 		statistics = new GraphiteStatistics();
 
@@ -397,6 +402,8 @@ public class Graphite {
 		}
 
 		premium = new GraphitePremium();
+
+		log("Init WI & console");
 		webinterface = new GraphiteWebinterface();
 		websiteEndpoint = new GraphiteWebsiteEndpoint();
 		ConsoleInputListener.init();
