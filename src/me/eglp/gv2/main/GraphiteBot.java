@@ -70,7 +70,6 @@ import me.eglp.gv2.commands.role_management.CommandGetrole;
 import me.eglp.gv2.commands.scripting.CommandScript;
 import me.eglp.gv2.commands.test.CommandTest;
 import me.eglp.gv2.commands.twitch.CommandTwitch;
-import me.eglp.gv2.commands.twitter.CommandTwitter;
 import me.eglp.gv2.util.command.Command;
 import me.eglp.gv2.util.settings.BotInfo;
 import me.mrletsplay.mrcore.misc.FriendlyException;
@@ -232,10 +231,6 @@ public class GraphiteBot {
 
 		if(Graphite.getBotInfo().getTwitch().isEnabled()) {
 			cmds.add(new CommandTwitch());
-		}
-
-		if(Graphite.getBotInfo().getTwitter().isEnabled()) {
-			cmds.add(new CommandTwitter());
 		}
 
 		if(Graphite.getBotInfo().getReddit().isEnabled()) {

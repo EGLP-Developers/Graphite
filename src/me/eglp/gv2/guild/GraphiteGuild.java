@@ -24,7 +24,6 @@ import me.eglp.gv2.guild.config.GuildRolesConfig;
 import me.eglp.gv2.guild.config.GuildStatisticsConfig;
 import me.eglp.gv2.guild.config.GuildTemporaryActionsConfig;
 import me.eglp.gv2.guild.config.GuildTwitchConfig;
-import me.eglp.gv2.guild.config.GuildTwitterConfig;
 import me.eglp.gv2.guild.music.GuildMusic;
 import me.eglp.gv2.guild.recorder.GuildRecorder;
 import me.eglp.gv2.guild.scripting.GuildScripts;
@@ -72,7 +71,6 @@ public class GraphiteGuild implements GraphiteLocalizable, CommandSender, Graphi
 	private GuildStatisticsConfig statisticsConfig;
 	private GuildTwitchConfig twitchConfig;
 	private GuildRedditConfig redditConfig;
-	private GuildTwitterConfig twitterConfig;
 	private GuildPollsConfig pollsConfig;
 	private GuildRemindersConfig remindersConfig;
 
@@ -150,9 +148,6 @@ public class GraphiteGuild implements GraphiteLocalizable, CommandSender, Graphi
 
 		this.redditConfig = new GuildRedditConfig(this);
 		times.stopTimingAndRestart("reddit");
-
-		this.twitterConfig = new GuildTwitterConfig(this);
-		times.stopTimingAndRestart("twitter");
 
 		this.pollsConfig = new GuildPollsConfig(this);
 		this.pollsConfig.init();
@@ -404,10 +399,6 @@ public class GraphiteGuild implements GraphiteLocalizable, CommandSender, Graphi
 		return redditConfig;
 	}
 
-	public GuildTwitterConfig getTwitterConfig() {
-		return twitterConfig;
-	}
-
 	public GuildAutoModSettings getAutoModSettings() {
 		return autoModSettings;
 	}
@@ -477,7 +468,6 @@ public class GraphiteGuild implements GraphiteLocalizable, CommandSender, Graphi
 		channelsConfig.discardChannel(channel);
 		redditConfig.discardChannel(channel);
 		twitchConfig.discardChannel(channel);
-		twitterConfig.discardChannel(channel);
 		greeterConfig.discardChannel(channel);
 		moderationConfig.discardChannel(channel);
 		cachedChannels.remove(channel);

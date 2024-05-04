@@ -15,21 +15,20 @@ public enum CommandCategory {
 	MODERATION(DefaultLocaleString.COMMAND_CATEGORY_MODERATION_NAME),
 	PREMIUM(DefaultLocaleString.COMMAND_CATEGORY_PREMIUM_NAME),
 	TWITCH(DefaultLocaleString.COMMAND_CATEGORY_TWITCH_NAME),
-	TWITTER(DefaultLocaleString.COMMAND_CATEGORY_TWITTER_NAME),
 	REDDIT(DefaultLocaleString.COMMAND_CATEGORY_REDDIT_NAME),
 	GREETER(DefaultLocaleString.COMMAND_CATEGORY_GREETER_NAME),
 	SCRIPTING(DefaultLocaleString.COMMAND_CATEGORY_SCRIPTING_NAME),
 	RECORD(DefaultLocaleString.COMMAND_CATEGORY_RECORD_NAME),
 	CHANNEL_MANAGEMENT(DefaultLocaleString.COMMAND_CATEGORY_CHANNEL_MANAGEMENT_NAME);
-	
+
 	private LocalizedString name;
-	
+
 	private CommandCategory(LocalizedString name) {
 		this.name = name;
 	}
-	
+
 	public LocalizedString getName() {
 		return name;
 	}
-	
+
 }

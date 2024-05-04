@@ -12,7 +12,6 @@ import me.eglp.gv2.util.backup.data.config.reddit.RedditConfigData;
 import me.eglp.gv2.util.backup.data.config.roles.RolesConfigData;
 import me.eglp.gv2.util.backup.data.config.statistics.StatisticsConfigData;
 import me.eglp.gv2.util.backup.data.config.twitch.TwitchConfigData;
-import me.eglp.gv2.util.backup.data.config.twitter.TwitterConfigData;
 import me.mrletsplay.mrcore.json.JSONObject;
 import me.mrletsplay.mrcore.json.converter.JSONConstructor;
 import me.mrletsplay.mrcore.json.converter.JSONConverter;
@@ -42,9 +41,6 @@ public class GuildConfigData implements JSONConvertible {
 	@JSONValue
 	private TwitchConfigData twitchConfig;
 
-	@JSONValue
-	private TwitterConfigData twitterConfig;
-
 	@JSONConstructor
 	private GuildConfigData() {}
 
@@ -56,7 +52,6 @@ public class GuildConfigData implements JSONConvertible {
 		this.statisticsConfig = new StatisticsConfigData(guild);
 		this.redditConfig = new RedditConfigData(guild);
 		this.twitchConfig = new TwitchConfigData(guild);
-		this.twitterConfig = new TwitterConfigData(guild);
 	}
 
 	public static GuildConfigData load(String json) {
@@ -71,7 +66,6 @@ public class GuildConfigData implements JSONConvertible {
 		if(statisticsConfig != null) statisticsConfig.restore(guild, selectors, mappings);
 		if(redditConfig != null) redditConfig.restore(guild, selectors, mappings);
 		if(twitchConfig != null) twitchConfig.restore(guild, selectors, mappings);
-		if(twitterConfig != null) twitterConfig.restore(guild, selectors, mappings);
 	}
 
 }

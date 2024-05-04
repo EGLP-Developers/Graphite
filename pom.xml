@@ -198,17 +198,6 @@
 		</dependency>
 		<dependency>
 			<groupId>me.eglp</groupId>
-			<artifactId>Twitter4Graphite</artifactId>
-			<version>1.7.1</version>
-			<exclusions>
-				<exclusion>
-					<groupId>me.mrletsplay</groupId>
-					<artifactId>MrCore</artifactId>
-				</exclusion>
-			</exclusions>
-		</dependency>
-		<dependency>
-			<groupId>me.eglp</groupId>
 			<artifactId>Genius4Graphite</artifactId>
 			<version>1.4.2</version>
 			<exclusions>

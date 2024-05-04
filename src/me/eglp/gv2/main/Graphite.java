@@ -59,7 +59,6 @@ import me.eglp.gv2.util.apis.genius.GraphiteGenius;
 import me.eglp.gv2.util.apis.reddit.GraphiteReddit;
 import me.eglp.gv2.util.apis.spotify.GraphiteSpotify;
 import me.eglp.gv2.util.apis.twitch.GraphiteTwitch;
-import me.eglp.gv2.util.apis.twitter.GraphiteTwitter;
 import me.eglp.gv2.util.base.GraphiteLocalizable;
 import me.eglp.gv2.util.base.GraphiteMessageChannel;
 import me.eglp.gv2.util.command.Command;
@@ -149,7 +148,6 @@ public class Graphite {
 	protected static GraphiteWebinterface webinterface;
 	protected static GraphiteWebsiteEndpoint websiteEndpoint;
 	protected static GraphiteTwitch twitch;
-	protected static GraphiteTwitter twitter;
 	protected static GraphiteMySQL mysql;
 	protected static GraphiteReddit reddit;
 	protected static GraphiteMinigames minigames;
@@ -324,7 +322,6 @@ public class Graphite {
 		voting = new GraphiteVoting();
 		minigames = new GraphiteMinigames();
 		twitch = new GraphiteTwitch();
-		twitter = new GraphiteTwitter();
 		reddit = new GraphiteReddit();
 
 		if(botInfo.getSpotify().isEnabled()) spotify = new GraphiteSpotify();
@@ -725,10 +722,6 @@ public class Graphite {
 
 	public static GraphiteTwitch getTwitch() {
 		return twitch;
-	}
-
-	public static GraphiteTwitter getTwitter() {
-		return twitter;
 	}
 
 	public static GraphiteMySQL getMySQL() {

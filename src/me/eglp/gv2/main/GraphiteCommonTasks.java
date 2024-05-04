@@ -21,7 +21,6 @@ import me.eglp.gv2.guild.temporary_actions.GuildTempVoiceMute;
 import me.eglp.gv2.util.apis.reddit.GraphiteSubreddit;
 import me.eglp.gv2.util.apis.twitch.GraphiteTwitchUser;
 import me.eglp.gv2.util.apis.twitch.TwitchAnnouncementParameter;
-import me.eglp.gv2.util.apis.twitter.GraphiteTwitterUser;
 import me.eglp.gv2.util.backup.GuildBackup;
 import me.eglp.gv2.util.stats.GraphiteStatistic;
 import me.eglp.gv2.util.stats.GraphiteStatistics;
@@ -30,7 +29,6 @@ import me.eglp.reddit.entity.SubredditSort;
 import me.eglp.reddit.entity.data.Link;
 import me.eglp.reddit.util.ListingPaginator;
 import me.eglp.twitch.entity.TwitchStream;
-import me.eglp.twitter.entity.Tweet;
 import me.mrletsplay.mrcore.misc.FriendlyException;
 import net.dv8tion.jda.api.entities.Message;
 
@@ -163,47 +161,6 @@ public class GraphiteCommonTasks {
 					}catch(Exception e) {
 						e.printStackTrace();
 						GraphiteDebug.log(DebugCategory.REDDIT, "Reddit is unreachable");
-						continue;
-					}
-				}
-			}
-		}, 5 * 60 * 1000);
-
-		if(Graphite.getBotInfo().getTwitter().isEnabled()) Graphite.getScheduler().scheduleAtFixedRate("guilds-twitter-refresh", () -> {
-			for(GraphiteGuild g : Graphite.getGuilds()) {
-				if(!g.getConfig().hasModuleEnabled(GraphiteModule.TWITTER)) continue;
-
-				List<GraphiteTwitterUser> twitterUsers = g.getTwitterConfig().getTwitterUsers();
-
-				if(!twitterUsers.isEmpty()) {
-					try {
-						for(GraphiteTwitterUser u : twitterUsers) {
-							String lastID = g.getTwitterConfig().getLastTweetID(u);
-							if(lastID == null) {
-								Tweet t = Graphite.getTwitter().getTwitterAPI().getLatestTweet(u.getID());
-								if(t != null) {
-									g.getTwitterConfig().setLastTweetID(u, t.getID());
-								}else {
-									g.getTwitterConfig().setLastTweetID(u, "none");
-								}
-							}else {
-								List<Tweet> tweets = new ArrayList<>();
-								if(lastID.equals("none")) {
-									tweets = Graphite.getTwitter().getTwitterAPI().getTimeline(u.getID(), 100);
-								}else {
-									tweets = Graphite.getTwitter().getTwitterAPI().getTimelineSince(u.getID(), lastID);
-								}
-								if(tweets.isEmpty()) continue;
-								Collections.reverse(tweets);
-								for(Tweet t : tweets) {
-									u.sendNotificationMessage(g, t);
-								}
-								g.getTwitterConfig().setLastTweetID(u, tweets.get(tweets.size() - 1).getID());
-							}
-						}
-					}catch(Exception e) {
-						e.printStackTrace();
-						GraphiteDebug.log(DebugCategory.TWITTER, "Twitter is unreachable");
 						continue;
 					}
 				}

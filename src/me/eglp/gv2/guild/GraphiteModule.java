@@ -15,7 +15,6 @@ public enum GraphiteModule {
 	RECORD("Record"),
 	SCRIPTING("Scripting"),
 	TWITCH("Twitch"),
-	TWITTER("Twitter"),
 	REDDIT("Reddit")
 	;
 

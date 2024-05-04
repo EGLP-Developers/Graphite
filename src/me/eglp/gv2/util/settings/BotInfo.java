@@ -45,9 +45,6 @@ public class BotInfo implements JSONConvertible {
 	private RedditSettings reddit;
 
 	@JSONValue
-	private TwitterSettings twitter;
-
-	@JSONValue
 	private WebsiteSettings website;
 
 	@JSONValue
@@ -65,7 +62,7 @@ public class BotInfo implements JSONConvertible {
 	@JSONConstructor
 	private BotInfo() {}
 
-	public BotInfo(String identifier, String name, String defaultPrefix, String token, String clientSecret, String fileLocation, int shardCount, boolean isBeta, StatisticsSettings statisticsSettings, VoteSettings voteSettings, MySQLSettings mySQL, PatreonSettings patreon, TwitchSettings twitch, GeniusSettings genius, RedditSettings reddit, TwitterSettings twitter, WebsiteSettings website, LinksSettings links, AmongUsSettings amongUs, SpotifySettings spotify, MiscellaneousSettings miscellaneous) {
+	public BotInfo(String identifier, String name, String defaultPrefix, String token, String clientSecret, String fileLocation, int shardCount, boolean isBeta, StatisticsSettings statisticsSettings, VoteSettings voteSettings, MySQLSettings mySQL, PatreonSettings patreon, TwitchSettings twitch, GeniusSettings genius, RedditSettings reddit, WebsiteSettings website, LinksSettings links, AmongUsSettings amongUs, SpotifySettings spotify, MiscellaneousSettings miscellaneous) {
 		this.identifier = identifier;
 		this.name = name;
 		this.defaultPrefix = defaultPrefix;
@@ -81,7 +78,6 @@ public class BotInfo implements JSONConvertible {
 		this.twitch = twitch;
 		this.genius = genius;
 		this.reddit = reddit;
-		this.twitter = twitter;
 		this.website = website;
 		this.links = links;
 		this.amongUs = amongUs;
@@ -149,10 +145,6 @@ public class BotInfo implements JSONConvertible {
 		return reddit;
 	}
 
-	public TwitterSettings getTwitter() {
-		return twitter;
-	}
-
 	public WebsiteSettings getWebsite() {
 		return website;
 	}
@@ -186,9 +178,6 @@ public class BotInfo implements JSONConvertible {
 		if(reddit == null) errors.add("Reddit not configured");
 		if(reddit != null) reddit.validate(errors);
 
-		if(twitter == null) errors.add("Twitter not configured");
-		if(twitter != null) twitter.validate(errors);
-
 		if(website == null) errors.add("Website config is missing");
 		if(links == null) errors.add("Links config is missing");
 		if(amongUs == null) errors.add("AmongUs config is missing");
@@ -213,7 +202,6 @@ public class BotInfo implements JSONConvertible {
 				TwitchSettings.createDefault(),
 				GeniusSettings.createDefault(),
 				RedditSettings.createDefault(),
-				TwitterSettings.createDefault(),
 				WebsiteSettings.createDefault(),
 				LinksSettings.createDefault(),
 				AmongUsSettings.createDefault(),

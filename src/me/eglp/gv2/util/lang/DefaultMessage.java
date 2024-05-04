@@ -96,13 +96,6 @@ public enum DefaultMessage implements MessageIdentifier {
 	COMMAND_TWITCH_STREAMER_NOT_FOUND("command.twitch.streamer-not-found", Color.RED, "I can't find this streamer on your streamer list"),
 	COMMAND_TWITCH_INVALID_STREAMER("command.twitch.invalid-streamer", Color.RED, "I can't find this streamer on Twitch"),
 
-	COMMAND_TWITTER_USER_ADDED("command.twitter.user.added", Color.GREEN, "Twitter user added"),
-	COMMAND_TWITTER_USER_REMOVED("command.twitter.user.removed", Color.GREEN, "Twitter user removed"),
-	COMMAND_TWITTER_ALREADY_ADDED("command.twitter.already-added", Color.RED, "Already added this user"),
-	COMMAND_TWITTER_SET_CHANNEL("command.twitter.set-channel", Color.GREEN, "Changed the notification channel to `{channel}`"),
-	COMMAND_TWITTER_USER_NOT_FOUND("command.twitter.user-not-found", Color.RED, "I can't find this user on your Twitter list"),
-	COMMAND_TWITTER_INVALID_USER("command.twitter.invalid-user", Color.RED, "I can't find this user on Twitter"),
-
 	COMMAND_REDDIT_SUBREDDIT_ADDED("command.reddit.subreddit.added", Color.GREEN, "Subreddit added"),
 	COMMAND_REDDIT_SUBREDDIT_REMOVED("command.reddit.subreddit.removed", Color.GREEN, "Subreddit removed"),
 	COMMAND_REDDIT_SUBREDDIT_ALREADY_ADDED("command.reddit.subreddit.already-added", Color.RED, "Already added this subreddit"),

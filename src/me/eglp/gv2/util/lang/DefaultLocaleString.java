@@ -14,7 +14,6 @@ public enum DefaultLocaleString implements LocalizedString {
 	COMMAND_CATEGORY_MODERATION_NAME("command-category.moderation.name", "Moderation"),
 	COMMAND_CATEGORY_PREMIUM_NAME("command-category.premium.name", "Premium"),
 	COMMAND_CATEGORY_TWITCH_NAME("command-category.twitch.name", "Twitch"),
-	COMMAND_CATEGORY_TWITTER_NAME("command-category.twitter.name", "Twitter"),
 	COMMAND_CATEGORY_REDDIT_NAME("command-category.reddit.name", "Reddit"),
 	COMMAND_CATEGORY_GREETER_NAME("command-category.greeter.name", "Greeter"),
 	COMMAND_CATEGORY_SCRIPTING_NAME("command-category.scripting.name", "Scripting"),
@@ -408,14 +407,6 @@ public enum DefaultLocaleString implements LocalizedString {
 	COMMAND_TWITCH_ADD_USAGE("command.twitch.add.usage", "{prefix}twitch add <streamer> <#text-channel>"),
 	COMMAND_TWITCH_REMOVE_DESCRIPTION("command.twitch.remove.description", "Remove a streamer"),
 	COMMAND_TWITCH_REMOVE_USAGE("command.twitch.remove.usage", "{prefix}twitch remove <streamer>"),
-
-	COMMAND_TWITTER_DESCRIPTION("command.twitter.description", "Not sponsered by Twitter"),
-	COMMAND_TWITTER_CHANNEL_DESCRIPTION("command.twitter.channel.description", "Set the channel where the bot will send the notification messages"),
-	COMMAND_TWITTER_CHANNEL_USAGE("command.twitter.channel.usage", "{prefix}twitter channel <user> <#text-channel>"),
-	COMMAND_TWITTER_ADD_DESCRIPTION("command.twitter.add.description", "Add a Twitter user"),
-	COMMAND_TWITTER_ADD_USAGE("command.twitter.add.usage", "{prefix}twitter add <user> <#text-channel>"),
-	COMMAND_TWITTER_REMOVE_DESCRIPTION("command.twitter.remove.description", "Remove a Twitter user"),
-	COMMAND_TWITTER_REMOVE_USAGE("command.twitter.remove.usage", "{prefix}twitter remove <user>"),
 
 	COMMAND_REDDIT_DESCRIPTION("command.reddit.description", "Not sponsered by Reddit"),
 	COMMAND_REDDIT_CHANNEL_DESCRIPTION("command.reddit.channel.description", "Set the channel where the bot will send the subreddits"),

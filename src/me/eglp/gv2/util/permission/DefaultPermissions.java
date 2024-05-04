@@ -136,10 +136,6 @@ public class DefaultPermissions {
 		TWITCH_ADD = "twitch.add",
 		TWITCH_REMOVE = "twitch.remove",
 
-		TWITTER_CHANNEL = "twitter.channel",
-		TWITTER_ADD = "twitter.add",
-		TWITTER_REMOVE = "twitter.remove",
-
 		REDDIT_CHANNEL = "reddit.channel",
 		REDDIT_SUBREDDIT_ADD = "reddit.subreddit.add",
 		REDDIT_SUBREDDIT_REMOVE = "reddit.subreddit.remove",
@@ -169,7 +165,6 @@ public class DefaultPermissions {
 		WEBINTERFACE_CHANNEL_MANAGEMENT = "webinterface.channel-management",
 		WEBINTERFACE_SCRIPTING = "webinterface.scripting",
 		WEBINTERFACE_TWITCH = "webinterface.twitch",
-		WEBINTERFACE_TWITTER = "webinterface.twitter",
 		WEBINTERFACE_REDDIT = "webinterface.reddit",
 		WEBINTERFACE_RECORD = "webinterface.record",
 		WEBINTERFACE_CUSTOM_COMMANDS = "webinterface.custom-commands",

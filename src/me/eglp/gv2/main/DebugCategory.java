@@ -1,7 +1,7 @@
 package me.eglp.gv2.main;
 
 public enum DebugCategory {
-	
+
 	MYSQL,
 	PATREON,
 	JDA,
@@ -16,7 +16,6 @@ public enum DebugCategory {
 	SCRIPTING,
 	COMMAND_HANDLER,
 	TWITCH,
-	TWITTER,
 	REDDIT
-	
+
 }

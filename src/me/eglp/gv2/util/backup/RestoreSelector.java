@@ -37,8 +37,7 @@ public enum RestoreSelector implements WebinterfaceObject {
 	COMMAND_ALIASES("Command Aliases", JDAEmote.PENCIL2),
 	STATISTICS("Statistics", JDAEmote.CHART_WITH_UPWARDS_TREND, DISCORD_CHANNELS),
 	REDDIT("Reddit", JDAEmote.PENCIL, DISCORD_CHANNELS),
-	TWITCH("Twitch", JDAEmote.PENCIL, DISCORD_CHANNELS),
-	TWITTER("Twitter", JDAEmote.PENCIL, DISCORD_CHANNELS);
+	TWITCH("Twitch", JDAEmote.PENCIL, DISCORD_CHANNELS);
 
 	@JavaScriptValue(getter = "getFriendlyName")
 	private String friendlyName;
