@@ -16,8 +16,6 @@ command-category:
     name: "Moderation"
   music: 
     name: "Musik"
-  premium: 
-    name: "Premium"
   record: 
     name: "Aufnahme"
   reddit: 
@@ -30,8 +28,6 @@ command-category:
     name: "Skripten"
   twitch: 
     name: "Twitch"
-  twitter: 
-    name: "Twitter"
 command: 
   8ball: 
     description: "Frag den Magic 8 Ball etwas"
@@ -333,11 +329,6 @@ command:
   dice: 
     description: "Rolle einen Laplace-Würfel"
     usage: "{prefix}dice"
-  donators: 
-    description: "Zeigt eine Liste aller Spender an"
-    empty: "Im Moment gibt es keine Sponsoren. Willst du unsere Arbeit unterstützen? (Patreon)[{patreon}]"
-    title: "Danke für die Unterstützung :heart:"
-    usage: "{prefix}donators"
   eastereggs: 
     description: "Zeigt deine gefundenen Easter Eggs an"
     usage: "{prefix}eastereggs"
@@ -431,13 +422,6 @@ command:
       already-jailed: "Dieser Benutzer ist bereits eingesperrt"
       autochannel: "Du kannst hier niemanden einsperren, weil das ein Autokanal ist, welcher gelöscht wird, wenn niemand mehr darin ist"
       userchannel: "Du kannst hier niemanden einsperren, weil das ein Userkanal ist, welcher gelöscht wird, wenn niemand mehr darin ist"
-  keys: 
-    description: "Schau dir deine Schlüsselsammlung an :key:"
-    no-keys: "Im Moment hast du keine Schlüssel"
-    usage: "{prefix}keys"
-    field: 
-      head: "Schlüssel: `{key}`"
-      values: "Typ: `{type}`\nPremium Level: `{level}`\nBeschreibung: `{description}`\nLäuft ab in: `{time}`\nBenutzt von: `{user}`"
   locale: 
     description: "Ändere die Sprache für deinen Server"
     invalid-locale: "Ungültiges Sprachkürzel"
@@ -783,25 +767,6 @@ command:
     invalid: "Der angegebene Präfix ist ungültig: Es sind nur bis zu 16 alphanumerische Zeichen und `_-~.!` erlaubt"
     success: "Der Serverpräfix wurde zu `{prefix}` geändert"
     usage: "{prefix}prefix <Präfix>"
-  premium: 
-    description: "All das ganze Premium-Zeugs"
-    addkey: 
-      added: "Schlüssel `{key}` wurde erfolgreich zu deinem Benutzerkonto hinzugefügt"
-      description: "Löse einen Premium-Schlüssel ein"
-      invalid-key: "Dieser Schlüssel ist nicht für mein Schloss :thinking: ... Hast du noch einen anderen?"
-      key-already-redeemed: "Schlüssel wurde bereits eingelöst"
-      usage: "{prefix}premium addkey <Schlüssel>"
-    level: 
-      description: "Zeigt den Premium-Status von deinem Server an"
-      message: "Premium-Level: `{level}`"
-      usage: "{prefix}premium level"
-    redeem: 
-      description: "Löse deinen Schlüssel ein :key: :star2:"
-      invalid-key: "Dieser Schlüssel ist nicht für mein Schloss :thinking: ... Hast du noch einen anderen?"
-      key-in-use: "Dieser Schlüssel wird bereits verwendet"
-      key-match: "Du hast bereits einen Schlüssel für dieses Premium-Level eingelöst"
-      key-redeemed: "Schlüssel erfolgreich eingelöst für : `{level}`"
-      usage: "{prefix}redeem <Schlüssel>"
   purge: 
     description: "Entferne alle Kanäle/Kategorien oder Rollen"
     success: ":boom: BOOOM! Dein Discord wurde gesäubert! :radioactive:"
@@ -956,24 +921,6 @@ command:
     user: 
       added: "Streamer hinzugefügt"
       removed: "Streamer entfernt"
-  twitter: 
-    already-added: "Dieser Benutzer wurde bereits hinzugefügt"
-    description: "Nicht gesponsort von Twitter :crying_cat_face:"
-    invalid-user: "Ich konnte diesen Twitter-Nutzer nicht finden :mag:"
-    set-channel: "Benachrichtigungskanal zu `{channel}` geändert"
-    user-not-found: "Ich kann diesen Nutzer nicht auf der Twitter-Liste finden :mag:"
-    add: 
-      description: "Füge Benachrichtigungen für einen Twitter-Nutzer hinzu"
-      usage: "{prefix}twitter add <Benutzer> <#Textkanal>"
-    channel: 
-      description: "Ändere den Kanal, in welchen der Bot Nachrichten reinschickt"
-      usage: "{prefix}twitter channel <Benutzer> <#Textkanal>"
-    remove: 
-      description: "Entferne einen Twitter-Nutzer"
-      usage: "{prefix}twitter remove <Nutzer>"
-    user: 
-      added: "Twitter-Nutzer hinzugefügt"
-      removed: "Twitter-Nutzer entfernt"
   unban: 
     description: "Entbanne den angegebenen Nutzer"
     not-banned: "Benutzer ist nicht gebannt"
@@ -1010,8 +957,6 @@ command:
     currently-in-audiochannel: 
       none: "Befindet sich momentan nicht in einem Sprachkanal."
       title: "Momentan in einem Sprachkanal?"
-    discriminator: 
-      title: "Diskriminator"
     id: 
       title: "ID"
     joined: 
@@ -1076,7 +1021,6 @@ error:
   command-private-only: "{emote_error} Dies ist ein Befehl, den du nur im privaten Chat mit mir verwenden kannst :wink:"
   command-server-only: "{emote_error} Du kannst diesen Befehl nur auf Servern verwenden"
   exception: ":warning: Ein unerwarteter Fehler ist aufgetreten. Hier ist ein Nerd-Text, der beschreibt was schief gelaufen ist: `{error_message}`"
-  graphite-added: ":warning:\nGraphite ist bereits auf deinem Server, weshalb einige Features von anderen Multiplex-Bots deaktiviert werden.\nDu kannst die Multiplex-Bots immer noch für bestimmte Features verwenden, welche dies unterstützen (bspw. Musik)"
   invalid-duration: "{emote_error} Ungültige Dauer. Format: `2h30m` oder `1w2d1h10m`"
   invalid-mention: "{emote_error} Ungültige Erwähnung.\nLies dir die [Dokumentation]({documentation_url}) durch, um herauszufinden, wie man Erwähnungen formatiert."
   invalid-timestamp: "{emote_error} Ungültiges Format beim Zeitstempel"
@@ -1170,33 +1114,12 @@ other:
   found-an-easteregg: "Hey, du hast ein Easter Egg gefunden. Dir wurden {money}{emote_dollaronen} auf deinen Graphite-Konto hinzugefügt"
   heavy-busy: "Dein Wunsch wurde in die Warteschlange eingereiht. Je nachdem was gerade abgeht kann es einige Minuten :clock2: dauern, bis er erfüllt wird :magic_wand:. Wenn du eine schnellere Warteschlange willst, kannst du auf [Patreon]({patreon}) spenden"
   joined-support-queue: "Hey, der Benutzer `{users}` benötigt Support."
-  multiplex-disabled: "{emote_info}\nDa du dich entschieden hast, Graphite auf deinen Server hinzuzufügen, wurden alle anderen Multiplex-Bots deaktiviert.\nKeine Sorge, denn all deine Einstellungen wurden automatisch zu Graphite übertragen"
   no: "Nein,False"
   yes: "Ja,True"
   poll: 
     already-voted: "Du hast bei dieser Umfrage bereits teilgenommen :writing_hand:"
     already-voted-option: "Du hast für diese Option bei dieser Umfrage bereits gestimmt :writing_hand:"
     success: "Du hast erfolgreich für `{option}` gestimmt :writing_hand:"
-patreon: 
-  pledge-added: "Danke für deine Unterstützung auf Patreon. Du hast den Rang `{rank}` für `{price} {currency}` bekommen. Du bekommst `{keys}` weitere Schlüssel für deine Freunde. Verteile die Macht von Graphite. :hearts:"
-  pledge-changed: "Du hast deinen Patreon-Beitrag von `{old_pledge}` zu `{new_pledge}` geändert. Der neue Preis ist `{price} {currency}`. Deine zusätzlichen Schlüssel: `{keys}`. Verwende `{prefix}premium keys` um all deine Schlüssel einzusehen."
-  pledge-removed: "Sehr schade, dass du deinen Patreon-Beitrag entfernst. Wenn du irgendeine Rückmeldung für den Bot hast, darfst du sie gerne mit uns auf unserem [Discord-Server]({discord_url}) teilen"
-premium-key: 
-  type: 
-    patreon: 
-      description: "Bekommen, da du so ein netter Patreon-Sponsor bist :heart:"
-      expires: "Niemals (außer du entscheidest dich nicht mehr zu spenden. :cry:)"
-      friendly-name: "Patreon-Schlüssel"
-    permanent: 
-      description: "Von den Besitzern des Bots bei besonderen Ereignissen vergeben"
-      expires: "Nie"
-      friendly-name: "Permanenter Schlüssel"
-    temporary: 
-      description: "Möglich gemacht durch Voten oder durch das finden von Easter Eggs"
-      friendly-name: "Temporärer Schlüssel"
-premium-level: 
-  donator: "Spender"
-  none: "Keines"
 statistic: 
   bots: 
     name: "Bots"

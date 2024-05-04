@@ -12,7 +12,6 @@ public enum DefaultLocaleString implements LocalizedString {
 	COMMAND_CATEGORY_INFO_NAME("command-category.info.name", "Info"),
 	COMMAND_CATEGORY_FUN_NAME("command-category.fun.name", "Fun"),
 	COMMAND_CATEGORY_MODERATION_NAME("command-category.moderation.name", "Moderation"),
-	COMMAND_CATEGORY_PREMIUM_NAME("command-category.premium.name", "Premium"),
 	COMMAND_CATEGORY_TWITCH_NAME("command-category.twitch.name", "Twitch"),
 	COMMAND_CATEGORY_REDDIT_NAME("command-category.reddit.name", "Reddit"),
 	COMMAND_CATEGORY_GREETER_NAME("command-category.greeter.name", "Greeter"),
@@ -168,7 +167,7 @@ public enum DefaultLocaleString implements LocalizedString {
 	COMMAND_REMINDER_INFO_DESCRIPTION("command.reminder.info.description", "Shows information about a reminder"),
 	COMMAND_REMINDER_INFO_USAGE("command.reminder.info.usage", "{prefix}reminder info <id>"),
 	COMMAND_REMINDER_INFO_TITLE("command.reminder.info.title", "Reminder {reminder_id}"),
-	COMMAND_REMINDER_INFO_MESSAGE_TITLE("command.reminder.info.repeat.title", "Message"),
+	COMMAND_REMINDER_INFO_MESSAGE_TITLE("command.reminder.info.message.title", "Message"),
 	COMMAND_REMINDER_INFO_DATE_TITLE("command.reminder.info.date.title", "Date"),
 	COMMAND_REMINDER_INFO_REPEAT_TITLE("command.reminder.info.repeat.title", "Repeat"),
 	COMMAND_REMINDER_INFO_REPEAT_NEVER("command.reminder.info.repeat.never", "Never"),
@@ -307,15 +306,6 @@ public enum DefaultLocaleString implements LocalizedString {
 	EVENT_SERVER_JOIN_FIELD_5_TITLE("event.server-join.field.5.title", ":cry: You miss a feature?"),
 	EVENT_SERVER_JOIN_FIELD_5_CONTENT("event.server-join.field.5.content", "We are open to add new features to Graphite. You can suggest new features by joining our [Discord]({discord}) and sending your suggestion in the #suggestions channel."),
 
-	PREMIUM_KEY_TYPE_PATREON_FRIENDLY_NAME("premium-key.type.patreon.friendly-name", "Patreon Key"),
-	PREMIUM_KEY_TYPE_PATREON_DESCRIPTION("premium-key.type.patreon.description", "Granted by being one of our awesome Patrons :heart:"),
-	PREMIUM_KEY_TYPE_PATREON_EXPIRES("premium-key.type.patreon.expires", "Never (unless you decide to quit paying. Please don't. We're poor.)"),
-	PREMIUM_KEY_TYPE_TEMPORARY_FRIENDLY_NAME("premium-key.type.temporary.friendly-name", "Temporary Key"),
-	PREMIUM_KEY_TYPE_TEMPORARY_DESCRIPTION("premium-key.type.temporary.description", "Granted by voting or by finding eastereggs"),
-	PREMIUM_KEY_TYPE_PERMANENT_FRIENDLY_NAME("premium-key.type.permanent.friendly-name", "Permanent Key"),
-	PREMIUM_KEY_TYPE_PERMANENT_DESCRIPTION("premium-key.type.permanent.description", "Granted by the bot owners on special occasions"),
-	PREMIUM_KEY_TYPE_PERMANENT_EXPIRES("premium-key.type.permanent.expires", "Never"),
-
 	COMMAND_CLEAR_DESCRIPTION("command.clear.description", "Polish your chat history squeaky clean :put_litter_in_its_place:"),
 	COMMAND_CLEAR_USAGE("command.clear.usage", "{prefix}clear <amount>"),
 
@@ -351,9 +341,6 @@ public enum DefaultLocaleString implements LocalizedString {
 	COMMAND_JAIL_DESCRIPTION("command.jail.description", "Trap someone inside their voice channel :lock:"),
 	COMMAND_JAIL_USAGE("command.jail.usage", "{prefix}jail <@Member> [#!channel] [Reason]"),
 
-	COMMAND_KEYS_DESCRIPTION("command.keys.description", "Look at all your fancy keys :key:"),
-	COMMAND_KEYS_USAGE("command.keys.usage", "{prefix}keys"),
-
 	COMMAND_PERMISSION_ADD_DESCRIPTION("command.permission.add.description", "So the admins can do what they have to do"),
 	COMMAND_PERMISSION_ADD_USAGE("command.permission.add.usage", "{prefix}permission add <@Role | @User | everyone> <permission>"),
 	COMMAND_PERMISSION_REMOVE_DESCRIPTION("command.permission.remove.description", "So the admins can't do what they have to do"),
@@ -368,20 +355,6 @@ public enum DefaultLocaleString implements LocalizedString {
 
 	COMMAND_PREFIX_DESCRIPTION("command.prefix.description", "Change the prefix (must be a one word string without spaces)"),
 	COMMAND_PREFIX_USAGE("command.prefix.usage", "{prefix}prefix <prefix>"),
-
-	COMMAND_PREMIUM_REDEEM_DESCRIPTION("command.premium.redeem.description", "Ooh, shiny! :key: :star2:"),
-	COMMAND_PREMIUM_REDEEM_USAGE("command.premium.redeem.usage", "{prefix}redeem <key>"),
-
-	COMMAND_PREMIUM_ADDKEY_DESCRIPTION("command.premium.addkey.description", "Claim a currently unowned key"),
-	COMMAND_PREMIUM_ADDKEY_USAGE("command.premium.addkey.usage", "{prefix}premium addkey <key>"),
-
-	COMMAND_DONATORS_DESCRIPTION("command.donators.description", "Shows a list of our donators"),
-	COMMAND_DONATORS_USAGE("command.donators.usage", "{prefix}donators"),
-
-	COMMAND_PREMIUM_LEVEL_DESCRIPTION("command.premium.level.description", "Shows the premium level of your server"),
-	COMMAND_PREMIUM_LEVEL_USAGE("command.premium.level.usage", "{prefix}premium level"),
-
-	COMMAND_DONATORS_TITLE("command.donators.title", "Thanks for your support :heart:"),
 
 	COMMAND_TEMPBAN_DESCRIPTION("command.tempban.description", "It does what it says"),
 	COMMAND_TEMPBAN_USAGE("command.tempban.usage", "{prefix}tempban <@Member> <duration (1d2h)> [reason]"),
@@ -511,14 +484,6 @@ public enum DefaultLocaleString implements LocalizedString {
 	COMMAND_MUSIC_RESET_DESCRIPTION("command.music.reset.description", "Reset all playback settings"),
 	COMMAND_MUSIC_RESET_USAGE("command.music.reset.usage", "{prefix}music reset"),
 
-	COMMAND_KEYS_FIELD_HEAD("command.keys.field.head", "Key: `{key}`"),
-	COMMAND_KEYS_FIELD_VALUES("command.keys.field.values",
-			  "Type: `{type}`\n"
-			+ "Premium Level: `{level}`\n"
-			+ "Description: `{description}`\n"
-			+ "Expires in: `{time}`\n"
-			+ "Used by: `{user}`"),
-
 	COMMAND_CHATREPORTS_LIST_FIELD_HEAD("command.chatreports.list.field.head", "**[#{index}]** Chatreport by `{reporter}`\n"),
 	COMMAND_CHATREPORTS_LIST_FIELD_FOOTER("command.chatreports.list.field.footer", "Currently there are {chatreports} chatreport(s)"),
 
@@ -531,8 +496,6 @@ public enum DefaultLocaleString implements LocalizedString {
 
 	COMMAND_REPORTS_REMOVE_USAGE("command.reports-remove.usage", "{prefix}reports remove <index>"),
 	COMMAND_REPORTS_REMOVE_DESCRIPTION("command.reports-remove.description", "Removes the report at the specified index"),
-
-	COMMAND_PREMIUM_DESCRIPTION("command.premium.description", "All about premium stuff"),
 
 	COMMAND_EASTEREGGS_DESCRIPTION("command.eastereggs.description", "Show your eastereggs"),
 	COMMAND_EASTEREGGS_USAGE("command.eastereggs.usage", "{prefix}eastereggs"),
@@ -690,9 +653,6 @@ public enum DefaultLocaleString implements LocalizedString {
 	TIME_UNIT_HOURS("time-unit.hours", "hour(s)"),
 	TIME_UNIT_MINUTES("time-unit.minutes", "minute(s)"),
 	TIME_UNIT_SECONDS("time-unit.seconds", "second(s)"),
-
-	PREMIUM_LEVEL_NONE("premium-level.none", "None"),
-	PREMIUM_LEVEL_DONATOR("premium-level.donator", "Donator"),
 
 	ERROR_SCRIPT_INVALID_ARG_TYPE("error.script-invalid-arg-type", "Argument #{index} needs to be of type {type}"),
 	ERROR_HIT_ROLE_RATELIMIT_TITLE("error.hit-role-ratelimit.title", "Discord role creation rate limit hit"),

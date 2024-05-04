@@ -505,11 +505,11 @@ public class Selfcheck {
 					System.out.println("Request handler \"" + m.getName() + "\" in class " + m.getDeclaringClass().getSimpleName() + " does not match the format \"public static WebinterfaceResponse handler(WebinterfaceRequestEvent event)\"");
 				}
 
-				if(wh.requireGuildAdmin() && !wh.requireGuild()) {
+				if((wh.requireGuildAdmin() || wh.requirePermissions().length > 0) && !wh.requireGuild()) {
 					System.out.println("Request handler \"" + m.getName() + "\" in class " + m.getDeclaringClass().getSimpleName() + " requires admin but not a guild");
 				}
 
-				if(!wh.requireGuildAdmin() && (sCh == null || !sCh.ignoreAccessibleToEveryone())) {
+				if(!wh.requireGuildAdmin() && wh.requirePermissions().length == 0 && (sCh == null || !sCh.ignoreAccessibleToEveryone())) {
 					System.out.println("Request handler \"" + m.getName() + "\" in class " + m.getDeclaringClass().getSimpleName() + " is accessible to everyone without explicit declaration using @SpecialSelfcheck");
 				}
 			}

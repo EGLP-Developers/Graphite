@@ -110,17 +110,6 @@ public enum DefaultMessage implements MessageIdentifier {
 
 	COMMAND_REPORTS_REMOVE_SUCCESS("command.reports-remove.success", Color.GREEN, "Removed report with index `{index}`"),
 
-	COMMAND_PREMIUM_ADDKEY_ADDED("command.premium.addkey.added", Color.GREEN, "Successfully added key `{key}` to your account"),
-	COMMAND_PREMIUM_ADDKEY_KEY_ALREADY_REDEEMED("command.premium.addkey.key-already-redeemed", Color.RED, "Key already redeemed"),
-	COMMAND_PREMIUM_ADDKEY_INVALID_KEY("command.premium.addkey.invalid-key", Color.RED, "That's a very nice key but it's too bad that I don't seem to know about it"),
-
-	COMMAND_PREMIUM_REDEEM_INVALID_KEY("command.premium.redeem.invalid-key", Color.RED, "That's a very nice key but it's too bad that I don't seem to know about it"),
-	COMMAND_PREMIUM_REDEEM_KEY_MATCH("command.premium.redeem.key-match", Color.RED, "You already redeemed a key with this premium level"),
-	COMMAND_PREMIUM_REDEEM_KEY_IN_USE("command.premium.redeem.key-in-use", Color.RED, "That key is already in use"),
-	COMMAND_PREMIUM_REDEEM_KEY_REDEEMED("command.premium.redeem.key-redeemed", Color.GREEN, "Successfully redeemed key for: `{level}`"),
-
-	COMMAND_KEYS_NO_KEYS("command.keys.no-keys", Color.RED, "Currently you don't have any keys"),
-
 	COMMAND_ACCESSROLE_ADDED_ACCESSIBLE_ROLE("command.accessrole.added-accessible-role", Color.GREEN, "Made the role {role} accessible to {everyone}"),
 	COMMAND_ACCESSROLE_ALREADY_ACCESSIBLE("command.accessrole.already-accessible", Color.RED, "Role already accessible to other weird people"),
 	COMMAND_ACCESSROLE_REMOVED_ACCESSIBLE_ROLE("command.accessrole.removed-accessible-role", Color.GREEN, "Removed the role {role} from the list of accessible roles"),
@@ -208,10 +197,6 @@ public enum DefaultMessage implements MessageIdentifier {
 
 	COMMAND_LOCALE_INVALID_LOCALE("command.locale.invalid-locale", Color.RED, "Invalid locale!"),
 	COMMAND_LOCALE_SET_MESSAGE("command.locale.set.message", Color.GREEN, "Set locale to `{locale}`"),
-
-	COMMAND_DONATORS_EMPTY("command.donators.empty", Color.RED, "Currently there are no donators. You wan't to support our work? (Patreon)[{patreon}]"),
-
-	COMMAND_PREMIUM_LEVEL_MESSAGE("command.premium.level.message", Color.GRAY, "Premium Level: `{level}`"),
 
 	COMMAND_LOCALE_DELETE_SUCCESS("command.locale.delete.success", Color.GREEN, "Successfully deleted locale `{locale}`"),
 	COMMAND_LOCALE_DELETE_INVALID_LOCALE("command.locale.delete.invalid-locale", Color.RED, "The locale you're trying to delete doesn't exist or is a default locale"),
@@ -338,10 +323,6 @@ public enum DefaultMessage implements MessageIdentifier {
 	MINIGAME_BLACKJACK_BET_LIMIT("minigame.blackjack.bet-limit", Color.RED, "Your bet has to be between `{min_bet}` and `{max_bet}`{emote_dollaronen}"),
 	MINIGAME_BLACKJACK_NOT_ENOUGH_MONEY("minigame.blackjack.not-enough-money", Color.RED, "You don't have enough money"),
 
-	PATREON_PLEDGE_ADDED("patreon.pledge-added", Color.GREEN, "Thanks for your patreon pledge. You have bought the `{rank}` rank for `{price} {currency}`. You get `{keys}` extra keys for your friends. Share the power of Graphite 2.0. :hearts:"),
-	PATREON_PLEDGE_REMOVED("patreon.pledge-removed", Color.RED, "We're sad to see you removing your pledge from patreon. If you have any feedback for the bot, feel free to submit it on [our Discord]({discord_url})"),
-	PATREON_PLEDGE_CHANGED("patreon.pledge-changed", Color.ORANGE, "You have changed your patreon pledge from `{old_pledge}` to `{new_pledge}`. New price: `{price} {currency}`. Your extra keys: `{keys}` type `{prefix}premium keys` to show a list of all your keys."),
-
 	CUSTOMCOMMAND_INVALID_ARG_TYPE("customcommand.invalid-arg-type", Color.RED, "Invalid argument type for argument `{arg}`, should be of type `{type}`"),
 
 	ERROR_NO_PERMISSION("error.no-permission", Color.RED, "{emote_error} You lack the required permission `{permission}`"),
@@ -365,7 +346,6 @@ public enum DefaultMessage implements MessageIdentifier {
 	ERROR_ALLOWED_MENTION_TYPE_ROLE("error.allowed-mention-type.role", Color.RED, "`@Role`"),
 	ERROR_SERVER_BUSY("error.server-busy", Color.RED, ":sweat: Sorry, but i just can't keep up with you. Please wait until your previous action has finished :clock2:"),
 	ERROR_INVALID_TIMESTAMP("error.invalid-timestamp", Color.RED, "{emote_error} Invalid timestamp format"),
-	ERROR_GRAPHITE_ADDED("error.graphite-added", Color.RED, ":warning:\nYou've already added Graphite to your server, so some features of other Multiplex-Bots will be disabled.\nYou'll still be able to use the Multiplex bots for features that support it (e.g. Music)"),
 	ERROR_EXCEPTION("error.exception", Color.RED, ":warning: An unexpected exception occured: `{error_message}`"),
 	ERROR_LACKING_PERMISSION("error.lacking-permission", Color.RED, "{emote_error} I need the permission(s) `{permission}` to perform that action"),
 	ERROR_CANT_WRITE("error.cant-write", Color.RED, "{emote_error} Sorry, but i can't write to that channel. Please grant the `Send Messages` permission to use commands"),
@@ -384,7 +364,6 @@ public enum DefaultMessage implements MessageIdentifier {
 	OTHER_FOUND_AN_EASTEREGG("other.found-an-easteregg", Color.GREEN, "You have found an easter egg"),
 	OTHER_JOINED_SUPPORT_QUEUE("other.joined-support-queue", Color.GRAY, "Hey, `{users}` needs support."),
 	OTHER_HEAVY_BUSY("other.heavy-busy", Color.YELLOW, "Your action has been queued for execution. Depending on the current load, this might take up to a few minutes :clock2:. If you want a faster queue try donating on [Patreon]({patreon})"),
-	OTHER_MULTIPLEX_DISABLED("other.multiplex-disabled", Color.YELLOW, "{emote_info}\nSince you've decided to add Graphite to your server, all other Multiplex bots have been disabled.\nDon't worry, all your settings have automatically been transferred to Graphite")
 	;
 
 	private final Color color;

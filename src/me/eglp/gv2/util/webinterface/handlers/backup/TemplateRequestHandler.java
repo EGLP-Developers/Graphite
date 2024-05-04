@@ -13,6 +13,7 @@ import me.eglp.gv2.util.backup.TemplateBackup;
 import me.eglp.gv2.util.lang.LocalizedTimeUnit;
 import me.eglp.gv2.util.permission.DefaultPermissions;
 import me.eglp.gv2.util.queue.GraphiteTaskInfo;
+import me.eglp.gv2.util.selfcheck.SpecialSelfcheck;
 import me.eglp.gv2.util.settings.MiscellaneousSettings;
 import me.eglp.gv2.util.webinterface.WebinterfaceHandler;
 import me.eglp.gv2.util.webinterface.base.WebinterfaceRequestEvent;
@@ -117,7 +118,8 @@ public class TemplateRequestHandler {
 		return WebinterfaceResponse.success();
 	}
 
-	@WebinterfaceHandler(requestMethod = "reportTemplateBackupByID", requireGuild = false, requirePermissions = DefaultPermissions.WEBINTERFACE_BACKUPS)
+	@SpecialSelfcheck(ignoreAccessibleToEveryone = true)
+	@WebinterfaceHandler(requestMethod = "reportTemplateBackupByID", requireGuild = false)
 	public static WebinterfaceResponse reportTemplateBackupByID(WebinterfaceRequestEvent event) {
 		String templateID = event.getRequestData().getString("id");
 		String reason = event.getRequestData().getString("reason");
@@ -173,7 +175,8 @@ public class TemplateRequestHandler {
 		return WebinterfaceResponse.success(o);
 	}
 
-	@WebinterfaceHandler(requestMethod = "upvoteTemplateBackupByID", requireGuild = false, requirePermissions = DefaultPermissions.WEBINTERFACE_BACKUPS)
+	@SpecialSelfcheck(ignoreAccessibleToEveryone = true)
+	@WebinterfaceHandler(requestMethod = "upvoteTemplateBackupByID", requireGuild = false)
 	public static WebinterfaceResponse upvoteTemplateBackupByID(WebinterfaceRequestEvent event) {
 		String backupID = event.getRequestData().getString("id");
 
@@ -194,7 +197,8 @@ public class TemplateRequestHandler {
 		return WebinterfaceResponse.success();
 	}
 
-	@WebinterfaceHandler(requestMethod = "hasUpvotedTemplateByID", requireGuild = false, requirePermissions = DefaultPermissions.WEBINTERFACE_BACKUPS)
+	@SpecialSelfcheck(ignoreAccessibleToEveryone = true)
+	@WebinterfaceHandler(requestMethod = "hasUpvotedTemplateByID", requireGuild = false)
 	public static WebinterfaceResponse hasUpvotedTemplateByID(WebinterfaceRequestEvent event) {
 		String backupID = event.getRequestData().getString("id");
 		String userID = event.getRequestData().getString("user_id");
