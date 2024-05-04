@@ -129,7 +129,7 @@ public class MusicRequestHandler {
 		JSONArray arr = new JSONArray();
 
 		for(GraphitePlaylist playlist : pl) {
-			JSONArray tracks = new JSONArray(playlist.getTracks().stream().map(t -> new MusicTrack(g, t)).collect(Collectors.toList()));
+			JSONArray tracks = new JSONArray(playlist.getTracks().stream().map(t -> new MusicTrack(g, t).toWebinterfaceObject()).collect(Collectors.toList()));
 			arr.add(new MusicPlaylist(playlist.getName(), tracks).toWebinterfaceObject());
 		}
 
@@ -211,7 +211,7 @@ public class MusicRequestHandler {
 			return WebinterfaceResponse.success();
 		}
 
-		double val = event.getRequestData().getDouble("pitch");
+		double val = event.getRequestData().getNumber("pitch").doubleValue();
 		if(val < GuildTrackManager.MIN_PITCH || val > GuildTrackManager.MAX_PITCH) {
 			return WebinterfaceResponse.error("Pitch too high/low");
 		}
@@ -227,7 +227,7 @@ public class MusicRequestHandler {
 			return WebinterfaceResponse.success();
 		}
 
-		double val = event.getRequestData().getDouble("speed");
+		double val = event.getRequestData().getNumber("speed").doubleValue();
 		if(val < GuildTrackManager.MIN_SPEED || val > GuildTrackManager.MAX_SPEED) {
 			return WebinterfaceResponse.error("Speed too high/low");
 		}
