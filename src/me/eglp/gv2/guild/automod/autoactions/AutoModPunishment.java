@@ -34,8 +34,8 @@ public enum AutoModPunishment implements JSONPrimitiveStringConvertible, Webinte
 		return name();
 	}
 
-	public static AutoModPunishment decodePrimitive(Object p) {
-		return valueOf((String) p);
+	public static AutoModPunishment decodePrimitive(String p) {
+		return valueOf(p);
 	}
 
 }

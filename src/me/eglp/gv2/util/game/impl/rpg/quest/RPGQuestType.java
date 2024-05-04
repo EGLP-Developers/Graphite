@@ -14,24 +14,24 @@ public enum RPGQuestType implements JSONPrimitiveStringConvertible {
 	KILL_GREATER_BEAR((npc, p) -> new RPGKillEnemyQuest(npc, p, RPGEnemyType.QUEST_BEAR)),
 	BLACKSMITH_SWORD((npc, p) -> new RPGBlacksmithQuest(npc, p, RPGObjectType.DULL_IRON_SWORD, RPGObjectType.IRON_SWORD, 100)),
 	;
-	
+
 	private final BiFunction<RPGNPC, RPGPlayer, ? extends RPGQuest> questCreator;
-	
+
 	private RPGQuestType(BiFunction<RPGNPC, RPGPlayer, ? extends RPGQuest> questCreator) {
 		this.questCreator = questCreator;
 	}
-	
+
 	public RPGQuest createQuest(RPGNPC npc, RPGPlayer player) {
 		return questCreator.apply(npc, player);
 	}
-	
+
 	@Override
 	public String toJSONPrimitive() {
 		return name();
 	}
-	
-	public static RPGQuestType decodePrimitive(Object value) {
-		return valueOf((String) value);
+
+	public static RPGQuestType decodePrimitive(String value) {
+		return valueOf(value);
 	}
-	
+
 }

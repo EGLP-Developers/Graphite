@@ -20,7 +20,6 @@ import me.eglp.gv2.main.Graphite;
 import me.eglp.gv2.util.mysql.SQLTable;
 import me.mrletsplay.mrcore.misc.FriendlyException;
 import net.dv8tion.jda.api.Permission;
-import net.dv8tion.jda.api.entities.channel.concrete.VoiceChannel;
 
 @SQLTable(
 	name = "guilds_channels",
@@ -91,11 +90,8 @@ public class GuildChannelsConfig implements IGuildConfig {
 	}
 
 	public void setSupportQueue(GraphiteVoiceChannel channel) {
-		if(channel == null) {
-			unsetSupportQueue();
-			return;
-		}
-
+		unsetSupportQueue();
+		if(channel == null) return;
 		Graphite.getMySQL().query("INSERT IGNORE INTO guilds_channels(GuildId, ChannelId, Type) VALUES (?, ?, ?) ON DUPLICATE KEY UPDATE ChannelId = VALUES(ChannelId)", guild.getID(), channel.getID(), CHANNEL_TYPE_SUPPORT_QUEUE);
 	}
 
@@ -272,7 +268,7 @@ public class GuildChannelsConfig implements IGuildConfig {
 			setUserChannelCategory(cat);
 		}
 
-		GraphiteVoiceChannel vc = guild.getVoiceChannel((VoiceChannel) guild.getJDAGuild().createVoiceChannel(owner.getName() + "'s channel").setParent(cat.getJDACategory()).complete());
+		GraphiteVoiceChannel vc = guild.getVoiceChannel(guild.getJDAGuild().createVoiceChannel(owner.getName() + "'s channel").setParent(cat.getJDACategory()).complete());
 		vc.getJDAChannel().upsertPermissionOverride(owner.getMember()).complete().getManager().grant(Permission.ALL_CHANNEL_PERMISSIONS).queue();
 		GuildUserChannel uc = new GuildUserChannel(guild, owner, vc);
 		addUserChannel(uc);

@@ -111,8 +111,9 @@ public class RolesData implements JSONConvertible, WebinterfaceObject {
 
 	@Override
 	public void preDeserialize(JSONObject object) {
-		object.getJSONObject("assignments").keys().forEach(id -> {
-			roleAssignments.put(id, object.getJSONArray(id).stream().map(o -> (String) o).collect(Collectors.toList()));
+		JSONObject assignments = object.getJSONObject("assignments");
+		assignments.keys().forEach(id -> {
+			roleAssignments.put(id, assignments.getJSONArray(id).stream().map(o -> (String) o).collect(Collectors.toList()));
 		});
 	}
 

@@ -76,8 +76,8 @@ public enum StatisticsElementPointFrequency implements WebinterfaceObject, JSONP
 		return ts;
 	}
 
-	public static StatisticsElementPointFrequency decodePrimitive(Object p) {
-		return valueOf((String) p);
+	public static StatisticsElementPointFrequency decodePrimitive(String p) {
+		return valueOf(p);
 	}
 
 }

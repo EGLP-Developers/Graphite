@@ -43,8 +43,8 @@ public enum AutoModAction implements WebinterfaceObject, JSONPrimitiveStringConv
 		return name();
 	}
 
-	public static AutoModAction decodePrimitive(Object value) {
-		return valueOf((String) value);
+	public static AutoModAction decodePrimitive(String value) {
+		return valueOf(value);
 	}
 
 }

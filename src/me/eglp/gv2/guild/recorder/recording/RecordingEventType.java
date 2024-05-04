@@ -13,8 +13,8 @@ public enum RecordingEventType implements JSONPrimitiveStringConvertible {
 		return name();
 	}
 
-	public static RecordingEventType decodePrimitive(Object obj) {
-		return valueOf((String) obj);
+	public static RecordingEventType decodePrimitive(String obj) {
+		return valueOf(obj);
 	}
 
 }

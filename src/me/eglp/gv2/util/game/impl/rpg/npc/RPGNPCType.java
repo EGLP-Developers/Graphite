@@ -25,12 +25,12 @@ public enum RPGNPCType implements JSONPrimitiveStringConvertible {
 	BLACKSMITH("Blacksmith", null,
 			new ProbabilityElement<>(RPGQuestType.BLACKSMITH_SWORD, 100)),
 	;
-	
+
 	private final String title;
 	private final BiConsumer<RPGNPC, RPGPlayer> onInteract;
 	private final BiFunction<RPGNPCType, int[], ? extends RPGNPC> npcCreator;
 	private final List<ProbabilityElement<RPGQuestType>> dropProbabilities;
-	
+
 	@SafeVarargs
 	private RPGNPCType(String title, BiConsumer<RPGNPC, RPGPlayer> onInteract, BiFunction<RPGNPCType, int[], ? extends RPGNPC> npcCreator, ProbabilityElement<RPGQuestType>... dropProbabilities) {
 		this.title = title;
@@ -38,16 +38,16 @@ public enum RPGNPCType implements JSONPrimitiveStringConvertible {
 		this.npcCreator = npcCreator;
 		this.dropProbabilities = Arrays.asList(dropProbabilities);
 	}
-	
+
 	@SafeVarargs
 	private RPGNPCType(String title, BiConsumer<RPGNPC, RPGPlayer> onInteract, ProbabilityElement<RPGQuestType>... dropProbabilities) {
 		this(title, onInteract, null, dropProbabilities);
 	}
-	
+
 	public RPGNPC createNPC(int x, int y) {
 		return npcCreator != null ? npcCreator.apply(this, new int[] {x, y}) : new RPGNPC(this, x, y);
 	}
-	
+
 	public void onInteract(RPGNPC npc, RPGPlayer player) {
 		if(onInteract != null) {
 			onInteract.accept(npc, player);
@@ -78,22 +78,22 @@ public enum RPGNPCType implements JSONPrimitiveStringConvertible {
 		}
 		player.send("*" + npc.getName() + "*\n" + q.getNPCText());
 	}
-	
+
 	public String getTitle() {
 		return title;
 	}
-	
+
 	public RPGQuest generateNewQuest(RPGNPC npc, RPGPlayer player) {
 		return Probability.choose(dropProbabilities, RPG.INSTANCE.getRandom()).getElement().createQuest(npc, player);
 	}
-	
+
 	@Override
 	public String toJSONPrimitive() {
 		return name();
 	}
-	
-	public static RPGNPCType decodePrimitive(Object value) {
-		return valueOf((String) value);
+
+	public static RPGNPCType decodePrimitive(String value) {
+		return valueOf(value);
 	}
-	
+
 }

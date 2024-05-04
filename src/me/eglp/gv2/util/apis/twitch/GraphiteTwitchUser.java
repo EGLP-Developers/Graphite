@@ -190,7 +190,7 @@ public class GraphiteTwitchUser implements WebinterfaceObject, JSONConvertible {
 	@Override
 	public void preDeserialize(JSONObject object) {
 		this.parameters = object.getJSONArray("parameters").stream()
-			.map(s -> TwitchAnnouncementParameter.decodePrimitive(s))
+			.map(s -> TwitchAnnouncementParameter.decodePrimitive((String) s))
 			.collect(Collectors.toList());
 	}
 

@@ -21,29 +21,29 @@ import me.mrletsplay.mrcore.misc.FriendlyException;
 
 @JavaScriptEnum
 public enum StatisticsElementType implements WebinterfaceObject, JSONPrimitiveStringConvertible {
-	
+
 	PIE_CHART(PieChartSettings.class, PieChartRenderer.INSTANCE),
 	DONUT_CHART(DonutChartSettings.class, DonutChartRenderer.INSTANCE),
 	LINE_CHART(LineChartSettings.class, LineChartRenderer.INSTANCE),
 	BAR_CHART(BarChartSettings.class, BarChartRenderer.INSTANCE),
 	TEXT(TextSettings.class, TextRenderer.INSTANCE);
-	
+
 	private Class<? extends StatisticsElementSettings> settingsType;
 	private StatisticsRenderer renderer;
-	
+
 	private StatisticsElementType(Class<? extends StatisticsElementSettings> settingsType, StatisticsRenderer renderer) {
 		this.settingsType = settingsType;
 		this.renderer = renderer;
 	}
-	
+
 	public Class<? extends StatisticsElementSettings> getSettingsType() {
 		return settingsType;
 	}
-	
+
 	public StatisticsRenderer getRenderer() {
 		return renderer;
 	}
-	
+
 	public StatisticsElementSettings createDefaultSettings() {
 		try {
 			return settingsType.getConstructor().newInstance();
@@ -52,17 +52,17 @@ public enum StatisticsElementType implements WebinterfaceObject, JSONPrimitiveSt
 			throw new FriendlyException(e);
 		}
 	}
-	
+
 	@Override
 	public String toJSONPrimitive() {
 		return name();
 	}
-	
-	public static StatisticsElementType decodePrimitive(Object value) {
-		return valueOf((String) value);
+
+	public static StatisticsElementType decodePrimitive(String value) {
+		return valueOf(value);
 	}
-	
+
 	@JavaScriptFunction(calling = "createDefaultSettings", returning = "settings", withGuild = true)
 	public static void createDefaultSettings(@JavaScriptParameter(name = "chart_type") String chartType) {};
-	
+
 }

@@ -8,21 +8,21 @@ import me.mrletsplay.mrcore.json.converter.JSONValue;
 import net.dv8tion.jda.api.entities.PermissionOverride;
 
 public class BackupPermissionOverride implements JSONConvertible {
-	
+
 	@JSONValue
 	private Type type;
-	
+
 	@JSONValue
 	private String id;
-	
+
 	@JSONValue
 	private long
 		allowed,
 		denied;
-	
+
 	@JSONConstructor
 	private BackupPermissionOverride() {}
-	
+
 	public BackupPermissionOverride(PermissionOverride jdaOverride) {
 		if(jdaOverride.isMemberOverride()) {
 			this.type = Type.MEMBER;
@@ -31,11 +31,11 @@ public class BackupPermissionOverride implements JSONConvertible {
 			this.type = Type.ROLE;
 			this.id = Graphite.getGuild(jdaOverride.getGuild()).getRole(jdaOverride.getRole()).getID();
 		}
-		
+
 		this.allowed = jdaOverride.getAllowedRaw();
 		this.denied = jdaOverride.getDeniedRaw();
 	}
-	
+
 	public Type getType() {
 		return type;
 	}
@@ -53,7 +53,7 @@ public class BackupPermissionOverride implements JSONConvertible {
 	}
 
 	public static enum Type implements JSONPrimitiveStringConvertible {
-		
+
 		MEMBER,
 		ROLE;
 
@@ -61,11 +61,11 @@ public class BackupPermissionOverride implements JSONConvertible {
 		public String toJSONPrimitive() {
 			return name();
 		}
-		
-		public static Type decodePrimitive(Object value) {
-			return valueOf((String) value);
+
+		public static Type decodePrimitive(String value) {
+			return valueOf(value);
 		}
-		
+
 	}
 
 }

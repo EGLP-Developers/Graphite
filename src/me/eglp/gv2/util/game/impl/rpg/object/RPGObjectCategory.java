@@ -10,13 +10,13 @@ public enum RPGObjectCategory implements JSONPrimitiveStringConvertible {
 	FOOD("It's edible"),
 	WEAPON("It's deadly"),
 	;
-	
+
 	private final String defaultItemDescription;
-	
+
 	private RPGObjectCategory(String defaultItemDescription) {
 		this.defaultItemDescription = defaultItemDescription;
 	}
-	
+
 	public String getDefaultItemDescription() {
 		return defaultItemDescription;
 	}
@@ -25,9 +25,9 @@ public enum RPGObjectCategory implements JSONPrimitiveStringConvertible {
 	public String toJSONPrimitive() {
 		return name();
 	}
-	
-	public static RPGObjectCategory decodePrimitive(Object value) {
-		return valueOf((String) value);
+
+	public static RPGObjectCategory decodePrimitive(String value) {
+		return valueOf(value);
 	}
-	
+
 }

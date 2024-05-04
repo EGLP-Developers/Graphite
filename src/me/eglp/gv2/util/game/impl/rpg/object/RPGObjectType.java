@@ -16,12 +16,12 @@ public enum RPGObjectType implements JSONPrimitiveStringConvertible {
 	DULL_IRON_SWORD(RPGObjectCategory.WEAPON, "Dull Iron Sword", "Seems too dull to be of any use in combat, try bringing it to a blacksmith", 3, 7),
 	IRON_SWORD(RPGObjectCategory.WEAPON, "Iron Sword", "A sharpened iron sword that can deal quite a bit of damage", 10, 15),
 	;
-	
+
 	private final RPGObjectCategory category;
 	private final String itemName, itemDescription;
 	private final int minAttackDamage, maxAttackDamage;
 	private final Function<RPGObjectType, ? extends RPGObject> itemCreator;
-	
+
 	private RPGObjectType(RPGObjectCategory category, String itemName, String itemDescription, int minAD, int maxAD, Function<RPGObjectType, ? extends RPGObject> itemCreator) {
 		this.category = category;
 		this.itemName = itemName;
@@ -30,42 +30,42 @@ public enum RPGObjectType implements JSONPrimitiveStringConvertible {
 		this.maxAttackDamage = maxAD;
 		this.itemCreator = itemCreator;
 	}
-	
+
 	private RPGObjectType(RPGObjectCategory category, String itemName, String itemDescription, int minAD, int maxAD) {
 		this(category, itemName, itemDescription, minAD, maxAD, null);
 	}
-	
+
 	private RPGObjectType(RPGObjectCategory category, String itemName, int minAD, int maxAD) {
 		this(category, itemName, null, minAD, maxAD);
 	}
-	
+
 	public RPGObjectCategory getCategory() {
 		return category;
 	}
-	
+
 	public String getItemName() {
 		return itemName;
 	}
-	
+
 	public String getItemDescription() {
 		return itemDescription;
 	}
-	
+
 	public int getAttackDamage() {
 		int ad = minAttackDamage;
 		int diff = maxAttackDamage - minAttackDamage;
 		if(diff != 0) ad += RPG.INSTANCE.getRandom().nextInt(diff);
 		return ad;
 	}
-	
+
 	public int getMinAttackDamage() {
 		return minAttackDamage;
 	}
-	
+
 	public int getMaxAttackDamage() {
 		return maxAttackDamage;
 	}
-	
+
 	public RPGObject createObject() {
 		return itemCreator != null ? itemCreator.apply(this) : new RPGObject(this);
 	}
@@ -74,9 +74,9 @@ public enum RPGObjectType implements JSONPrimitiveStringConvertible {
 	public String toJSONPrimitive() {
 		return name();
 	}
-	
-	public static RPGObjectType decodePrimitive(Object value) {
-		return valueOf((String) value);
+
+	public static RPGObjectType decodePrimitive(String value) {
+		return valueOf(value);
 	}
-	
+
 }

@@ -7,7 +7,7 @@ import me.mrletsplay.mrcore.json.converter.JSONPrimitiveStringConvertible;
 // Preset timeframes to avoid weird issues when allowing custom timeframes
 @JavaScriptEnum
 public enum StatisticsElementTimeframe implements WebinterfaceObject, JSONPrimitiveStringConvertible {
-	
+
 	ONE_DAY(24L * 60 * 60 * 1000, 24, 1, -1, -1),
 	TWO_DAYS(48L * 60 * 60 * 1000, 48, 2, -1, -1),
 	ONE_WEEK(7L * 24 * 60 * 60 * 1000, 7 * 24, 7, 1, -1),
@@ -16,14 +16,14 @@ public enum StatisticsElementTimeframe implements WebinterfaceObject, JSONPrimit
 	TWO_MONTHS(60L * 24 * 60 * 60 * 1000, 60 * 24, 60, 8, 2),
 	HALF_YEAR(182L * 24 * 60 * 60 * 1000, 182 * 24, 182, 26, 6),
 	ONE_YEAR(365L * 24 * 60 * 60 * 1000, 365 * 24, 365, 52, 12);
-	
+
 	private long timeframe;
 	private int
 		hours,
 		days,
 		weeks,
 		months;
-	
+
 	private StatisticsElementTimeframe(long timeframe, int hours, int days, int weeks, int months) {
 		this.timeframe = timeframe;
 		this.hours = hours;
@@ -31,27 +31,27 @@ public enum StatisticsElementTimeframe implements WebinterfaceObject, JSONPrimit
 		this.weeks = weeks;
 		this.months = months;
 	}
-	
+
 	public long getRawTimeframe() {
 		return timeframe;
 	}
-	
+
 	public int getHours() {
 		return hours;
 	}
-	
+
 	public int getDays() {
 		return days;
 	}
-	
+
 	public int getWeeks() {
 		return weeks;
 	}
-	
+
 	public int getMonths() {
 		return months;
 	}
-	
+
 	public int getAmount(StatisticsElementPointFrequency frequency) {
 		switch(frequency) {
 			case HOURLY:
@@ -66,14 +66,14 @@ public enum StatisticsElementTimeframe implements WebinterfaceObject, JSONPrimit
 				throw new UnsupportedOperationException("Not implemented");
 		}
 	}
-	
+
 	@Override
 	public String toJSONPrimitive() {
 		return name();
 	}
-	
-	public static StatisticsElementTimeframe decodePrimitive(Object p) {
-		return valueOf((String) p);
+
+	public static StatisticsElementTimeframe decodePrimitive(String p) {
+		return valueOf(p);
 	}
 
 }
