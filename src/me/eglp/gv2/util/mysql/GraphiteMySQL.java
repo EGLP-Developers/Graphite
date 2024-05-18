@@ -120,9 +120,12 @@ public class GraphiteMySQL {
 				for(int i = 0; i < parameters.length; i++) {
 					p.setObject(i + 1, parameters[i]);
 				}
-				try(ResultSet r = p.executeQuery()) {
+
+				p.execute();
+				if(resultType.equals(Void.class)) return Collections.emptyList();
+
+				try(ResultSet r = p.getResultSet()) {
 					if(Graphite.hasOption(GraphiteOption.MYSQL_DEBUG)) Graphite.log("QUERY DONE: " + query);
-					if(resultType.equals(Void.class)) return Collections.emptyList();
 					if(r.getMetaData().getColumnCount() > 1) throw new FriendlyException("query() can only handle one return value");
 					List<T> list = new ArrayList<>();
 					while(r.next()) {

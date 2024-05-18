@@ -17,9 +17,9 @@ import java.util.concurrent.atomic.AtomicReference;
 import java.util.regex.Matcher;
 import java.util.stream.Collectors;
 
+import org.apache.commons.lang3.time.StopWatch;
 import org.mozilla.javascript.ContextFactory;
 
-import com.google.common.base.Stopwatch;
 import com.sedmelluq.discord.lavaplayer.player.AudioPlayerManager;
 import com.sedmelluq.discord.lavaplayer.player.DefaultAudioPlayerManager;
 import com.sedmelluq.discord.lavaplayer.source.AudioSourceManagers;
@@ -217,7 +217,7 @@ public class Graphite {
 	}
 
 	private static void createShardsAndStart() throws Exception {
-		Stopwatch sw = Stopwatch.createStarted();
+		StopWatch sw = StopWatch.createStarted();
 		isOnline = false;
 		isShutdown = false;
 		jdaListener = new GraphiteJDAListener();
@@ -237,11 +237,12 @@ public class Graphite {
 		log("Initializing bot...");
 		GraphiteBot.start(botInfo);
 
-		start(sw.stop().elapsed(TimeUnit.MILLISECONDS));
+		sw.stop();
+		start(sw.getTime(TimeUnit.MILLISECONDS));
 	}
 
 	public static void start(long preInitTime) throws Exception {
-		Stopwatch sw = Stopwatch.createStarted();
+		StopWatch sw = StopWatch.createStarted();
 
 		if(!ContextFactory.hasExplicitGlobal()) ContextFactory.initGlobal(new GraphiteContextFactory());
 		OpusLibrary.loadFromJar();
@@ -258,12 +259,14 @@ public class Graphite {
 		AudioSourceManagers.registerRemoteSources(audioPlayerManager);
 
 		log("Waiting for all shards to come online");
-		long initTime = sw.elapsed(TimeUnit.MILLISECONDS);
-		sw.reset().start();
+		long initTime = sw.getTime(TimeUnit.MILLISECONDS);
+		sw.reset();
+		sw.start();
 		GraphiteBot.awaitLoad();
 
-		long connectTime = sw.elapsed(TimeUnit.MILLISECONDS);
-		sw.reset().start();
+		long connectTime = sw.getTime(TimeUnit.MILLISECONDS);
+		sw.reset();
+		sw.start();
 
 		GraphiteBot.shards.forEach(s -> {
 			CommandListUpdateAction a;
@@ -572,7 +575,7 @@ public class Graphite {
 
 		Selfcheck.startPeriodicCheck();
 
-		long postInitTime = sw.elapsed(TimeUnit.MILLISECONDS);
+		long postInitTime = sw.getTime(TimeUnit.MILLISECONDS);
 		sw.stop();
 
 		isOnline = true;
