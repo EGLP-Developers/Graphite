@@ -35,7 +35,7 @@ public class GraphiteWebinterface {
 	private GraphiteAccountManager accountManager;
 	private GraphiteMySQLSessionStorage sessionStorage;
 	private WebinterfaceWebSocketServer webSocketServer;
-	
+
 	private static final Reflections REFLECTIONS = new Reflections("me.eglp.gv2", Scanners.MethodsAnnotated);
 	private static final Set<Method> HANDLER_METHODS = getHandlerMethods0();
 
@@ -43,19 +43,19 @@ public class GraphiteWebinterface {
 		return REFLECTIONS.getMethodsAnnotatedWith(WebinterfaceHandler.class).stream()
 				.collect(Collectors.toSet());
 	}
-	
+
 	public GraphiteWebinterface() {
 		accountManager = new GraphiteMySQLAccountManager(this);
 		sessionStorage = new GraphiteMySQLSessionStorage();
-		
+
 		webSocketServer = new WebinterfaceWebSocketServer(Graphite.getMainBotInfo().getWebsite().getWebsocketPort());
-		webSocketServer.start();
+		Graphite.getScheduler().scheduleAlwaysRepeating("Graphite-WebSocket", webSocketServer);
 	}
-	
+
 	public WebinterfaceWebSocketServer getWebSocketServer() {
 		return webSocketServer;
 	}
-	
+
 	public void kick(String userID) {
 		webSocketServer.getConnections().forEach(c -> {
 			WebinterfaceSession sess = c.getAttachment();
@@ -64,14 +64,14 @@ public class GraphiteWebinterface {
 			c.close();
 		});
 	}
-	
+
 	public void kickAll() {
 		webSocketServer.getConnections().forEach(c -> {
 			c.send(WebinterfacePacket.of("disconnect", null).toJSON().toString());
 			c.close();
 		});
 	}
-	
+
 	public void broadcastToUser(String userID, String msg) {
 		webSocketServer.getConnections().forEach(c -> {
 			WebinterfaceSession sess = c.getAttachment();
@@ -81,7 +81,7 @@ public class GraphiteWebinterface {
 			c.send(WebinterfacePacket.of("broadcast", o).toJSON().toString());
 		});
 	}
-	
+
 	public void broadcastToAll(String msg) {
 		webSocketServer.getConnections().forEach(c -> {
 			JSONObject o = new JSONObject();
@@ -89,7 +89,7 @@ public class GraphiteWebinterface {
 			c.send(WebinterfacePacket.of("broadcast", o).toJSON().toString());
 		});
 	}
-	
+
 	public void stop() {
 		accountManager.close();
 		try {
@@ -99,7 +99,7 @@ public class GraphiteWebinterface {
 			GraphiteDebug.log(DebugCategory.WEBINTERFACE, e);
 		}
 	}
-	
+
 	public void sendRequestToGuildUsers(String requestMethod, JSONObject requestData, String guildID, GraphiteFeature... requiredFeatures) {
 		for(WebSocket socket : webSocketServer.getConnections()) {
 			WebinterfaceSession sess = socket.getAttachment();
@@ -113,28 +113,28 @@ public class GraphiteWebinterface {
 			}
 		}
 	}
-	
+
 	public WebinterfacePacket handlePacket(WebSocket webSocket, WebinterfacePacket packet) throws IOException {
 		try {
 			WebinterfaceSession session = webSocket.getAttachment();
 			GraphiteWebinterfaceUser user = session.getUser();
-			
+
 			MultiplexBot bot = null;
 			if(packet.getBotIdentifier() != null) {
 				bot = Graphite.getMultiplexBot(packet.getBotIdentifier());
 			}
-			
+
 			GraphiteGuild guild = null;
 			if(packet.getGuildID() != null) {
 				guild = Graphite.getGlobalGuild(packet.getGuildID());
 			}
-			
+
 			if(guild != null) {
 				if(!user.isOnGuild(guild.getID())) {
 					return WebinterfacePacket.error(packet.getID(), "No permission for guild");
 				}
 			}
-			
+
 			WebinterfaceRequest req = new WebinterfaceRequest(user, bot, guild, packet);
 			WebinterfaceRequestEvent e = new WebinterfaceRequestEvent(req);
 			for(Method m : HANDLER_METHODS) {
@@ -150,22 +150,22 @@ public class GraphiteWebinterface {
 							webSocket.close();
 							throw new UnsupportedOperationException("Illegal request handler @ " + m);
 						}
-						
+
 						if(wh.requireBot()) {
 							GraphiteMultiplex.setCurrentBot(bot);
 						}
-						
+
 						if(wh.requireGuildAdmin()) {
 							if(guild == null) {
 								return WebinterfacePacket.error(packet.getID(), "No permission");
 							}
-							
+
 							GraphiteMember mem = guild.getMember(user.getDiscordUser());
 							if(mem == null || !mem.getJDAMember().hasPermission(Permission.ADMINISTRATOR)) {
 								return WebinterfacePacket.error(packet.getID(), "No permission");
 							}
 						}
-						
+
 						if(guild != null) {
 							final GraphiteGuild fGuild = guild;
 							GraphiteMember mem = guild.getMember(user.getDiscordUser());
@@ -173,7 +173,7 @@ public class GraphiteWebinterface {
 								return WebinterfacePacket.error(packet.getID(), "No permission");
 							}
 						}
-						
+
 						try {
 							WebinterfaceResponse response = (WebinterfaceResponse) m.invoke(null, e);
 							return response.toPacket(packet.getID());
@@ -184,24 +184,24 @@ public class GraphiteWebinterface {
 					}
 				}
 			}
-			
+
 			return WebinterfacePacket.error(packet.getID(), "Invalid request method");
 		}catch(Exception e) {
 			GraphiteDebug.log(DebugCategory.WEBINTERFACE, e);
 			return WebinterfacePacket.error(packet.getID(), "Malformed request (2)");
 		}
 	}
-	
+
 	public static Set<Method> getHandlerMethods() {
 		return HANDLER_METHODS;
 	}
-	
+
 	public GraphiteAccountManager getAccountManager() {
 		return accountManager;
 	}
-	
+
 	public GraphiteMySQLSessionStorage getSessionStorage() {
 		return sessionStorage;
 	}
-	
+
 }
