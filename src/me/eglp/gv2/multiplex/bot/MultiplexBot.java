@@ -80,7 +80,7 @@ public class MultiplexBot implements WebinterfaceObject{
 				.addEventListeners(Graphite.getJDAListener())
 				.setCallbackPool(executor, true)
 				.setGatewayPool(executor, true)
-				.setRateLimitPool(executor, true)
+				.setRateLimitScheduler(executor, true)
 				.enableIntents(intents)
 				.setChunkingFilter(ChunkingFilter.NONE)
 				.setLargeThreshold(50)
