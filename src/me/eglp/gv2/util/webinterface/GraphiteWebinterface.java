@@ -185,6 +185,7 @@ public class GraphiteWebinterface {
 				}
 			}
 
+			GraphiteDebug.log(DebugCategory.WEBINTERFACE, "Received invalid request method: " + packet.getRequestMethod());
 			return WebinterfacePacket.error(packet.getID(), "Invalid request method");
 		}catch(Exception e) {
 			GraphiteDebug.log(DebugCategory.WEBINTERFACE, e);
