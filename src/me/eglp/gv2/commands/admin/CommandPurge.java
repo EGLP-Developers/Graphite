@@ -16,10 +16,10 @@ import me.eglp.gv2.util.permission.DefaultPermissions;
 import me.eglp.gv2.util.queue.GraphiteQueue;
 import me.eglp.gv2.util.queue.GraphiteTaskInfo;
 import net.dv8tion.jda.api.Permission;
+import net.dv8tion.jda.api.components.buttons.ButtonStyle;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.interactions.commands.OptionType;
 import net.dv8tion.jda.api.interactions.commands.build.OptionData;
-import net.dv8tion.jda.api.interactions.components.buttons.ButtonStyle;
 
 public class CommandPurge extends Command {
 

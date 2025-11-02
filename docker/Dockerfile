@@ -1,4 +1,4 @@
-FROM maven:latest as builder
+FROM maven:latest AS builder
 
 COPY . /workspace
 

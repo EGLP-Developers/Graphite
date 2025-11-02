@@ -4,8 +4,10 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import me.eglp.gv2.guild.GraphiteAudioChannel;
 import me.eglp.gv2.guild.GraphiteCategory;
@@ -269,7 +271,9 @@ public class GuildChannelsConfig implements IGuildConfig {
 		}
 
 		GraphiteVoiceChannel vc = guild.getVoiceChannel(guild.getJDAGuild().createVoiceChannel(owner.getName() + "'s channel").setParent(cat.getJDACategory()).complete());
-		vc.getJDAChannel().upsertPermissionOverride(owner.getMember()).complete().getManager().grant(Permission.ALL_CHANNEL_PERMISSIONS).queue();
+
+		long perms = Permission.getRaw(Arrays.stream(Permission.values()).filter(Permission::isChannel).collect(Collectors.toSet()));
+		vc.getJDAChannel().upsertPermissionOverride(owner.getMember()).complete().getManager().grant(perms).queue();
 		GuildUserChannel uc = new GuildUserChannel(guild, owner, vc);
 		addUserChannel(uc);
 		return uc;

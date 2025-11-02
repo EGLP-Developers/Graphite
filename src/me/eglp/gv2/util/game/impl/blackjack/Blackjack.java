@@ -18,7 +18,7 @@ import me.eglp.gv2.util.input.GraphiteInput;
 import me.eglp.gv2.util.input.MessageInput;
 import me.eglp.gv2.util.lang.DefaultLocaleString;
 import me.eglp.gv2.util.lang.DefaultMessage;
-import net.dv8tion.jda.api.interactions.components.buttons.ButtonStyle;
+import net.dv8tion.jda.api.components.buttons.ButtonStyle;
 import net.dv8tion.jda.api.utils.messages.MessageEditBuilder;
 
 public class Blackjack implements SinglePlayerMinigameInstance {

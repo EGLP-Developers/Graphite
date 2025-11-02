@@ -18,18 +18,18 @@ import me.eglp.gv2.util.event.EventHandler;
 import me.eglp.gv2.util.input.GraphiteInput;
 import me.eglp.gv2.util.lang.DefaultLocaleString;
 import me.eglp.gv2.util.lang.DefaultMessage;
+import net.dv8tion.jda.api.components.actionrow.ActionRow;
+import net.dv8tion.jda.api.components.actionrow.ActionRowChildComponent;
+import net.dv8tion.jda.api.components.buttons.Button;
+import net.dv8tion.jda.api.components.buttons.ButtonStyle;
+import net.dv8tion.jda.api.components.selections.SelectMenu;
+import net.dv8tion.jda.api.components.selections.SelectOption;
+import net.dv8tion.jda.api.components.selections.StringSelectMenu;
 import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.emoji.Emoji;
 import net.dv8tion.jda.api.events.interaction.component.ButtonInteractionEvent;
 import net.dv8tion.jda.api.events.interaction.component.StringSelectInteractionEvent;
 import net.dv8tion.jda.api.interactions.InteractionHook;
-import net.dv8tion.jda.api.interactions.components.ActionRow;
-import net.dv8tion.jda.api.interactions.components.ItemComponent;
-import net.dv8tion.jda.api.interactions.components.buttons.Button;
-import net.dv8tion.jda.api.interactions.components.buttons.ButtonStyle;
-import net.dv8tion.jda.api.interactions.components.selections.SelectMenu;
-import net.dv8tion.jda.api.interactions.components.selections.SelectOption;
-import net.dv8tion.jda.api.interactions.components.selections.StringSelectMenu;
 import net.dv8tion.jda.api.utils.messages.MessageCreateBuilder;
 import net.dv8tion.jda.api.utils.messages.MessageEditBuilder;
 
@@ -44,7 +44,7 @@ public class MultiInput implements GraphiteInput, AnnotationEventHandler {
 
 	private List<GraphiteUser> allowedUsers;
 
-	private List<ItemComponent> components;
+	private List<ActionRowChildComponent> components;
 	private Map<String, String> selectMenuIDs;
 	private Map<String, List<String>> selectMenuValues;
 	private Map<String, Consumer<ButtonPressedEvent>> buttonCallbacks;
@@ -195,7 +195,7 @@ public class MultiInput implements GraphiteInput, AnnotationEventHandler {
 
 	public void addButtonRaw(Button button, Consumer<ButtonPressedEvent> callback) {
 		components.add(button);
-		buttonCallbacks.put(button.getId(), callback);
+		buttonCallbacks.put(button.getCustomId(), callback);
 	}
 
 	public void addSelectMenu(String id, List<SelectOption> options) {
@@ -206,8 +206,8 @@ public class MultiInput implements GraphiteInput, AnnotationEventHandler {
 		StringSelectMenu.Builder b = StringSelectMenu.create(newID());
 		b.addOptions(options);
 		components.add(b.build());
-		selectMenuIDs.put(id, b.getId());
-		selectMenuValues.put(b.getId(), Collections.emptyList());
+		selectMenuIDs.put(id, b.getCustomId());
+		selectMenuValues.put(b.getCustomId(), Collections.emptyList());
 	}
 
 	private String newID() {
@@ -310,10 +310,10 @@ public class MultiInput implements GraphiteInput, AnnotationEventHandler {
 
 	public List<ActionRow> createActionRows(boolean isDisabled) {
 		List<ActionRow> rows = new ArrayList<>();
-		List<ItemComponent> comps = new ArrayList<>(components);
-		List<ItemComponent> temp = new ArrayList<>();
+		List<ActionRowChildComponent> comps = new ArrayList<>(components);
+		List<ActionRowChildComponent> temp = new ArrayList<>();
 		while(!comps.isEmpty()) {
-			ItemComponent b = comps.remove(0);
+			ActionRowChildComponent b = comps.remove(0);
 			if(isDisabled) {
 				if(b instanceof SelectMenu) b = ((SelectMenu) b).asDisabled();
 				if(b instanceof Button) b = ((Button) b).asDisabled();

@@ -25,11 +25,11 @@ import me.eglp.gv2.util.lang.DefaultLocaleString;
 import me.eglp.gv2.util.lang.DefaultMessage;
 import me.eglp.gv2.util.permission.DefaultPermissions;
 import net.dv8tion.jda.api.EmbedBuilder;
+import net.dv8tion.jda.api.components.buttons.ButtonStyle;
 import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.interactions.InteractionHook;
 import net.dv8tion.jda.api.interactions.commands.OptionType;
 import net.dv8tion.jda.api.interactions.commands.build.OptionData;
-import net.dv8tion.jda.api.interactions.components.buttons.ButtonStyle;
 import net.dv8tion.jda.api.utils.messages.MessageCreateBuilder;
 
 public class CommandAmongUs extends ParentCommand {

@@ -6,7 +6,7 @@ import me.eglp.gv2.user.GraphiteUser;
 import me.eglp.gv2.util.emote.JDAEmote;
 import me.eglp.gv2.util.input.ButtonInput;
 import me.eglp.gv2.util.lang.DefaultMessage;
-import net.dv8tion.jda.api.interactions.components.buttons.ButtonStyle;
+import net.dv8tion.jda.api.components.buttons.ButtonStyle;
 
 public interface MultiPlayerMinigameInstance extends MinigameInstance {
 

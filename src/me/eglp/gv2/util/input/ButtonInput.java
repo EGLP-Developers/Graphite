@@ -17,13 +17,13 @@ import me.eglp.gv2.util.event.AnnotationEventHandler;
 import me.eglp.gv2.util.event.EventHandler;
 import me.eglp.gv2.util.lang.DefaultLocaleString;
 import me.eglp.gv2.util.lang.DefaultMessage;
+import net.dv8tion.jda.api.components.actionrow.ActionRow;
+import net.dv8tion.jda.api.components.buttons.Button;
+import net.dv8tion.jda.api.components.buttons.ButtonStyle;
 import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.emoji.Emoji;
 import net.dv8tion.jda.api.events.interaction.component.ButtonInteractionEvent;
 import net.dv8tion.jda.api.interactions.InteractionHook;
-import net.dv8tion.jda.api.interactions.components.ActionRow;
-import net.dv8tion.jda.api.interactions.components.buttons.Button;
-import net.dv8tion.jda.api.interactions.components.buttons.ButtonStyle;
 import net.dv8tion.jda.api.utils.messages.MessageCreateBuilder;
 import net.dv8tion.jda.api.utils.messages.MessageEditBuilder;
 
@@ -187,7 +187,7 @@ public class ButtonInput<T> implements GraphiteInput, AnnotationEventHandler {
 
 	public void addOptionRaw(Button button, T option) {
 		buttons.add(button);
-		mappings.put(button.getId(), option);
+		mappings.put(button.getCustomId(), option);
 	}
 
 	public void registerHandler() {

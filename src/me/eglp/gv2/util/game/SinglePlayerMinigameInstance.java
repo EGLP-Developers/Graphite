@@ -9,7 +9,7 @@ import me.eglp.gv2.util.emote.JDAEmote;
 import me.eglp.gv2.util.input.ButtonInput;
 import me.eglp.gv2.util.lang.DefaultLocaleString;
 import me.eglp.gv2.util.lang.DefaultMessage;
-import net.dv8tion.jda.api.interactions.components.buttons.ButtonStyle;
+import net.dv8tion.jda.api.components.buttons.ButtonStyle;
 import net.dv8tion.jda.api.utils.messages.MessageCreateBuilder;
 
 public interface SinglePlayerMinigameInstance extends MinigameInstance {

@@ -34,10 +34,10 @@ import me.eglp.gv2.util.message.BigEmbedBuilder;
 import me.eglp.gv2.util.music.GraphiteTrack;
 import me.eglp.gv2.util.permission.DefaultPermissions;
 import net.dv8tion.jda.api.EmbedBuilder;
+import net.dv8tion.jda.api.components.buttons.ButtonStyle;
 import net.dv8tion.jda.api.entities.MessageEmbed;
 import net.dv8tion.jda.api.interactions.commands.OptionType;
 import net.dv8tion.jda.api.interactions.commands.build.OptionData;
-import net.dv8tion.jda.api.interactions.components.buttons.ButtonStyle;
 import net.dv8tion.jda.api.utils.messages.MessageEditBuilder;
 
 public class CommandMusic extends ParentCommand {
